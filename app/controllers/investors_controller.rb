@@ -2,6 +2,11 @@
 
 # Investor persona
 class InvestorsController < ApplicationController
+  def show
+    user_attributes = UserSerializer.new(current_user).serializable_hash[:data][:attributes]
+    success_response('', user_attributes)
+  end
+
   def set_role
     current_user.role = investor_params[:type]
     if current_user.save
@@ -52,9 +57,9 @@ class InvestorsController < ApplicationController
     firm_accredation_params[:meta_info]
   end
 
-  def success_response(message)
+  def success_response(message, data={})
     render json: {
-      status: { code: 200, message: message}
+      status: { code: 200, message: message, data: data}
     }, status: :ok
   end
 
