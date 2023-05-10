@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  # will moved to config
-  TOKEN_LIFE = 15.minutes
-
   include Devise::JWT::RevocationStrategies::JTIMatcher
 
   # Include default devise modules. Others available are:
@@ -22,17 +19,5 @@ class User < ApplicationRecord
 
     self.confirmation_token = @raw_confirmation_token
     self.confirmation_sent_at = Time.now.utc
-  end
-
-  def validate_confirmation_token(token)
-    user = self.class.find_by(confirmation_token: token)
-    return {status: false, message: 'Token not found'} if user.blank?
-    return {status: false, message: 'Token expired!'} if token_expired?(user.confirmation_sent_at)
-
-    {status: true, message: 'Valid token'}
-  end
-
-  def token_expired?(confirmation_sent_at)
-    Time.now.utc - user.confirmation_sent_at.utc <= TOKEN_LIFE
   end
 end

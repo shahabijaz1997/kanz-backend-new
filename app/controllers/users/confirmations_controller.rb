@@ -11,43 +11,37 @@ class Users::ConfirmationsController < Devise::RegistrationsController
     yield resource if block_given?
 
     if successfully_sent?(resource)
-      respond_with({}, location: after_resending_confirmation_instructions_path_for(resource_name))
+      success_response('New token is on its way!')
     else
-      respond_with(resource)
+      unprocessable_request
     end
   end
 
   # POST /resource/confirmation?confirmation_token=abcdef
-  def confirm_account
-    return unprocessable_request if params[:confirmation_token].blank?
+  def show
+    self.resource = resource_class.confirm_by_token(params[:confirmation_token])
+    yield resource if block_given?
 
-    response = validate_confirmation_token(token)
-    if response[:status]
-      current_user.confirmed_at = Time.now.utc
-      render json: {
-        status: { code: 200, message: response[:message] },
-      }, status: :ok
+    if resource.errors.empty?
+      success_response("Account confirmed!")
     else
-      render json: {
-        status: { code: 400, message: response[:message] }
-      }, status: :not_found
+      unprocessable_request(resource.errors)
     end
   end
 
   private
 
-  def respond_with(resource, _opts = {})
+  def success_response(message)
     render json: {
-      status: { code: 200, message: 'Logged in sucessfully.' },
-      data: UserSerializer.new(resource).serializable_hash[:data][:attributes]
+      status: { code: 200, message: message },
     }, status: :ok
   end
 
-  def unprocessable_request
+  def unprocessable_request(message = 'Invalid Request')
     render json: {
       status: {
-      code: 422,
-      message: 'Invalid confirmation token'
+        code: 422,
+        message: message
       }
     }, status: :unprocessable_entity
   end

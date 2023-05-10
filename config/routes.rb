@@ -9,7 +9,5 @@ Rails.application.routes.draw do
     registrations: 'users/registrations',
     confirmations: 'users/confirmations'
   }
-
-  post '/confirm_account', to: 'users/confirmations#confirm_account'
   get '/current_user', to: 'current_user#index'
 end
