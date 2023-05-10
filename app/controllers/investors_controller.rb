@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Investor persona
 class InvestorsController < ApplicationController
   def set_role
     current_user.role = investor_params[:type]
@@ -9,7 +12,14 @@ class InvestorsController < ApplicationController
   end
 
   def accreditation
+    return unprocessable_request unless current_user.investor?
 
+    current_user.meta_info = current_user.individual_investor? ? investor_meta_info : firm_meta_info
+    if current_user.save
+      success_response('Successfuly updated accreditation info.')
+    else
+      failure_reponse(current_user.errors.full_messages.to_sentence)
+    end
   end
 
   private
@@ -18,13 +28,33 @@ class InvestorsController < ApplicationController
     params.require(:investor).permit(:type)
   end
 
-  def accredation_params
-    params.require(:investor_accredation).permit(:nationality, :residence, :legal_name, :location)
+  def investor_accredation_params
+    params.require(:investor).permit(
+      meta_info: %i[
+        nationality residence accredititation lower_limit uper_limit accept_investment_criteria
+      ]
+    )
+  end
+
+  def firm_accredation_params
+    params.require(:investor).permit(
+      meta_info: %i[
+        legal_name location accredititation lower_limit uper_limit accept_investment_criteria
+      ]
+    )
+  end
+
+  def investor_meta_info
+    investor_accredation_params[:meta_info]
+  end
+
+  def firm_meta_info
+    firm_accredation_params[:meta_info]
   end
 
   def success_response(message)
     render json: {
-      status: { code: 200, message: message },
+      status: { code: 200, message: message}
     }, status: :ok
   end
 
@@ -32,7 +62,7 @@ class InvestorsController < ApplicationController
     render json: {
       status: {
         code: 400,
-        message: message
+        message:
       }
     }, status: :unprocessable_entity
   end
@@ -41,7 +71,7 @@ class InvestorsController < ApplicationController
     render json: {
       status: {
         code: 422,
-        message: message
+        message:
       }
     }, status: :unprocessable_entity
   end

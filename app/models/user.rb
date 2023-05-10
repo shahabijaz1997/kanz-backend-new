@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
+# User Modal
 class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
   enum role: {
-    'Individual Invester': 'investor',
+    'Individual Investor': 'investor',
     'Investment Firm': 'firm investor',
     'Startup': 'startup',
     'Syndicate': 'syndicate',
@@ -15,17 +16,29 @@ class User < ApplicationRecord
          :recoverable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
-  PASSWORD_REQUIREMENTS= /\A(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^[:alnum:]])/x
+  PASSWORD_REQUIREMENTS = /\A(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^[:alnum:]])/x
 
   validates :password, format: PASSWORD_REQUIREMENTS, if: :password_validation_needed?
   validates :role, inclusion: { in: roles.keys }
 
   # Devise override the confirmation token
   def generate_confirmation_token
-    @raw_confirmation_token = SecureRandom.rand(100000..999999)
+    @raw_confirmation_token = SecureRandom.rand(100_000..999_999)
 
     self.confirmation_token = @raw_confirmation_token
     self.confirmation_sent_at = Time.now.utc
+  end
+
+  def individual_investor?
+    role == 'Individual Investor'
+  end
+
+  def investment_firm?
+    role == 'Investment Firm'
+  end
+
+  def investor?
+    individual_investor? || investment_firm?
   end
 
   private
