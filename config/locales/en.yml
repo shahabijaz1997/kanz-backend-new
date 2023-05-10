@@ -30,4 +30,10 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            password:
+              invalid: "Weak Password; must be 8 characters long, includes at-least one lower case, one upper case letter and at least one number and special character"
