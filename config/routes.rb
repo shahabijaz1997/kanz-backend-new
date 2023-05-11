@@ -9,5 +9,9 @@ Rails.application.routes.draw do
     registrations: 'users/registrations',
     confirmations: 'users/confirmations'
   }
+
+  post 'investor/type', to: 'investors#set_role'
+  post 'investor/accreditation', to: 'investors#accreditation'
+  get 'investor', to: 'investors#show'
   get '/current_user', to: 'current_user#index'
 end

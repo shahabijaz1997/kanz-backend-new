@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Users::ConfirmationsController < Devise::RegistrationsController
+class Users::ConfirmationsController < Devise::ConfirmationsController
 
   include RackSessionSolution
   respond_to :json
