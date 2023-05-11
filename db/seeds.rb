@@ -5,3 +5,8 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
+
+Dir[File.join(Rails.root, "db", "seeds", "*.rb")].sort.each do |seed|
+  puts "seeding - #{seed}. loading seeds, for real!"
+  load seed
+end
