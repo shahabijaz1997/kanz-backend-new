@@ -28,7 +28,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_10_064510) do
     t.string "jti", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "role", default: "investor"
+    t.integer "role", default: 0
     t.jsonb "meta_info", default: {}
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true

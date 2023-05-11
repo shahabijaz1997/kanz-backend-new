@@ -4,11 +4,11 @@
 class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
   enum role: {
-    'Individual Investor': 'investor',
-    'Investment Firm': 'firm investor',
-    'Startup': 'startup',
-    'Syndicate': 'syndicate',
-    'Property': 'property'
+    'Individual Investor': 0,
+    'Investment Firm': 1,
+    'Startup': 2,
+    'Syndicate': 3,
+    'Property': 4
   }
 
   # Include default devise modules
