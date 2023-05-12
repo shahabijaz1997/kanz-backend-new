@@ -26,7 +26,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_11_050223) do
   end
 
   create_table "questions", force: :cascade do |t|
+    t.integer "step"
     t.integer "index"
+    t.string "title"
     t.boolean "required"
     t.integer "question_type", default: 0
     t.string "category"

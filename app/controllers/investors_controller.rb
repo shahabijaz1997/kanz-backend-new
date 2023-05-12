@@ -27,6 +27,16 @@ class InvestorsController < ApplicationController
     end
   end
 
+  def philosophy_question
+    questions = Question.where(step: current_step)
+    data = QuestionSerializer.new(questions).serializable_hash[:data].map{ |data| data[:attributes] }
+    success_response("Questions for step: #{current_step}", data)
+  end
+
+  def philosophy
+
+  end
+
   private
 
   def investor_params
@@ -55,6 +65,10 @@ class InvestorsController < ApplicationController
 
   def firm_meta_info
     firm_accredation_params[:meta_info]
+  end
+
+  def current_step
+    params[:step].to_i
   end
 
   def success_response(message, data={})
