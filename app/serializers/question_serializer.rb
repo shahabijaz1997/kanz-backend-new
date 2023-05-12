@@ -3,5 +3,5 @@
 # Question's json serializer
 class QuestionSerializer
     include JSONAPI::Serializer
-    attributes :step, :index, :category, :title, :statement, :required, :question_type, :description, :options  
+    attributes :id, :step, :index, :category, :title, :statement, :required, :question_type, :description, :options
 end

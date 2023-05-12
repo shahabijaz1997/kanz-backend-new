@@ -14,13 +14,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_11_050223) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "investors_philosophies", force: :cascade do |t|
+  create_table "investment_philosophies", force: :cascade do |t|
     t.integer "question_id"
     t.integer "user_id"
     t.string "answer"
-    t.boolean "is_range"
-    t.float "lower_limit"
-    t.float "uper_limit"
+    t.jsonb "answer_meta"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

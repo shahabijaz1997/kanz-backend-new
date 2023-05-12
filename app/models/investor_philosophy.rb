@@ -1,2 +1,0 @@
-class InvestorPhilosophy < ApplicationRecord
-end
