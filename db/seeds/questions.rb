@@ -33,6 +33,25 @@
 			}
 		},
 		{
+			step: 1,
+			index: 3,
+			required: true,
+			title: 'Liquidity Needs',
+			category: 'Investment Objective',
+			statement: 'Please indicate the percentage of your portfolio that needs to be liquid (i.e., Cash, Marketable securities)',
+			question_type: Question::question_types['multiple_choice'],
+			description: '',
+			options: {
+				schema: [
+					{ index: 1, statement: '0%', is_range: true, lower_limit: 0, uper_limit: 5, unit: '%' },
+					{ index: 2, statement: 'up to 33%', is_range: true, lower_limit: 0, uper_limit: 33, unit: '%' },
+					{ index: 3, statement: '34 to 66%', is_range: true, lower_limit: 34, uper_limit: 66, unit: '%' },
+					{ index: 4, statement: '67% and higher', is_range: true, lower_limit: 67, uper_limit: 100, unit: '%' },
+					{ index: 5, statement: '100% (Full portfolio must be liquid)', is_range: true, lower_limit: 100, uper_limit: 100, unit: '%' }
+				]
+			}
+		},
+		{
 			step: 2,
 			index: 1,
 			required: true,
@@ -100,7 +119,14 @@
 			title: 'Investment Horizon',
 			statement: 'For what time do you think you can comfortably invest a substantial part of this portfolio without the requirement of any withdrawals?',
 			question_type: Question::question_types['multiple_choice'],
-			description: '',
+			description: %q(<h3>Modern portfolio Theory</h3>
+							<p>Modern portfolio theory (MPT) is an investment strategy based on the idea that  
+							risk-averse investors can construct portfolio to optimize or maximizing expected 
+							return for a given level of market risk, emphasizing that risk is an inherent part of higher reward.</p>
+							<p>According to MPT, a portfolio frontier, also known as an efficient frontier, is a set of 
+							portfolios that maximizes expected returns for each level of standard deviation (risk). 
+							A typical portfolio frontier is illustrated below:</p>
+							<p><img src="https://i.ibb.co/SPQzC8c/investment-horizon-graph.png" /></p>),
 			options: {
 				schema: [{
 					index: 1, statement: 'Less than 1 year', is_range: true, lower_limit: 0, uper_limit: 1, unit: 'year' },
@@ -194,31 +220,3 @@
   	record = Question.new(question)
 		record.save
 	end
-
-
-# Step: 1(1,2)
-# Step: 2(3,4)
-# step 3(assets type) multi-select
-# step 4(Open text)
-# step 5(Goals)
-
-# Question Dependency
-
-# {
-# 	step: 2,
-# 	index: 1,
-# 	required: true,
-# 	category: 'Liquidity Needs',
-# 	statement: 'Please indicate the percentage of your portfolio that needs to be liquid(i.e. Cash, Marketable Securities)',
-# 	question_type: Question::question_types['multiple_choice'],
-# 	description: '',
-# 	options: {
-# 		schema: [
-# 			{ index: 1, statement: '0%', is_range: false, lower_limit: 0, uper_limit: 0, unit: '%' },
-# 			{ index: 2, statement: 'upto 33%', is_range: true, lower_limit: 0, uper_limit: 33, unit: '%' },
-# 			{ index: 3, statement: '34% to 66%', is_range: true, lower_limit: 34, uper_limit: 66, unit: '%' },
-# 			{ index: 4, statement: '67% and higher', is_range: true, lower_limit: 67, uper_limit: 100, unit: '%' },
-# 			{ index: 5, statement: '100% (Full portfolio must be liquid)', is_range: false, lower_limit: 0, uper_limit: 0, unit: '%' }
-# 		]
-# 	}
-# },
