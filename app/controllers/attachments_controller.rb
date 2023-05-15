@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AttachmentsController < ApplicationController
-	before_action :set_attachment, only: [ :show, :update, :destroy ]
+  before_action :set_attachment, only: [ :show, :update, :destroy ]
 
   # GET /attachments/1
   def show
@@ -41,13 +41,13 @@ class AttachmentsController < ApplicationController
     end
   end
 
-	private
+  private
 
-	def set_attachment
+  def set_attachment
     @attachment = current_user.attachments.find(params[:id])
-	end
+  end
 
-	def attachment_params
-		params.require(:attachment).permit(:name, :attachment_kind, files: [])
-	end
+  def attachment_params
+    params.require(:attachment).permit(:name, :attachment_kind, files: [])
+  end
 end
