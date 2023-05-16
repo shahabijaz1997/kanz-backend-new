@@ -10,8 +10,11 @@ Rails.application.routes.draw do
     confirmations: 'users/confirmations'
   }
 
-  post 'investor/type', to: 'investors#set_role'
-  post 'investor/accreditation', to: 'investors#accreditation'
-  get 'investor', to: 'investors#show'
-  get '/current_user', to: 'current_user#index'
+  namespace :v1, path: '/1.0', defaults: { format: :json } do
+    post 'investor/type', to: 'investors#set_role'
+    post 'investor/accreditation', to: 'investors#accreditation'
+    get 'investor', to: 'investors#show'
+    get 'philosophy', to: 'investment_philosophies#philosophy_question'
+    post 'philosophy', to: 'investment_philosophies#philosophy'
+  end
 end

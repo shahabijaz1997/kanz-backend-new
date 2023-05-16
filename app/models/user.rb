@@ -16,6 +16,9 @@ class User < ApplicationRecord
          :recoverable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
+  has_many :investment_philosophies
+  has_many :questions, through: :investment_philosophies
+
   PASSWORD_REQUIREMENTS = /\A(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^[:alnum:]])/x
 
   validates :password, format: PASSWORD_REQUIREMENTS, if: :password_validation_needed?
