@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   devise_for :users, path: '', path_names: {
     sign_in: 'login',
     sign_out: 'logout',
@@ -16,5 +17,7 @@ Rails.application.routes.draw do
     get 'investor', to: 'investors#show'
     get 'philosophy', to: 'investment_philosophies#philosophy_question'
     post 'philosophy', to: 'investment_philosophies#philosophy'
+
+    resources :attachments, except: :index
   end
 end

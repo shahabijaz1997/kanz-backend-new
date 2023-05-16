@@ -21,6 +21,8 @@ class User < ApplicationRecord
 
   PASSWORD_REQUIREMENTS = /\A(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^[:alnum:]])/x
 
+  has_many :attachments, as: :parent, dependent: :destroy
+
   validates :password, format: PASSWORD_REQUIREMENTS, if: :password_validation_needed?
   validates :role, inclusion: { in: roles.keys }
 
