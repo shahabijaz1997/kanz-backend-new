@@ -12,11 +12,11 @@ class AttachmentsController < ApplicationController
   def create
     @attachment = current_user.attachments.new(attachment_params)
 
-    if !params[:files].nil? && params[:files].length() > 0
+    if !params[:files].nil? && params[:files].length > 0
       @attachment.files.attach(params[:files])
     end
 
-    if @attachment.valid_files? && @attachment.save!
+    if @attachment.save!
       render json: @attachment, status: :created, location: @attachment
     else
       render json: @attachment.errors, status: :unprocessable_entity
