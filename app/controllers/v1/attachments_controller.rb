@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AttachmentsController < ApplicationController
+class V1::AttachmentsController < ApplicationController
   before_action :set_attachment, only: [ :show, :update, :destroy ]
 
   # GET /attachments/1
@@ -17,18 +17,18 @@ class AttachmentsController < ApplicationController
     end
 
     if @attachment.save!
-      render json: @attachment, status: :created, location: @attachment
+      success('Successfully uploaded attachments to the server')
     else
-      render json: @attachment.errors, status: :unprocessable_entity
+      failure(@attachment.errors.full_messages.to_sentence)
     end
   end
 
   # PATCH/PUT /attachments/1
   def update
     if @attachment.parent_id == current_user.id && @attachment.update(attachment_params)
-      render json: @attachment
+      success('Successfully updated attachments on the server')
     else
-      render json: @attachment.errors, status: :unprocessable_entity
+      failure('Failed to update attachments on the server')
     end
   end
 
@@ -36,8 +36,9 @@ class AttachmentsController < ApplicationController
   def destroy
     if @attachment.parent_id == current_user.id
       @attachment.destroy
+      success('Successfully deleted attachments on the server')
     else
-      head :forbidden
+      failure('Failed to delete attachments on the server')
     end
   end
 
