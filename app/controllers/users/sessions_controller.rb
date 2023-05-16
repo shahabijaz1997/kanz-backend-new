@@ -5,6 +5,7 @@ module Users
   class SessionsController < Devise::SessionsController
     include RackSessionSolution
     include ResponseHandler
+
     respond_to :json
 
     private

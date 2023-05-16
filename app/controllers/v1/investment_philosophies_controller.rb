@@ -15,7 +15,6 @@ class V1::InvestmentPhilosophiesController < ApplicationController
 
   def philosophy
     return unprocessable if philosophy_params.blank?
-
     ActiveRecord::Base.transaction do
       philosophy_params[:questions].each do |question|
         philosophy = InvestmentPhilosophy.find_or_create_by(
@@ -47,8 +46,9 @@ class V1::InvestmentPhilosophiesController < ApplicationController
     params.require(:investment_philosophy).permit(
       :step,
       questions: [
-        :question_id, :answer,
-        answer_meta: [:index, :statement, :is_range, :lower_limit, :uper_limit, :unit]
+        :question_id,
+        answers: [],
+        answer_meta: [options: [:index, :statement, :is_range, :lower_limit, :uper_limit, :unit]]
       ]
     )
   end

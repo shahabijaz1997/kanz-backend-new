@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class Users::ConfirmationsController < Devise::ConfirmationsController
-
   include RackSessionSolution
+  include ResponseHandler
+
   respond_to :json
 
    # POST /resource/confirmation
@@ -27,22 +28,5 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
     else
       unprocessable(resource.errors)
     end
-  end
-
-  private
-
-  def success(message)
-    render json: {
-      status: { code: 200, message: message },
-    }, status: :ok
-  end
-
-  def unprocessable(message = 'Invalid Request')
-    render json: {
-      status: {
-        code: 422,
-        message: message
-      }
-    }, status: :unprocessable_entity
   end
 end

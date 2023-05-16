@@ -17,7 +17,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_11_050223) do
   create_table "investment_philosophies", force: :cascade do |t|
     t.integer "question_id"
     t.integer "user_id"
-    t.string "answer"
+    t.text "answers", default: [], array: true
     t.jsonb "answer_meta"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

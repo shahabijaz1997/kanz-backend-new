@@ -5,6 +5,7 @@ module Users
   class RegistrationsController < Devise::RegistrationsController
     include RackSessionSolution
     include ResponseHandler
+
     respond_to :json
 
     private
