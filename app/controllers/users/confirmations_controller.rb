@@ -11,9 +11,9 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
     yield resource if block_given?
 
     if successfully_sent?(resource)
-      success_response('New token is on its way!')
+      success('New token is on its way!')
     else
-      unprocessable_request
+      unprocessable
     end
   end
 
@@ -23,21 +23,21 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
     yield resource if block_given?
 
     if resource.errors.empty?
-      success_response("Account confirmed!")
+      success("Account confirmed!")
     else
-      unprocessable_request(resource.errors)
+      unprocessable(resource.errors)
     end
   end
 
   private
 
-  def success_response(message)
+  def success(message)
     render json: {
       status: { code: 200, message: message },
     }, status: :ok
   end
 
-  def unprocessable_request(message = 'Invalid Request')
+  def unprocessable(message = 'Invalid Request')
     render json: {
       status: {
         code: 422,

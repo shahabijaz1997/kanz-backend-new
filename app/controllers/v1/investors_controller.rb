@@ -1,29 +1,29 @@
 # frozen_string_literal: true
 
 # Investor persona
-class InvestorsController < ApplicationController
+class V1::InvestorsController < ApplicationController
   def show
     user_attributes = UserSerializer.new(current_user).serializable_hash[:data][:attributes]
-    success_response('', user_attributes)
+    success('', user_attributes)
   end
 
   def set_role
     current_user.role = investor_params[:type]
     if current_user.save
-      success_response('Successfully update the investor type')
+      success('Successfully update the investor type')
     else
-      failure_reponse(current_user.errors.full_messages.to_sentence)
+      failure(current_user.errors.full_messages.to_sentence)
     end
   end
 
   def accreditation
-    return unprocessable_request unless current_user.investor?
+    return unprocessable unless current_user.investor?
 
     current_user.meta_info = current_user.individual_investor? ? investor_meta_info : firm_meta_info
     if current_user.save
-      success_response('Successfuly updated accreditation info.')
+      success('Successfuly updated accreditation info.')
     else
-      failure_reponse(current_user.errors.full_messages.to_sentence)
+      failure(current_user.errors.full_messages.to_sentence)
     end
   end
 

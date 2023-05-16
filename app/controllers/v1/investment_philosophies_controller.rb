@@ -1,20 +1,20 @@
 # frozen_string_literal: true
 
 # Investor philosophy
-class InvestmentPhilosophiesController < ApplicationController
+class V1::InvestmentPhilosophiesController < ApplicationController
   def philosophy_question
     if valid_params
       questions = Question.where(step: current_step)
       data = QuestionSerializer.new(questions).serializable_hash[:data].map{ |data| data[:attributes] }
       data = { total_steps: Question.maximum(:step), questions: data }
-      success_response("Questions for step: #{current_step}", data)
+      success("Questions for step: #{current_step}", data)
     else
-      unprocessable_request("Can't process this request!")
+      unprocessable("Can't process this request!")
     end
   end
 
   def philosophy
-    return unprocessable_request if philosophy_params.blank?
+    return unprocessable if philosophy_params.blank?
 
     ActiveRecord::Base.transaction do
       philosophy_params[:questions].each do |question|
@@ -25,9 +25,9 @@ class InvestmentPhilosophiesController < ApplicationController
         philosophy.update!(question)
       end
     end
-    success_response("Investment philosophy updated successfully", data={})
+    success("Investment philosophy updated successfully", data={})
   rescue StandardError => e
-    unprocessable_request
+    unprocessable
   end
   
   private
