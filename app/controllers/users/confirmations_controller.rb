@@ -24,6 +24,7 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
     yield resource if block_given?
 
     if resource.errors.empty?
+      sign_in(resource_name, resource)
       success("Account confirmed!")
     else
       unprocessable(resource.errors)
