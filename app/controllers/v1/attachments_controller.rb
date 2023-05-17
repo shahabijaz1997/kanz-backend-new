@@ -12,8 +12,8 @@ class V1::AttachmentsController < ApplicationController
   def create
     @attachment = current_user.attachments.new(attachment_params)
 
-    if !params[:file].nil? && params[:file].length > 0
-      @attachment.file.attach(params[:file])
+    if attachment_params[:file].present?
+      @attachment.file.attach(attachment_params[:file])
     end
 
     if @attachment.save!
