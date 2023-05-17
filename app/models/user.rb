@@ -3,6 +3,13 @@
 # User Modal
 class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
+  devise :database_authenticatable, :registerable, :confirmable,
+         :recoverable, :validatable,
+         :jwt_authenticatable, jwt_revocation_strategy: self
+
+
+  PASSWORD_REQUIREMENTS = /\A(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^[:alnum:]])/x
+  PERSONAS = ['Investor', 'Syndicate', 'Realtor', 'Startup']
   enum role: {
     'Individual Investor': 0,
     'Investment Firm': 1,
@@ -11,20 +18,11 @@ class User < ApplicationRecord
     'Property': 4
   }
 
-  # Include default devise modules
-  devise :database_authenticatable, :registerable, :confirmable,
-         :recoverable, :validatable,
-         :jwt_authenticatable, jwt_revocation_strategy: self
-
-  has_many :investment_philosophies
-  has_many :questions, through: :investment_philosophies
-
-  PASSWORD_REQUIREMENTS = /\A(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^[:alnum:]])/x
-
   has_many :attachments, as: :parent, dependent: :destroy
 
   validates :password, format: PASSWORD_REQUIREMENTS, if: :password_validation_needed?
   validates :role, inclusion: { in: roles.keys }
+  validates :type, inclusion: { in: PERSONAS }
 
   # Devise override the confirmation token
   def generate_confirmation_token
@@ -43,7 +41,7 @@ class User < ApplicationRecord
   end
 
   def investor?
-    individual_investor? || investment_firm?
+    type == 'Investor'
   end
 
   private

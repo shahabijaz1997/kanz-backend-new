@@ -2,11 +2,13 @@
 
 # Investor philosophy
 class V1::InvestmentPhilosophiesController < ApplicationController
+  before_action :validate_persona
+
   def philosophy_question
     if valid_params
       questions = Question.where(step: current_step)
-      data = QuestionSerializer.new(questions).serializable_hash[:data].map{ |data| data[:attributes] }
-      data = { total_steps: Question.maximum(:step), questions: data }
+      questions = QuestionSerializer.new(questions).serializable_hash[:data].map{ |data| data[:attributes] }
+      data = { total_steps: Question.maximum(:step), questions: questions }
       success("Questions for step: #{current_step}", data)
     else
       unprocessable("Can't process this request!")
@@ -30,6 +32,10 @@ class V1::InvestmentPhilosophiesController < ApplicationController
   end
   
   private
+
+  def validate_persona
+    unprocessable unless current_user.investor?
+  end
   
   def valid_params
     return false if params[:step].blank?

@@ -2,6 +2,8 @@
 
 # Investor persona
 class V1::InvestorsController < ApplicationController
+  before_action :validate_persona
+
   def show
     user_attributes = UserSerializer.new(current_user).serializable_hash[:data][:attributes]
     success('', user_attributes)
@@ -17,8 +19,6 @@ class V1::InvestorsController < ApplicationController
   end
 
   def accreditation
-    return unprocessable unless current_user.investor?
-
     current_user.meta_info = current_user.individual_investor? ? investor_meta_info : firm_meta_info
     if current_user.save
       success('Successfuly updated accreditation info.')
@@ -28,6 +28,10 @@ class V1::InvestorsController < ApplicationController
   end
 
   private
+
+  def validate_persona
+    unprocessable unless current_user.investor?
+  end
 
   def investor_params
     params.require(:investor).permit(:type)
