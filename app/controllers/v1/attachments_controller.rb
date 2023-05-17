@@ -12,12 +12,12 @@ class V1::AttachmentsController < ApplicationController
   def create
     @attachment = current_user.attachments.new(attachment_params)
 
-    if !params[:files].nil? && params[:files].length > 0
-      @attachment.files.attach(params[:files])
+    if !params[:file].nil? && params[:file].length > 0
+      @attachment.file.attach(params[:file])
     end
 
     if @attachment.save!
-      success('Successfully uploaded attachments to the server')
+      success('Successfully uploaded attachments to the server', data={attachment_id: @attachment.id})
     else
       failure(@attachment.errors.full_messages.to_sentence)
     end
@@ -49,6 +49,6 @@ class V1::AttachmentsController < ApplicationController
   end
 
   def attachment_params
-    params.require(:attachment).permit(:name, :attachment_kind, files: [])
+    params.require(:attachment).permit(:name, :attachment_kind, :file)
   end
 end
