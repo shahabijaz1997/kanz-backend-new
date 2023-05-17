@@ -21,7 +21,8 @@ class V1::InvestmentPhilosophiesController < ApplicationController
       philosophy_params[:questions].each do |question|
         questionnaire = Questionnaire.find_or_create_by(
           question_id: question[:question_id],
-          user_id: current_user.id
+          respondable_id: current_user.id,
+          respondable_type: 'Investor'
         )
         questionnaire.update!(question)
       end
