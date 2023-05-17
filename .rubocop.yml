@@ -1,0 +1,33 @@
+require:
+  - rubocop-rails
+  - rubocop-rspec
+AllCops:
+  Exclude:
+    - db/schema.rb
+    - db/migrate/*
+    - vendor/**/*
+    - config/**/*
+    - bin/**/*
+
+  NewCops: enable
+Metrics/BlockLength:
+  Exclude:
+    - Rakefile
+    - '**/*.rake'
+    - 'spec/**/*.rb'
+Metrics/AbcSize:
+  Max: 20
+Style/ClassAndModuleChildren:
+  Exclude:
+    - 'test/channels/application_cable/connection_test.rb'
+    - 'test/test_helper.rb'
+Style/Documentation:
+  Exclude:
+    - 'app/**/*.rb'
+
+RSpec/NestedGroups:
+  Max: 7
+RSpec/MultipleMemoizedHelpers:
+  Max: 7
+RSpec/MultipleExpectations:
+  Enabled: false

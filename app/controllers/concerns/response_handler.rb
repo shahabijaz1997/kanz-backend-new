@@ -1,19 +1,21 @@
+# frozen_string_literal: true
+
 module ResponseHandler
-  def success(message, data={})
+  def success(message, data = {})
     render json: {
-      status: { 
+      status: {
         code: 200,
-        message: message,
-        data: data
+        message:,
+        data:
       }
     }, status: :ok
   end
 
   def failure(message = 'Not Found', code = 400)
     render json: {
-      status: { 
-        code: code, 
-        message: message
+      status: {
+        code:,
+        message:
       }
     }, status: :bad_request
   end
@@ -22,7 +24,7 @@ module ResponseHandler
     render json: {
       status: {
         code: 422,
-        message: message
+        message:
       }
     }, status: :unprocessable_entity
   end

@@ -12,7 +12,7 @@ module Users
     protected
 
     def configure_permitted_parameters
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :type, :email, :password])
+      devise_parameter_sanitizer.permit(:sign_up, keys: %i[name type email password])
     end
 
     private

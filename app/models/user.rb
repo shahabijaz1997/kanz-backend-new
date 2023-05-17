@@ -7,15 +7,14 @@ class User < ApplicationRecord
          :recoverable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
-
   PASSWORD_REQUIREMENTS = /\A(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^[:alnum:]])/x
-  PERSONAS = ['Investor', 'Syndicate', 'Realtor', 'Startup']
+  PERSONAS = %w[Investor Syndicate Realtor Startup].freeze
   enum role: {
     'Individual Investor': 0,
     'Investment Firm': 1,
-    'Startup': 2,
-    'Syndicate': 3,
-    'Property': 4
+    Startup: 2,
+    Syndicate: 3,
+    Property: 4
   }
   # Temp Fix 17/5/23
   before_validation :set_default_type
