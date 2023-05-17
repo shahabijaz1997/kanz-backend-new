@@ -59,7 +59,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_16_084851) do
     t.jsonb "answer_meta"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "type"
   end
 
   create_table "questions", force: :cascade do |t|

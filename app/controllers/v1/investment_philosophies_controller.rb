@@ -19,11 +19,11 @@ class V1::InvestmentPhilosophiesController < ApplicationController
     return unprocessable if philosophy_params.blank?
     ActiveRecord::Base.transaction do
       philosophy_params[:questions].each do |question|
-        philosophy = InvestmentPhilosophy.find_or_create_by(
+        questionnaire = Questionnaire.find_or_create_by(
           question_id: question[:question_id],
           user_id: current_user.id
         )
-        philosophy.update!(question)
+        questionnaire.update!(question)
       end
     end
     success("Investment philosophy updated successfully", data={})

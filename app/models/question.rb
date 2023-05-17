@@ -9,8 +9,8 @@ class Question < ApplicationRecord
     'checkbox': 3
   }
 
-  has_many :investment_philosophies
-  has_many :users, through: :investment_philosophies
+  has_many :questionnaires
+  has_many :investors, through: :questionnaires
 
   validates :statement, presence: true
   validates :question_type, inclusion: { in: question_types.keys }
