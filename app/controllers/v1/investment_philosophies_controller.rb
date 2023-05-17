@@ -2,11 +2,13 @@
 
 # Investor philosophy
 class V1::InvestmentPhilosophiesController < ApplicationController
+  before_action :validate_persona
+
   def philosophy_question
     if valid_params
       questions = Question.where(step: current_step)
-      data = QuestionSerializer.new(questions).serializable_hash[:data].map{ |data| data[:attributes] }
-      data = { total_steps: Question.maximum(:step), questions: data }
+      questions = QuestionSerializer.new(questions).serializable_hash[:data].map{ |data| data[:attributes] }
+      data = { total_steps: Question.maximum(:step), questions: questions }
       success("Questions for step: #{current_step}", data)
     else
       unprocessable("Can't process this request!")
@@ -17,11 +19,12 @@ class V1::InvestmentPhilosophiesController < ApplicationController
     return unprocessable if philosophy_params.blank?
     ActiveRecord::Base.transaction do
       philosophy_params[:questions].each do |question|
-        philosophy = InvestmentPhilosophy.find_or_create_by(
+        questionnaire = Questionnaire.find_or_create_by(
           question_id: question[:question_id],
-          user_id: current_user.id
+          respondable_id: current_user.id,
+          respondable_type: 'Investor'
         )
-        philosophy.update!(question)
+        questionnaire.update!(question)
       end
     end
     success("Investment philosophy updated successfully", data={})
@@ -30,6 +33,10 @@ class V1::InvestmentPhilosophiesController < ApplicationController
   end
   
   private
+
+  def validate_persona
+    unprocessable unless current_user.investor?
+  end
   
   def valid_params
     return false if params[:step].blank?
