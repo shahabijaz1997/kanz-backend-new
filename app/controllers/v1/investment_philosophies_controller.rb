@@ -5,18 +5,14 @@ module V1
   class InvestmentPhilosophiesController < ApplicationController
     before_action :validate_persona
 
-    def philosophy_question
-      if valid_params
-        questions = Question.where(step: current_step)
-        questions = QuestionSerializer.new(questions).serializable_hash[:data].pluck(:attributes)
-        data = { total_steps: Question.maximum(:step), questions: }
-        success("Questions for step: #{current_step}", data)
-      else
-        unprocessable("Can't process this request!")
-      end
+    def show
+      resp = InvestmentPhilosophy::QuestionRetriever.call(params[:step])
+      return failure(resp.message, resp.code) unless resp.status
+
+      success(resp.message, resp.data)
     end
 
-    def philosophy
+    def create
       return unprocessable if philosophy_params.blank?
 
       ActiveRecord::Base.transaction do
@@ -34,17 +30,6 @@ module V1
 
     def validate_persona
       unprocessable unless current_user.investor?
-    end
-
-    def valid_params
-      return false if params[:step].blank?
-
-      last_step = Question.maximum(:step)
-      current_step <= last_step && current_step >= 1
-    end
-
-    def current_step
-      params[:step].to_i
     end
 
     def philosophy_params
