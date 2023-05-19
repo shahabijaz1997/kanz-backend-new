@@ -8,11 +8,11 @@ local:
 
 # Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 amazon:
-  service: S3
-  access_key_id: <%= ENV['AWS_S3_KEY'] %>
-  secret_access_key: <%= ENV['AWS_S3_KEY'] %>
-  region: us-east-1
-  bucket: kanz-attachments-<%= Rails.env %>
+  service: "S3"
+  access_key_id: "AKIAUZ3BKAW2TBYTKAHD"
+  secret_access_key: "/+1wOfDR//+Mo9sc+UdohgAivrX8dq+51GbdTS4a"
+  region: "us-east-1"
+  bucket: "kanz-attachments-production"
 
 # Remember not to checkin your GCS keyfile to a repository
 # google:
@@ -32,3 +32,7 @@ amazon:
 #   service: Mirror
 #   primary: local
 #   mirrors: [ amazon, google, microsoft ]
+# export S3_SECRET_ID="AKIAZHRPPEMLUV7LNW4S"
+# export S3_SECRET_KEY="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"
+# export S3_SECRET_REGION="us-east-1"
+# export S3_BUCKET="leagx"
