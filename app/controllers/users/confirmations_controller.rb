@@ -14,7 +14,7 @@ module Users
 
       if resource.errors.empty?
         sign_in(resource_name, resource)
-        success('Account confirmed!')
+        success(I18n.t('devise.confirmations.confirmed'))
       else
         unprocessable(resource.errors)
       end
@@ -26,7 +26,7 @@ module Users
       yield resource if block_given?
 
       if successfully_sent?(resource)
-        success('New token is on its way!')
+        success(I18n.t('devise.confirmations.resent_instruction'))
       else
         unprocessable
       end

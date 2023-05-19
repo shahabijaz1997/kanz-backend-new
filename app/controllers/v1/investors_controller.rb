@@ -7,13 +7,12 @@ module V1
 
     def show
       user_attributes = UserSerializer.new(current_user).serializable_hash[:data][:attributes]
-      success('', user_attributes)
+      success(I18n.t('investor.get.success.show'), user_attributes)
     end
 
     def set_role
-      current_user.role = investor_params[:type]
-      if current_user.save
-        success('Successfully update the investor type')
+      if current_user.update(investor_params)
+        success(I18n.t('investor.update.success.role', kind: investor_params[:type]))
       else
         failure(current_user.errors.full_messages.to_sentence)
       end
@@ -22,7 +21,7 @@ module V1
     def accreditation
       current_user.meta_info = current_user.individual_investor? ? investor_meta_info : firm_meta_info
       if current_user.save
-        success('Successfuly updated accreditation info.')
+        success(I18n.t('investor.update.success.accreditation'))
       else
         failure(current_user.errors.full_messages.to_sentence)
       end

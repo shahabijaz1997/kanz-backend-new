@@ -10,15 +10,15 @@ module InvestmentPhilosophy
     end
 
     def call
-      return response('Provide valid steps', false) unless valid_step?
+      return response(I18n.t('investor.get.failure.step'), false) unless valid_step?
 
       questions = fetch_questions
-      return response('No questions found for provided step', false) if questions.blank?
+      return response(I18n.t('investor.get.failure.no_question'), false) if questions.blank?
 
       response(
-        message: "Questions for step: #{step}",
+        message: I18n.t('investor.get.success.questions',step: step),
         status: true,
-        data: { total_steps: @last_step, questions: },
+        data: { total_steps: @last_step, questions: questions},
         code: 200
       )
     end

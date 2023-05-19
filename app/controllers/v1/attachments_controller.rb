@@ -16,7 +16,7 @@ module V1
       @attachment.file.attach(attachment_params[:file]) if attachment_params[:file].present?
 
       if @attachment.save!
-        success('Successfully uploaded attachments to the server', { attachment_id: @attachment.id })
+        success(I18n.t('attachments.upload.success'), { attachment_id: @attachment.id })
       else
         failure(@attachment.errors.full_messages.to_sentence)
       end
@@ -25,9 +25,9 @@ module V1
     # PATCH/PUT /attachments/1
     def update
       if @attachment.parent_id == current_user.id && @attachment.update(attachment_params)
-        success('Successfully updated attachments on the server')
+        success(I18n.t('attachments.update.success'))
       else
-        failure('Failed to update attachments on the server')
+        failure(I18n.t('attachments.update.failure'))
       end
     end
 
@@ -35,9 +35,9 @@ module V1
     def destroy
       if @attachment.parent_id == current_user.id
         @attachment.destroy
-        success('Successfully deleted attachments on the server')
+        success(I18n.t('attachments.delete.success'))
       else
-        failure('Failed to delete attachments on the server')
+        failure(I18n.t('attachments.delete.failure'))
       end
     end
 

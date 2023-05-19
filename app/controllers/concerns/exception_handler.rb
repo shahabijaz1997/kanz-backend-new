@@ -5,23 +5,23 @@ module ExceptionHandler
 
   included do
     rescue_from ActionController::InvalidAuthenticityToken do |_e|
-      render json: { message: 'You are not authorized' }, status: :unauthorized
+      render json: { message: I18n.t('errors.exceptions.auth_token_expired') }, status: :unauthorized
     end
 
     rescue_from ActiveRecord::RecordNotFound do |_e|
-      render json: { message: 'Record not found.' }, status: :not_found
+      render json: { message: I18n.t('errors.exceptions.not_found') }, status: :not_found
     end
 
     rescue_from ActiveRecord::RecordNotUnique do |_e|
-      render json: { message: 'Record already exists.' }, status: :unprocessable_entity
+      render json: { message: I18n.t('errors.exceptions.existing_record') }, status: :unprocessable_entity
     end
 
     rescue_from ActionController::ParameterMissing do |_e|
-      render json: { message: 'Unprocessable Entity, missing parameter.' }, status: :unprocessable_entity
+      render json: { message: I18n.t('errors.exceptions.paramete_missing') }, status: :unprocessable_entity
     end
 
     rescue_from Pundit::NotAuthorizedError do |_e|
-      render json: { message: 'You are not authorized to perform this action.' }, status: :forbidden
+      render json: { message: I18n.t('errors.exceptions.unauthorized') }, status: :forbidden
     end
 
     rescue_from ArgumentError do |e|

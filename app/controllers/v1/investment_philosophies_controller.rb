@@ -23,7 +23,7 @@ module V1
           questionnaire.update!(question)
         end
       end
-      success('Investment philosophy updated successfully', {})
+      success(I18n.t('investor.update.success.philosophy'), {})
     end
 
     private
