@@ -44,3 +44,4 @@ en:
       existing_record: 'Record already exists.'
       paramete_missing: 'Unprocessable Entity, missing parameter.'
       unauthorized: 'You are not authorized to perform this action.'
+      unprocessable: 'Invalid Request!'

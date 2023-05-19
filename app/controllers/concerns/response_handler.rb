@@ -11,7 +11,7 @@ module ResponseHandler
     }, status: :ok
   end
 
-  def failure(message = 'Not Found', code = 400)
+  def failure(message = I18n.t('errors.exceptions.not_found'), code = 400)
     render json: {
       status: {
         code:,
@@ -20,7 +20,7 @@ module ResponseHandler
     }, status: :bad_request
   end
 
-  def unprocessable(message = 'Invalid Request')
+  def unprocessable(message = I18n.t('errors.exceptions.unprocessable'))
     render json: {
       status: {
         code: 422,

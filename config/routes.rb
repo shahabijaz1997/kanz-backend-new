@@ -16,7 +16,6 @@ Rails.application.routes.draw do
     post 'investor/type', to: 'investors#set_role'
     post 'investor/accreditation', to: 'investors#accreditation'
     get 'investor', to: 'investors#show'
-    resources :investors
     resources :investment_philosophies, param: :step, only: %i[show create]
     resources :attachments, except: :index
   end
