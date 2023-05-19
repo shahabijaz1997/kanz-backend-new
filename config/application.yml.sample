@@ -1,1 +1,2 @@
 SECRET_KEY_BASE: a72ca7924d30e4981ce5e7abb9bfe075fa6d0d369f228fa06f101949eb9e8df5a41fbf9f39714936382cd4603f5e219c8f4a9ee53a462bb59c82bcaccb8b0700
+FROM_EMAIL: naveed.fiaz@whizzbridge.com
