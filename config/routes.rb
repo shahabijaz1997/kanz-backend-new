@@ -17,7 +17,7 @@ Rails.application.routes.draw do
     get 'investor', to: 'investors#show'
     get 'philosophy', to: 'investment_philosophies#philosophy_question'
     post 'philosophy', to: 'investment_philosophies#philosophy'
-
+    resources :syndicates
     resources :attachments, except: :index
   end
 end
