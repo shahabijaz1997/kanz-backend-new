@@ -127,6 +127,7 @@ GEM
       colorize (~> 0.7)
       ruby_parser (>= 3.19.1)
     ffi (1.15.5)
+    figaro (1.2.0)
     flay (2.13.0)
       erubi (~> 1.10)
       path_expander (~> 1.0)
@@ -335,6 +336,7 @@ DEPENDENCIES
   debug
   devise
   devise-jwt
+  figaro
   image_processing (~> 1.2)
   jsonapi-serializer
   letter_opener
