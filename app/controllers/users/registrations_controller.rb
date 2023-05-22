@@ -12,19 +12,19 @@ module Users
     protected
 
     def configure_permitted_parameters
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :type, :email, :password])
+      devise_parameter_sanitizer.permit(:sign_up, keys: %i[name type email password])
     end
 
     private
 
     def respond_with(resource, _opts = {})
-      return success('Account deleted successfully.') if request.method == 'DELETE'
+      return success(I18n.t('devise.registrations.destroyed')) if request.method == 'DELETE'
 
       if request.method == 'POST' && resource.persisted?
         data = UserSerializer.new(resource).serializable_hash[:data][:attributes]
-        success('Signed up sucessfully.', data)
+        success(I18n.t('devise.registrations.signed_up'), data)
       else
-        unprocessable("User couldn't be created successfully. #{resource.errors.full_messages.to_sentence}")
+        unprocessable(resource.errors.full_messages.to_sentence)
       end
     end
   end

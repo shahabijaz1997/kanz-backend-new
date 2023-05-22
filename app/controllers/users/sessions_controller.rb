@@ -12,14 +12,15 @@ module Users
 
     def respond_with(resource, _opts = {})
       data = UserSerializer.new(resource).serializable_hash[:data][:attributes]
-      success('Logged in sucessfully.', data)
+
+      success(I18n.t('devise.sessions.signed_in'), data)
     end
 
     def respond_to_on_destroy
       if current_user
-        success('logged out successfully')
+        success(I18n.t('devise.sessions.signed_out'))
       else
-        failure("Couldn't find an active session.", 401)
+        failure(I18n.t('devise.failure.unauthenticated'), 401)
       end
     end
   end
