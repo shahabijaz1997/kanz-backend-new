@@ -15,7 +15,7 @@ module V1
     def create
       return unprocessable if philosophy_params.blank?
 
-      ActiveRecord::Base.transaction do
+      Questionnaire.transaction do
         philosophy_params[:questions].each do |question|
           questionnaire = Questionnaire.find_or_create_by(question_id: question[:question_id],
                                                           respondable_id: current_user.id,
