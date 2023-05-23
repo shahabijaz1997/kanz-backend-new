@@ -2,8 +2,8 @@
 
 # Fast json serializer
 class InvestorSerializer
-    include JSONAPI::Serializer
-    has_many :attachments
+  include JSONAPI::Serializer
+  has_many :attachments
 
-    attributes :name, :email, :role, :meta_info, :status
-  end
+  attributes :name, :email, :role, :meta_info, :status
+end

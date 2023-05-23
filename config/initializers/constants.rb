@@ -1,3 +1,4 @@
+PASSWORD_REGEX = /\A(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^[:alnum:]])/x
 PERSONAS = ['Investor', 'Syndicate', 'Realtor', 'Startup']
 ROLES = {
   'Individual Investor': 0,

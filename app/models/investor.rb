@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Investor < User
   has_many :questionnaires, as: :respondable
   has_many :questions, through: :questionnaires

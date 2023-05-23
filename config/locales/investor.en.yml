@@ -1,0 +1,23 @@
+en:
+  investor:
+    get:
+      success:
+        show: 'Data successfully retrieved.'
+        questions: 'Questions for step: %{step}'
+      failure:
+        step: 'Step does not exist'
+        no_question: 'No questions found for provided step'
+    update:
+      success:
+        role: 'Successfully updated the investor type as %{kind}.'
+        accreditation: 'Successfuly updated accreditation info.'
+        philosophy: 'Successfully updated the investment philosophy.'
+  attachments:
+    upload:
+      success: 'Attachments uploaded successfully'
+    update:
+      success: 'Successfully updated the attachments.'
+      failure: 'Failed to update the attachments.'
+    delete:
+      success: 'Successfully deleted the attachments.'
+      failure: 'Failed to delete the attachments.'
