@@ -3,5 +3,5 @@
 # Fast json serializer
 class UserSerializer
   include JSONAPI::Serializer
-  attributes :name, :email, :role, :meta_info
+  attributes :name, :email, :type, :role, :meta_info, :status
 end
