@@ -3,11 +3,11 @@
 PASSWORD_REGEX = /\A(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^[:alnum:]])/x
 PERSONAS = %w[Investor Syndicate Realtor Startup].freeze
 ROLES = {
-  'Individual Investor': 0,
-  'Investment Firm': 1,
-  Startup: 2,
-  Syndicate: 3,
-  Property: 4
+  'Individual Investor' => 0,
+  'Investment Firm' => 1,
+  'Startup' => 2,
+  'Syndicate' => 3,
+  'Property' => 4
 }.freeze
 STATUSES = {
   pending: 0,
@@ -20,10 +20,10 @@ STATUSES = {
 }.freeze
 
 COUNTRIES = [
-  { country_name: 'Kuwait', states: ['Capital', 'Hawalli', 'Mubarak Al-Kabeer', 'Ahmadi', 'Farwaniya', 'Jahra'] },
   { country_name: 'Bahrain',
     states: ['Manama', 'Riffa', 'Muharraq', 'Hamad Town', "A'ali", 'Isa Town', 'Sitra', 'Budaiya', 'Jidhafs',
              'Al-Malikiyah'] },
+  { country_name: 'Kuwait', states: ['Capital', 'Hawalli', 'Mubarak Al-Kabeer', 'Ahmadi', 'Farwaniya', 'Jahra'] },
   { country_name: 'Qatar',
     states: ['Al Shamal', 'Al Khor', 'Al-Shahaniya', 'Umm Salal', 'Al Daayen', 'Doha (Ad Dawhah)', 'Al Rayyan',
              'Al Wakra'] },

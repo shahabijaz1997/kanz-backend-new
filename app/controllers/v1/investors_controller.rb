@@ -12,7 +12,7 @@ module V1
 
     def set_role
       if current_user.update(investor_params)
-        success(I18n.t('investor.update.success.role', kind: investor_params[:type]))
+        success(I18n.t('investor.update.success.role', kind: investor_params[:role]))
       else
         failure(current_user.errors.full_messages.to_sentence)
       end
@@ -48,7 +48,7 @@ module V1
     end
 
     def investor_params
-      params.require(:investor).permit(:type)
+      params.require(:investor).permit(:role)
     end
 
     def investor_meta_info
