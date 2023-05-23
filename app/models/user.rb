@@ -7,21 +7,14 @@ class User < ApplicationRecord
          :recoverable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
-  PASSWORD_REQUIREMENTS = /\A(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^[:alnum:]])/x
-  PERSONAS = %w[Investor Syndicate Realtor Startup].freeze
-  enum role: {
-    'Individual Investor': 0,
-    'Investment Firm': 1,
-    Startup: 2,
-    Syndicate: 3,
-    Property: 4
-  }
-  # Temp Fix 17/5/23
-  before_validation :set_default_type
+  enum role: ROLES
+  enum status: STATUSES
 
-  validates :password, format: PASSWORD_REQUIREMENTS, if: :password_validation_needed?
-  validates :role, inclusion: { in: roles.keys }
+  validates :password, format: PASSWORD_REGEX, if: :password_validation_needed?
+  validates :role, inclusion: { in: roles.keys, case_sensitive: false }
   validates :type, inclusion: { in: PERSONAS }
+
+  before_save :update_status
 
   # Devise override the confirmation token
   def generate_confirmation_token
@@ -49,7 +42,11 @@ class User < ApplicationRecord
     new_record? || encrypted_password_changed?
   end
 
-  def set_default_type
-    self.type = 'Investor'
+  def update_status
+    if meta_info.present? && attachments.present?
+      self.status = User::statuses[:submitted]
+    elsif meta_info.present?
+      self.status = User::statuses[:inprogress]
+    end
   end
 end
