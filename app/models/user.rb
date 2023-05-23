@@ -16,8 +16,6 @@ class User < ApplicationRecord
     Syndicate: 3,
     Property: 4
   }
-  # Temp Fix 17/5/23
-  before_validation :set_default_type
 
   validates :password, format: PASSWORD_REQUIREMENTS, if: :password_validation_needed?
   validates :role, inclusion: { in: roles.keys }
@@ -43,13 +41,13 @@ class User < ApplicationRecord
     type == 'Investor'
   end
 
+  def syndicate?
+    type == 'Syndicate'
+  end
+
   private
 
   def password_validation_needed?
     new_record? || encrypted_password_changed?
-  end
-
-  def set_default_type
-    self.type = 'Investor'
   end
 end
