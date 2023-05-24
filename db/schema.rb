@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_22_121942) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_23_055330) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -80,7 +80,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_22_121942) do
   create_table "syndicate_profiles", force: :cascade do |t|
     t.string "name"
     t.string "tagline"
-    t.boolean "previously_raised"
+    t.boolean "have_you_ever_raised"
     t.float "raised_amount"
     t.integer "no_times_raised"
     t.string "industry_market", default: [], array: true
