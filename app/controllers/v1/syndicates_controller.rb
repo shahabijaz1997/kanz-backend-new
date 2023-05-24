@@ -6,9 +6,7 @@ module V1
     before_action :validate_persona
 
     def show
-      user_attributes = SyndicateSerializer.new(
-        @syndicate, include: [:syndicate_profile]
-      ).serializable_hash[:data]
+      user_attributes = SyndicateSerializer.new(@syndicate).serializable_hash[:data]
 
       success(I18n.t('syndicate.get.success.show'), user_attributes)
     end
