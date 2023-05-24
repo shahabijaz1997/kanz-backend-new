@@ -45,3 +45,5 @@ en:
       paramete_missing: 'Unprocessable Entity, missing parameter.'
       unauthorized: 'You are not authorized to perform this action.'
       unprocessable: 'Invalid Request!'
+  general:
+    countries_list: 'Here is the list of countries'
