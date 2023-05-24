@@ -36,6 +36,10 @@ class User < ApplicationRecord
     type == 'Investor'
   end
 
+  def syndicate?
+    type == 'Syndicate'
+  end
+
   private
 
   def password_validation_needed?
@@ -44,9 +48,9 @@ class User < ApplicationRecord
 
   def update_status
     if meta_info.present? && attachments.present?
-      self.status = User::statuses[:submitted]
+      self.status = User.statuses[:submitted]
     elsif meta_info.present?
-      self.status = User::statuses[:inprogress]
+      self.status = User.statuses[:inprogress]
     end
   end
 end

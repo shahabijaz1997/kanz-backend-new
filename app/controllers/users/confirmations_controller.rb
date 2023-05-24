@@ -12,12 +12,9 @@ module Users
       self.resource = resource_class.confirm_by_token(params[:confirmation_token])
       yield resource if block_given?
 
-      if resource.errors.empty?
-        sign_in(resource_name, resource)
-        success(I18n.t('devise.confirmations.confirmed'))
-      else
-        unprocessable(resource.errors)
-      end
+      return unprocessable(resource.errors) if resource.errors.present?
+
+      signin_and_respond
     end
 
     # POST /resource/confirmation
@@ -30,6 +27,14 @@ module Users
       else
         unprocessable
       end
+    end
+
+    private
+
+    def signin_and_respond
+      sign_in(resource_name, resource)
+      data = UserSerializer.new(resource).serializable_hash[:data][:attributes]
+      success(I18n.t('devise.confirmations.confirmed'), data)
     end
   end
 end

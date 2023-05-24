@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     post 'investor/accreditation', to: 'investors#accreditation'
     get 'investor', to: 'investors#show'
     resources :investment_philosophies, param: :step, only: %i[show create]
+    resources :syndicates
     resources :attachments, except: :index
     resources :countries, only: %i[index]
   end
