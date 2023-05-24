@@ -1,0 +1,10 @@
+en:
+  syndicate:
+    get:
+      success:
+        show: 'Data successfully retrieved.'
+      failure:
+        step: 'Record not found.'
+    update:
+      success:
+        profile: 'Successfuly updated asyndicate profile.'

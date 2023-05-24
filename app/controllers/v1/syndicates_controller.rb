@@ -7,17 +7,17 @@ module V1
 
     def show
       user_attributes = SyndicateSerializer.new(
-        current_user, include: ['syndicate_profile']
+        @syndicate, include: ['syndicate_profile']
       ).serializable_hash[:data]
 
-      success('', user_attributes)
+      success(I18n.t('syndicate.get.success.show'), user_attributes)
     end
 
     def create
-      syndicate_profile = current_user.syndicate_profile || current_user.syndicate_profile.new
+      profile = @syndicate.profile || SyndicateProfile.new(syndicate_id: @syndicate.id)
 
       if syndicate_profile.update(syndicate_profile_params)
-        success('Successfuly updated asyndicate profile.')
+        success(I18n.t('syndicate.update.success.profile'))
       else
         failure(syndicate_profile.errors.full_messages.to_sentence)
       end
@@ -26,7 +26,9 @@ module V1
     private
 
     def validate_persona
-      unprocessable unless current_user.syndicate?
+      return unprocessable unless current_user.syndicate?
+
+      @syndicate = current_user
     end
 
     def syndicate_profile_params
@@ -37,15 +39,3 @@ module V1
     end
   end
 end
-
-# Have you raised before? Yes, No
-# How much you have raised?
-# How many times do you have raised?
-# Industry market?
-# Region?
-# Profile Link
-# Expected Dealflow
-
-# Syndicate name
-# Add Tagline
-# Logo
