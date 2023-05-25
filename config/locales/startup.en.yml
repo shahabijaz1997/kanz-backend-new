@@ -1,5 +1,5 @@
 en:
-  syndicate:
+  startup:
     get:
       success:
         show: 'Data successfully retrieved.'
@@ -7,4 +7,4 @@ en:
         step: 'Record not found.'
     update:
       success:
-        profile: 'Successfuly updated the syndicate profile.'
+        comapny_info: 'Successfuly updated the startup profile.'

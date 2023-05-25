@@ -6,7 +6,7 @@ module V1
     before_action :validate_persona
 
     def show
-      user_attributes = UserSerializer.new(current_user).serializable_hash[:data][:attributes]
+      user_attributes = InvestorSerializer.new(current_user).serializable_hash[:data][:attributes]
       success(I18n.t('investor.get.success.show'), user_attributes)
     end
 
@@ -36,15 +36,19 @@ module V1
     def investor_accredation_params
       params.require(:investor).permit(
         meta_info: [
-          :nationality, :residence, :accept_investment_criteria, accreditation: %i[statement lower_limit uper_limit unit currency]
-      ])
+          :nationality, :residence, :accept_investment_criteria, { accreditation: %i[statement lower_limit uper_limit
+                                                                                     unit currency] }
+        ]
+      )
     end
 
     def firm_accredation_params
       params.require(:investor).permit(
         meta_info: [
-          :legal_name, :location, :accept_investment_criteria, accreditation: %i[statement lower_limit uper_limit unit currency]
-      ])
+          :legal_name, :location, :accept_investment_criteria, { accreditation: %i[statement lower_limit uper_limit unit
+                                                                                   currency] }
+        ]
+      )
     end
 
     def investor_params
