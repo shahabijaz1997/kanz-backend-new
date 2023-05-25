@@ -2,4 +2,12 @@
 
 class SyndicateProfile < ApplicationRecord
   belongs_to :syndicate
+
+  after_update :update_user_status
+
+  private
+
+  def update_user_status
+    syndicate.update(status: User.statuses[:submitted])
+  end
 end
