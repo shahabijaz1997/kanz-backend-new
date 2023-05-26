@@ -40,6 +40,10 @@ class User < ApplicationRecord
     type == 'Syndicate'
   end
 
+  def realtor?
+    type == 'Realtor'
+  end
+
   private
 
   def password_validation_needed?

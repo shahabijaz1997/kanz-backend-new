@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     get 'investor', to: 'investors#show'
     resources :investment_philosophies, param: :step, only: %i[show create]
     resources :syndicates
+    resources :realtors
     resources :attachments, except: :index
     resources :countries, only: %i[index]
   end
