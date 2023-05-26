@@ -15,12 +15,11 @@ module V1
     def create
       return unprocessable if philosophy_params.blank?
 
-      Questionnaire.transaction do
+      UsersResponse.transaction do
         philosophy_params[:questions].each do |question|
-          questionnaire = Questionnaire.find_or_create_by(question_id: question[:question_id],
-                                                          respondable_id: current_user.id,
-                                                          respondable_type: 'Investor')
-          questionnaire.update!(question)
+          user_response = UsersResponse.find_or_create_by(question_id: question[:question_id],
+                                                          user_id: current_user.id)
+          user_response.update!(question)
         end
       end
       success(I18n.t('investor.update.success.philosophy'), {})
