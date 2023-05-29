@@ -4,5 +4,5 @@
 class PropertySerializer
   include JSONAPI::Serializer
 
-  attributes :id, :name, :email, :role, :meta_info, :status
+  attributes :id, :name, :email, :role, :type, :meta_info, :status
 end
