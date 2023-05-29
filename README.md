@@ -1,24 +1,26 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Rails-based API-only application.
 
-Things you may want to cover:
+## Technology
+* ruby 3.1.3
+* Postgres
 
-* Ruby version
+## Dependencies
+* Cmake
 
-* System dependencies
+## Installation
+```bash
+bundle install
+```
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Database Creation
+```bash
+rails db:create
+```
+```bash
+rails db:migrate
+```
+```bash
+rails db:seed
+```
