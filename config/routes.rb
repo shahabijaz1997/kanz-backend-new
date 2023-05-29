@@ -20,5 +20,6 @@ Rails.application.routes.draw do
     resources :syndicates
     resources :attachments, except: :index
     resources :countries, only: %i[index]
+    resources :users, only: %i[show]
   end
 end
