@@ -11,7 +11,7 @@ class User < ApplicationRecord
   enum status: STATUSES
 
   validates :password, format: PASSWORD_REGEX, if: :password_validation_needed?
-  # validates :role, inclusion: { in: ROLES.keys, case_sensitive: false }
+  validates :role, inclusion: { in: ROLES.keys, case_sensitive: false }
   validates :type, inclusion: { in: PERSONAS }
 
   before_save :update_status
@@ -42,6 +42,10 @@ class User < ApplicationRecord
 
   def startup?
     type == 'Startup'
+  end
+
+  def realtor?
+    type == 'Realtor'
   end
 
   private

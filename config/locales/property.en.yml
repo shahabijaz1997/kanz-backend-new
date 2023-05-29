@@ -1,0 +1,10 @@
+en:
+  property:
+    get:
+      success:
+        show: 'Data successfully retrieved.'
+      failure:
+        step: 'Record not found.'
+    update:
+      success:
+        owner: 'Successfuly updated the property info.'

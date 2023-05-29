@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     resources :investment_philosophies, param: :step, only: %i[show create]
     resources :syndicates
     resources :startups
+    resources :realtors
     resources :attachments, except: :index
     resources :countries, only: %i[index]
   end
