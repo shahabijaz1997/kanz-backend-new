@@ -48,3 +48,4 @@ en:
   general:
     countries_list: 'Here is the list of countries'
     invalid: 'Invalid Token!'
+    get_user: 'Users info!'
