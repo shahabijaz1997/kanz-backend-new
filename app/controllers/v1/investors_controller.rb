@@ -36,15 +36,19 @@ module V1
     def investor_accredation_params
       params.require(:investor).permit(
         meta_info: [
-          :nationality, :residence, :accept_investment_criteria, accreditation: %i[statement lower_limit uper_limit unit currency]
-      ])
+          :nationality, :residence, :accept_investment_criteria, { accreditation: %i[statement lower_limit uper_limit
+                                                                                     unit currency] }
+        ]
+      )
     end
 
     def firm_accredation_params
       params.require(:investor).permit(
         meta_info: [
-          :legal_name, :location, :accept_investment_criteria, accreditation: %i[statement lower_limit uper_limit unit currency]
-      ])
+          :legal_name, :location, :accept_investment_criteria, { accreditation: %i[statement lower_limit uper_limit unit
+                                                                                   currency] }
+        ]
+      )
     end
 
     def investor_params

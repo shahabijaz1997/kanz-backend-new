@@ -4,7 +4,7 @@
 class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
   devise :database_authenticatable, :registerable, :confirmable,
-         :recoverable, :validatable,
+         :recoverable, :validatable, :trackable, :lockable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
   enum role: ROLES
@@ -38,6 +38,10 @@ class User < ApplicationRecord
 
   def syndicate?
     type == 'Syndicate'
+  end
+
+  def attempts_exceeded?
+    self.failed_attempts >= self.class.maximum_attempts
   end
 
   private
