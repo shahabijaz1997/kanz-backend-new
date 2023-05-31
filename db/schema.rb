@@ -10,9 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_30_062250) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_30_050531) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -53,26 +52,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_30_062250) do
     t.index ["parent_type", "parent_id"], name: "index_attachments_on_parent"
   end
 
-  create_table "countries", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "states", array: true
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "investor_profiles", force: :cascade do |t|
-    t.string "residence", null: false
-    t.string "location", null: false
-    t.string "accreditation", null: false
-    t.boolean "accepted_investment_criteria"
-    t.bigint "country_id"
-    t.bigint "investor_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["country_id"], name: "index_investor_profiles_on_country_id"
-    t.index ["investor_id"], name: "index_investor_profiles_on_investor_id"
-  end
-
   create_table "questions", force: :cascade do |t|
     t.integer "step"
     t.integer "index"
@@ -103,7 +82,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_30_062250) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string "name", default: "", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
