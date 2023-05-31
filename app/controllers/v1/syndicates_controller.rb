@@ -31,8 +31,8 @@ module V1
 
     def syndicate_profile_params
       params.require(:syndicate_profile).permit(
-        :have_you_ever_raised, :raised_amount, :no_times_raised, :region,
-        :profile_link, :dealflow, :name, :tagline, :logo, industry_market: []
+        :have_you_ever_raised, :raised_amount, :no_times_raised, :profile_link, 
+        :dealflow, :name, :tagline, :logo, region: [], industry_market: []
       )
     end
   end

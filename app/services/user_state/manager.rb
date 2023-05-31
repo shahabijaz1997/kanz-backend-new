@@ -26,7 +26,13 @@ module UserState
     end
 
     def profile_completed?
-      user.profile.present?
+      user.profile.present? && philosophy_completed?
+    end
+
+    def philosophy_completed?
+      return true unless user.individual_investor?
+
+      user.investment_philosophies.present?
     end
   end
 end

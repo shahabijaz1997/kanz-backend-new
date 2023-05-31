@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_31_055343) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_31_134621) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -93,7 +93,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_31_055343) do
     t.float "raised_amount"
     t.integer "no_times_raised"
     t.string "industry_market", default: [], array: true
-    t.string "region"
+    t.string "region", array: true
     t.string "profile_link"
     t.string "dealflow"
     t.string "logo"
