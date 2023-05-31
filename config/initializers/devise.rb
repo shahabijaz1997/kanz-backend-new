@@ -318,7 +318,7 @@ Devise.setup do |config|
     jwt.secret = ENV['SECRET_KEY_BASE']
     jwt.dispatch_requests = [
       ['POST', %r{^/login$}],
-      ['PATCH', %r{^/confirmation/:id$}]
+      ['PATCH', %r{^/confirmations/:id$}]
     ]
     jwt.revocation_requests = [
       ['DELETE', %r{^/logout$}]

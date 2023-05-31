@@ -5,4 +5,5 @@ class Investor < User
                                      inverse_of: :user
   has_many :questions, through: :users_responses
   has_many :attachments, as: :parent, dependent: :destroy
+  has_one :profile, class_name: 'InvestorProfile', dependent: :destroy
 end

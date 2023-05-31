@@ -6,24 +6,25 @@ module V1
     before_action :validate_persona
 
     def show
-      user_attributes = UserSerializer.new(current_user).serializable_hash[:data][:attributes]
-      success(I18n.t('investor.get.success.show'), user_attributes)
+      investor_attributes = InvestorSerializer.new(@investor).serializable_hash[:data][:attributes]
+      success(I18n.t('investor.get.success.show'), investor_attributes)
     end
 
     def set_role
-      if current_user.update(investor_params)
+      if @investor.update(investor_params)
         success(I18n.t('investor.update.success.role', kind: investor_params[:role]))
       else
-        failure(current_user.errors.full_messages.to_sentence)
+        failure(@investor.errors.full_messages.to_sentence)
       end
     end
 
     def accreditation
-      current_user.meta_info = current_user.individual_investor? ? investor_meta_info : firm_meta_info
-      if current_user.save
+      profile = @investor.profile || InvestorProfile.new(investor_id: @investor.id)
+
+      if profile.update(accreditation_params)
         success(I18n.t('investor.update.success.accreditation'))
       else
-        failure(current_user.errors.full_messages.to_sentence)
+        failure(profile.errors.full_messages.to_sentence)
       end
     end
 
@@ -31,36 +32,17 @@ module V1
 
     def validate_persona
       unprocessable unless current_user.investor?
+
+      @investor = current_user
     end
 
-    def investor_accredation_params
-      params.require(:investor).permit(
-        meta_info: [
-          :nationality, :residence, :accept_investment_criteria, { accreditation: %i[statement lower_limit uper_limit
-                                                                                     unit currency] }
-        ]
-      )
-    end
-
-    def firm_accredation_params
-      params.require(:investor).permit(
-        meta_info: [
-          :legal_name, :location, :accept_investment_criteria, { accreditation: %i[statement lower_limit uper_limit unit
-                                                                                   currency] }
-        ]
-      )
+    def accreditation_params
+      params.require(:investor_profile).permit(%i[legal_name country_id residence accreditation
+                                                  accepted_investment_criteria])
     end
 
     def investor_params
       params.require(:investor).permit(:role)
-    end
-
-    def investor_meta_info
-      investor_accredation_params[:meta_info]
-    end
-
-    def firm_meta_info
-      firm_accredation_params[:meta_info]
     end
   end
 end
