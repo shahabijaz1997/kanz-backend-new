@@ -2,12 +2,11 @@
 
 module Confirmation
   class Handler < ApplicationService
-    attr_reader :token, :user, :response
+    attr_reader :token, :user
 
     def initialize(user, token)
       @user = user
       @token = token
-      @response = Struct.new(:status, :message)
     end
 
     def call
@@ -21,19 +20,19 @@ module Confirmation
     private
 
     def already_confirmed
-      response.new(false, I18n.t('errors.messages.already_confirmed'))
+      response(I18n.t('errors.messages.already_confirmed'), false)
     end
 
     def invalid_token
-      response.new(false, I18n.t('general.invalid'))
+      response(I18n.t('general.invalid'), false)
     end
 
     def success
-      response.new(true, I18n.t('devise.confirmations.confirmed'))
+      response(I18n.t('devise.confirmations.confirmed'), true)
     end
 
     def failed_to_update
-      response.new(false, user.errors.full_messages.to_sentence)
+      response(user.errors.full_messages.to_sentence, false)
     end
 
     def valid_token?

@@ -16,10 +16,10 @@ module InvestmentPhilosophy
       return response(I18n.t('investor.get.failure.no_question'), false) if questions.blank?
 
       response(
-        message: I18n.t('investor.get.success.questions',step: step),
-        status: true,
-        data: { total_steps: @last_step, questions: questions},
-        code: 200
+        I18n.t('investor.get.success.questions',step: step),
+        true,
+        { total_steps: @last_step, questions: questions},
+        200
       )
     end
 
@@ -33,7 +33,7 @@ module InvestmentPhilosophy
       questions = Question.where(step:)
       return [] if questions.blank?
 
-      QuestionSerializer.new(questions).serializable_hash[:data].pluck(:attributes)
+      QuestionSerializer.new(questions).serializable_hash[:data].map { |d| d[:attributes] }
     end
   end
 end

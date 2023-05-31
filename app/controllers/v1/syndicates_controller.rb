@@ -12,7 +12,7 @@ module V1
     end
 
     def create
-      profile = @syndicate.syndicate_profile || SyndicateProfile.new(syndicate_id: @syndicate.id)
+      profile = @syndicate.profile || SyndicateProfile.new(syndicate_id: @syndicate.id)
 
       if profile.update(syndicate_profile_params)
         success(I18n.t('syndicate.update.success.profile'))

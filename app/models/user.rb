@@ -14,7 +14,8 @@ class User < ApplicationRecord
   validates :role, inclusion: { in: ROLES.keys, case_sensitive: false }
   validates :type, inclusion: { in: PERSONAS }
 
-  before_save :update_status
+  has_many :attachments, as: :parent, dependent: :destroy
+
   before_create :update_role
 
   # Devise override the confirmation token
@@ -49,14 +50,6 @@ class User < ApplicationRecord
 
   def password_validation_needed?
     new_record? || encrypted_password_changed?
-  end
-
-  def update_status
-    if meta_info.present? && attachments.present?
-      self.status = User.statuses[:submitted]
-    elsif meta_info.present?
-      self.status = User.statuses[:inprogress]
-    end
   end
 
   def update_role
