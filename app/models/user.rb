@@ -14,7 +14,8 @@ class User < ApplicationRecord
   validates :role, inclusion: { in: ROLES.keys, case_sensitive: false }
   validates :type, inclusion: { in: PERSONAS }
 
-  before_save :update_status, :update_role
+  before_save :update_status
+  before_create :update_role
 
   # Devise override the confirmation token
   def generate_confirmation_token
@@ -59,6 +60,8 @@ class User < ApplicationRecord
   end
 
   def update_role
+    return true if investor?
+
     self.role = ROLES[type.to_s]
   end
 end
