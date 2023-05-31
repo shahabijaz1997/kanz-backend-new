@@ -19,11 +19,12 @@ module V1
     end
 
     def accreditation
-      current_user.meta_info = current_user.individual_investor? ? investor_meta_info : firm_meta_info
-      if current_user.save
+      profile = @investor.profile || InvestorProfile.new(investor_id: @investor.id)
+
+      if profile.update(accreditation_params)
         success(I18n.t('investor.update.success.accreditation'))
       else
-        failure(current_user.errors.full_messages.to_sentence)
+        failure(profile.errors.full_messages.to_sentence)
       end
     end
 
@@ -31,32 +32,13 @@ module V1
 
     def validate_persona
       unprocessable unless current_user.investor?
+
+      @investor = current_user
     end
 
-    def investor_accredation_params
-      params.require(:investor).permit(
-        meta_info: [
-          :nationality, :residence, :accept_investment_criteria, accreditation: %i[statement lower_limit uper_limit unit currency]
-      ])
-    end
-
-    def firm_accredation_params
-      params.require(:investor).permit(
-        meta_info: [
-          :legal_name, :location, :accept_investment_criteria, accreditation: %i[statement lower_limit uper_limit unit currency]
-      ])
-    end
-
-    def investor_params
-      params.require(:investor).permit(:role)
-    end
-
-    def investor_meta_info
-      investor_accredation_params[:meta_info]
-    end
-
-    def firm_meta_info
-      firm_accredation_params[:meta_info]
+    def accreditation_params
+      params.require(:investor_profile).permit(%i[country_id location residence accreditation
+                                                  accepted_investment_criteria])
     end
   end
 end
