@@ -7,7 +7,7 @@ ROLES = {
   'Investment Firm' => 1,
   'Startup' => 2,
   'Syndicate' => 3,
-  'Property' => 4
+  'Realtor' => 4
 }.freeze
 STATUSES = {
   pending: 0,
