@@ -8,9 +8,10 @@ Rails.application.routes.draw do
                                },
                      controllers: {
                        sessions: 'users/sessions',
-                       registrations: 'users/registrations',
-                       confirmations: 'users/confirmations'
-                     }
+                       registrations: 'users/registrations'
+                     }, skip: [:confirmations], skip_helpers: true
+
+  resources :confirmations, controller: 'users/confirmations', only: [:update, :create]
 
   namespace :v1, path: '/1.0', defaults: { format: :json } do
     post 'investor/type', to: 'investors#set_role'
@@ -22,5 +23,6 @@ Rails.application.routes.draw do
     resources :realtors
     resources :attachments, except: :index
     resources :countries, only: %i[index]
+    resources :users, only: %i[show]
   end
 end

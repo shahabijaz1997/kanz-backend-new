@@ -12,7 +12,7 @@ module V1
     end
 
     def create
-      profile = @syndicate.syndicate_profile || SyndicateProfile.new(syndicate_id: @syndicate.id)
+      profile = @syndicate.profile || SyndicateProfile.new(syndicate_id: @syndicate.id)
 
       if profile.update(syndicate_profile_params)
         success(I18n.t('syndicate.update.success.profile'))
@@ -31,8 +31,8 @@ module V1
 
     def syndicate_profile_params
       params.require(:syndicate_profile).permit(
-        :have_you_ever_raised, :raised_amount, :no_times_raised, :region,
-        :profile_link, :dealflow, :name, :tagline, :logo, industry_market: []
+        :have_you_ever_raised, :raised_amount, :no_times_raised, :profile_link, 
+        :dealflow, :name, :tagline, :logo, region: [], industry_market: []
       )
     end
   end

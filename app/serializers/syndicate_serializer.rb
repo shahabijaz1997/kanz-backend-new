@@ -4,11 +4,11 @@
 class SyndicateSerializer
   include JSONAPI::Serializer
 
-  attributes :id, :name, :email, :role, :type, :meta_info, :status
+  attributes :id, :name, :email, :role, :type, :status
 
-  attribute :syndicate_profile do |syndicate|
+  attribute :profile do |syndicate|
     SyndicateProfileSerializer.new(
-      syndicate.syndicate_profile
+      syndicate.profile
     ).serializable_hash[:data][:attributes]
   end
 end
