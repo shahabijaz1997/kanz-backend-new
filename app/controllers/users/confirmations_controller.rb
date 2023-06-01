@@ -1,39 +1,50 @@
 # frozen_string_literal: true
 
 module Users
-  class ConfirmationsController < Devise::ConfirmationsController
+  class ConfirmationsController < ApplicationController
     include RackSessionSolution
-    include ResponseHandler
 
-    respond_to :json
+    skip_before_action :authenticate_user!
+    before_action :find_user, :validate_access_locked
 
-    # POST /resource/confirmation?confirmation_token=abcdef
-    def show
-      self.resource = resource_class.confirm_by_token(params[:confirmation_token])
-      yield resource if block_given?
+    def update
+      response = Confirmation::Handler.call(@user, params[:confirmation_token])
+      return signin_and_respond if response.status
 
-      return unprocessable(resource.errors) if resource.errors.present?
+      @user.increment_failed_attempts
+      return unprocessable(response.message) unless @user.attempts_exceeded?
 
-      signin_and_respond
+      @user.lock_access!({ send_instructions: false })
+      failure(I18n.t('devise.failure.locked'))
     end
 
     # POST /resource/confirmation
     def create
-      self.resource = resource_class.send_confirmation_instructions(resource_params)
-      yield resource if block_given?
+      return failure(I18n.t('errors.messages.already_confirmed')) if @user.confirmed?
 
-      if successfully_sent?(resource)
-        success(I18n.t('devise.confirmations.resent_instruction'))
-      else
-        unprocessable
-      end
+      @user.send_confirmation_instructions
+      success(I18n.t('devise.confirmations.resent_instruction'))
     end
 
     private
 
+    def find_user
+      @user = User.find_by(id: params[:id])
+      @user = @user || User.find_by(resource_params) if params[:user].present?
+      return failure(I18n.t('errors.exceptions.not_found')) if @user.blank?
+    end
+
+    def validate_access_locked
+      failure(I18n.t('devise.failure.locked')) if @user.access_locked?
+    end
+
+    def resource_params
+      params.require(:user).permit(:email)
+    end
+
     def signin_and_respond
-      sign_in(resource_name, resource)
-      data = UserSerializer.new(resource).serializable_hash[:data][:attributes]
+      sign_in(User, @user)
+      data = UserSerializer.new(@user).serializable_hash[:data][:attributes]
       success(I18n.t('devise.confirmations.confirmed'), data)
     end
   end

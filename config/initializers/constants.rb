@@ -7,16 +7,15 @@ ROLES = {
   'Investment Firm' => 1,
   'Startup' => 2,
   'Syndicate' => 3,
-  'Property' => 4
+  'Realtor' => 4
 }.freeze
 STATUSES = {
-  pending: 0,
-  inprogress: 1,
-  submitted: 2,
+  opened: 0,
+  submitted: 1,
+  reopened: 2,
   verified: 3,
-  under_review: 4,
-  approved: 5,
-  rejected: 6
+  rejected: 4,
+  approved: 5
 }.freeze
 
 COUNTRIES = [

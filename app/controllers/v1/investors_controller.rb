@@ -6,15 +6,15 @@ module V1
     before_action :validate_persona
 
     def show
-      user_attributes = UserSerializer.new(current_user).serializable_hash[:data][:attributes]
-      success(I18n.t('investor.get.success.show'), user_attributes)
+      investor_attributes = InvestorSerializer.new(@investor).serializable_hash[:data][:attributes]
+      success(I18n.t('investor.get.success.show'), investor_attributes)
     end
 
     def set_role
-      if current_user.update(investor_params)
+      if @investor.update(investor_params)
         success(I18n.t('investor.update.success.role', kind: investor_params[:role]))
       else
-        failure(current_user.errors.full_messages.to_sentence)
+        failure(@investor.errors.full_messages.to_sentence)
       end
     end
 
@@ -37,8 +37,12 @@ module V1
     end
 
     def accreditation_params
-      params.require(:investor_profile).permit(%i[country_id location residence accreditation
+      params.require(:investor_profile).permit(%i[legal_name country_id residence accreditation
                                                   accepted_investment_criteria])
+    end
+
+    def investor_params
+      params.require(:investor).permit(:role)
     end
   end
 end

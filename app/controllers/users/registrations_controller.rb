@@ -21,7 +21,9 @@ module Users
       return success(I18n.t('devise.registrations.destroyed')) if request.method == 'DELETE'
 
       if request.method == 'POST' && resource.persisted?
-        data = UserSerializer.new(resource).serializable_hash[:data][:attributes]
+        data = UserSerializer.new(
+          resource
+        ).serializable_hash[:data][:attributes].except(:role, :meta_info)
         success(I18n.t('devise.registrations.signed_up'), data)
       else
         unprocessable(resource.errors.full_messages.to_sentence)
