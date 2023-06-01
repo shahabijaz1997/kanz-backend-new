@@ -5,9 +5,9 @@ PERSONAS = %w[Investor Syndicate Realtor Startup].freeze
 ROLES = {
   'Individual Investor' => 0,
   'Investment Firm' => 1,
-  'Startup' => 2,
-  'Syndicate' => 3,
-  'Realtor' => 4
+  'Syndicate' => 2,
+  'Realtor' => 3,
+  'Startup' => 4
 }.freeze
 STATUSES = {
   pending: 0,

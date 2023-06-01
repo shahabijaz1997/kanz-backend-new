@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_24_103836) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_31_134621) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -52,6 +52,26 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_24_103836) do
     t.index ["parent_type", "parent_id"], name: "index_attachments_on_parent"
   end
 
+  create_table "countries", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "states", array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "investor_profiles", force: :cascade do |t|
+    t.string "residence"
+    t.string "accreditation", null: false
+    t.boolean "accepted_investment_criteria"
+    t.bigint "country_id"
+    t.bigint "investor_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "legal_name"
+    t.index ["country_id"], name: "index_investor_profiles_on_country_id"
+    t.index ["investor_id"], name: "index_investor_profiles_on_investor_id"
+  end
+
   create_table "questions", force: :cascade do |t|
     t.integer "step"
     t.integer "index"
@@ -73,7 +93,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_24_103836) do
     t.float "raised_amount"
     t.integer "no_times_raised"
     t.string "industry_market", default: [], array: true
-    t.string "region"
+    t.string "region", array: true
     t.string "profile_link"
     t.string "dealflow"
     t.string "logo"
@@ -100,6 +120,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_24_103836) do
     t.jsonb "meta_info", default: {}
     t.string "type"
     t.integer "status", default: 0
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
+    t.integer "failed_attempts", default: 0, null: false
+    t.string "unlock_token"
+    t.datetime "locked_at"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true

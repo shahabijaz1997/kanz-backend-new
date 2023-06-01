@@ -24,7 +24,7 @@ module V1
     private
 
     def realtor_params
-      params.require(:realtor).permit(meta_info: %i[nationality residence no_of_properties])
+      params.require(:realtor).permit(%i[nationality residence no_of_properties])
     end
 
     def validate_realtor
