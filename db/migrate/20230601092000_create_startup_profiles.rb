@@ -1,4 +1,4 @@
-class CreateStartupsProfileTable < ActiveRecord::Migration[7.0]
+class CreateStartupProfiles < ActiveRecord::Migration[7.0]
   def change
     create_table :startup_profiles do |t|
       t.string     :company_name, null: false
@@ -12,8 +12,8 @@ class CreateStartupsProfileTable < ActiveRecord::Migration[7.0]
       t.string     :ceo_email
       t.float      :total_capital_raised, null: false
       t.float      :current_round_capital_target, null: false
-      t.references :startup, foreign_key: true
-      t.references :country, null: false
+      t.references :startup
+      t.references :country
 
       t.timestamps
     end

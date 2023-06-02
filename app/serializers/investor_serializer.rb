@@ -11,6 +11,6 @@ class InvestorSerializer
     keys = investor.individual_investor? ? [:legal_name,:location] : [:nationality, :residence]
     InvestorProfileSerializer.new(
       investor.profile
-    ).serializable_hash[:data][:attributes].except(*keys)
+    ).serializable_hash[:data]&.fetch(:attributes)&.except(*keys)
   end
 end

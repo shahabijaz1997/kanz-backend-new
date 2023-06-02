@@ -9,6 +9,6 @@ class SyndicateSerializer
   attribute :profile do |syndicate|
     SyndicateProfileSerializer.new(
       syndicate.profile
-    ).serializable_hash[:data][:attributes]
+    ).serializable_hash[:data]&.fetch(:attributes)
   end
 end

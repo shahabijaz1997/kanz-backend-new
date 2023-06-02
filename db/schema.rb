@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_31_134621) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_01_092010) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -84,6 +84,38 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_31_134621) do
     t.jsonb "options"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "realtor_profiles", force: :cascade do |t|
+    t.integer "no_of_properties"
+    t.bigint "nationality_id"
+    t.bigint "residence_id"
+    t.bigint "realtor_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["nationality_id"], name: "index_realtor_profiles_on_nationality_id"
+    t.index ["realtor_id"], name: "index_realtor_profiles_on_realtor_id"
+    t.index ["residence_id"], name: "index_realtor_profiles_on_residence_id"
+  end
+
+  create_table "startup_profiles", force: :cascade do |t|
+    t.string "company_name", null: false
+    t.string "legal_name", null: false
+    t.string "industry_market", array: true
+    t.string "website"
+    t.string "address"
+    t.string "logo"
+    t.text "description"
+    t.string "ceo_name"
+    t.string "ceo_email"
+    t.float "total_capital_raised", null: false
+    t.float "current_round_capital_target", null: false
+    t.bigint "startup_id"
+    t.bigint "country_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["country_id"], name: "index_startup_profiles_on_country_id"
+    t.index ["startup_id"], name: "index_startup_profiles_on_startup_id"
   end
 
   create_table "syndicate_profiles", force: :cascade do |t|

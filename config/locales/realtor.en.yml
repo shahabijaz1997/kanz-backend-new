@@ -1,5 +1,5 @@
 en:
-  property:
+  realtor:
     get:
       success:
         show: 'Data successfully retrieved.'

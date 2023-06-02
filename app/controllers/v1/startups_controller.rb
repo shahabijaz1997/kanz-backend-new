@@ -11,23 +11,23 @@ module V1
     end
 
     def create
-      meta_info = @startup.meta_info
-      meta_info = meta_info.merge(startup_params[:meta_info])
+      profile = @startup.profile || StartupProfile.new(startup_id: @startup.id)
 
-      if @startup.update(meta_info:)
+      if profile.update(profile_params)
         success(I18n.t('startup.update.success.comapny_info'))
       else
-        failure(@startup.errors.full_messages.to_sentence)
+        failure(profile.errors.full_messages.to_sentence)
       end
     end
 
     private
 
-    def startup_params
-      params.require(:startup).permit(meta_info: %i[
-                                        company_name legal_name country industry_market website
-                                        address logo description ceo_name ceo_email
-                                      ])
+    def profile_params
+      params.require(:startup).permit(
+        :company_name, :legal_name, :website, :address, :logo, :description, :country_id,
+        :ceo_name, :ceo_email, :total_capital_raised, :current_round_capital_target,
+        industry_market: []
+      )
     end
 
     def validate_startup
