@@ -1,5 +1,5 @@
 en:
-  syndicate:
+  realtor:
     get:
       success:
         show: 'Data successfully retrieved.'
@@ -7,4 +7,4 @@ en:
         step: 'Record not found.'
     update:
       success:
-        profile: 'Successfuly updated the syndicate profile.'
+        owner: 'Successfuly updated the property info.'

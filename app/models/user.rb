@@ -42,6 +42,14 @@ class User < ApplicationRecord
     type == 'Syndicate'
   end
 
+  def startup?
+    type == 'Startup'
+  end
+
+  def realtor?
+    type == 'Realtor'
+  end
+
   def attempts_exceeded?
     self.failed_attempts >= self.class.maximum_attempts
   end

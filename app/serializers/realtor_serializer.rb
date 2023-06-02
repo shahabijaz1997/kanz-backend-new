@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 # Fast json serializer
-class SyndicateSerializer
+class RealtorSerializer
   include JSONAPI::Serializer
 
   attributes :id, :name, :email, :role, :type, :status
 
-  attribute :profile do |syndicate|
-    SyndicateProfileSerializer.new(
-      syndicate.profile
+  attribute :profile do |realtor|
+    RealtorProfileSerializer.new(
+      realtor.profile
     ).serializable_hash[:data]&.fetch(:attributes)
   end
 end
