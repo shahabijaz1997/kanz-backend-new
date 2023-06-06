@@ -7,16 +7,15 @@ class User < ApplicationRecord
          :recoverable, :validatable, :trackable, :lockable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
-  enum role: ROLES
   enum status: STATUSES
 
   validates :password, format: PASSWORD_REGEX, if: :password_validation_needed?
-  validates :role, inclusion: { in: ROLES.keys, case_sensitive: false }
   validates :type, inclusion: { in: PERSONAS }
 
   has_many :attachments, as: :parent, dependent: :destroy
+  belongs_to :role
 
-  before_create :update_role
+  before_validation :update_role
 
   # Devise override the confirmation token
   def generate_confirmation_token
@@ -61,8 +60,6 @@ class User < ApplicationRecord
   end
 
   def update_role
-    return true if investor?
-
-    self.role = ROLES[type.to_s]
+    self.role = Role.find_by(title: type)
   end
 end

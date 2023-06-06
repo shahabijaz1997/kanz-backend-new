@@ -10,9 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_01_092010) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_05_103231) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_admin_comments", force: :cascade do |t|
+    t.string "namespace"
+    t.text "body"
+    t.string "resource_type"
+    t.bigint "resource_id"
+    t.string "author_type"
+    t.bigint "author_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author"
+    t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
+    t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource"
+  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -42,6 +56,28 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_092010) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "admin_roles", force: :cascade do |t|
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "admin_users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "admin_role_id"
+    t.string "first_name"
+    t.string "last_name"
+    t.index ["admin_role_id"], name: "index_admin_users_on_admin_role_id"
+    t.index ["email"], name: "index_admin_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
+
   create_table "attachments", force: :cascade do |t|
     t.string "parent_type"
     t.bigint "parent_id"
@@ -50,6 +86,28 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_092010) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["parent_type", "parent_id"], name: "index_attachments_on_parent"
+  end
+
+  create_table "audits", force: :cascade do |t|
+    t.integer "auditable_id"
+    t.string "auditable_type"
+    t.integer "associated_id"
+    t.string "associated_type"
+    t.integer "user_id"
+    t.string "user_type"
+    t.string "username"
+    t.string "action"
+    t.text "audited_changes"
+    t.integer "version", default: 0
+    t.string "comment"
+    t.string "remote_address"
+    t.string "request_uuid"
+    t.datetime "created_at"
+    t.index ["associated_type", "associated_id"], name: "associated_index"
+    t.index ["auditable_type", "auditable_id", "version"], name: "auditable_index"
+    t.index ["created_at"], name: "index_audits_on_created_at"
+    t.index ["request_uuid"], name: "index_audits_on_request_uuid"
+    t.index ["user_id", "user_type"], name: "user_index"
   end
 
   create_table "countries", force: :cascade do |t|
@@ -96,6 +154,24 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_092010) do
     t.index ["nationality_id"], name: "index_realtor_profiles_on_nationality_id"
     t.index ["realtor_id"], name: "index_realtor_profiles_on_realtor_id"
     t.index ["residence_id"], name: "index_realtor_profiles_on_residence_id"
+  end
+
+  create_table "role_vise_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "label"
+    t.integer "index"
+    t.boolean "required", default: true
+    t.string "allowed_file_types", array: true
+    t.bigint "role_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_id"], name: "index_role_vise_attachments_on_role_id"
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "title", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "startup_profiles", force: :cascade do |t|
@@ -160,10 +236,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_092010) do
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
     t.datetime "locked_at"
+    t.bigint "role_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["role_id"], name: "index_users_on_role_id"
   end
 
   create_table "users_responses", force: :cascade do |t|
@@ -178,4 +256,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_01_092010) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "admin_users", "admin_roles"
 end
