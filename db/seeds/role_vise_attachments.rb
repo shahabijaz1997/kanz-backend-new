@@ -1,3 +1,8 @@
+['Individual Investor', 'Investment Firm', 'Syndicate', 'Realtor', 'Startup'].each do |title|
+  role = Role.new(title: title)
+  p role.save ? "Added Role: #{title}" : role.errors.full_messages.to_sentence
+end
+
 Role.all.each do |role|
   [
     { name: 'Proof of identity', label: 'Upload a photo of your passport.' },

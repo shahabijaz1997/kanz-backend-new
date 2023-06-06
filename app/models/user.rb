@@ -13,9 +13,11 @@ class User < ApplicationRecord
   validates :type, inclusion: { in: PERSONAS }
 
   has_many :attachments, as: :parent, dependent: :destroy
-  belongs_to :role
+  belongs_to :user_role, class_name: 'Role', foreign_key: :role_id
 
-  before_validation :update_role
+  delegate :title, to: :user_role, prefix: :role
+
+  before_validation :update_role, on: :create
 
   # Devise override the confirmation token
   def generate_confirmation_token
@@ -26,11 +28,11 @@ class User < ApplicationRecord
   end
 
   def individual_investor?
-    role == 'Individual Investor'
+    role_title == 'Individual Investor'
   end
 
   def investment_firm?
-    role == 'Investment Firm'
+    role_title == 'Investment Firm'
   end
 
   def investor?
@@ -60,6 +62,7 @@ class User < ApplicationRecord
   end
 
   def update_role
-    self.role = Role.find_by(title: type)
+    title = investor? ? 'Individual Investor' : type
+    self.role_id = Role.find_by(title: title).id
   end
 end

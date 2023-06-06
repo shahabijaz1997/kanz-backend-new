@@ -11,7 +11,7 @@ module V1
     end
 
     def set_role
-      if @investor.update(investor_params)
+      if @investor.update(role_id: role.id)
         success(I18n.t('investor.update.success.role', kind: investor_params[:role]))
       else
         failure(@investor.errors.full_messages.to_sentence)
@@ -43,6 +43,10 @@ module V1
 
     def investor_params
       params.require(:investor).permit(:role)
+    end
+
+    def role
+      Role.find_by(title: investor_params[:role])
     end
   end
 end
