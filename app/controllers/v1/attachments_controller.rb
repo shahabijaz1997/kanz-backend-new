@@ -13,8 +13,8 @@ module V1
     def create
       @attachment = current_user.attachments.new(attachment_params)
 
-      @attachment.file.attach(attachment_params[:file]) if attachment_params[:file].present?
-
+      @attachment.file.attach(attachment_params[:file])if attachment_params[:file].present?
+      @attachment.name = attachment_params[:name]
       if @attachment.save!
         success(I18n.t('attachments.upload.success'), { attachment_id: @attachment.id })
       else

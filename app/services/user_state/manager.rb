@@ -30,7 +30,7 @@ module UserState
     end
 
     def philosophy_completed?
-      return true unless user.individual_investor?
+      return true unless user.investor?
 
       user.investment_philosophies.present?
     end
