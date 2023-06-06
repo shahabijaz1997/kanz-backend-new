@@ -96,7 +96,7 @@ questions = [
     required: true,
     category: '',
     title: '',
-    statement: 'what are your preferences to invest in types of assests?',
+    statement: 'What are your preferences to invest in types of assests?',
     question_type: Question.question_types['checkbox'],
     description: '',
     options: {
@@ -112,7 +112,7 @@ questions = [
     required: true,
     category: '',
     title: 'Investment Criteria',
-    statement: 'what are the investment criteria in terms of guidlines, policies, restrictions, regulatory and ' \
+    statement: 'What are the investment criteria in terms of guidelines, policies, restrictions, regulatory and ' \
                'legal constraints, or special circumstances?',
     question_type: Question.question_types['text'],
     description: '',
