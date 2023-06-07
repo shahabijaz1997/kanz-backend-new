@@ -2,6 +2,7 @@
 
 class SyndicateProfile < ApplicationRecord
   belongs_to :syndicate
+  has_many :attachments, as: :parent, dependent: :destroy
 
   after_update :update_user_status
 

@@ -45,6 +45,7 @@ en:
       paramete_missing: 'Unprocessable Entity, missing parameter.'
       unauthorized: 'You are not authorized to perform this action.'
       unprocessable: 'Invalid Request!'
+      file_missing: 'Please upload a file.'
   general:
     countries_list: 'Here is the list of countries'
     invalid: 'Invalid Token!'

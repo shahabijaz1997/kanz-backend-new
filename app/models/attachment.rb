@@ -12,18 +12,27 @@ class Attachment < ApplicationRecord
     Rails.env.development? ? local_storage_path : file.url
   end
 
-  def local_storage_path
-    ActiveStorage::Blob.service.path_for(file.key)
+  def self.upload_file(attachable, file, name = 'logo')
+    attachment = attachable.attachments.new(name:)
+    attachment.file.attach(file)
+    attachment.save!
+    attachment.url
   end
 
   private
 
   def update_user_status
+    return unless parent_type == 'User'
+
     UserState::Manager.call(parent)
   end
 
   def set_directory_path
     gust = SecureRandom.base36(28)
-    file.key = "#{parent.type}/#{parent.id}/#{gust}" if file.new_record?
+    file.key = "#{parent.try(:type) || parent_type}/#{parent&.id}/#{gust}" if file.new_record?
+  end
+
+  def local_storage_path
+    ActiveStorage::Blob.service.path_for(file.key)
   end
 end
