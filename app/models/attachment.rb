@@ -8,6 +8,14 @@ class Attachment < ApplicationRecord
   before_validation :set_directory_path
   after_save :update_user_status
 
+  def url
+    Rails.env.development? ? local_storage_path : file.url
+  end
+
+  def local_storage_path
+    ActiveStorage::Blob.service.path_for(file.key)
+  end
+
   private
 
   def update_user_status

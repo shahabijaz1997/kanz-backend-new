@@ -7,7 +7,7 @@ questions = [
     required: true,
     category: 'Investment Objective',
     title: 'Investment Objective',
-    statement: 'what are your investment objectives for this portfolio?',
+    statement: 'What are your investment objectives for this portfolio?',
     question_type: Question.question_types['multiple_choice'],
     description: '',
     options: {

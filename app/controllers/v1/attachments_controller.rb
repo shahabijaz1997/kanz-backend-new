@@ -16,7 +16,10 @@ module V1
       @attachment.file.attach(attachment_params[:file])if attachment_params[:file].present?
       @attachment.name = attachment_params[:name]
       if @attachment.save!
-        success(I18n.t('attachments.upload.success'), { attachment_id: @attachment.id })
+        success(
+          I18n.t('attachments.upload.success'),
+          { attachment_id: @attachment.id, url: @attachment.url }
+        )
       else
         failure(@attachment.errors.full_messages.to_sentence)
       end
