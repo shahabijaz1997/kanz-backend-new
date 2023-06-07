@@ -3,6 +3,7 @@
 module V1
   class AttachmentsController < ApplicationController
     before_action :set_attachment, only: %i[show update destroy]
+    before_action :check_file_presence, only: %i[create]
 
     # GET /attachments/1
     def show
@@ -12,9 +13,7 @@ module V1
     # POST /attachments
     def create
       @attachment = current_user.attachments.new(attachment_params)
-
-      @attachment.file.attach(attachment_params[:file])if attachment_params[:file].present?
-      @attachment.name = attachment_params[:name]
+      @attachment.file.attach(attachment_params[:file])
       if @attachment.save!
         success(
           I18n.t('attachments.upload.success'),
@@ -52,6 +51,10 @@ module V1
 
     def attachment_params
       params.require(:attachment).permit(:name, :attachment_kind, :file)
+    end
+
+    def check_file_presence
+      failure(I18n.t('errors.exceptions.file_missing')) if attachment_params[:file].blank?
     end
   end
 end

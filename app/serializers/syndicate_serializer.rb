@@ -12,7 +12,7 @@ class SyndicateSerializer
     ).serializable_hash[:data]&.fetch(:attributes)
   end
 
-  attribute :role do |investor|
+  attribute :role do |user|
     user.role_title
   end
 end
