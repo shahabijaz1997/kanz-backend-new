@@ -4,6 +4,7 @@
 module V1
   class StartupsController < ApplicationController
     before_action :validate_startup
+    before_action :check_file_presence, only: %i[create]
 
     def show
       startup_attributes = StartupSerializer.new(@startup).serializable_hash[:data][:attributes]
@@ -35,6 +36,10 @@ module V1
       return unprocessable unless current_user.startup?
 
       @startup = current_user
+    end
+
+    def check_file_presence
+      failure(I18n.t('errors.exceptions.file_missing')) if profile_params[:logo].blank?
     end
   end
 end
