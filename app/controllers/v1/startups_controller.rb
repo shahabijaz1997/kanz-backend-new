@@ -14,8 +14,8 @@ module V1
     def create
       profile = @startup.profile || StartupProfile.new(startup_id: @startup.id)
       StartupProfile.transaction do
-        Attachment.upload_file(profile, profile_params[:logo]) if profile_params[:logo].present?
         profile.update!(profile_params.except(:logo))
+        Attachment.upload_file(profile, profile_params[:logo]) if profile_params[:logo].present?
       end
       success(I18n.t('startup.update.success.comapny_info'))
     rescue StandardError => e

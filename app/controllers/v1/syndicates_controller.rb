@@ -16,8 +16,8 @@ module V1
       profile = @syndicate.profile || SyndicateProfile.new(syndicate_id: @syndicate.id)
 
       SyndicateProfile.transaction do
-        Attachment.upload_file(profile, profile_params[:logo]) if profile_params[:logo].present?
         profile.update!(profile_params.except(:logo))
+        Attachment.upload_file(profile, profile_params[:logo]) if profile_params[:logo].present?
       end
       success(I18n.t('syndicate.update.success.comapny_info'))
     rescue StandardError => e
