@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_06_092406) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_08_111243) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -190,6 +190,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_06_092406) do
     t.bigint "country_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "currency", default: "USD", null: false
     t.index ["country_id"], name: "index_startup_profiles_on_country_id"
     t.index ["startup_id"], name: "index_startup_profiles_on_startup_id"
   end
@@ -237,6 +238,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_06_092406) do
     t.string "unlock_token"
     t.datetime "locked_at"
     t.bigint "role_id"
+    t.string "provider"
+    t.string "uid"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true

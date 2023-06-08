@@ -7,5 +7,5 @@ class StartupProfile < ApplicationRecord
 
   validates :company_name, :legal_name, :total_capital_raised,
             :current_round_capital_target, :ceo_name, :ceo_email,
-            presence: true
+            :currency, presence: true
 end

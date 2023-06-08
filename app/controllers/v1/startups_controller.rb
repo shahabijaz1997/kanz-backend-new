@@ -27,7 +27,7 @@ module V1
     def profile_params
       params.require(:startup).permit(
         :company_name, :legal_name, :website, :address, :logo, :description, :country_id,
-        :ceo_name, :ceo_email, :total_capital_raised, :current_round_capital_target,
+        :ceo_name, :ceo_email, :total_capital_raised, :current_round_capital_target, :currency,
         industry_market: []
       )
     end
