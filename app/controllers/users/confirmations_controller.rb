@@ -15,7 +15,7 @@ module Users
       return unprocessable(response.message) unless @user.attempts_exceeded?
 
       @user.lock_access!({ send_instructions: false })
-      failure(I18n.t('devise.failure.locked'))
+      failure(I18n.t('devise.failure.locked'), 400, { account_status: 'blocked' })
     end
 
     # POST /resource/confirmation
