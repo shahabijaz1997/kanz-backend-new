@@ -6,7 +6,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :validatable, :trackable, :lockable,
          :omniauthable, :jwt_authenticatable,
-         omniauth_providers: [:google_oauth2], jwt_revocation_strategy: self
+         omniauth_providers: [:google_oauth2, :linkedin], jwt_revocation_strategy: self
 
   enum status: STATUSES
 
@@ -56,10 +56,12 @@ class User < ApplicationRecord
     self.failed_attempts >= self.class.maximum_attempts
   end
 
-  def self.from_google(u)
-    debugger
-    create_with(uid: u[:uid], name: u[:name], provider: 'google',
-                password: Devise.friendly_token[0, 20]).find_or_create_by!(email: u[:email])
+  def self.from_omniauth(auth)
+    # user.name = "#{auth.info.first_name} #{auth.info.last_name}"
+    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+      user.email = auth.info.email
+      user.password = Devise.friendly_token[0, 20]
+    end
   end
 
   private

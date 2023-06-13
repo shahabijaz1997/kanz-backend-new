@@ -69,6 +69,6 @@ group :development do
   gem 'letter_opener'
 end
 
-gem "omniauth-linkedin-oauth2", "~> 1.0"
-gem "omniauth-google-oauth2"
-
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-linkedin-oauth2', '~> 1.0'

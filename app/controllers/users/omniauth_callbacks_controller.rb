@@ -1,28 +1,35 @@
-class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  include RackSessionSolution
+module Users
+  class OmniauthCallbacksController < Devise::OmniauthCallbacksController
+    include RackSessionSolution
 
-  def google_oauth2
-    debugger
-    user = User.from_google(from_google_params)
-
-    if user.present?
-      sign_out_all_scopes
-      flash[:notice] = t 'devise.omniauth_callbacks.success', kind: 'Google'
-      sign_in_and_redirect user, event: :authentication
-    else
-      flash[:alert] = t 'devise.omniauth_callbacks.failure', kind: 'Google', reason: "#{auth.info.email} is not authorized."
-      redirect_to new_user_session_path
+    def linkedin
+      omniauth_signin
     end
-   end
 
-   def from_google_params
-     @from_google_params ||= {
-       uid: auth.uid,
-       email: auth.info.email
-     }
-   end
+    def google_oauth2
+      omniauth_signin
+    end
 
-   def auth
-     @auth ||= request.env['omniauth.auth']
-   end
+    private
+
+    def omniauth_signin
+      user = User.from_omniauth(auth)
+
+      if user.present?
+        signin_and_respond(user)
+      else
+        failure(I18n.t('devise.omniauth_callbacks.failure'))
+      end
+    end
+
+    def auth
+      @auth ||= request.env['omniauth.auth']
+    end
+
+    def signin_and_respond
+      sign_in(User, user)
+      data = UserSerializer.new(user).serializable_hash[:data][:attributes]
+      success(I18n.t('devise.sessions.signed_in'), data)
+    end
+  end
 end
