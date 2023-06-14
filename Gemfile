@@ -68,3 +68,7 @@ group :development do
   # gem "spring"
   gem 'letter_opener'
 end
+
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-linkedin-oauth2', '~> 1.0'

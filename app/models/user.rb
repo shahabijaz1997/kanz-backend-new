@@ -5,7 +5,8 @@ class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :validatable, :trackable, :lockable,
-         :jwt_authenticatable, jwt_revocation_strategy: self
+         :omniauthable, :jwt_authenticatable,
+         omniauth_providers: [:google_oauth2, :linkedin], jwt_revocation_strategy: self
 
   enum status: STATUSES
 
@@ -53,6 +54,14 @@ class User < ApplicationRecord
 
   def attempts_exceeded?
     self.failed_attempts >= self.class.maximum_attempts
+  end
+
+  def self.from_omniauth(auth)
+    # user.name = "#{auth.info.first_name} #{auth.info.last_name}"
+    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+      user.email = auth.info.email
+      user.password = Devise.friendly_token[0, 20]
+    end
   end
 
   private
