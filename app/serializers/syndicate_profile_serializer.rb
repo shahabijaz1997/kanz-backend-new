@@ -8,6 +8,6 @@ class SyndicateProfileSerializer
              :region, :profile_link, :dealflow, :name, :tagline
 
   attribute :logo do |profile|
-    profile.attachments&.first.url
+    profile.attachment&.url
   end
 end

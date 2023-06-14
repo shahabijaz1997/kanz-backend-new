@@ -13,10 +13,9 @@ class Attachment < ApplicationRecord
   end
 
   def self.upload_file(attachable, file, name = 'logo')
-    attachment = attachable.attachments.new(name:)
+    attachment = Attachment.find_or_initialize_by(name: name, parent: attachable)
     attachment.file.attach(file)
     attachment.save!
-    attachment.url
   end
 
   private

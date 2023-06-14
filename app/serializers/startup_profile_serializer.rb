@@ -12,6 +12,6 @@ class StartupProfileSerializer
   end
 
   attribute :logo do |profile|
-    profile.attachments&.first.url
+    profile.attachment&.url
   end
 end

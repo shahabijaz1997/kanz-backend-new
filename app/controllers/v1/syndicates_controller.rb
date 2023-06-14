@@ -16,8 +16,8 @@ module V1
       profile = @syndicate.profile || SyndicateProfile.new(syndicate_id: @syndicate.id)
 
       SyndicateProfile.transaction do
-        logo_url = Attachment.upload_file(profile, profile_params[:logo])
-        profile.update!(profile_params.merge(logo: logo_url))
+        profile.update!(profile_params.except(:logo))
+        Attachment.upload_file(profile, profile_params[:logo]) if profile_params[:logo].present?
       end
       success(I18n.t('syndicate.update.success.comapny_info'))
     rescue StandardError => e
@@ -40,6 +40,12 @@ module V1
     end
 
     def check_file_presence
+      failure(I18n.t('errors.exceptions.file_missing')) if profile_params[:logo].blank?
+    end
+
+    def check_file_presence
+      return if @syndicate.profile.present? && @syndicate.profile.logo.present?
+
       failure(I18n.t('errors.exceptions.file_missing')) if profile_params[:logo].blank?
     end
   end

@@ -11,11 +11,12 @@ module ResponseHandler
     }, status: :ok
   end
 
-  def failure(message = I18n.t('errors.exceptions.not_found'), code = 400)
+  def failure(message = I18n.t('errors.exceptions.not_found'), code = 400, data={})
     render json: {
       status: {
         code:,
-        message:
+        message:,
+        data:
       }
     }, status: :bad_request
   end
