@@ -14,6 +14,11 @@ Rails.application.routes.draw do
 
   resources :confirmations, controller: 'users/confirmations', only: [:update, :create]
 
+  namespace :users do
+    post 'social_auth/google', to: 'social_auth#google'
+    post 'social_auth/linkedin', to: 'social_auth#linkedin'
+  end
+
   namespace :v1, path: '/1.0', defaults: { format: :json } do
     post 'investor/type', to: 'investors#set_role'
     post 'investor/accreditation', to: 'investors#accreditation'

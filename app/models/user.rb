@@ -22,6 +22,8 @@ class User < ApplicationRecord
 
   # Devise override the confirmation token
   def generate_confirmation_token
+    return if provider.present?
+
     @raw_confirmation_token = SecureRandom.rand(100_000..999_999)
 
     self.confirmation_token = @raw_confirmation_token
@@ -56,11 +58,13 @@ class User < ApplicationRecord
     self.failed_attempts >= self.class.maximum_attempts
   end
 
-  def self.from_omniauth(auth)
-    # user.name = "#{auth.info.first_name} #{auth.info.last_name}"
+  def self.from_social_auth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-      user.email = auth.info.email
+      user.name = auth.name
+      user.email = auth.email
+      user.type = auth.type
       user.password = Devise.friendly_token[0, 20]
+      user.confirmed_at = Time.now
     end
   end
 
