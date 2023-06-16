@@ -8,8 +8,7 @@ Rails.application.routes.draw do
                                },
                      controllers: {
                        sessions: 'users/sessions',
-                       registrations: 'users/registrations',
-                       omniauth_callbacks: 'users/omniauth_callbacks'
+                       registrations: 'users/registrations'
                      }, skip: [:confirmations], skip_helpers: true
 
   resources :confirmations, controller: 'users/confirmations', only: [:update, :create]
