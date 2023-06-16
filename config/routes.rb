@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   namespace :users do
     post 'social_auth/google', to: 'social_auth#google'
     post 'social_auth/linkedin', to: 'social_auth#linkedin'
+    get 'social_auth/linkedin', to: 'social_auth#linkedin'
   end
 
   namespace :v1, path: '/1.0', defaults: { format: :json } do

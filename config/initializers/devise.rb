@@ -316,15 +316,16 @@ Devise.setup do |config|
 
   # Omniauth authentication
   # config.omniauth :google_oauth2, ENV['GOOGLE_OAUTH_CLIENT_ID'], ENV['GOOGLE_OAUTH_CLIENT_SECRET']
-  # config.omniauth :google_oauth2, '1044079360567-12ajloqgqdtgf9glalm12ecq7it9upd9.apps.googleusercontent.com', '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'
-  # config.omniauth :linkedin, ENV['LINKEDIN_KEY'], ENV['LINKEDIN_SECRET']
+  config.omniauth :linkedin, ENV['LINKEDIN_KEY'], ENV['LINKEDIN_SECRET']
 
   config.jwt do |jwt|
     jwt.secret = ENV['SECRET_KEY_BASE']
     jwt.dispatch_requests = [
       ['POST', %r{^/login$}],
       ['PATCH', %r{^/confirmations/\d+$}],
-      ['POST', %r{^/users/social_auth/google$}]
+      ['POST', %r{^/users/social_auth/google$}],
+      ['GET', %r{^/users/social_auth/linkedin?\w$}]
+
     ]
     jwt.revocation_requests = [
       ['DELETE', %r{^/logout$}]

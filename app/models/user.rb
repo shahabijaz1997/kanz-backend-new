@@ -63,7 +63,7 @@ class User < ApplicationRecord
       user.name = auth.name
       user.email = auth.email
       user.type = auth.type
-      user.password = Devise.friendly_token[0, 20]
+      user.password = generate_password
       user.confirmed_at = Time.now
     end
   end
@@ -77,5 +77,13 @@ class User < ApplicationRecord
   def update_role
     title = investor? ? 'Individual Investor' : type
     self.role_id = Role.find_by(title: title).id
+  end
+
+  def self.generate_password(length = 12)
+    chars = [('a'..'z'), ('A'..'Z'), (0..9),
+             ['!', '@', '#', '$', '%', '^', '&', '*', '_', '-']].map(&:to_a).flatten
+    password = SecureRandom.base64(length)
+    password.gsub!(/[^a-zA-Z0-9!@#$%^&*_\-]/, chars.sample)
+    password += '!*^'
   end
 end
