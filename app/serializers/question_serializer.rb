@@ -6,7 +6,7 @@ class QuestionSerializer
   attributes :id, :step, :index, :required, :question_type
 
   attribute :en do |q|
-    options = q.options['schema'].map do |option|
+    options = q&.options.try(:[], 'schema')&.map do |option|
       option.except('statement_ar')
     end
 
@@ -15,12 +15,12 @@ class QuestionSerializer
       title: q.title,
       statement: q.statement,
       description: q.description,
-      options: options
+      options:
     }
   end
 
   attribute :ar do |q|
-    options = q.options['schema'].map do |option|
+    options = q&.options.try(:[], 'schema')&.map do |option|
       option.except('statement')
       option['statement'] = option.delete 'statement_ar'
       option
@@ -31,7 +31,7 @@ class QuestionSerializer
       title: q.title_ar,
       statement: q.statement_ar,
       description: q.description_ar,
-      options: options
+      options:
     }
   end
 end
