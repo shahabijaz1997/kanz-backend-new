@@ -21,7 +21,7 @@ module Users
       headers = { Authorization: "Bearer #{get_access_token}" }
       profile = profile(headers)
       profile.merge!(email(headers))
-      auth_object = auth('linkedin', profile, params[:type])
+      auth_object = auth('linkedin', profile)
 
       user = User.from_social_auth(auth_object)
       if user.persisted?
@@ -61,7 +61,7 @@ module Users
       q = {
         grant_type: "authorization_code",
         code: params[:code],
-        redirect_uri: 'http://localhost:3001/users/social_auth/linkedin',
+        redirect_uri: 'http://localhost:3000/linkedin',
         client_id: ENV['LINKEDIN_KEY'],
         client_secret: ENV['LINKEDIN_SECRET']
       }.to_query
