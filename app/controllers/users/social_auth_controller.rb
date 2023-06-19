@@ -18,7 +18,9 @@ module Users
     end 
 
     def linkedin
-      headers = { Authorization: "Bearer #{get_access_token}" }
+      access_token = get_access_token
+      return failure('failed to fetch access token') if access_token.blank?
+      headers = { Authorization: "Bearer #{access_token}" }
       profile = profile(headers)
       profile.merge!(email(headers))
       auth_object = auth('linkedin', profile)
