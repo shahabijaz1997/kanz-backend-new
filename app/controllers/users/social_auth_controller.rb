@@ -38,7 +38,7 @@ module Users
     def auth(provider, response, type = 'Investor')
       Struct.new(:provider, :uid, :email, :name, :type).new(
         provider,
-        response.with_indifferent_access['sub'],
+        response.with_indifferent_access['sub'] || SecureRandom.base64(10),
         response.with_indifferent_access['email'],
         response.with_indifferent_access['name'],
         type
