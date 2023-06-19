@@ -21,7 +21,7 @@ module Users
       headers = { Authorization: "Bearer #{get_access_token}" }
       profile = profile(headers)
       profile.merge!(email(headers))
-      auth_object = auth('linkedin', profile, params[:type])
+      auth_object = auth('linkedin', profile)
 
       user = User.from_social_auth(auth_object)
       if user.persisted?
