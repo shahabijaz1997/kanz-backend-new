@@ -61,7 +61,7 @@ module Users
       q = {
         grant_type: "authorization_code",
         code: params[:code],
-        redirect_uri: 'http://localhost:3001/users/social_auth/linkedin',
+        redirect_uri: 'http://localhost:3000/linkedin',
         client_id: ENV['LINKEDIN_KEY'],
         client_secret: ENV['LINKEDIN_SECRET']
       }.to_query
