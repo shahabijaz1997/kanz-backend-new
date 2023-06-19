@@ -324,7 +324,7 @@ Devise.setup do |config|
       ['POST', %r{^/login$}],
       ['PATCH', %r{^/confirmations/\d+$}],
       ['POST', %r{^/users/social_auth/google$}],
-      ['GET', %r{^/users/social_auth/linkedin?\w$}]
+      ['POST', %r{^/users/social_auth/linkedin$}]
 
     ]
     jwt.revocation_requests = [
