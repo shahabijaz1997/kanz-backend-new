@@ -127,6 +127,7 @@ GEM
       colorize (~> 0.7)
       ruby_parser (>= 3.19.1)
     ffi (1.15.5)
+    ffi (1.15.5-x64-mingw-ucrt)
     figaro (1.2.0)
       thor (>= 0.14.0, < 2)
     flay (2.13.0)
@@ -184,6 +185,8 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.9)
+    nokogiri (1.14.3-x64-mingw-ucrt)
+      racc (~> 1.4)
     nokogiri (1.14.3-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.14.3-x86_64-linux)
@@ -197,6 +200,7 @@ GEM
       ast (~> 2.4.1)
     path_expander (1.1.1)
     pg (1.5.2)
+    pg (1.5.2-x64-mingw-ucrt)
     pronto (0.11.1)
       gitlab (>= 4.4.0, < 5.0)
       httparty (>= 0.13.7, < 1.0)
@@ -313,6 +317,8 @@ GEM
     timeout (0.3.2)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    tzinfo-data (1.2023.3)
+      tzinfo (>= 1.0.0)
     unicode-display_width (2.4.2)
     warden (1.2.9)
       rack (>= 2.0.9)
@@ -327,6 +333,7 @@ GEM
     zeitwerk (2.6.7)
 
 PLATFORMS
+  x64-mingw-ucrt
   x86_64-darwin-20
   x86_64-linux
 
