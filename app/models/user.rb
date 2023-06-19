@@ -58,9 +58,9 @@ class User < ApplicationRecord
   end
 
   def self.from_social_auth(auth)
-    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+    where(provider: auth.provider, email: user.email).first_or_create do |user|
+      user.uid = auth.uid
       user.name = auth.name
-      user.email = auth.email
       user.type = auth.type
       user.password = generate_password
       user.confirmed_at = Time.now
