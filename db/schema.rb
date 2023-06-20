@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_08_111243) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_19_050612) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -142,6 +142,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_08_111243) do
     t.jsonb "options"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "title_ar"
+    t.string "statement_ar"
+    t.string "category_ar"
+    t.text "description_ar"
   end
 
   create_table "realtor_profiles", force: :cascade do |t|
@@ -165,6 +169,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_08_111243) do
     t.bigint "role_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name_ar"
+    t.string "label_ar"
     t.index ["role_id"], name: "index_role_vise_attachments_on_role_id"
   end
 
