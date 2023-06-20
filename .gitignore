@@ -29,3 +29,6 @@
 /config/master.key
 /config/credentials.yml.enc
 /config/application.yml
+/config/database.yml
+.env
+

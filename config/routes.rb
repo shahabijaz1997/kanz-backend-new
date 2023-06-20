@@ -8,11 +8,16 @@ Rails.application.routes.draw do
                                },
                      controllers: {
                        sessions: 'users/sessions',
-                       registrations: 'users/registrations',
-                       omniauth_callbacks: 'users/omniauth_callbacks'
+                       registrations: 'users/registrations'
                      }, skip: [:confirmations], skip_helpers: true
 
   resources :confirmations, controller: 'users/confirmations', only: [:update, :create]
+
+  namespace :users do
+    post 'social_auth/google', to: 'social_auth#google'
+    post 'social_auth/linkedin', to: 'social_auth#linkedin'
+    get 'social_auth/linkedin', to: 'social_auth#linkedin'
+  end
 
   namespace :v1, path: '/1.0', defaults: { format: :json } do
     post 'investor/type', to: 'investors#set_role'

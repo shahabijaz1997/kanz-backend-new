@@ -5,8 +5,7 @@ class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :validatable, :trackable, :lockable,
-         :omniauthable, :jwt_authenticatable,
-         omniauth_providers: [:google_oauth2, :linkedin], jwt_revocation_strategy: self
+         :jwt_authenticatable, jwt_revocation_strategy: self
 
   enum status: STATUSES
 
@@ -22,6 +21,8 @@ class User < ApplicationRecord
 
   # Devise override the confirmation token
   def generate_confirmation_token
+    return if provider.present?
+
     @raw_confirmation_token = SecureRandom.rand(100_000..999_999)
 
     self.confirmation_token = @raw_confirmation_token
@@ -56,11 +57,14 @@ class User < ApplicationRecord
     self.failed_attempts >= self.class.maximum_attempts
   end
 
-  def self.from_omniauth(auth)
-    # user.name = "#{auth.info.first_name} #{auth.info.last_name}"
-    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-      user.email = auth.info.email
-      user.password = Devise.friendly_token[0, 20]
+  def self.from_social_auth(auth)
+    where(email: auth.email).first_or_create do |user|
+      user.uid = auth.uid
+      user.provider = auth.provider
+      user.name = auth.name
+      user.type = auth.type
+      user.password = generate_password
+      user.confirmed_at = Time.now
     end
   end
 
@@ -73,5 +77,13 @@ class User < ApplicationRecord
   def update_role
     title = investor? ? 'Individual Investor' : type
     self.role_id = Role.find_by(title: title).id
+  end
+
+  def self.generate_password(length = 12)
+    chars = [('a'..'z'), ('A'..'Z'), (0..9),
+             ['!', '@', '#', '$', '%', '^', '&', '*', '_', '-']].map(&:to_a).flatten
+    password = SecureRandom.base64(length)
+    password.gsub!(/[^a-zA-Z0-9!@#$%^&*_\-]/, chars.sample)
+    password += '!*^'
   end
 end
