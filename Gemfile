@@ -39,6 +39,7 @@ gem 'rack-cors'
 
 gem 'devise'
 gem 'devise-jwt'
+gem 'httparty'
 gem 'jsonapi-serializer'
 gem 'pundit'
 

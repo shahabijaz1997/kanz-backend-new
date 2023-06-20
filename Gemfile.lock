@@ -345,6 +345,7 @@ DEPENDENCIES
   devise
   devise-jwt
   figaro
+  httparty
   image_processing (~> 1.2)
   jsonapi-serializer
   letter_opener
