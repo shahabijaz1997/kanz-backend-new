@@ -63,7 +63,7 @@ module Users
       q = {
         grant_type: "authorization_code",
         code: params[:code],
-        redirect_uri: 'http://localhost:3000/linkedin',
+        redirect_uri: 'https://glacial-beach-24842.herokuapp.com/linkedin',
         client_id: ENV['LINKEDIN_KEY'],
         client_secret: ENV['LINKEDIN_SECRET']
       }.to_query
