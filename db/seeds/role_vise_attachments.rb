@@ -25,9 +25,8 @@ Role.all.each do |role|
     }
   ].each do |attachment, index|
     record = role.role_vise_attachments.find_or_initialize_by(name: attachment[:name])
-    record.update(attachment)
 
-    p record.save ? "Successfuly added attachment configuration" :
+    p record.update(attachment) ? "Successfuly added attachment configuration" :
                     record.errors.full_messages.to_sentence
   end
 end

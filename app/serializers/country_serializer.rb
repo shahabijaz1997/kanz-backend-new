@@ -4,5 +4,13 @@
 class CountrySerializer
   include JSONAPI::Serializer
 
-  attributes :id, :name, :states
+  attributes :id
+
+  attribute :en do |country|
+    { name: country.name }
+  end
+
+  attribute :ar do |country|
+    { name: country.name_ar }
+  end
 end
