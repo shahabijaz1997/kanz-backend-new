@@ -18,7 +18,7 @@ class InvestorSerializer
     user.role_title
   end
 
-  attribute :role do |user|
+  attribute :role_ar do |user|
     user.role_title_ar
   end
 end
