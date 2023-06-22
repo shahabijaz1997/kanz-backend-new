@@ -1,6 +1,13 @@
-['Individual Investor', 'Investment Firm', 'Syndicate', 'Realtor', 'Startup'].each do |title|
-  role = Role.new(title: title)
-  p role.save ? "Added Role: #{title}" : role.errors.full_messages.to_sentence
+[
+  {title: 'Individual Investor', title_ar: 'فرد' },
+  {title: 'Investment Firm', title_ar: 'شركة' },
+  {title: 'Syndicate', title_ar: 'نقابة' },
+  {title: 'Realtor', title_ar: 'سمسار عقارات'},
+  {title: 'Startup', title_ar: 'بدء'}
+].each do |role|
+  record = Role.find_or_initialize_by(title: role[:title])
+
+  p record.update(role) ? "Added Role: #{role[:title]}" : record.errors.full_messages.to_sentence
 end
 
 Role.all.each do |role|

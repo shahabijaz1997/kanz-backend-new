@@ -15,6 +15,6 @@ class InvestorSerializer
   end
 
   attribute :role do |user|
-    user.role_title
+    user.arabic? ? user.role_title_ar : user.role_title
   end
 end

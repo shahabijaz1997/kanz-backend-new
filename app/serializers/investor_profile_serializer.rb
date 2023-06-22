@@ -7,10 +7,10 @@ class InvestorProfileSerializer
   attributes :legal_name, :residence, :accreditation, :accepted_investment_criteria
 
   attribute :nationality do |profile|
-    profile.country.name
+    profile.investor.arabic? ? profile.country.name_ar : profile.country.name
   end
 
   attribute :location do |profile|
-    profile.country.name
+    profile.investor.arabic? ? profile.country.name_ar : profile.country.name
   end
 end

@@ -15,7 +15,7 @@ class User < ApplicationRecord
   has_many :attachments, as: :parent, dependent: :destroy
   belongs_to :user_role, class_name: 'Role', foreign_key: :role_id
 
-  delegate :title, to: :user_role, prefix: :role
+  delegate :title, :title_ar, to: :user_role, prefix: :role
 
   before_validation :update_role, on: :create
 
@@ -51,6 +51,10 @@ class User < ApplicationRecord
 
   def realtor?
     type == 'Realtor'
+  end
+
+  def arabic?
+    language == 'ar'
   end
 
   def attempts_exceeded?

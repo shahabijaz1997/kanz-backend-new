@@ -12,6 +12,6 @@ class ApplicationController < ActionController::API
   def set_locale
     return unless current_user
 
-    I18n.locale = :ar if current_user.language == 'ar'
+    I18n.locale = :ar if current_user.arabic?
   end
 end
