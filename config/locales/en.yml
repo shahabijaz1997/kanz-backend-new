@@ -51,3 +51,6 @@ en:
     invalid: 'Invalid Token!'
     token_expired: 'Your token expired, you can request a new one.'
     get_user: 'Users info!'
+  auth:
+    access_token_failure: 'Failed to fetch access token, try again or contact the customer support'
+    profile_failure: 'Failed to fetch profile information, try again or contact the customer support'

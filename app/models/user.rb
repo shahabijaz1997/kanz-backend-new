@@ -54,7 +54,7 @@ class User < ApplicationRecord
   end
 
   def attempts_exceeded?
-    self.failed_attempts >= self.class.maximum_attempts
+    failed_attempts >= self.class.maximum_attempts
   end
 
   def self.from_social_auth(auth)
@@ -64,8 +64,12 @@ class User < ApplicationRecord
       user.name = auth.name
       user.type = auth.type
       user.password = generate_password
-      user.confirmed_at = Time.now
+      user.confirmed_at = Time.zone.now
     end
+  end
+
+  def serialized_data
+    UserSerializer.new(self).serializable_hash[:data][:attributes]
   end
 
   private
@@ -76,14 +80,14 @@ class User < ApplicationRecord
 
   def update_role
     title = investor? ? 'Individual Investor' : type
-    self.role_id = Role.find_by(title: title).id
+    self.role_id = Role.find_by(title:).id
   end
 
   def self.generate_password(length = 12)
     chars = [('a'..'z'), ('A'..'Z'), (0..9),
              ['!', '@', '#', '$', '%', '^', '&', '*', '_', '-']].map(&:to_a).flatten
     password = SecureRandom.base64(length)
-    password.gsub!(/[^a-zA-Z0-9!@#$%^&*_\-]/, chars.sample)
-    password += '!*^'
+    password.gsub!(/[^a-zA-Z0-9!@#$%^&*_-]/, chars.sample)
+    "#{password}!*^"
   end
 end
