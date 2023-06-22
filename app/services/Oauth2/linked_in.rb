@@ -49,7 +49,7 @@ module Oauth2
       {
         grant_type: 'authorization_code',
         code: token,
-        redirect_uri: ENV.fetch('LINKEDIN_REDIRECT_URI', nil),
+        redirect_uri: ENV.fetch('LINKEDIN_REDIRECT_URI', 'https://glacial-beach-24842.herokuapp.com/linkedin'),
         client_id: ENV.fetch('LINKEDIN_KEY', nil),
         client_secret: ENV.fetch('LINKEDIN_SECRET', nil)
       }.to_query
