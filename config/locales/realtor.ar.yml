@@ -1,0 +1,10 @@
+ar:
+  realtor:
+    get:
+      success:
+        show: 'تم استرداد البيانات بنجاح.'
+      failure:
+        step: 'السجل غير موجود.'
+    update:
+      success:
+        owner: 'تم تحديث معلومات العقار بنجاح.'

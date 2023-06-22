@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ResponseHandler
-  def success(message, data = {})
+  def success(message=I18n.t('general.success'), data = {})
     render json: {
       status: {
         code: 200,

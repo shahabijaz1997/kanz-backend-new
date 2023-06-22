@@ -1,0 +1,10 @@
+ar:
+  syndicate:
+    get:
+      success:
+        show: 'تم استرداد البيانات بنجاح.'
+      failure:
+        step: 'السجل غير موجود.'
+    update:
+      success:
+        profile: 'تم تحديث ملف المجموعة بنجاح.'

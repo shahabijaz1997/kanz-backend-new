@@ -4,7 +4,7 @@
 class StartupSerializer
   include JSONAPI::Serializer
 
-  attributes :id, :name, :email, :type, :status
+  attributes :id, :name, :email, :type, :status, :language
 
   attribute :profile do |startup|
     StartupProfileSerializer.new(

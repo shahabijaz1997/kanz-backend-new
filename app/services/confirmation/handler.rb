@@ -47,7 +47,7 @@ module Confirmation
     def token_expired?
       return unless valid_token?
 
-      ((Time.now.utc - user.confirmation_sent_at.utc) / 1.minute) > 1
+      ((Time.now.utc - user.confirmation_sent_at.utc) / 1.minute) > 15
     end
 
     def mark_confirmed

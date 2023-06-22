@@ -29,29 +29,23 @@
 # To learn more, please read the Rails Internationalization guide
 # available at https://guides.rubyonrails.org/i18n.html.
 
-en:
+ar:
   activerecord:
     errors:
       models:
         user:
           attributes:
             password:
-              invalid: "Weak Password; must be 8 characters long, includes at-least one lower case, one upper case letter and at least one number and special character"
+              invalid: "اختر كلمة مرور قوية. يجب أن تتكون كلمة المرور الخاصة بك من: 8 أحرف، تحتوي على حرف صغير وحرف كبير ورقم وحرف خاص على الأقل."
   errors:
     exceptions:
-      auth_token_expired: 'Session expired!'
-      not_found: 'Record not found.'
-      existing_record: 'Record already exists.'
-      paramete_missing: 'Unprocessable Entity, missing parameter.'
-      unauthorized: 'You are not authorized to perform this action.'
-      unprocessable: 'Invalid Request!'
-      file_missing: 'Please upload a file.'
+      auth_token_expired: 'انتهت صلاحية الجلسة!'
+      not_found: 'لم يتم العثور على السجل.'
+      existing_record: 'السجل موجود بالفعل.'
+      paramete_missing: 'كيان غير قابل للمعالجة، معلمة مفقودة.'
+      unauthorized: 'غير مصرح لك بأداء هذا الإجراء.'
+      unprocessable: 'طلب غير صالح!'
   general:
-    countries_list: 'Here is the list of countries'
-    invalid: 'Invalid Token!'
-    token_expired: 'Your token expired, you can request a new one.'
-    get_user: 'Users info!'
-    success: 'Success!'
-  auth:
-    access_token_failure: 'Failed to fetch access token, try again or contact the customer support'
-    profile_failure: 'Failed to fetch profile information, try again or contact the customer support'
+    countries_list: 'إليك قائمة الدول'
+    invalid: 'رمز غير صالح!'
+    get_user: 'معلومات المستخدمين!'

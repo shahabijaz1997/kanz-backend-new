@@ -1,0 +1,23 @@
+ar:
+  investor:
+    get:
+      success:
+        show: 'تم استرداد البيانات بنجاح.'
+        questions: 'أسئلة للخطوة: %{step}'
+      failure:
+        step: 'الخطوة غير موجودة'
+        no_question: 'لا توجد أسئلة متوفرة للخطوة المحددة'
+    update:
+      success:
+        role: 'تم تحديث نوع المستثمر بنجاح إلى %{kind}.'
+        accreditation: 'تم تحديث معلومات الاعتماد بنجاح.'
+        philosophy: 'تم تحديث الفلسفة الاستثمارية بنجاح.'
+  attachments:
+    upload:
+      success: 'تم تحميل المرفقات بنجاح'
+    update:
+      success: 'تم تحديث المرفقات بنجاح.'
+      failure: 'فشل في تحديث المرفقات.'
+    delete:
+      success: 'تم حذف المرفقات بنجاح.'
+      failure: 'فشل في حذف المرفقات.'
