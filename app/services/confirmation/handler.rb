@@ -12,6 +12,7 @@ module Confirmation
     def call
       return already_confirmed if user.confirmed?
       return invalid_token unless valid_token?
+      return expired_token if token_expired?
       return success if mark_confirmed
 
       failed_to_update
@@ -35,8 +36,18 @@ module Confirmation
       response(user.errors.full_messages.to_sentence, false)
     end
 
+    def expired_token
+      response(I18n.t('general.token_expired'), false)
+    end
+
     def valid_token?
       user.confirmation_token == token
+    end
+
+    def token_expired?
+      return unless valid_token?
+
+      ((Time.now.utc - user.confirmation_sent_at.utc) / 1.minute) > 1
     end
 
     def mark_confirmed

@@ -49,4 +49,5 @@ en:
   general:
     countries_list: 'Here is the list of countries'
     invalid: 'Invalid Token!'
+    token_expired: 'Your token expired, you can request a new one.'
     get_user: 'Users info!'
