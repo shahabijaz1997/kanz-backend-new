@@ -79,20 +79,20 @@ attachment_config = {
   ],
   startup: [
     {
-      name: 'Proof of identity',
-      label: 'Upload a photo of your passport.',
+      name: 'Proof of Identity',
+      label: 'Upload a scanned copy of your passport',
       name_ar: 'إثبات الهوية',
       label_ar: 'قم بتحميل صورة من جواز سفرك'
     },
     {
-      name: 'Identity verification',
-      label: 'Upload your selfie with passport copy.',
+      name: 'Identity Verification',
+      label: 'Take a selfie with your passport',
       name_ar: 'التحقق من الهوية',
       label_ar: 'قم بتحميل صورتك الشخصية مع نسخة من جواز السفر'
     },
     {
-      name: 'Proof of residence',
-      label: 'Upload your property document copy.',
+      name: 'Proof of Residence',
+      label: 'Upload your tenancy contract',
       name_ar: 'دليل الإقامة',
       label_ar: 'تحميل نسخة وثيقة الملكية الخاصة بك'
     }
