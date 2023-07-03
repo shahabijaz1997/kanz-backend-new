@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     resources :attachments, except: :index
     resources :countries, only: %i[index]
     resources :users, only: %i[show update]
+    resources :industries, only: %i[show]
     get 'settings/attachments' => 'settings/attachments'
   end
 end

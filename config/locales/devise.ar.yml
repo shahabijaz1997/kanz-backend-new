@@ -20,7 +20,7 @@ ar:
       unconfirmed: "يجب تأكيد عنوان بريدك الإلكتروني قبل المتابعة."
     mailer:
       confirmation_instructions:
-        subject: "تعليمات التأكيد"
+        subject: "Confirmation instructions"
       reset_password_instructions:
         subject: "تعليمات إعادة تعيين كلمة المرور"
       unlock_instructions:
