@@ -99,10 +99,10 @@ attachment_config = {
   ]
 }
 Role.all.each do |role|
-  role.role_vise_attachments.destroy_all
+  role.attachment_configs&.destroy_all
   attachments = attachment_config[role.title.downcase.to_sym] || attachment_config[:investor]
   attachments.each do |attachment, _index|
-    record = role.role_vise_attachments.find_or_initialize_by(name: attachment[:name])
+    record = role.attachment_configs.find_or_initialize_by(name: attachment[:name])
 
     if record.update(attachment)
       Rails.logger.debug { 'Successfuly added attachment configuration' }

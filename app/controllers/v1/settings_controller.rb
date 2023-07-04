@@ -4,11 +4,15 @@
 module V1
   class SettingsController < ApplicationController
     def attachments
-      attachments = RoleViseAttachmentSerializer.new(
-        current_user.user_role.role_vise_attachments
-      ).serializable_hash[:data].map { |d| d[:attributes] }
+      attachment_configs = current_user.user_role.attachment_configs.map do |config|
+        attachment = Attachment.find_by(attachment_config_id: config.id, parent: current_user)
 
-      success(I18n.t('realtor.get.success.show'), attachments)
+        AttachmentConfigSerializer.new(
+          config).serializable_hash[:data][:attributes].merge(
+          attachment_url: attachment&.url)
+      end
+
+      success(I18n.t('realtor.get.success.show'), attachment_configs)
     end
   end
 end

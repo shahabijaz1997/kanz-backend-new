@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 # Fast json serializer
-class RoleViseAttachmentSerializer
+class AttachmentConfigSerializer
   include JSONAPI::Serializer
-  attributes :label, :index, :required, :allowed_file_types
+  attributes :id, :index, :required, :allowed_file_types
 
   attribute :en do |attachment|
     {

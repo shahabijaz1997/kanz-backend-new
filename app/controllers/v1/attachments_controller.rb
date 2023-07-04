@@ -50,7 +50,7 @@ module V1
     end
 
     def attachment_params
-      params.require(:attachment).permit(:name, :attachment_kind, :file)
+      params.require(:attachment).permit(:name, :attachment_kind, :file, :attachment_config_id)
     end
 
     def check_file_presence

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_27_120607) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_03_105455) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -78,6 +78,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_27_120607) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
+  create_table "attachment_configs", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "label"
+    t.integer "index"
+    t.boolean "required", default: true
+    t.string "allowed_file_types", array: true
+    t.bigint "role_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name_ar"
+    t.string "label_ar"
+    t.index ["role_id"], name: "index_attachment_configs_on_role_id"
+  end
+
   create_table "attachments", force: :cascade do |t|
     t.string "parent_type"
     t.bigint "parent_id"
@@ -85,6 +99,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_27_120607) do
     t.string "attachment_kind"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "attachment_config_id"
     t.index ["parent_type", "parent_id"], name: "index_attachments_on_parent"
   end
 
@@ -166,20 +181,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_27_120607) do
     t.index ["nationality_id"], name: "index_realtor_profiles_on_nationality_id"
     t.index ["realtor_id"], name: "index_realtor_profiles_on_realtor_id"
     t.index ["residence_id"], name: "index_realtor_profiles_on_residence_id"
-  end
-
-  create_table "role_vise_attachments", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "label"
-    t.integer "index"
-    t.boolean "required", default: true
-    t.string "allowed_file_types", array: true
-    t.bigint "role_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "name_ar"
-    t.string "label_ar"
-    t.index ["role_id"], name: "index_role_vise_attachments_on_role_id"
   end
 
   create_table "roles", force: :cascade do |t|
