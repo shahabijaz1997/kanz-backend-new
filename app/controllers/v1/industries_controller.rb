@@ -8,4 +8,5 @@ module V1
         IndustrySerializer.new(Industry.all).serializable_hash[:data].map { |d| d[:attributes] }
       )
     end
+  end
 end
