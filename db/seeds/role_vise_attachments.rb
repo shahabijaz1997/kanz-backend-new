@@ -19,18 +19,21 @@ end
 attachment_config = {
   investor: [
     {
+      index: 0,
       name: 'Proof of identity',
       label: 'Upload a photo of your passport.',
       name_ar: 'إثبات الهوية',
       label_ar: 'قم بتحميل صورة من جواز سفرك'
     },
     {
+      index: 1,
       name: 'Identity verification',
       label: 'Upload your selfie with passport copy.',
       name_ar: 'التحقق من الهوية',
       label_ar: 'قم بتحميل صورتك الشخصية مع نسخة من جواز السفر'
     },
     {
+      index: 2,
       name: 'Proof of residence',
       label: 'Upload your property document copy.',
       name_ar: 'دليل الإقامة',
@@ -39,18 +42,21 @@ attachment_config = {
   ],
   realtor: [
     {
+      index: 0,
       name: 'Proof of Identity',
       label: 'Upload a scanned copy of your passport',
       name_ar: 'إثبات الهوية',
       label_ar: 'قم بتحميل صورة من جواز سفرك'
     },
     {
+      index: 1,
       name: 'Identity Verification',
       label: 'Take a selfie with your passport',
       name_ar: 'التحقق من الهوية',
       label_ar: 'قم بتحميل صورتك الشخصية مع نسخة من جواز السفر'
     },
     {
+      index: 2,
       name: 'Proof of Residence',
       label: 'Upload your tenancy contract',
       name_ar: 'دليل الإقامة',
@@ -59,18 +65,21 @@ attachment_config = {
   ],
   syndicate: [
     {
+      index: 0,
       name: 'Proof of identity',
       label: 'Upload a photo of your passport.',
       name_ar: 'إثبات الهوية',
       label_ar: 'قم بتحميل صورة من جواز سفرك'
     },
     {
+      index: 1,
       name: 'Identity verification',
       label: 'Upload your selfie with passport copy.',
       name_ar: 'التحقق من الهوية',
       label_ar: 'قم بتحميل صورتك الشخصية مع نسخة من جواز السفر'
     },
     {
+      index: 2,
       name: 'Proof of residence',
       label: 'Upload your property document copy.',
       name_ar: 'دليل الإقامة',
@@ -79,18 +88,21 @@ attachment_config = {
   ],
   startup: [
     {
+      index: 0,
       name: 'Proof of Identity',
       label: 'Upload a scanned copy of your passport',
       name_ar: 'إثبات الهوية',
       label_ar: 'قم بتحميل صورة من جواز سفرك'
     },
     {
+      index: 1,
       name: 'Identity Verification',
       label: 'Take a selfie with your passport',
       name_ar: 'التحقق من الهوية',
       label_ar: 'قم بتحميل صورتك الشخصية مع نسخة من جواز السفر'
     },
     {
+      index: 2,
       name: 'Proof of Residence',
       label: 'Upload your tenancy contract',
       name_ar: 'دليل الإقامة',
@@ -99,10 +111,10 @@ attachment_config = {
   ]
 }
 Role.all.each do |role|
-  role.role_vise_attachments.destroy_all
+  role.attachment_configs&.destroy_all
   attachments = attachment_config[role.title.downcase.to_sym] || attachment_config[:investor]
   attachments.each do |attachment, _index|
-    record = role.role_vise_attachments.find_or_initialize_by(name: attachment[:name])
+    record = role.attachment_configs.find_or_initialize_by(name: attachment[:name])
 
     if record.update(attachment)
       Rails.logger.debug { 'Successfuly added attachment configuration' }
