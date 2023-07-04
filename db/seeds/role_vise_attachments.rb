@@ -19,18 +19,21 @@ end
 attachment_config = {
   investor: [
     {
+      index: 0,
       name: 'Proof of identity',
       label: 'Upload a photo of your passport.',
       name_ar: 'إثبات الهوية',
       label_ar: 'قم بتحميل صورة من جواز سفرك'
     },
     {
+      index: 1,
       name: 'Identity verification',
       label: 'Upload your selfie with passport copy.',
       name_ar: 'التحقق من الهوية',
       label_ar: 'قم بتحميل صورتك الشخصية مع نسخة من جواز السفر'
     },
     {
+      index: 2,
       name: 'Proof of residence',
       label: 'Upload your property document copy.',
       name_ar: 'دليل الإقامة',
@@ -39,18 +42,21 @@ attachment_config = {
   ],
   realtor: [
     {
+      index: 0,
       name: 'Proof of Identity',
       label: 'Upload a scanned copy of your passport',
       name_ar: 'إثبات الهوية',
       label_ar: 'قم بتحميل صورة من جواز سفرك'
     },
     {
+      index: 1,
       name: 'Identity Verification',
       label: 'Take a selfie with your passport',
       name_ar: 'التحقق من الهوية',
       label_ar: 'قم بتحميل صورتك الشخصية مع نسخة من جواز السفر'
     },
     {
+      index: 2,
       name: 'Proof of Residence',
       label: 'Upload your tenancy contract',
       name_ar: 'دليل الإقامة',
@@ -59,18 +65,21 @@ attachment_config = {
   ],
   syndicate: [
     {
+      index: 0,
       name: 'Proof of identity',
       label: 'Upload a photo of your passport.',
       name_ar: 'إثبات الهوية',
       label_ar: 'قم بتحميل صورة من جواز سفرك'
     },
     {
+      index: 1,
       name: 'Identity verification',
       label: 'Upload your selfie with passport copy.',
       name_ar: 'التحقق من الهوية',
       label_ar: 'قم بتحميل صورتك الشخصية مع نسخة من جواز السفر'
     },
     {
+      index: 2,
       name: 'Proof of residence',
       label: 'Upload your property document copy.',
       name_ar: 'دليل الإقامة',
@@ -79,18 +88,21 @@ attachment_config = {
   ],
   startup: [
     {
+      index: 0,
       name: 'Proof of Identity',
       label: 'Upload a scanned copy of your passport',
       name_ar: 'إثبات الهوية',
       label_ar: 'قم بتحميل صورة من جواز سفرك'
     },
     {
+      index: 1,
       name: 'Identity Verification',
       label: 'Take a selfie with your passport',
       name_ar: 'التحقق من الهوية',
       label_ar: 'قم بتحميل صورتك الشخصية مع نسخة من جواز السفر'
     },
     {
+      index: 2,
       name: 'Proof of Residence',
       label: 'Upload your tenancy contract',
       name_ar: 'دليل الإقامة',
