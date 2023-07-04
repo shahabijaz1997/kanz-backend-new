@@ -44,7 +44,7 @@ module V1
     end
 
     def check_file_presence
-      return if @syndicate.profile.present? && @syndicate.profile.logo.present?
+      return if @syndicate.profile.present? && @syndicate.profile.attachment.present?
 
       failure(I18n.t('errors.exceptions.file_missing')) if profile_params[:logo].blank?
     end
