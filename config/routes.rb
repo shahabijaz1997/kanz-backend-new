@@ -33,5 +33,6 @@ Rails.application.routes.draw do
     resources :industries, only: %i[index]
     get 'settings/attachments' => 'settings#attachments'
     get 'regions' => 'industries#regions'
+    post 'attachments/submit', to: 'attachments#submit'
   end
 end

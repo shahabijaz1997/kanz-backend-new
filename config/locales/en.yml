@@ -40,6 +40,9 @@ en:
             email:
               taken: 'already registered'
   errors:
+    invalid_status: "Current profile status can't be changed"
+    incomplete_profile: "Please complete user profile"
+    doc_missing: "Please attach all required documents"
     exceptions:
       auth_token_expired: 'Session expired!'
       not_found: 'Record not found.'
