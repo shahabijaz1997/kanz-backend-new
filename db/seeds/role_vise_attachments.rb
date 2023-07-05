@@ -111,7 +111,6 @@ attachment_config = {
   ]
 }
 Role.all.each do |role|
-  role.attachment_configs&.destroy_all
   attachments = attachment_config[role.title.downcase.to_sym] || attachment_config[:investor]
   attachments.each do |attachment, _index|
     record = role.attachment_configs.find_or_initialize_by(name: attachment[:name])
