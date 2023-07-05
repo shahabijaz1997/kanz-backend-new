@@ -2,7 +2,7 @@
 
 # Startups apis
 module V1
-  class RealtorsController < ApplicationController
+  class RealtorsController < ApiController
     before_action :validate_realtor
 
     def show

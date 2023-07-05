@@ -2,7 +2,7 @@
 
 # Startups apis
 module V1
-  class SettingsController < ApplicationController
+  class SettingsController < ApiController
     def attachments
       attachment_configs = current_user.user_role.attachment_configs.map do |config|
         attachment = Attachment.find_by(attachment_config_id: config.id, parent: current_user)

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  devise_for :admin_users
+
   devise_for :users, path: '', path_names: {
                                  sign_in: 'login',
                                  sign_out: 'logout',
@@ -33,4 +35,7 @@ Rails.application.routes.draw do
     resources :industries, only: %i[show]
     get 'settings/attachments' => 'settings/attachments'
   end
+
+  get "dashboard/index"  
+  root to: "dashboard#index"
 end

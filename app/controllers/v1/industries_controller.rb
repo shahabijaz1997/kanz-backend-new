@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module V1
-  class IndustriesController < ApplicationController
+  class IndustriesController < ApiController
     def index
       success(
         I18n.t('general.success'),

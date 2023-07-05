@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Users
-  class ConfirmationsController < ApplicationController
+  class ConfirmationsController < ApiController
     include RackSessionSolution
 
     skip_before_action :authenticate_user!

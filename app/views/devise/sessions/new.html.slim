@@ -1,0 +1,21 @@
+div.d-flex.align-items-center.flex-column
+  h2.text-primary.text-opacity-75 Login
+  = simple_form_for(resource, as: resource_name, url: session_path(resource_name),
+    html: { class: 'mt-4 col-4' }) do |form|
+    div class="form-inputs"
+      div.mt-3
+        div.input-group
+          span.input-group-text
+            i class="bi bi-person-fill fs-4"
+          = form.email_field :email, required: true, class: "form-control", label: false, autofocus: true, placeholder: 'Email', input_html: { autocomplete: "email" }
+      div.mt-3
+        div.input-group
+          span.input-group-text
+            i class="bi bi-shield-lock-fill fs-4"
+          = form.password_field :password, required: true, class: "form-control", label: false, placeholder: 'Password', input_html: { autocomplete: "current-password" }
+      div.mt-3
+        = form.check_box :remember_me, as: :boolean, class: "text-white" if devise_mapping.rememberable?
+        label.text-secondary.ms-2 Remember me
+      div.form-actions.my-3.d-flex.flex-column
+        = form.submit 'Log in', class: 'btn btn-outline-primary'
+        = render "devise/shared/links"

@@ -2,7 +2,7 @@
 
 # Syndicates apis
 module V1
-  class SyndicatesController < ApplicationController
+  class SyndicatesController < ApiController
     before_action :validate_persona
     before_action :check_file_presence, only: %i[create]
 

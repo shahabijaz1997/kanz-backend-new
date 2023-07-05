@@ -1,17 +1,9 @@
 # frozen_string_literal: true
 
-class ApplicationController < ActionController::API
-  include ResponseHandler
-  include Pundit
-  include ExceptionHandler
+class ApplicationController < ActionController::Base
+  protect_from_forgery with: :null_session
+  include Pundit::Authorization
+  include ActiveStorage::SetCurrent
+  before_action :authenticate_admin_user!
 
-  before_action :authenticate_user!
-  before_action :set_locale
-  respond_to :json
-
-  def set_locale
-    return unless current_user
-
-    I18n.locale = :ar if current_user.arabic?
-  end
 end

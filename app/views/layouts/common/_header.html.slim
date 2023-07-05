@@ -1,0 +1,10 @@
+div.d-flex.justify-content-between.px-4.py-3
+  div
+    h4.text-primary Kanz - BackOffice
+  div.d-flex.align-items-center
+    - if current_admin_user
+      span.text-secondary
+        | Hi, 
+        = current_admin_user.fullname
+      div.m-2
+      = button_to 'logout', destroy_admin_user_session_path, method: :delete, class: 'btn btn-outline-primary'

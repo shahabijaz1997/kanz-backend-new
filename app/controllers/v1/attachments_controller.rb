@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module V1
-  class AttachmentsController < ApplicationController
+  class AttachmentsController < ApiController
     before_action :set_attachment, only: %i[show update destroy]
     before_action :check_file_presence, only: %i[create]
 
