@@ -7,7 +7,7 @@ class Attachment < ApplicationRecord
   has_one_attached :file
 
   before_validation :set_directory_path
-  after_save :update_user_status
+  # after_save :update_user_status
 
   def url
     Rails.env.development? ? local_storage_path : file.url
@@ -20,12 +20,6 @@ class Attachment < ApplicationRecord
   end
 
   private
-
-  def update_user_status
-    return unless parent_type == 'User'
-
-    UserState::Manager.call(parent)
-  end
 
   def set_directory_path
     gust = SecureRandom.base36(28)

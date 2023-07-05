@@ -43,6 +43,16 @@ module V1
       end
     end
 
+    # POST /attachments/submit
+    def submit
+      response = UserState::Manager.call(current_user)
+      if response.status
+        success(response.message)
+      else
+        failure(response.message)
+      end
+    end
+
     private
 
     def set_attachment
