@@ -6,11 +6,17 @@ class RealtorProfileSerializer
 
   attributes :no_of_properties
 
-  attribute :nationality do |profile|
-    profile.nationality.name
+  attribute :en do |profile|
+    {
+      nationality: profile.nationality.name,
+      residence: profile.residence.name
+    }
   end
 
-  attribute :residence do |profile|
-    profile.residence.name
+  attribute :ar do |profile|
+    {
+      nationality: profile.nationality.name_ar,
+      residence: profile.residence.name_ar
+    }
   end
 end
