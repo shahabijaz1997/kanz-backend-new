@@ -8,8 +8,12 @@ module V1
         attachment = Attachment.find_by(attachment_config_id: config.id, parent: current_user)
 
         AttachmentConfigSerializer.new(
-          config).serializable_hash[:data][:attributes].merge(
-          attachment_url: attachment&.url)
+          config
+        ).serializable_hash[:data][:attributes].merge({
+          attachment_id: attachment&.id,
+          attachment_url: attachment&.url,
+          attachment_kind: attachment&.attachment_kind
+        })
       end
 
       success(I18n.t('realtor.get.success.show'), attachment_configs)

@@ -13,6 +13,7 @@ en:
         accreditation: 'Successfuly updated accreditation info.'
         philosophy: 'Successfully updated the investment philosophy.'
   attachments:
+    not_found: 'Attachment not found.'
     upload:
       success: 'Attachments uploaded successfully'
     update:

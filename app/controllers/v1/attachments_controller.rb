@@ -35,8 +35,7 @@ module V1
 
     # DELETE /attachments/1
     def destroy
-      if @attachment.parent_id == current_user.id
-        @attachment.destroy
+      if @attachment.destroy
         success(I18n.t('attachments.delete.success'))
       else
         failure(I18n.t('attachments.delete.failure'))
@@ -56,7 +55,9 @@ module V1
     private
 
     def set_attachment
-      @attachment = current_user.attachments.find(params[:id])
+      @attachment = current_user.attachments.find_by(id: params[:id])
+
+      failure(I18n.t('attachments.not_found')) if @attachment.blank?
     end
 
     def attachment_params
