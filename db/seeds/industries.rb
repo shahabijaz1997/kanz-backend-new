@@ -106,8 +106,8 @@ industries.each do |industry|
   record = Industry.find_or_initialize_by(name: industry[:name])
 
   if record.update(industry)
-    Rails.logger.debug { "Added country: #{industry[:name]}" }
+    Rails.logger.debug { "Added industry: #{industry[:name]}" }
   else
-    Rails.logger.debug { "Failed to save country with errors: #{record.errors.full_messages.to_sentence}" }
+    Rails.logger.debug { "Failed to save industry: #{record.errors.full_messages.to_sentence}" }
   end
 end

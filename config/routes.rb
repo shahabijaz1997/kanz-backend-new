@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     resources :countries, only: %i[index]
     resources :users, only: %i[show update]
     resources :industries, only: %i[index]
-    get 'settings/attachments' => 'settings/attachments'
+    get 'settings/attachments' => 'settings#attachments'
+    get 'regions' => 'industries#regions'
   end
 end

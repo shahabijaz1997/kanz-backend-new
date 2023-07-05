@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_03_105455) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_05_052801) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -181,6 +181,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_105455) do
     t.index ["nationality_id"], name: "index_realtor_profiles_on_nationality_id"
     t.index ["realtor_id"], name: "index_realtor_profiles_on_realtor_id"
     t.index ["residence_id"], name: "index_realtor_profiles_on_residence_id"
+  end
+
+  create_table "regions", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "name_ar", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "roles", force: :cascade do |t|
