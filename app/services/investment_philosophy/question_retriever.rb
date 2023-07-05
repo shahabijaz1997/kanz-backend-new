@@ -2,11 +2,12 @@
 
 module InvestmentPhilosophy
   class QuestionRetriever < ApplicationService
-    attr_reader :step
+    attr_reader :step, :user
 
-    def initialize(step = nil)
+    def initialize(step = nil, user)
       @step = step.to_i
       @last_step = Question.maximum(:step)
+      @user = user
     end
 
     def call
@@ -33,7 +34,7 @@ module InvestmentPhilosophy
       questions = Question.where(step:)
       return [] if questions.blank?
 
-      QuestionSerializer.new(questions).serializable_hash[:data].map { |d| d[:attributes] }
+      QuestionSerializer.new(questions, user).serializable_hash[:data].map { |d| d[:attributes] }
     end
   end
 end
