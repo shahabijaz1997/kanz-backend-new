@@ -27,3 +27,30 @@ STATUSES = {
   rejected: 4,
   approved: 5
 }.freeze
+
+ROUTES = {
+  admin: [
+    {
+      name: "Manage Admins",
+      path: "/admin_users"
+    }
+  ],
+  customer_user: [
+    {
+      name: "Investors",
+      path: "/investors"
+    },
+    {
+      name: "Realtors",
+      path: "/realtors"
+    },
+    {
+      name: "Startups",
+      path: "/startups"
+    },
+    {
+      name: "Syndicates",
+      path: "/syndicates"
+    }
+  ]
+}.freeze

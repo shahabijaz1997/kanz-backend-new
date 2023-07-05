@@ -31,7 +31,11 @@ class AdminUser < ApplicationRecord
 
   def compliance_officer?
     admin_role && admin_role.Compliance_Officer?
-  end  
+  end
+
+  def role
+    admin? or super_admin? ? :admin : :customer_user
+  end
    
   private
 

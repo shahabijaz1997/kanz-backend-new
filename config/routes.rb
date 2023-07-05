@@ -36,6 +36,13 @@ Rails.application.routes.draw do
     get 'settings/attachments' => 'settings/attachments'
   end
 
+  # Admin routes
+  resources :admin_users
+  resources :investors
+  resources :realtors
+  resources :startups
+  resources :syndicates
+
   get "dashboard/index"  
   root to: "dashboard#index"
 end
