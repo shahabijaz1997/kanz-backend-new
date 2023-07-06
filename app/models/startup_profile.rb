@@ -8,4 +8,14 @@ class StartupProfile < ApplicationRecord
   validates :company_name, :legal_name, :total_capital_raised,
             :current_round_capital_target, :ceo_name, :ceo_email,
             :currency, presence: true
+
+  after_create :update_profile_state
+
+  private
+
+  def update_profile_state
+    profile_states = startup.profile_states
+    profile_states[:profile_completed] = true
+    startup.update(profile_states: profile_states)
+  end
 end

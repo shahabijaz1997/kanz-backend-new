@@ -23,7 +23,7 @@ module Users
       if request.method == 'POST' && resource.persisted?
         data = UserSerializer.new(
           resource
-        ).serializable_hash[:data][:attributes].except(:role, :meta_info)
+        ).serializable_hash[:data][:attributes].except(:role)
         success(I18n.t('devise.registrations.signed_up'), data)
       else
         unprocessable(resource.errors.full_messages.to_sentence)

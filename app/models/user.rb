@@ -18,6 +18,7 @@ class User < ApplicationRecord
   delegate :title, :title_ar, to: :user_role, prefix: :role
 
   before_validation :update_role, on: :create
+  after_create :update_profile_state
 
   # Devise override the confirmation token
   def generate_confirmation_token
@@ -74,6 +75,17 @@ class User < ApplicationRecord
 
   def serialized_data
     UserSerializer.new(self).serializable_hash[:data][:attributes]
+  end
+
+  def update_profile_state
+    self.profile_states = {
+      account_confirmed: self.confirmed?,
+      profile_completed: false,
+      questionnaire_steps_completed: 0,
+      questionnaire_completed: false,
+      attachments_completed: false
+    }
+    self.save
   end
 
   private

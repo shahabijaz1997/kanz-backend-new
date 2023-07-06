@@ -9,13 +9,16 @@ module Users
 
     def update
       response = Confirmation::Handler.call(@user, params[:confirmation_token])
-      return signin_and_respond if response.status
+      if response.status
+        @user.update_profile_state
+        signin_and_respond
+      else
+        @user.increment_failed_attempts
+        return unprocessable(response.message) unless @user.attempts_exceeded?
 
-      @user.increment_failed_attempts
-      return unprocessable(response.message) unless @user.attempts_exceeded?
-
-      @user.lock_access!({ send_instructions: false })
-      failure(I18n.t('devise.failure.locked'), 400, { account_status: 'blocked' })
+        @user.lock_access!({ send_instructions: false })
+        failure(I18n.t('devise.failure.locked'), 400, { account_status: 'blocked' })
+      end
     end
 
     # POST /resource/confirmation

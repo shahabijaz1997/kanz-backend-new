@@ -15,7 +15,7 @@ module UserState
       @errors << I18n.t('errors.doc_missing') unless attachments_completed?
 
       if errors.blank?
-        user.update(status: User.statuses[:submitted])
+        update_profile_state
         response(I18n.t('general.success'), true)
       else
         response(errors.to_sentence, false)
@@ -41,6 +41,12 @@ module UserState
 
     def philosophy_completed?
       !user.investor? || user.investment_philosophies.present?
+    end
+
+    def update_profile_state
+      profile_states = user.profile_states
+      profile_states[:attachments_completed] = true
+      user.update(profile_states: profile_states, status: User.statuses[:submitted])
     end
   end
 end
