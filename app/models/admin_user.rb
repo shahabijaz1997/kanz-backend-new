@@ -34,9 +34,13 @@ class AdminUser < ApplicationRecord
   end
 
   def role
-    admin? or super_admin? ? :admin : :customer_user
+    admin? || super_admin? ? :admin : :customer_user
   end
    
+  def self.ransackable_attributes(auth_object = nil)
+    %w[id email first_name last_name admin_role_id created_at]
+  end
+
   private
 
   def set_default_role

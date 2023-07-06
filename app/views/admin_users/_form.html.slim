@@ -1,0 +1,39 @@
+= simple_form_for(@admin_user) do |form|
+  div.d-flex.mt-4
+    div.col-2
+      b Email
+    div
+      = form.email_field :email, required: true, class: "form-control", label: false, autofocus: true, placeholder: 'Email', input_html: { autocomplete: "email" }
+
+  div.d-flex.mt-2
+    div.col-2
+      b First Name
+    div
+      = form.text_field :first_name, required: true, class: "form-control", label: false, autofocus: true, placeholder: 'First Name', input_html: { autocomplete: "first_name" }
+
+  div.d-flex.mt-2
+    div.col-2
+      b Last Name
+    div
+      = form.text_field :last_name, required: true, class: "form-control", label: false, autofocus: true, placeholder: 'Last Name', input_html: { autocomplete: "last_name" }
+
+  div.d-flex.mt-2
+    div.col-2
+      b Admin Role
+    div
+      = form.input :admin_role_id, required: true, as: :select, collection: @admin_roles, prompt: 'Select Admin Role', class: "form-control", label: false, autofocus: true, input_html: { autocomplete: "admin_role_id" }
+
+  - unless @admin_user.persisted?
+    div.d-flex.mt-2
+      div.col-2
+        b Password
+      div
+        = form.password_field :password, required: true, autofocus: true, class: "form-control", label: false, placeholder: 'Password'
+    
+    div.d-flex.mt-2
+      div.col-2
+        b Confirm Password
+      div
+        = form.password_field :password_confirmation, required: true, autofocus: true, class: "form-control", label: false, placeholder: 'Password Confirmation'
+
+  = form.submit "Save", class: 'btn btn-primary'

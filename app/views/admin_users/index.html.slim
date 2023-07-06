@@ -1,1 +1,55 @@
 = render 'shared/page_title', title: "Manage Admins"
+
+div.clearfix
+  = link_to "Create Admin User", new_admin_user_path, class: 'btn btn-outline-primary float-end'
+
+div.m-3.p-3.border.rounded.w-auto
+  b Filters
+  = search_form_for @filtered_admin_users, class: 'd-flex mt-2' do |form|
+    div
+      = form.label :first_name_cont, 'First Name'
+      = form.search_field :first_name_cont, class: 'form-control'
+    
+    div.ms-2
+      = form.label :last_name_cont, 'Last Name'
+      = form.search_field :last_name_cont, class: 'form-control'
+
+    div.ms-2
+      = form.label :admin_role_id_eq, 'Role'
+      = form.select :admin_role_id_eq, @admin_roles, { include_blank: true}, { class: 'form-control' }
+
+    div.ms-2
+      = form.label :email_cont, 'Email'
+      = form.search_field :email_cont, class: 'form-control'
+
+    div.ms-2.align-self-end
+      = form.submit 'Search', class: 'btn btn-primary'
+
+table.mt-4
+  thead
+    tr
+      th.col-1 = sort_link(@filtered_admin_users, :id)
+      th.col-1 = sort_link(@filtered_admin_users, :first_name)
+      th.col-1 = sort_link(@filtered_admin_users, :last_name)
+      th.col-1 = sort_link(@filtered_admin_users, :admin_role_id)
+      th.col-1 = sort_link(@filtered_admin_users, :email)
+      th.col-1 = sort_link(@filtered_admin_users, :created_at)
+      th.col-1 Actions
+  tbody
+    - @admin_users.each do |admin_user|
+      tr
+        td.col-1 = admin_user.id
+        td.col-1 = admin_user.first_name
+        td.col-1 = admin_user.last_name
+        td.col-1 = admin_user.admin_role.title
+        td.col-1 = admin_user.email
+        td.col-1 = admin_user.created_at
+        td.col-1.d-flex
+          div.ms-2
+            a.btn.btn-outline-primary href=admin_user_path(admin_user)
+              i class="bi bi-info"
+          div.ms-2
+            a.btn.btn-outline-primary href=edit_admin_user_path(admin_user)
+              i class="bi bi-pen"
+
+

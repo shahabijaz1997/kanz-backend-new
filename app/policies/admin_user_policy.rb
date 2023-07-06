@@ -2,30 +2,30 @@
 
   class AdminUserPolicy < ApplicationPolicy
    
-    class Scope < Struct.new(:user, :scope)
+    class Scope < Scope
       def resolve
-        scope
+        user_context.admin? ? scope.customer_users : scope.all
       end
     end
 
     def index?
-      user.admin? || user.super_admin? # Only allow admin users to access the index page
+      user_context.admin? || user_context.super_admin? # Only allow admin users to access the index page
     end
 
     def show?
-      user.admin? || user.super_admin? # Only allow admin users to view individual admin users
+      user_context.admin? || user_context.super_admin? # Only allow admin users to view individual admin users
     end
 
     def create?
-      user.admin? || user.super_admin? # Only allow admin users to create new admin users
+      user_context.admin? || user_context.super_admin? # Only allow admin users to create new admin users
     end
 
     def update?
-      user.super_admin? # Only allow admin users to update admin users
+      user_context.admin? || user_context.super_admin? # Only allow admin users to update admin users
     end
 
     def destroy?
-      user.super_admin? # Only allow admin users to delete admin users
+      user_context.admin? || user_context.super_admin? # Only allow admin users to delete admin users
     end
 
   end
