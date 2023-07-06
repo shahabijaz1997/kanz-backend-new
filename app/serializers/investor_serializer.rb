@@ -21,4 +21,13 @@ class InvestorSerializer
   attribute :role_ar do |user|
     user.role_title_ar
   end
+
+  attribute :steps_completed do |user|
+    if UsersResponse.exists?(user_id: user.id)
+      question_id = user.investment_philosophies.order(:created_at).last.question_id
+      Question.find_by(id: question_id).step
+    else
+      0
+    end
+  end
 end
