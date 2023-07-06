@@ -5,7 +5,7 @@ class InvestorSerializer
   include JSONAPI::Serializer
   has_many :attachments
 
-  attributes :name, :email, :type, :status, :language
+  attributes :name, :email, :type, :status, :language, :profile_states
 
   attribute :profile do |investor|
     keys = investor.individual_investor? ? [:legal_name,:location] : [:nationality, :residence]

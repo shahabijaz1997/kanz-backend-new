@@ -24,9 +24,10 @@ module Users
         data = UserSerializer.new(
           resource
         ).serializable_hash[:data][:attributes].except(:role)
-        success(I18n.t('devise.registrations.signed_up'), data)
+        success(I18n.t('devise.registrations.signed_up'), data, 'signed_up')
       else
-        unprocessable(resource.errors.full_messages.to_sentence)
+        unprocessable(resource.errors.full_messages.to_sentence, 'invalid_password')
+        # email_taken
       end
     end
   end

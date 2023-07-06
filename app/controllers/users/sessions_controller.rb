@@ -13,7 +13,7 @@ module Users
     def respond_with(resource, _opts = {})
       data = UserSerializer.new(resource).serializable_hash[:data][:attributes]
 
-      success(I18n.t('devise.sessions.signed_in'), data)
+      success(I18n.t('devise.sessions.signed_in'), data, 'signed_in')
     end
 
     def respond_to_on_destroy

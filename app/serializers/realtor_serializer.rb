@@ -4,7 +4,7 @@
 class RealtorSerializer
   include JSONAPI::Serializer
 
-  attributes :id, :name, :email, :type, :status, :language
+  attributes :id, :name, :email, :type, :status, :language, :profile_states
 
   attribute :profile do |realtor|
     RealtorProfileSerializer.new(
