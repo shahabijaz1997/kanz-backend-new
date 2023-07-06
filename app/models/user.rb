@@ -70,6 +70,7 @@ class User < ApplicationRecord
       user.type = auth.type
       user.password = generate_password
       user.confirmed_at = Time.zone.now
+      user.language = auth.language
     end
   end
 

@@ -2,23 +2,25 @@
 
 module Oauth2
   class Base < ApplicationService
-    attr_reader :token, :type, :provider, :errors
+    attr_reader :token, :type, :provider, :errors, :language
 
-    def initialize(token, type)
+    def initialize(token, type, language)
       @token = token
       @type = type
+      @language = language
       @errors = []
     end
 
     def auth_object(response)
       return if errors.any?
 
-      Struct.new(:provider, :uid, :email, :name, :type).new(
+      Struct.new(:provider, :uid, :email, :name, :type, :language).new(
         provider,
         response.with_indifferent_access['sub'] || SecureRandom.base64(10),
         response.with_indifferent_access['email'],
         response.with_indifferent_access['name'],
-        type
+        type,
+        language
       )
     end
 

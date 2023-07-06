@@ -5,14 +5,15 @@ module Users
     include RackSessionSolution
     include HTTParty
     skip_before_action :authenticate_user!
+    before_action :update_language
 
     def google
-      user = Oauth2::Google.call(params[:access_token], params[:type])
+      user = Oauth2::Google.call(params[:access_token], params[:type], params[:language])
       respond(user)
     end
 
     def linkedin
-      user = Oauth2::LinkedIn.call(params[:code], params[:type])
+      user = Oauth2::LinkedIn.call(params[:code], params[:type], params[:language])
       respond(user)
     end
 
@@ -23,6 +24,10 @@ module Users
 
       sign_in(User, user)
       success(I18n.t('devise.sessions.signed_in'), user.serialized_data)
+    end
+
+    def update_language
+      I18n.locale = params[:language] == 'ar' ? :ar : :en
     end
   end
 end

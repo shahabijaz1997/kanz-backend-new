@@ -1,6 +1,6 @@
 module Oauth2
   class Google < Base
-    def initialize(token, type)
+    def initialize(token, type, language)
       super
       @provider = 'Google'
     end
