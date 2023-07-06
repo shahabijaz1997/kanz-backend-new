@@ -53,7 +53,7 @@ module Users
     end
 
     def update_language
-      I18n.locale = @user.arabic? == 'ar' ? :ar : :en
+      I18n.locale = @user.arabic? ? :ar : :en
     end
   end
 end
