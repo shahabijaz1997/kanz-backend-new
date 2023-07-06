@@ -6,4 +6,12 @@ class RealtorProfile < ApplicationRecord
   belongs_to :residence, class_name: 'Country'
 
   validates_presence_of :no_of_properties
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["residence_id", "nationality_id"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["nationality", "residence"]
+  end
 end

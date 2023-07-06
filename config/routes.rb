@@ -38,10 +38,10 @@ Rails.application.routes.draw do
 
   # Admin routes
   resources :admin_users
-  resources :investors
-  resources :realtors
-  resources :startups
-  resources :syndicates
+  resources :investors, only: %i[index show update]
+  resources :realtors, only: %i[index show update]
+  resources :startups, only: %i[index show update]
+  resources :syndicates, only: %i[index show update]
 
   get "dashboard/index"  
   root to: "dashboard#index"

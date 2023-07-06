@@ -1,0 +1,24 @@
+= render 'shared/page_title', title: "Syndicate Details"
+
+p style="color: green" = alert
+
+div.d-flex.mt-4
+  h5.col-2 = @syndicate.name
+
+div.d-flex.mt-4
+  div.col-2
+    b Email
+  div.col-2
+    p = @syndicate.email
+
+div.d-flex
+  div.col-2
+    b Residence
+  div.col-2
+    p = @syndicate.profile.region.join(',')
+
+div.d-flex
+  div.col-2
+    b Nationality
+  div.col-2
+    p = @syndicate.profile.industry_market.join(',')

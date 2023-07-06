@@ -1,1 +1,43 @@
 = render 'shared/page_title', title: "Realtors"
+
+div.align-self-center.bg-light.border.m-4.p-4.rounded style="width: fit-content"
+  b Filters
+  = search_form_for @filtered_realtors, class: 'd-flex mt-2' do |form|
+    div.col.ms-2
+      = form.label :name_cont, 'Name'
+      = form.search_field :name_cont, class: 'form-control'
+
+    div.col.ms-2
+      = form.label :email_cont, 'Email'
+      = form.search_field :email_cont, class: 'form-control'
+
+    div.col.ms-2
+      = form.label :profile_residence_name_eq, 'Residence'
+      = form.select :profile_residence_name_eq, @countries, { include_blank: true}, { class: 'form-control' }
+
+    div.col.ms-2
+      = form.label :profile_nationality_name_eq, 'Nationality'
+      = form.select :profile_nationality_name_eq, @countries, { include_blank: true}, { class: 'form-control' }
+
+    div.ms-2.align-self-end
+      = form.submit 'Search', class: 'btn btn-primary'
+
+table.mt-4
+  thead
+    tr
+      th.col-1 = sort_link(@filtered_realtors, :name)
+      th.col-1 = sort_link(@filtered_realtors, :email)
+      th.col-1 = sort_link(@filtered_realtors, :profile_residence_name, "Residence")
+      th.col-1 = sort_link(@filtered_realtors, :profile_nationality_name, "Nationality")
+      th.col-1 = sort_link(@filtered_realtors, :status, "Status")
+      th.col-1 Actions
+  tbody
+    - @realtors.each do |realtor|
+      tr
+        td.col-1 = realtor.name
+        td.col-1 = realtor.email
+        td.col-1 = realtor.profile.residence.name
+        td.col-1 = realtor.profile.nationality.name
+        td.col-1 = realtor.status.capitalize
+        td.col-1
+          = link_to "View", realtor_path(realtor)

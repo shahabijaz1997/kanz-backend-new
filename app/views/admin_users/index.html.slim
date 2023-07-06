@@ -3,7 +3,7 @@
 div.clearfix
   = link_to "Create Admin User", new_admin_user_path, class: 'btn btn-outline-primary float-end'
 
-div.m-3.p-3.border.rounded.w-auto
+div.align-self-center.bg-light.border.m-4.p-4.rounded style="width: fit-content"
   b Filters
   = search_form_for @filtered_admin_users, class: 'd-flex mt-2' do |form|
     div

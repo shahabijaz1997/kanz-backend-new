@@ -1,1 +1,45 @@
 = render 'shared/page_title', title: "Startups"
+
+div.align-self-center.bg-light.border.m-4.p-4.rounded style="width: fit-content"
+  b Filters
+  = search_form_for @filtered_startups, class: 'd-flex mt-2' do |form|
+    div.col.ms-2
+      = form.label :name_cont, 'Name'
+      = form.search_field :name_cont, class: 'form-control'
+
+    div.col.ms-2
+      = form.label :profile_company_name_cont, 'Company Name'
+      = form.search_field :profile_company_name_cont, class: 'form-control'
+
+    div.col.ms-2
+      = form.label :email_cont, 'Email'
+      = form.search_field :email_cont, class: 'form-control'
+
+    div.col.ms-2
+      = form.label :profile_industry_market_cont, 'Industry/Market'
+      = form.select :profile_industry_market_cont, @industry_markets, { include_blank: true}, { class: 'form-control' }
+
+    div.ms-2.align-self-end
+      = form.submit 'Search', class: 'btn btn-primary'
+
+table.mt-4
+  thead
+    tr
+      th.col-1 = sort_link(@filtered_startups, :name)
+      th.col-1 = sort_link(@filtered_startups, :email)
+      th.col-1 = sort_link(@filtered_startups, :profile_company_name)
+      th.col-1 = sort_link(@filtered_startups, :profile_legal_name)
+      th.col-1 = sort_link(@filtered_startups, :profile_industry_market, "Industry/Market")
+      th.col-1 = sort_link(@filtered_startups, :status, "Status")
+      th.col-1 Actions
+  tbody
+    - @startups.each do |startup|
+      tr
+        td.col-1 = startup.name
+        td.col-1 = startup.email
+        td.col-1 = startup.profile.company_name
+        td.col-1 = startup.profile.legal_name
+        td.col-1 = startup.profile.industry_market.join(", ")
+        td.col-1 = startup.status.capitalize
+        td.col-1
+          = link_to "View", startup_path(startup)

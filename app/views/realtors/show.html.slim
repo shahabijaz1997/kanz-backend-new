@@ -1,0 +1,24 @@
+= render 'shared/page_title', title: "Realtor Details"
+
+p style="color: green" = alert
+
+div.d-flex.mt-4
+  h5.col-2 = @realtor.name
+
+div.d-flex.mt-4
+  div.col-2
+    b Email
+  div.col-2
+    p = @realtor.email
+
+div.d-flex
+  div.col-2
+    b Residence
+  div.col-2
+    p = @realtor.profile.residence.name
+
+div.d-flex
+  div.col-2
+    b Nationality
+  div.col-2
+    p = @realtor.profile.nationality.name

@@ -1,0 +1,30 @@
+= render 'shared/page_title', title: "Syndicate Details"
+
+p style="color: green" = alert
+
+div.d-flex.mt-4
+  h5.col-2 = @startup.name
+
+div.d-flex.mt-4
+  div.col-2
+    b Email
+  div.col-2
+    p = @startup.email
+
+div.d-flex
+  div.col-2
+    b Company Name
+  div.col-2
+    p = @startup.profile.company_name
+
+div.d-flex
+  div.col-2
+    b Legal Name
+  div.col-2
+    p = @startup.profile.legal_name
+
+div.d-flex
+  div.col-2
+    b Industry/Market
+  div.col-2
+    p = @startup.profile.industry_market.join(',')

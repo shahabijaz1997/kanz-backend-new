@@ -11,4 +11,8 @@ class SyndicateProfile < ApplicationRecord
   def update_user_status
     syndicate.update(status: User.statuses[:submitted])
   end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["region", "industry_market"]
+  end
 end
