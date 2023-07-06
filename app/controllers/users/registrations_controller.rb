@@ -7,12 +7,13 @@ module Users
     include ResponseHandler
 
     before_action :configure_permitted_parameters
+    before_action :update_language
     respond_to :json
 
     protected
 
     def configure_permitted_parameters
-      devise_parameter_sanitizer.permit(:sign_up, keys: %i[name type email password])
+      devise_parameter_sanitizer.permit(:sign_up, keys: %i[name type email password, language])
     end
 
     private
@@ -24,11 +25,14 @@ module Users
         data = UserSerializer.new(
           resource
         ).serializable_hash[:data][:attributes].except(:role)
-        success(I18n.t('devise.registrations.signed_up'), data, 'signed_up')
+        success(I18n.t('devise.registrations.signed_up'), data)
       else
-        unprocessable(resource.errors.full_messages.to_sentence, 'invalid_password')
-        # email_taken
+        unprocessable(resource.errors.full_messages.to_sentence)
       end
+    end
+
+    def update_language
+      I18n.locale = params[:user][:language] == 'ar' ? :ar : :en
     end
   end
 end

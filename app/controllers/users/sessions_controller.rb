@@ -6,6 +6,7 @@ module Users
     include RackSessionSolution
     include ResponseHandler
 
+    before_action :update_language
     respond_to :json
 
     private
@@ -13,7 +14,7 @@ module Users
     def respond_with(resource, _opts = {})
       data = UserSerializer.new(resource).serializable_hash[:data][:attributes]
 
-      success(I18n.t('devise.sessions.signed_in'), data, 'signed_in')
+      success(I18n.t('devise.sessions.signed_in'), data)
     end
 
     def respond_to_on_destroy
@@ -22,6 +23,10 @@ module Users
       else
         failure(I18n.t('devise.failure.unauthenticated'), 401)
       end
+    end
+
+    def update_language
+      I18n.locale = params[:user][:language] == 'ar' ? :ar : :en
     end
   end
 end

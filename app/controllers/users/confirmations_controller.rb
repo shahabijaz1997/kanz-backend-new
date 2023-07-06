@@ -6,6 +6,7 @@ module Users
 
     skip_before_action :authenticate_user!
     before_action :find_user, :validate_access_locked
+    before_action :update_language
 
     def update
       response = Confirmation::Handler.call(@user, params[:confirmation_token])
@@ -49,6 +50,10 @@ module Users
       sign_in(User, @user)
       data = UserSerializer.new(@user).serializable_hash[:data][:attributes]
       success(I18n.t('devise.confirmations.confirmed'), data)
+    end
+
+    def update_language
+      I18n.locale = @user.arabic? == 'ar' ? :ar : :en
     end
   end
 end
