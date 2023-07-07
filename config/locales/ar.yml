@@ -30,14 +30,9 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 ar:
-  activerecord:
-    errors:
-      models:
-        user:
-          attributes:
-            password:
-              invalid: "اختر كلمة مرور قوية. يجب أن تتكون كلمة المرور الخاصة بك من: 8 أحرف، تحتوي على حرف صغير وحرف كبير ورقم وحرف خاص على الأقل."
   errors:
+    weak_password: "اختر كلمة مرور قوية. يجب أن تتكون كلمة المرور الخاصة بك من: 8 أحرف، تحتوي على حرف صغير وحرف كبير ورقم وحرف خاص على الأقل."
+    email_taken: "البريد الإلكتروني مسجل مسبقا"
     exceptions:
       auth_token_expired: 'انتهت صلاحية الجلسة!'
       not_found: 'لم يتم العثور على السجل.'

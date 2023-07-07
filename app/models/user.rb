@@ -4,13 +4,14 @@
 class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
   devise :database_authenticatable, :registerable, :confirmable,
-         :recoverable, :validatable, :trackable, :lockable,
+         :recoverable, :trackable, :lockable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
   enum status: STATUSES
 
-  validates :password, format: PASSWORD_REGEX, if: :password_validation_needed?
   validates :type, inclusion: { in: PERSONAS }
+  validate :password_strength, if: :password_validation_needed?
+  validate :check_email_uniqueness
 
   has_many :attachments, as: :parent, dependent: :destroy
   belongs_to :user_role, class_name: 'Role', foreign_key: :role_id
@@ -106,5 +107,17 @@ class User < ApplicationRecord
     password = SecureRandom.base64(length)
     password.gsub!(/[^a-zA-Z0-9!@#$%^&*_-]/, chars.sample)
     "#{password}!*^"
+  end
+
+  def password_strength
+    unless PASSWORD_REGEX.match(password)
+      errors.add(:base, I18n.t('errors.weak_password'))
+    end
+  end
+
+  def check_email_uniqueness
+    if new_record? && User.exists?(email: email)
+      errors.add(:base, I18n.t('errors.email_taken'))
+    end
   end
 end

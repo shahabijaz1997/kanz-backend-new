@@ -30,19 +30,12 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  activerecord:
-    errors:
-      models:
-        user:
-          attributes:
-            password:
-              invalid: "Weak Password; must be 8 characters long, includes at-least one lower case, one upper case letter and at least one number and special character"
-            email:
-              taken: 'already registered'
   errors:
     invalid_status: "Current profile status can't be changed"
     incomplete_profile: "Please complete user profile"
     doc_missing: "Please attach all required documents"
+    weak_password: "Weak Password; must be 8 characters long, includes at-least one lower case, one upper case letter and at least one number and special character"
+    email_taken: "Email already registered"
     exceptions:
       auth_token_expired: 'Session expired!'
       not_found: 'Record not found.'
