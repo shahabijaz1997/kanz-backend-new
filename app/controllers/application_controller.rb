@@ -11,7 +11,7 @@ class ApplicationController < ActionController::API
   respond_to :json
 
   def block_unconfirmed_access
-    return if current_user.confirmed?
+    return if current_user.blank? || current_user.confirmed?
 
     failure(I18n.t('devise.failure.unconfirmed'), current_user)
   end
