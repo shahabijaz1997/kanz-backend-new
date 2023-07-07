@@ -9,6 +9,7 @@ class Question < ApplicationRecord
     checkbox: 3
   }
 
+  has_many :options, dependent: :destroy
   has_many :users_responses, dependent: :destroy
   has_many :users, through: :users_responses
 

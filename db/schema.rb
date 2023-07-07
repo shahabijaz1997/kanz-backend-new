@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_06_080650) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_07_102024) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -151,6 +151,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_06_080650) do
     t.string "legal_name"
     t.index ["country_id"], name: "index_investor_profiles_on_country_id"
     t.index ["investor_id"], name: "index_investor_profiles_on_investor_id"
+  end
+
+  create_table "options", force: :cascade do |t|
+    t.string "statement"
+    t.string "statement_ar"
+    t.integer "index"
+    t.string "unit"
+    t.boolean "is_range"
+    t.float "lower_limit"
+    t.float "uper_limit"
+    t.bigint "question_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_options_on_question_id"
   end
 
   create_table "questions", force: :cascade do |t|

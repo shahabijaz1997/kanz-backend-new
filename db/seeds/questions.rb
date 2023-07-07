@@ -276,6 +276,19 @@ questions = [
         unit: ''
       }]
     }
+  },{
+    index: 1,
+    required: true,
+    statement: 'What are your investment objectives for this portfolio?',
+    statement_ar: 'ما هي أهدافك الاستثمارية لهذه المحفظة؟',
+    question_type: Question.question_types['multiple_choice'],
+    description: '',
+    description_ar: '',
+    options: [
+      { index: 1, statement: 'Income', statement_ar: 'دخل', is_range: false, lower_limit: 0, uper_limit: 0 },
+      { index: 2, statement: 'Total Return', statement_ar: 'عودة كاملة', is_range: false, lower_limit: 0, uper_limit: 0 },
+      { index: 3,	statement: 'Growth', statement_ar: 'نمو' ,is_range: false, lower_limit: 0, uper_limit: 0 }
+    ]
   }
 ]
 
