@@ -13,7 +13,7 @@ module Users
 
     def respond_with(resource, _opts = {})
       data = UserSerializer.new(resource).serializable_hash[:data][:attributes]
-
+      I18n.locale = resource.arabic? ? :ar : :en
       success(I18n.t('devise.sessions.signed_in'), data)
     end
 
