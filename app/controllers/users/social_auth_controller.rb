@@ -21,7 +21,7 @@ module Users
 
     def respond(user)
       return failure(user.errors.full_messages.to_sentence) unless user.persisted?
-
+      I18n.locale = user.arabic? ? :ar : :en
       sign_in(User, user)
       success(I18n.t('devise.sessions.signed_in'), user.serialized_data)
     end
