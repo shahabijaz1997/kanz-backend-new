@@ -1,24 +1,37 @@
+= link_to '< Back', realtors_path, class: 'mb-2'
 = render 'shared/page_title', title: "Realtor Details"
 
-p style="color: green" = alert
 
-div.d-flex.mt-4
-  h5.col-2 = @realtor.name
+- object_attributes = [:name, :email, :status]
+div.w-75
+  = render 'shared/section_card', section_title: 'Realtor' do
+    li.list-group-item
+      span.col-3.title Name
+      span.col.value = @realtor.name
+    li.list-group-item
+      span.col-3.title Email
+      span.col.value = @realtor.email
+    li.list-group-item
+      span.col-3.title Status
+      span.col = render 'shared/user_status', status: @realtor.status
+    li.list-group-item
+      span.col-3.title Nationality
+      span.col.value = @realtor.profile.nationality.name
+    li.list-group-item
+      span.col-3.title Residence
+      span.col.value = @realtor.profile.residence.name
+    li.list-group-item
+      span.col-3.title No. of Properties
+      span.col.value = @realtor.profile.no_of_properties
 
-div.d-flex.mt-4
-  div.col-2
-    b Email
-  div.col-2
-    p = @realtor.email
+  = render 'shared/section_card', section_title: 'Attachments' do
+    - if @realtor.attachments.present?
+      - @realtor.attachments.each do |attachment|
+        li.list-group-item
+          span.col-3.title = attachment.name
+          span.col.value = @realtor.name
+    - else
+      div.not_found No attachments Found
 
-div.d-flex
-  div.col-2
-    b Residence
-  div.col-2
-    p = @realtor.profile.residence.name
-
-div.d-flex
-  div.col-2
-    b Nationality
-  div.col-2
-    p = @realtor.profile.nationality.name
+  = render 'shared/section_card', section_title: 'Application Approval' do
+    div.not_found Application in Progress

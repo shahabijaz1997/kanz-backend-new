@@ -1,0 +1,41 @@
+.table {
+  margin-top: 20px;
+  .header {
+    display: flex;
+    margin: 10px 0px;
+    
+    a, span {
+      text-align: center;
+      color: $primary;
+      font-size: 15px;
+      font-weight: 600;
+      color: $primary !important;
+      --bs-text-opacity: 1;
+      padding: 10px;
+    }
+  }
+
+  .content {
+    .card {
+      margin: 5px 0px;
+
+      .card-body {
+        border-radius: 5px;
+        padding: 5px;
+
+        span {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          padding: 10px;
+          font-size: 15px;
+        }
+      }
+    }
+
+    .card-body:hover {
+      background-color: rgba($primary, 0.1) !important;
+      cursor: pointer;
+    }
+  }
+}

@@ -1,7 +1,7 @@
-div.col-2.bg-primary.rounded-end-4 style="min-height: 100vh;"
-  div
-    div.my-5
-      = link_to "Dashboard", root_path, class: 'text-white d-flex justify-content-center'
+div.sidebar.bg-primary
+  div.my-5
+    div.tab class="#{'active_tab' if controller_name == 'dashboard'}"
+      = link_to "Dashboard", root_path
     - ROUTES[current_admin_user.role].each do |route|
-      div.my-5
-        = link_to route[:name], route[:path], class: 'text-white d-flex justify-content-center'
+      div.tab class="#{'active_tab' if controller_name == route[:path]}"
+        = link_to route[:name], route[:path]

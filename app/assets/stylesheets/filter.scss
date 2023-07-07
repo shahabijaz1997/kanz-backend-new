@@ -1,0 +1,33 @@
+.filters {
+  margin: 20px;
+  padding: 20px;
+  align-self: center;
+  width: fit-content;
+
+  .title {
+    font-weight: 500;
+    font-size: 17px;
+    color: $secondary;
+  }
+
+  .form {
+    display: flex;
+    gap: 10px;
+
+    .search_field {
+      label {
+        font-size: 14px;
+        color: $secondary;
+      }
+
+      input, select {
+        min-width: 200px;
+      }
+    }
+
+    .submit {
+      align-self: flex-end
+    }
+
+  }
+}

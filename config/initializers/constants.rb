@@ -32,25 +32,25 @@ ROUTES = {
   admin: [
     {
       name: "Manage Admins",
-      path: "/admin_users"
+      path: "admin_users"
     }
   ],
   customer_user: [
     {
       name: "Investors",
-      path: "/investors"
+      path: "investors"
     },
     {
       name: "Realtors",
-      path: "/realtors"
+      path: "realtors"
     },
     {
       name: "Startups",
-      path: "/startups"
+      path: "startups"
     },
     {
       name: "Syndicates",
-      path: "/syndicates"
+      path: "syndicates"
     }
   ]
 }.freeze

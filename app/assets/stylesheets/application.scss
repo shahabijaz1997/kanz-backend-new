@@ -16,3 +16,19 @@
 
 @import "./application.bootstrap.scss";
 @import "./dashboard.scss";
+@import "./sidebar.scss";
+@import "./filter.scss";
+@import "./table.scss";
+@import "./content_section.scss";
+
+a {
+  text-decoration: none;
+}
+
+.not_found {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+  font-weight: 500;
+  color: $secondary;
+}

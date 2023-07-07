@@ -9,4 +9,11 @@ class Investor < User
   scope :individual, -> {where(role_id: 1)}
   scope :firms, -> {where(role_id: 2)}
 
+  def self.ransackable_attributes(auth_object = nil)
+    ["email", "name", "status"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["profile"]
+  end
 end

@@ -7,4 +7,12 @@ class InvestorProfile < ApplicationRecord
   validates_presence_of :country_id
   validates_presence_of :residence, if: -> { investor.individual_investor? }
   validates_presence_of :legal_name, if: -> { investor.investment_firm? }
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["residence", "country_id"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["country"]
+  end
 end

@@ -1,0 +1,26 @@
+.content_card {
+  margin-top: 20px;
+
+  .card-header {
+    padding: 20px 40px;
+    font-size: 22px;
+    background-color: rgba($primary, 0.1) !important;
+    color: $secondary;
+  }
+
+  .list-group {
+    .list-group-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 40px;
+
+      .title {
+        font-size: 15px;
+        color: $secondary;
+      }
+      .value {
+        font-size: 18px;
+      }
+    }
+  }
+}

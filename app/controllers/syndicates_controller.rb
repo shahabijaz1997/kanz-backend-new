@@ -6,12 +6,15 @@ class SyndicatesController < ApplicationController
     load_industry_markets
     @filtered_syndicates = Syndicate.ransack(params[:search])
     @syndicates = policy_scope(@filtered_syndicates.result.includes(:profile).order(created_at: :desc))
+    authorize @syndicates
   end
 
   def show
+    authorize @syndicate
   end
 
   def update
+    authorize @syndicate
   end
 
   private

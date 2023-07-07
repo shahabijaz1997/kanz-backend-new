@@ -13,4 +13,5 @@
 //= require turbo
 //= require jquery
 //= require bootstrap
+//= require popper
 //= require_tree .

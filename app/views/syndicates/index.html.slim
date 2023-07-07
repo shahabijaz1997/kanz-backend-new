@@ -1,28 +1,7 @@
 = render 'shared/page_title', title: "Syndicates"
+= render 'filters'
 
-div.align-self-center.bg-light.border.m-4.p-4.rounded style="width: fit-content"
-  b Filters
-  = search_form_for @filtered_syndicates, class: 'd-flex mt-2' do |form|
-    div.col.ms-2
-      = form.label :name_cont, 'Name'
-      = form.search_field :name_cont, class: 'form-control'
-
-    div.col.ms-2
-      = form.label :email_cont, 'Email'
-      = form.search_field :email_cont, class: 'form-control'
-
-    div.col.ms-2
-      = form.label :profile_region_cont, 'Region'
-      = form.select :profile_region_cont, @regions, { include_blank: true}, { class: 'form-control' }
-
-    div.col.ms-2
-      = form.label :profile_industry_market_cont, 'Industry/Market'
-      = form.select :profile_industry_market_cont, @industry_markets, { include_blank: true}, { class: 'form-control' }
-
-    div.ms-2.align-self-end
-      = form.submit 'Search', class: 'btn btn-primary'
-
-table.mt-4
+table.table.table-primary
   thead
     tr
       th.col-1 = sort_link(@filtered_syndicates, :name)

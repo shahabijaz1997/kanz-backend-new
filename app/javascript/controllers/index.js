@@ -5,5 +5,7 @@
 import { application } from "./application"
 
 import DashboardController from "./dashboard_controller"
+import TabsController from "./tabs_controller"
 
 application.register("dashboard", DashboardController)
+application.register("tabs", TabsController)

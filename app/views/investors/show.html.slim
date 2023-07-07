@@ -1,31 +1,25 @@
-= render 'shared/page_title', title: "Admin User Details"
+= link_to 'Back', investors_path, class: 'mb-2'
+= render 'shared/page_title', title: "Investor Details"
 
 p style="color: green" = alert
 
 div.d-flex.mt-4
-  h5.col-2 = @admin_user.fullname
-  div.col-2 = link_to "Edit", edit_admin_user_path
+  h5.col-2 = @investor.name
 
 div.d-flex.mt-4
   div.col-2
     b Email
   div.col-2
-    p = @admin_user.email
+    p = @investor.email
 
 div.d-flex
   div.col-2
-    b First Name
+    b Residence
   div.col-2
-    p = @admin_user.first_name
+    p = @investor.profile&.residence
 
 div.d-flex
   div.col-2
-    b Last Name
+    b Nationality
   div.col-2
-    p = @admin_user.last_name
-
-div.d-flex
-  div.col-2
-    b Admin Role
-  div.col-2
-    p = @admin_user.admin_role.title
+    p = @investor.profile&.country&.name

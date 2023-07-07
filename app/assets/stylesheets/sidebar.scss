@@ -1,0 +1,36 @@
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 250px !important;
+}
+
+.sidebar {
+  min-width: 250px !important;
+  min-height: calc(100vh - 56px);
+  
+  .tab {
+    a {
+      text-decoration: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 60px;
+      color:white;
+      font-size: 18px;
+    }
+    a:hover {
+      color: $primary !important;
+    }
+  }
+  .tab:hover {
+    background-color: rgba(var(--bs-secondary-bg-rgb), var(--bs-bg-opacity)) !important;
+  }
+
+  .active_tab {
+    background: white;
+    a {
+      color: $primary !important;
+    }
+  }
+}
