@@ -1,39 +1,32 @@
-= simple_form_for(@admin_user) do |form|
-  div.d-flex.mt-4
-    div.col-2
-      b Email
-    div
-      = form.email_field :email, required: true, class: "form-control", label: false, autofocus: true, placeholder: 'Email', input_html: { autocomplete: "email" }
-
-  div.d-flex.mt-2
-    div.col-2
-      b First Name
-    div
-      = form.text_field :first_name, required: true, class: "form-control", label: false, autofocus: true, placeholder: 'First Name', input_html: { autocomplete: "first_name" }
-
-  div.d-flex.mt-2
-    div.col-2
-      b Last Name
-    div
-      = form.text_field :last_name, required: true, class: "form-control", label: false, autofocus: true, placeholder: 'Last Name', input_html: { autocomplete: "last_name" }
-
-  div.d-flex.mt-2
-    div.col-2
-      b Admin Role
-    div
-      = form.input :admin_role_id, required: true, as: :select, collection: @admin_roles, prompt: 'Select Admin Role', class: "form-control", label: false, autofocus: true, input_html: { autocomplete: "admin_role_id" }
-
-  - unless @admin_user.persisted?
-    div.d-flex.mt-2
-      div.col-2
-        b Password
-      div
-        = form.password_field :password, required: true, autofocus: true, class: "form-control", label: false, placeholder: 'Password'
-    
-    div.d-flex.mt-2
-      div.col-2
-        b Confirm Password
-      div
-        = form.password_field :password_confirmation, required: true, autofocus: true, class: "form-control", label: false, placeholder: 'Password Confirmation'
-
-  = form.submit "Save", class: 'btn btn-primary'
+div.w-75
+  = render 'shared/section_card', section_title: 'Admin User', editable: false do
+    = simple_form_for(@admin_user) do |form|
+      li.list-group-item
+        span.col-3.title First Name
+        span.col.value
+          = form.text_field :first_name, required: true, class: "form-control", label: false, autofocus: true, placeholder: 'First Name', input_html: { autocomplete: "first_name" }
+      li.list-group-item
+        span.col-3.title Last Name
+        span.col.value
+          = form.text_field :last_name, required: true, class: "form-control", label: false, autofocus: true, placeholder: 'Last Name', input_html: { autocomplete: "first_name" }
+      li.list-group-item
+        span.col-3.title Email
+        span.col.value
+          = form.email_field :email, required: true, class: "form-control", label: false, autofocus: true, placeholder: 'Email', input_html: { autocomplete: "email" }
+      li.list-group-item
+        span.col-3.title Admin Role
+        span.col.value
+          = form.input :admin_role_id, required: true, as: :select, collection: @admin_roles, prompt: 'Select Admin Role', class: "form-control", label: false, autofocus: true, input_html: { autocomplete: "admin_role_id" }
+      - unless @admin_user.persisted?
+        li.list-group-item
+          span.col-3.title Password
+          span.col.value
+            = form.password_field :password, required: true, autofocus: true, class: "form-control", label: false, placeholder: 'Password'
+        li.list-group-item
+          span.col-3.title Confirm Password
+          span.col.value
+              = form.password_field :password_confirmation, required: true, autofocus: true, class: "form-control", label: false, placeholder: 'Password Confirmation'
+      li.list-group-item
+        span.col-3.title
+        span.col.value
+            = form.submit "Save", class: 'btn btn-primary'

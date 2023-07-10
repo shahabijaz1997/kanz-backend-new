@@ -10,7 +10,10 @@
   min-height: calc(100vh - 56px);
   
   .tab {
-    a {
+    display: flex;
+    padding: 0 40px;
+    
+    i, a {
       text-decoration: none;
       display: flex;
       justify-content: center;
@@ -18,8 +21,10 @@
       min-height: 60px;
       color:white;
       font-size: 18px;
+      min-width: 40px !important;
     }
-    a:hover {
+
+    i:hover, a:hover {
       color: $primary !important;
     }
   }
@@ -27,9 +32,9 @@
     background-color: rgba(var(--bs-secondary-bg-rgb), var(--bs-bg-opacity)) !important;
   }
 
-  .active_tab {
+  .active_tab, .tab:hover {
     background: white;
-    a {
+    a, i {
       color: $primary !important;
     }
   }

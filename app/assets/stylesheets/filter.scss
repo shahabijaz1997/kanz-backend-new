@@ -1,8 +1,6 @@
 .filters {
-  margin: 20px;
+  margin: 20px 0;
   padding: 20px;
-  align-self: center;
-  width: fit-content;
 
   .title {
     font-weight: 500;
@@ -12,6 +10,7 @@
 
   .form {
     display: flex;
+    justify-content: center;
     gap: 10px;
 
     .search_field {

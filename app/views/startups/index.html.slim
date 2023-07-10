@@ -1,25 +1,27 @@
 = render 'shared/page_title', title: "Startups"
 = render 'filters'
 
-table.table.table-light.rounded
-  thead
-    tr
-      th.col-1 = sort_link(@filtered_startups, :name)
-      th.col-1 = sort_link(@filtered_startups, :email)
-      th.col-1 = sort_link(@filtered_startups, :profile_company_name)
-      th.col-1 = sort_link(@filtered_startups, :profile_legal_name)
-      th.col-1 = sort_link(@filtered_startups, :profile_industry_market, "Industry/Market")
-      th.col-1 = sort_link(@filtered_startups, :status, "Status")
-      th.col-1
-        span Actions
-  tbody
-    - @startups.each do |startup|
-      tr
-        td.col-1 = startup.name
-        td.col-1 = startup.email
-        td.col-1 = startup.profile.company_name
-        td.col-1 = startup.profile.legal_name
-        td.col-1 = startup.profile.industry_market.join(", ")
-        td.col-1 = startup.status.capitalize
-        td.col-1
-          = link_to "View", startup_path(startup)
+div.table
+  div.header
+    div.col = sort_link(@filtered_startups, :name)
+    div.col = sort_link(@filtered_startups, :email)
+    div.col = sort_link(@filtered_startups, :profile_company_name)
+    div.col = sort_link(@filtered_startups, :profile_legal_name)
+    div.col = sort_link(@filtered_startups, :profile_industry_market, "Industry/Market")
+    div.col = sort_link(@filtered_startups, :status, "Status")
+    div.col
+      span Actions
+  div.content
+    - if @startups.present?
+      - @startups.each do |startup|
+        div.card.position-relative.shadow-sm
+          div.card-body.d-flex
+            span.col = startup.name
+            span.col = startup.email
+            span.col = startup.profile&.company_name
+            span.col = startup.profile&.legal_name
+            span.col = startup.profile&.industry_market&.join(", ")
+            span.col = render 'shared/user_status', status: startup.status
+            span.col = link_to "View", startup_path(startup), class: 'stretched-link'            
+    - else
+      div.not_found No Startup Found

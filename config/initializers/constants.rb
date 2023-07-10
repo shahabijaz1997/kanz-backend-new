@@ -32,25 +32,30 @@ ROUTES = {
   admin: [
     {
       name: "Manage Admins",
-      path: "admin_users"
+      path: "admin_users",
+      icon: "fa fa-users-gear"
     }
   ],
   customer_user: [
     {
       name: "Investors",
-      path: "investors"
+      path: "investors",
+      icon: "fa fa-money-bill-trend-up"
     },
     {
       name: "Realtors",
-      path: "realtors"
+      path: "realtors",
+      icon: "fa fa-city"
     },
     {
       name: "Startups",
-      path: "startups"
+      path: "startups",
+      icon: "fa fa-building"
     },
     {
       name: "Syndicates",
-      path: "syndicates"
+      path: "syndicates",
+      icon: "fa fa-sitemap"
     }
   ]
 }.freeze

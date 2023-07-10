@@ -1,25 +1,19 @@
-= link_to 'Back', investors_path, class: 'mb-2'
+= link_to '< Back', investors_path, class: 'mb-2'
 = render 'shared/page_title', title: "Investor Details"
 
-p style="color: green" = alert
+div.w-75
+  = render 'shared/section_card', section_title: 'Investor User', editable: false do
+    = render 'shared/section_list_item', title: 'Name', value: @investor.name
+    = render 'shared/section_list_item', title: 'Email', value: @investor.name
+    li.list-group-item
+      span.col-3.title Status
+      span.col = render 'shared/user_status', status: @investor.status
+    = render 'shared/section_list_item', title: 'Investor Type', value: @investor.individual_investor? ? 'Individual' : 'Firm'
+    = render 'shared/section_list_item', title: 'Residence', value: @investor.profile&.residence
+    = render 'shared/section_list_item', title: 'Nationality', value: @investor.profile&.country&.name
+    = render 'shared/section_list_item', title: 'Accreditation', value: @investor.profile&.accreditation
 
-div.d-flex.mt-4
-  h5.col-2 = @investor.name
+  = render 'shared/attachments_section', resource: @investor
 
-div.d-flex.mt-4
-  div.col-2
-    b Email
-  div.col-2
-    p = @investor.email
-
-div.d-flex
-  div.col-2
-    b Residence
-  div.col-2
-    p = @investor.profile&.residence
-
-div.d-flex
-  div.col-2
-    b Nationality
-  div.col-2
-    p = @investor.profile&.country&.name
+  = render 'shared/section_card', section_title: 'Application Approval', editable: false do
+    div.not_found Application in Progress

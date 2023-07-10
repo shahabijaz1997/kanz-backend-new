@@ -1,0 +1,21 @@
+div.filters.bg-light.border.rounded.shadow-sm
+  span.title Filters
+  = search_form_for @filtered_admin_users, class: 'form' do |form|
+    div.search_field
+      = form.label :first_name_cont, 'First Name'
+      = form.search_field :first_name_cont, class: 'form-control'
+
+    div.search_field
+      = form.label :last_name_cont, 'Last Name'
+      = form.search_field :last_name_cont, class: 'form-control'
+
+    div.search_field
+      = form.label :email_cont, 'Email'
+      = form.search_field :email_cont, class: 'form-control'
+
+    div.search_field
+      = form.label :admin_role_id_eq, 'Role'
+      = form.select :admin_role_id_eq, @admin_roles, { include_blank: true}, { class: 'form-control' }
+
+    div.submit
+      = form.submit 'Search', class: 'btn btn-primary'

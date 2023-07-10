@@ -57,7 +57,7 @@ class AdminUsersController < ApplicationController
       'Customer Support Rep': 3,
       'Compliance Officer': 4
     }
-    @admin_roles.merge({
+    @admin_roles = @admin_roles.merge({
       'Super Admin': 1,
       'Admin': 2,
     }) if current_admin_user.super_admin?

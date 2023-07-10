@@ -6,6 +6,8 @@
     font-size: 22px;
     background-color: rgba($primary, 0.1) !important;
     color: $secondary;
+    display: flex;
+    justify-content: space-between;
   }
 
   .list-group {
@@ -21,6 +23,29 @@
       .value {
         font-size: 18px;
       }
+
+      input, select {
+        max-width: 300px;
+      }
+
+      .attachment {
+        img {
+          max-width: 250px;
+          max-height: 250px;
+          object-fit: contain;
+        }
+      }
+
+      .attached_logo {
+        border: none !important;
+        
+        img {
+          max-width: 150px;
+          max-height: 150px;
+          object-fit: contain;
+        }
+      }
+
     }
   }
 }

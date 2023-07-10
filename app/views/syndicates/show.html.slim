@@ -1,25 +1,34 @@
 = link_to 'Back', syndicates_path, class: 'mb-2'
 = render 'shared/page_title', title: "Syndicate Details"
 
-p style="color: green" = alert
+div.w-75
+  = render 'shared/section_card', section_title: 'Syndicate User', editable: false do
+    = render 'shared/section_list_item', title: 'Name', value: @syndicate.name
+    = render 'shared/section_list_item', title: 'Email', value: @syndicate.email
+    li.list-group-item
+      span.col-3.title Status
+      span.col = render 'shared/user_status', status: @syndicate.status
 
-div.d-flex.mt-4
-  h5.col-2 = @syndicate.name
+  = render 'shared/section_card', section_title: 'Syndicate Profile', editable: false do
+    li.list-group-item
+      span.col-3.title Logo
+      div.card.attached_logo
+        = image_tag(@syndicate.profile.attachment.file.url)
+        div.card-img-overlay.d-flex.justify-content-center.align-items-center
+          button.btn.btn-outline-light
+            i.bi.bi-arrows-angle-expand
+          button.ms-3.btn.btn-outline-light
+            i.bi.bi-cloud-arrow-down
+    = render 'shared/section_list_item', title: 'Name', value: @syndicate.profile.name
+    = render 'shared/section_list_item', title: 'Tagline', value: @syndicate.profile.tagline
+    = render 'shared/section_list_item', title: 'Raised Amount', value: @syndicate.profile.raised_amount
+    = render 'shared/section_list_item', title: 'Number of Times Raised', value: @syndicate.profile.no_times_raised
+    = render 'shared/section_list_item', title: 'Industry/Market', value: @syndicate.profile.industry_market.join(", ")
+    = render 'shared/section_list_item', title: 'Region', value: @syndicate.profile.region.join(", ")
+    = render 'shared/section_list_item', title: 'Profile Link', value: @syndicate.profile.profile_link
+    = render 'shared/section_list_item', title: 'Excepted Dealflow', value: @syndicate.profile.dealflow
 
-div.d-flex.mt-4
-  div.col-2
-    b Email
-  div.col-2
-    p = @syndicate.email
+  = render 'shared/attachments_section', resource: @syndicate
 
-div.d-flex
-  div.col-2
-    b Residence
-  div.col-2
-    p = @syndicate.profile.region.join(',')
-
-div.d-flex
-  div.col-2
-    b Nationality
-  div.col-2
-    p = @syndicate.profile.industry_market.join(',')
+  = render 'shared/section_card', section_title: 'Application Approval', editable: false do
+    div.not_found Application in Progress

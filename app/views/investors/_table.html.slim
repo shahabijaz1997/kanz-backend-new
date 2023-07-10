@@ -1,22 +1,22 @@
-- if investors.present?
-  table.table.table-primary
-    thead
-      tr
-        th.col-1 = sort_link(@filtered_investors, :name)
-        th.col-1 = sort_link(@filtered_investors, :email)
-        th.col-1 = sort_link(@filtered_investors, :profile_residence)
-        th.col-1 = sort_link(@filtered_investors, :profile_nationality_name, "Industry/Market")
-        th.col-1 = sort_link(@filtered_investors, :status, "Status")
-        th.col-1 Actions
-    tbody
+div.table
+  div.header
+    div.col = sort_link(@filtered_investors, :name)
+    div.col = sort_link(@filtered_investors, :email)
+    div.col = sort_link(@filtered_investors, :profile_residence)
+    div.col = sort_link(@filtered_investors, :profile_nationality_name, "Industry/Market")
+    div.col = sort_link(@filtered_investors, :status, "Status")
+    div.col
+      span Actions
+  div.content
+    - if investors.present?
       - investors.each do |investor|
-        tr
-          td.col-1 = investor.name
-          td.col-1 = investor.email
-          td.col-1 = investor.profile&.residence
-          td.col-1 = investor.profile&.country&.name
-          td.col-1 = render 'shared/user_status', status: investor.status
-          td.col-1
-            = link_to "View", investor_path(investor)
-- else
-  div.not_found No Investor Found
+        div.card.position-relative.shadow-sm
+          div.card-body.d-flex
+            span.col = investor.name
+            span.col = investor.email
+            span.col = investor.profile&.residence
+            span.col = investor.profile&.country&.name
+            span.col = render 'shared/user_status', status: investor.status
+            span.col = link_to "View", investor_path(investor), class: 'stretched-link'            
+    - else
+      div.not_found No Investor Found

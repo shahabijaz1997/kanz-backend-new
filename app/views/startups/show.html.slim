@@ -1,31 +1,37 @@
 = link_to 'Back', startups_path, class: 'mb-2'
 = render 'shared/page_title', title: "Startup Details"
 
-p style="color: green" = alert
+div.w-75
+  = render 'shared/section_card', section_title: 'Startup User', editable: false do
+    = render 'shared/section_list_item', title: 'Name', value: @startup.name
+    = render 'shared/section_list_item', title: 'Email', value: @startup.email
+    li.list-group-item
+      span.col-3.title Status
+      span.col = render 'shared/user_status', status: @startup.status
 
-div.d-flex.mt-4
-  h5.col-2 = @startup.name
+  - if @startup.profile.present?
+    = render 'shared/section_card', section_title: 'Company Details', editable: false do
+      li.list-group-item
+        span.col-3.title Logo
+        div.card.attached_logo
+          = image_tag(@startup.profile.attachment.file.url)
+          div.card-img-overlay.d-flex.justify-content-center.align-items-center
+            button.btn.btn-outline-light
+              i.bi.bi-arrows-angle-expand
+            button.ms-3.btn.btn-outline-light
+              i.bi.bi-cloud-arrow-down
+      = render 'shared/section_list_item', title: 'Name', value: @startup.profile.company_name
+      = render 'shared/section_list_item', title: 'Legal Name', value: @startup.profile.legal_name
+      = render 'shared/section_list_item', title: 'Industry/Market', value: @startup.profile.industry_market.join(", ")
+      = render 'shared/section_list_item', title: 'Website', value: @startup.profile.website
+      = render 'shared/section_list_item', title: 'Address', value: @startup.profile.address
+      = render 'shared/section_list_item', title: 'Description', value: @startup.profile.description
+      = render 'shared/section_list_item', title: 'CEO Name', value: @startup.profile.ceo_name
+      = render 'shared/section_list_item', title: 'CEO Email', value: @startup.profile.ceo_email
+      = render 'shared/section_list_item', title: 'Total Capital Raised', value: @startup.profile.total_capital_raised
+      = render 'shared/section_list_item', title: 'Current Round Capital Target', value: @startup.profile.current_round_capital_target
 
-div.d-flex.mt-4
-  div.col-2
-    b Email
-  div.col-2
-    p = @startup.email
+  = render 'shared/attachments_section', resource: @startup
 
-div.d-flex
-  div.col-2
-    b Company Name
-  div.col-2
-    p = @startup.profile.company_name
-
-div.d-flex
-  div.col-2
-    b Legal Name
-  div.col-2
-    p = @startup.profile.legal_name
-
-div.d-flex
-  div.col-2
-    b Industry/Market
-  div.col-2
-    p = @startup.profile.industry_market.join(',')
+  = render 'shared/section_card', section_title: 'Application Approval', editable: false do
+    div.not_found Application in Progress
