@@ -12,6 +12,7 @@ module V1
 
     def set_role
       if @investor.update(role_id: role.id)
+        update_investor_state
         success(I18n.t('investor.update.success.role', kind: investor_params[:role]))
       else
         failure(@investor.errors.full_messages.to_sentence)
@@ -47,6 +48,12 @@ module V1
 
     def role
       Role.find_by(title: investor_params[:role])
+    end
+
+    def update_investor_state
+      profile_states = @investor.profile_states
+      profile_states[:investor_type] = @investor.title
+      @investor.update(profile_states: profile_states)
     end
   end
 end

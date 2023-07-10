@@ -31,14 +31,6 @@ class User < ApplicationRecord
     self.confirmation_sent_at = Time.now.utc
   end
 
-  def individual_investor?
-    role_title == 'Individual Investor'
-  end
-
-  def investment_firm?
-    role_title == 'Investment Firm'
-  end
-
   def investor?
     type == 'Investor'
   end
@@ -81,6 +73,7 @@ class User < ApplicationRecord
 
   def update_profile_state
     self.profile_states = {
+      investor_type: '',
       account_confirmed: self.confirmed?,
       profile_completed: false,
       questionnaire_steps_completed: 0,

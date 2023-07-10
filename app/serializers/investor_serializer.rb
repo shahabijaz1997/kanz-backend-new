@@ -13,12 +13,16 @@ class InvestorSerializer
     ).serializable_hash[:data]&.fetch(:attributes)
   end
 
+  attribute :investor_type do |investor|
+    investor.role 'Individual Investor' : 'Investment Firm'
+  end
+
   attribute :role do |user|
-    user.role_title
+    user.user_role&.title
   end
 
   attribute :role_ar do |user|
-    user.role_title_ar
+    user.user_role&.title_ar
   end
 
   attribute :steps_completed do |user|
