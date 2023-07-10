@@ -5,6 +5,7 @@ class CreateOptions < ActiveRecord::Migration[7.0]
       t.string :statement_ar
       t.integer :index
       t.string :unit
+      t.string :currency
       t.boolean :is_range
       t.float :lower_limit
       t.float :uper_limit

@@ -8,10 +8,9 @@ class InvestorSerializer
   attributes :name, :email, :type, :status, :language, :profile_states
 
   attribute :profile do |investor|
-    keys = investor.individual_investor? ? [:legal_name,:location] : [:nationality, :residence]
     InvestorProfileSerializer.new(
       investor.profile
-    ).serializable_hash[:data]&.fetch(:attributes)&.except(*keys)
+    ).serializable_hash[:data]&.fetch(:attributes)
   end
 
   attribute :role do |user|

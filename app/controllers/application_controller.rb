@@ -2,7 +2,7 @@
 
 class ApplicationController < ActionController::API
   include ResponseHandler
-  include Pundit
+  # include Pundit
   include ExceptionHandler
 
   before_action :authenticate_user!

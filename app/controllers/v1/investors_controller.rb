@@ -37,8 +37,8 @@ module V1
     end
 
     def accreditation_params
-      params.require(:investor_profile).permit(%i[legal_name country_id residence accreditation
-                                                  accepted_investment_criteria])
+      params.require(:investor_profile).permit(%i[legal_name country_id accreditation_option_id
+                                                  residence_id accepted_investment_criteria])
     end
 
     def investor_params

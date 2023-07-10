@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_07_102024) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_07_142628) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -141,16 +141,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_07_102024) do
   end
 
   create_table "investor_profiles", force: :cascade do |t|
-    t.string "residence"
-    t.string "accreditation", null: false
     t.boolean "accepted_investment_criteria"
     t.bigint "country_id"
     t.bigint "investor_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "legal_name"
+    t.bigint "residence_id"
+    t.bigint "accreditation_option_id"
+    t.index ["accreditation_option_id"], name: "index_investor_profiles_on_accreditation_option_id"
     t.index ["country_id"], name: "index_investor_profiles_on_country_id"
     t.index ["investor_id"], name: "index_investor_profiles_on_investor_id"
+    t.index ["residence_id"], name: "index_investor_profiles_on_residence_id"
   end
 
   create_table "options", force: :cascade do |t|
@@ -158,6 +160,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_07_102024) do
     t.string "statement_ar"
     t.integer "index"
     t.string "unit"
+    t.string "currency"
     t.boolean "is_range"
     t.float "lower_limit"
     t.float "uper_limit"
@@ -183,6 +186,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_07_102024) do
     t.string "statement_ar"
     t.string "category_ar"
     t.text "description_ar"
+    t.integer "kind", default: 0
   end
 
   create_table "realtor_profiles", force: :cascade do |t|
