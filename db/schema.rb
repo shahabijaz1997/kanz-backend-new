@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_07_142628) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_10_105048) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -168,6 +168,26 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_07_142628) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["question_id"], name: "index_options_on_question_id"
+  end
+
+  create_table "profiles_industries", force: :cascade do |t|
+    t.string "profile_type"
+    t.bigint "profile_id"
+    t.bigint "industry_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["industry_id"], name: "index_profiles_industries_on_industry_id"
+    t.index ["profile_type", "profile_id"], name: "index_profiles_industries_on_profile"
+  end
+
+  create_table "profiles_regions", force: :cascade do |t|
+    t.string "profile_type"
+    t.bigint "profile_id"
+    t.bigint "region_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["profile_type", "profile_id"], name: "index_profiles_regions_on_profile"
+    t.index ["region_id"], name: "index_profiles_regions_on_region_id"
   end
 
   create_table "questions", force: :cascade do |t|

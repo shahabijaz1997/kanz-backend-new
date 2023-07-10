@@ -368,7 +368,7 @@ questions = [
         uper_limit: 100,
         unit: 'million',
         currency: 'USD'
-      },{ 
+      },{
         index: 3,
         statement: 'Firm has between USD 10 million and 50 million in investment',
         statement_ar: "الشركة لديها بين 10 ملايين و50 مليون دولار في الاستثمار",

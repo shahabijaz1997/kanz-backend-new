@@ -35,7 +35,7 @@ module V1
     def profile_params
       params.require(:syndicate_profile).permit(
         :have_you_ever_raised, :raised_amount, :no_times_raised, :profile_link,
-        :dealflow, :name, :tagline, :logo, region: [], industry_market: []
+        :dealflow, :name, :tagline, :logo, region_ids: [], industry_ids: []
       )
     end
 

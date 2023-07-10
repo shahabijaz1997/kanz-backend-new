@@ -1,15 +1,20 @@
 # frozen_string_literal: true
 
 class StartupProfile < ApplicationRecord
+  attr_accessor :industry_ids
+
   belongs_to :startup
   belongs_to :country
   has_one :attachment, as: :parent, dependent: :destroy
+  has_many :profiles_industries, as: :profile, dependent: :destroy
+  has_many :industries, through: :profiles_industries
 
   validates :company_name, :legal_name, :total_capital_raised,
             :current_round_capital_target, :ceo_name, :ceo_email,
             :currency, presence: true
 
   after_create :update_profile_state
+  after_save :update_profile_industries
 
   private
 
@@ -17,5 +22,14 @@ class StartupProfile < ApplicationRecord
     profile_states = startup.profile_states
     profile_states[:profile_completed] = true
     startup.update(profile_states: profile_states)
+  end
+
+  def update_profile_industries
+    return if industry_ids.blank?
+
+    profiles_industries&.destroy_all
+    industry_ids.each do |industry_id|
+      profiles_industries.create(industry_id: industry_id)
+    end
   end
 end
