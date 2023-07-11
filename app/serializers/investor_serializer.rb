@@ -13,10 +13,6 @@ class InvestorSerializer
     ).serializable_hash[:data]&.fetch(:attributes)
   end
 
-  attribute :investor_type do |investor|
-    investor.role 'Individual Investor' : 'Investment Firm'
-  end
-
   attribute :role do |user|
     user.user_role&.title
   end
@@ -27,8 +23,8 @@ class InvestorSerializer
 
   attribute :steps_completed do |user|
     if UsersResponse.exists?(user_id: user.id)
-      question_id = user.investment_philosophies.order(:created_at).last.question_id
-      Question.find_by(id: question_id).step
+      question_ids = user.investment_philosophies.pluck(:question_id)
+      Question.where(id: question_ids).maximum(:step)
     else
       0
     end

@@ -20,6 +20,7 @@ class User < ApplicationRecord
 
   before_validation :update_role, on: :create
   after_create :update_profile_state
+  after_save :update_profile_state, if: :reopened?
 
   # Devise override the confirmation token
   def generate_confirmation_token
@@ -84,6 +85,10 @@ class User < ApplicationRecord
   end
 
   private
+
+  def reopened?
+    status_changed? && reopened?
+  end
 
   def password_validation_needed?
     new_record? || encrypted_password_changed?
