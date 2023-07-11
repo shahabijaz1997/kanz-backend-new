@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class StartupsController < ApplicationController
-  before_action :set_startup, only: %i[ show update ]
+  before_action :set_startup, only: %i[show update]
 
   def index
     load_industry_markets
@@ -16,7 +18,7 @@ class StartupsController < ApplicationController
     authorize @startup
     respond_to do |format|
       if @startup.update(update_status_params)
-        format.html { redirect_to @startup, notice: "Startup was successfully updated." }
+        format.html { redirect_to @startup, notice: 'Startup was successfully updated.' }
       else
         format.html { render :show, status: :unprocessable_entity }
       end
@@ -30,7 +32,7 @@ class StartupsController < ApplicationController
   end
 
   def load_industry_markets
-    @industry_markets = StartupProfile.pluck(:industry_market).flatten.reject(&:nil?).uniq
+    @industry_markets = StartupProfile.pluck(:industry_market).flatten.compact.uniq
   end
 
   def update_status_params

@@ -90,6 +90,7 @@ group :development, :test do
   gem 'pronto-rails_best_practices', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
+  gem "ruby-lsp", require: false
 end
 
 group :development do

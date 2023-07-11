@@ -1,7 +1,6 @@
-# module ActiveAdmin
+# frozen_string_literal: true
 
 class InvestorPolicy < ApplicationPolicy
-
   class Scope < Scope
     def resolve
       scope.all

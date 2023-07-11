@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class SyndicatesController < ApplicationController
-  before_action :set_syndicate, only: %i[ show update ]
+  before_action :set_syndicate, only: %i[show update]
 
   def index
     load_regions
@@ -17,7 +19,7 @@ class SyndicatesController < ApplicationController
     authorize @syndicate
     respond_to do |format|
       if @syndicate.update(update_status_params)
-        format.html { redirect_to @syndicate, notice: "Syndicate was successfully updated." }
+        format.html { redirect_to @syndicate, notice: 'Syndicate was successfully updated.' }
       else
         format.html { render :show, status: :unprocessable_entity }
       end
@@ -31,11 +33,11 @@ class SyndicatesController < ApplicationController
   end
 
   def load_regions
-    @regions = SyndicateProfile.pluck(:region).flatten.reject(&:nil?).uniq
+    @regions = SyndicateProfile.pluck(:region).flatten.compact.uniq
   end
 
   def load_industry_markets
-    @industry_markets = SyndicateProfile.pluck(:industry_market).flatten.reject(&:nil?).uniq
+    @industry_markets = SyndicateProfile.pluck(:industry_market).flatten.compact.uniq
   end
 
   def update_status_params

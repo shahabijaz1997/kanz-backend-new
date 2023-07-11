@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class RealtorsController < ApplicationController
-  before_action :set_realtor, only: %i[ show update ]
+  before_action :set_realtor, only: %i[show update]
 
   def index
     load_countries
@@ -16,7 +18,7 @@ class RealtorsController < ApplicationController
     authorize @realtor
     respond_to do |format|
       if @realtor.update(update_status_params)
-        format.html { redirect_to @realtor, notice: "Realtor was successfully updated." }
+        format.html { redirect_to @realtor, notice: 'Realtor was successfully updated.' }
       else
         format.html { render :show, status: :unprocessable_entity }
       end

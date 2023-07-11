@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class AdminUsersController < ApplicationController
-  before_action :set_admin_user, only: %i[ show edit update destroy ]
+  before_action :set_admin_user, only: %i[show edit update]
   before_action :perform_authorization
 
   def index
@@ -8,12 +10,15 @@ class AdminUsersController < ApplicationController
     @pagy, @admin_users = pagy(policy_scope(@filtered_admin_users.result(distinct: true).order(created_at: :desc)))
   end
 
-  def show
-  end
+  def show; end
 
   def new
     load_admin_roles
     @admin_user = AdminUser.new
+  end
+
+  def edit
+    load_admin_roles
   end
 
   def create
@@ -21,21 +26,17 @@ class AdminUsersController < ApplicationController
     @admin_user = AdminUser.new(admin_user_params)
     respond_to do |format|
       if @admin_user.save!
-        format.html { redirect_to admin_user_path(@admin_user), notice: "Admin User was successfully updated." }
+        format.html { redirect_to admin_user_path(@admin_user), notice: 'Admin User was successfully updated.' }
       else
         format.html { render :new, status: :unprocessable_entity }
       end
     end
   end
 
-  def edit
-    load_admin_roles
-  end
-
   def update
     respond_to do |format|
       if @admin_user.update(admin_user_params)
-        format.html { redirect_to admin_user_path(@admin_user), notice: "Admin User was successfully updated." }
+        format.html { redirect_to admin_user_path(@admin_user), notice: 'Admin User was successfully updated.' }
       else
         format.html { render :edit, status: :unprocessable_entity }
       end
@@ -57,9 +58,8 @@ class AdminUsersController < ApplicationController
       'Customer Support Rep': 3,
       'Compliance Officer': 4
     }
-    @admin_roles = @admin_roles.merge({
-      'Super Admin': 1,
-      'Admin': 2,
-    }) if current_admin_user.super_admin?
+    return unless current_admin_user.super_admin?
+
+    @admin_roles = @admin_roles.merge({ 'Super Admin': 1, Admin: 2 })
   end
 end

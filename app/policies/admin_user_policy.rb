@@ -1,6 +1,6 @@
+# frozen_string_literal: true
 
 class AdminUserPolicy < ApplicationPolicy
-  
   class Scope < Scope
     def resolve
       user_context.admin? ? scope.customer_users : scope.all

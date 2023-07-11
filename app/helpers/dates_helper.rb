@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module DatesHelper
-  DATE_WITH_TIME_AND_ZONE = '%b %d, %Y %H:%M:%S (%Z)'.freeze
-  DATE_WITHOUT_TIME_AND_ZONE = '%b %d, %Y %H:%M:%S'.freeze
+  DATE_WITH_TIME_AND_ZONE = '%b %d, %Y %H:%M:%S (%Z)'
+  DATE_WITHOUT_TIME_AND_ZONE = '%b %d, %Y %H:%M:%S'
   DEFAULT_DISPLAY_TIME_ZONE = 'CET'
 
   class << self

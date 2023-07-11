@@ -4,10 +4,10 @@ class Syndicate < User
   has_one :profile, class_name: 'SyndicateProfile', dependent: :destroy
 
   def self.ransackable_attributes(auth_object = nil)
-    ["email", "name", "status"]
+    %w[email name status]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["profile"]
+    ['profile']
   end
 end

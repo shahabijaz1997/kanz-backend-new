@@ -1,6 +1,6 @@
+# frozen_string_literal: true
 
 class SyndicatePolicy < ApplicationPolicy
-   
   class Scope < Scope
     def resolve
       scope.all
@@ -8,7 +8,7 @@ class SyndicatePolicy < ApplicationPolicy
   end
 
   def index?
-    user_context.customer_support_rep? || user_context.compliance_officer? # Only allow customer users to access the index page
+    user_context.customer_support_rep? || user_context.compliance_officer?
   end
 
   def show?

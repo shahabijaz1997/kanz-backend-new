@@ -6,14 +6,14 @@ class Investor < User
   has_many :questions, through: :users_responses
   has_one :profile, class_name: 'InvestorProfile', dependent: :destroy
 
-  scope :individual, -> {where(role_id: 1)}
-  scope :firms, -> {where(role_id: 2)}
+  scope :individual, -> { where(role_id: 1) }
+  scope :firms, -> { where(role_id: 2) }
 
   def self.ransackable_attributes(auth_object = nil)
-    ["email", "name", "status"]
+    %w[email name status]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["profile"]
+    ['profile']
   end
 end

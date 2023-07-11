@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class InvestorsController < ApplicationController
-  before_action :set_investor, only: %i[ show update ]
+  before_action :set_investor, only: %i[show update]
 
   def index
     load_countries
@@ -18,7 +20,7 @@ class InvestorsController < ApplicationController
     authorize @investor
     respond_to do |format|
       if @investor.update(update_status_params)
-        format.html { redirect_to @investor, notice: "Investor was successfully updated." }
+        format.html { redirect_to @investor, notice: 'Investor was successfully updated.' }
       else
         format.html { render :show, status: :unprocessable_entity }
       end

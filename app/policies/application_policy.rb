@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 class ApplicationPolicy
   attr_reader :user_context, :record
 
   def initialize(user_context, record)
-    unless user_context
-      raise Pundit::NotAuthorizedError, 'must be logged in'
-    end
+    raise Pundit::NotAuthorizedError, 'must be logged in' unless user_context
+
     @user_context = user_context
     @record = record
   end
@@ -14,7 +15,7 @@ class ApplicationPolicy
   end
 
   def show?
-    scope.where(id: record.id).exists?
+    scope.exists?(id: record.id)
   end
 
   def create?

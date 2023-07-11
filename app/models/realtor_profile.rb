@@ -8,10 +8,10 @@ class RealtorProfile < ApplicationRecord
   validates_presence_of :no_of_properties
 
   def self.ransackable_attributes(auth_object = nil)
-    ["residence_id", "nationality_id"]
+    %w[residence_id nationality_id]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["nationality", "residence"]
+    %w[nationality residence]
   end
 end

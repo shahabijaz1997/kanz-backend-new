@@ -10,6 +10,6 @@ class StartupProfile < ApplicationRecord
             :currency, presence: true
 
   def self.ransackable_attributes(auth_object = nil)
-    ["company_name", "legal_name", "industry_market"]
+    %w[company_name legal_name industry_market]
   end
 end
