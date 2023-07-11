@@ -37,11 +37,12 @@ class QuestionSerializer
   end
 
   def append_answer(question, user_response)
+    Option.class_eval { attr_accessor 'selected' }
     answers = user_response.answers
     if question.question_type.in?(["multiple_choice", "checkbox"])
       options = question.options.map do |option|
-        option.class_eval { attr_accessor 'selected' }
-        question.instance_variable_set "@selected", option.id.in?(answers)
+        option.instance_variable_set "@selected", option.id.in?(answers)
+        option
       end
       question.options = options
     elsif question.question_type == 'text'

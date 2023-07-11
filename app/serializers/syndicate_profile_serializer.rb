@@ -11,17 +11,11 @@ class SyndicateProfileSerializer
     profile.attachment&.url
   end
 
-  attributes :en do |profile|
-    {
-      industry_market: profile.industries&.pluck(:name),
-      region: profile.regions&.pluck(:name)
-    }
+  attribute :region_ids do |profile|
+    profile.regions&.pluck(:id)
   end
 
-  attributes :ar do |profile|
-    {
-      industry_market: profile.industries&.pluck(:name_ar),
-      region: profile.regions&.pluck(:name_ar)
-    }
+  attribute :industry_ids do |profile|
+    profile.industries&.pluck(:id)
   end
 end

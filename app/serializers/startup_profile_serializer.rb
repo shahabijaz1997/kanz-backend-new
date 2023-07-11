@@ -12,17 +12,19 @@ class StartupProfileSerializer
     profile.attachment&.url
   end
 
+  attribute :industry_ids do |profile|
+    profile.industries&.pluck(:id)
+  end
+
   attribute :en do |profile|
     {
-      country: profile.country.name,
-      industry_market: profile.industries&.pluck(:name)
+      country: profile.country.name
     }
   end
 
   attribute :ar do |profile|
     {
-      country: profile.country.name_ar,
-      industry_market: profile.industries&.pluck(:name_ar)
+      country: profile.country.name_ar
     }
   end
 end
