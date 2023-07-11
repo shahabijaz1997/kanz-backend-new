@@ -52,7 +52,7 @@ module V1
 
     def update_investor_state
       profile_states = @investor.profile_states
-      profile_states[:investor_type] = @investor.title
+      profile_states[:investor_type] = @investor.role_title
       @investor.update(profile_states: profile_states)
     end
   end

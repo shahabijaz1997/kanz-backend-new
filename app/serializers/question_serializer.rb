@@ -50,7 +50,7 @@ class QuestionSerializer
     answers = user_response.answers
     if question.question_type.in?(["multiple_choice", "checkbox"])
       options = question.options["schema"].map do |option|
-        option.merge("selected" => option["statement"].in?(answers))
+        option.merge("selected" => option["statement"].in?(answers) || option["statement_ar"].in?(answers))
       end
       question.options["schema"] = options
     elsif question.question_type == 'text'
