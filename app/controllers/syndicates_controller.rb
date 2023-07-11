@@ -5,7 +5,7 @@ class SyndicatesController < ApplicationController
     load_regions
     load_industry_markets
     @filtered_syndicates = Syndicate.ransack(params[:search])
-    @syndicates = policy_scope(@filtered_syndicates.result.includes(:profile).order(created_at: :desc))
+    @pagy, @syndicates = pagy(policy_scope(@filtered_syndicates.result.includes(:profile).order(created_at: :desc)))
     authorize @syndicates
   end
 
@@ -15,6 +15,13 @@ class SyndicatesController < ApplicationController
 
   def update
     authorize @syndicate
+    respond_to do |format|
+      if @syndicate.update(update_status_params)
+        format.html { redirect_to @syndicate, notice: "Syndicate was successfully updated." }
+      else
+        format.html { render :show, status: :unprocessable_entity }
+      end
+    end
   end
 
   private
@@ -29,5 +36,9 @@ class SyndicatesController < ApplicationController
 
   def load_industry_markets
     @industry_markets = SyndicateProfile.pluck(:industry_market).flatten.reject(&:nil?).uniq
+  end
+
+  def update_status_params
+    params.require(:syndicate).permit(:audit_comment, :status)
   end
 end

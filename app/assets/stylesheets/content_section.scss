@@ -28,6 +28,14 @@
         max-width: 300px;
       }
 
+      .checkboxes {
+        label {
+          margin: 0 20px 0 5px;
+          font-size: 16px;
+          cursor: pointer;
+        }
+      }
+
       .attachment {
         img {
           max-width: 250px;
@@ -46,6 +54,23 @@
         }
       }
 
+      .card-img-overlay {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        button {
+          opacity: 0.5;
+        }
+      }
+
+      .card-img-overlay:hover {
+        background-color: rgba($primary, 0.5);
+
+        button {
+          opacity: 1;
+        }
+      }
     }
   }
 }

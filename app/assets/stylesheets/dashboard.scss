@@ -2,16 +2,26 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
 
-.body {
-  display: flex;
-  align-items: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  background-color: #f5f5f5;
-}
+.dashboard {
+  .stats {
+    display: flex;
+    gap: 20px;
 
-.form-signin {
-  width: 100%;
-  max-width: 500px;
-  margin: auto;
+    .stat {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      border-radius: 10px;
+
+      .title {
+        color: $secondary;
+      }
+      .value {
+
+        font-size: 25px;
+        font-weight: 500;
+      }
+    }
+  }
 }

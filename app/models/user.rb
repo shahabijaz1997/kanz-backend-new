@@ -19,6 +19,8 @@ class User < ApplicationRecord
 
   before_validation :update_role, on: :create
 
+  audited only: :status
+
   # Devise override the confirmation token
   def generate_confirmation_token
     return if provider.present?

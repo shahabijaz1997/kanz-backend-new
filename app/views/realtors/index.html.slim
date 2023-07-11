@@ -3,11 +3,11 @@
 
 div.table
   div.header
-    div.col = sort_link(@filtered_realtors, :name, default_order: :desc)
+    div.col = sort_link(@filtered_realtors, :name)
     div.col = sort_link(@filtered_realtors, :email)
     div.col = sort_link(@filtered_realtors, :profile_residence_name, "Residence")
     div.col = sort_link(@filtered_realtors, :profile_nationality_name, "Nationality")
-    div.col = sort_link(@filtered_realtors, :status, "Status")
+    div.col = sort_link(@filtered_realtors, :status)
     div.col
       span Actions
 
@@ -22,5 +22,6 @@ div.table
             span.col = realtor.profile.nationality.name
             span.col = render 'shared/user_status', status: realtor.status
             span.col = link_to "View", realtor_path(realtor), class: 'stretched-link'
+      == pagy_nav(@pagy)
     - else
       div.not_found No Realtor Found

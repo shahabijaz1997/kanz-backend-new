@@ -15,5 +15,5 @@ div.w-75
 
   = render 'shared/attachments_section', resource: @investor
 
-  = render 'shared/section_card', section_title: 'Application Approval', editable: false do
-    div.not_found Application in Progress
+  = render 'shared/approval_section', resource: @investor
+  = render 'shared/history_section', resource: @investor

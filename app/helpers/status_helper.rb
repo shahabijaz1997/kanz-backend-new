@@ -1,6 +1,8 @@
 module StatusHelper
   class << self
     def colorized_status(status)
+      return if status.nil?
+      
       if status == :submitted
         "primary"
       elsif status == :approved
