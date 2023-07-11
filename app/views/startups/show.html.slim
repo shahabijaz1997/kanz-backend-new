@@ -13,13 +13,7 @@ div.w-75
     = render 'shared/section_card', section_title: 'Company Details', editable: false do
       li.list-group-item
         span.col-3.title Logo
-        div.card.attached_logo
-          = image_tag(@startup.profile.attachment.file.url)
-          div.card-img-overlay.d-flex.justify-content-center.align-items-center
-            button.btn.btn-outline-light
-              i.bi.bi-arrows-angle-expand
-            button.ms-3.btn.btn-outline-light
-              i.bi.bi-cloud-arrow-down
+        = render 'shared/attached_logo', logo_url: @startup.profile.attachment.file.url
       = render 'shared/section_list_item', title: 'Name', value: @startup.profile.company_name
       = render 'shared/section_list_item', title: 'Legal Name', value: @startup.profile.legal_name
       = render 'shared/section_list_item', title: 'Industry/Market', value: @startup.profile.industry_market.join(", ")

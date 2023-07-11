@@ -2,3 +2,4 @@
 import "@hotwired/turbo-rails"
 import "moment"
 import "./controllers"
+import './toastr'

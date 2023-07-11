@@ -38,7 +38,10 @@ Rails.application.routes.draw do
 
   # Admin routes
   resources :admin_users
-  resources :investors, only: %i[index show update]
+  resources :investors, only: %i[index show update] do
+    collection { get :individuals }
+    collection { get :firms }
+  end
   resources :realtors, only: %i[index show update]
   resources :startups, only: %i[index show update]
   resources :syndicates, only: %i[index show update]

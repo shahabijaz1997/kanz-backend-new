@@ -6,6 +6,8 @@ import { application } from "./application"
 
 import DashboardController from "./dashboard_controller"
 import TabsController from "./tabs_controller"
+import ToastController from "./toast_controller"
 
 application.register("dashboard", DashboardController)
 application.register("tabs", TabsController)
+application.register("toast", ToastController)

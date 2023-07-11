@@ -40,7 +40,16 @@ ROUTES = {
     {
       name: "Investors",
       path: "investors",
-      icon: "fa fa-money-bill-trend-up"
+      icon: "fa fa-money-bill-trend-up",
+      sub_routes: [{
+        name: "Individuals",
+        path: "individuals"
+      },
+      {
+        name: "Firms",
+        path: "firms"
+      }
+      ]
     },
     {
       name: "Realtors",

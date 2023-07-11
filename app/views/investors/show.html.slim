@@ -1,4 +1,4 @@
-= link_to '< Back', investors_path, class: 'mb-2'
+= link_to '< Back', :back, class: 'mb-2'
 = render 'shared/page_title', title: "Investor Details"
 
 div.w-75
@@ -9,11 +9,13 @@ div.w-75
       span.col-3.title Status
       span.col = render 'shared/user_status', status: @investor.status
     = render 'shared/section_list_item', title: 'Investor Type', value: @investor.individual_investor? ? 'Individual' : 'Firm'
-    = render 'shared/section_list_item', title: 'Residence', value: @investor.profile&.residence
+    - unless @investor.firm?
+      = render 'shared/section_list_item', title: 'Residence', value: @investor.profile&.residence
     = render 'shared/section_list_item', title: 'Nationality', value: @investor.profile&.country&.name
     = render 'shared/section_list_item', title: 'Accreditation', value: @investor.profile&.accreditation
 
-  = render 'shared/attachments_section', resource: @investor
 
+  = render 'investment_philosophies', resource: @investor
+  = render 'shared/attachments_section', resource: @investor
   = render 'shared/approval_section', resource: @investor
   = render 'shared/history_section', resource: @investor

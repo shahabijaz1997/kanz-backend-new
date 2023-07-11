@@ -1,0 +1,6 @@
+- if question.title.present?
+  li.list-group-item.question_title
+    span.col.title.fw-bold = question.title
+li.list-group-item
+  span.col-9.title = question.statement
+  span.col.answer = get_answer(resource, question)

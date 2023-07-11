@@ -2,10 +2,10 @@
 
 class AdminUsersController < ApplicationController
   before_action :set_admin_user, only: %i[show edit update]
-  before_action :perform_authorization
+  before_action :set_admin_user, only: %i[show edit update]
+  before_action :load_admin_roles, only: %i[index new edit create]
 
   def index
-    load_admin_roles
     @filtered_admin_users = AdminUser.ransack(params[:search])
     @pagy, @admin_users = pagy(policy_scope(@filtered_admin_users.result(distinct: true).order(created_at: :desc)))
   end
@@ -13,22 +13,20 @@ class AdminUsersController < ApplicationController
   def show; end
 
   def new
-    load_admin_roles
-    @admin_user = AdminUser.new
+    @admin_user = flash[:admin_user] ? AdminUser.new(flash[:admin_user]) : AdminUser.new
   end
 
-  def edit
-    load_admin_roles
-  end
+  def edit; end
 
   def create
-    load_admin_roles
     @admin_user = AdminUser.new(admin_user_params)
     respond_to do |format|
-      if @admin_user.save!
-        format.html { redirect_to admin_user_path(@admin_user), notice: 'Admin User was successfully updated.' }
+      if @admin_user.save
+        format.html { redirect_to admin_user_path(@admin_user), notice: 'Successfully updated.' }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        flash[:alert] = @admin_user.errors.full_messages.join('<br>')
+        flash[:admin_user] = @admin_user
+        format.html { redirect_to new_admin_user_path }
       end
     end
   end
@@ -36,9 +34,10 @@ class AdminUsersController < ApplicationController
   def update
     respond_to do |format|
       if @admin_user.update(admin_user_params)
-        format.html { redirect_to admin_user_path(@admin_user), notice: 'Admin User was successfully updated.' }
+        format.html { redirect_to admin_user_path(@admin_user), notice: 'Successfully updated.' }
       else
-        format.html { render :edit, status: :unprocessable_entity }
+        flash[:alert] = @admin_user.errors.full_messages.join('<br>')
+        format.html { redirect_to edit_admin_user_path(@admin_user) }
       end
     end
   end

@@ -6,9 +6,9 @@
         div.card.attachment
           = image_tag(attachment.file.url)
           div.card-img-overlay
-            button.ms-3.btn.btn-outline-light
+            a.btn.btn-outline-light href=attachment.file.url target="_blank"
               i.bi.bi-arrows-angle-expand
-            button.ms-3.btn.btn-outline-light
+            a.ms-3.btn.btn-outline-light href=attachment.file.url download="proof"
               i.bi.bi-cloud-arrow-down
 
   - else

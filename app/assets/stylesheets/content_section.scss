@@ -36,6 +36,15 @@
         }
       }
 
+      input::placeholder, tarea::placeholder {
+        color: rgba($secondary, 0.6);
+      }
+
+      .answer {
+        padding-left: 20px;
+        font-size: 17px !important;
+      }
+
       .attachment {
         img {
           max-width: 250px;
@@ -59,7 +68,7 @@
         justify-content: center;
         align-items: center;
 
-        button {
+        a, button {
           opacity: 0.5;
         }
       }
@@ -67,10 +76,14 @@
       .card-img-overlay:hover {
         background-color: rgba($primary, 0.5);
 
-        button {
+        a, button {
           opacity: 1;
         }
       }
+    }
+
+    .question_title {
+      background-color: rgba($secondary, 0.1) !important;
     }
   }
 }

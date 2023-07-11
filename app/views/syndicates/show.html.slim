@@ -12,13 +12,7 @@ div.w-75
   = render 'shared/section_card', section_title: 'Syndicate Profile', editable: false do
     li.list-group-item
       span.col-3.title Logo
-      div.card.attached_logo
-        = image_tag(@syndicate.profile.attachment.file.url)
-        div.card-img-overlay.d-flex.justify-content-center.align-items-center
-          button.btn.btn-outline-light
-            i.bi.bi-arrows-angle-expand
-          button.ms-3.btn.btn-outline-light
-            i.bi.bi-cloud-arrow-down
+      = render 'shared/attached_logo', logo_url: @syndicate.profile.attachment.file.url
     = render 'shared/section_list_item', title: 'Name', value: @syndicate.profile.name
     = render 'shared/section_list_item', title: 'Tagline', value: @syndicate.profile.tagline
     = render 'shared/section_list_item', title: 'Raised Amount', value: @syndicate.profile.raised_amount

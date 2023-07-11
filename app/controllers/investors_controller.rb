@@ -3,13 +3,18 @@
 class InvestorsController < ApplicationController
   before_action :set_investor, only: %i[show update]
 
-  def index
+  def individuals
     load_countries
-    @filtered_investors = Investor.ransack(params[:search])
-    @pagy, @investors = pagy(policy_scope(@filtered_investors.result.includes(:profile).order(created_at: :desc)))
-    @individual_investors = @investors.individual
-    @firm_investors = @investors.firms
-    authorize @investors
+    @filtered_investors = Investor.individuals.ransack(params[:search])
+    @pagy, @individual_investors = pagy(policy_scope(@filtered_investors.result.includes(:profile).order(created_at: :desc)))
+    authorize @individual_investors
+  end
+
+  def firms
+    load_countries
+    @filtered_investors = Investor.firms.ransack(params[:search])
+    @pagy, @firm_investors = pagy(policy_scope(@filtered_investors.result.includes(:profile).order(created_at: :desc)))
+    authorize @firm_investors
   end
 
   def show

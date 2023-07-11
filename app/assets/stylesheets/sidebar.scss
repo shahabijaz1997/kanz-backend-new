@@ -32,8 +32,32 @@
     background-color: rgba(var(--bs-secondary-bg-rgb), var(--bs-bg-opacity)) !important;
   }
 
+  .sub_tab {
+    padding-left: 100px;
+
+    a {
+      min-height: 40px;
+    }
+  }
+
+  .active_parent_tab {
+    background-color: white;
+
+    a {
+      color: $secondary;
+    }
+  }
+
   .active_tab, .tab:hover {
     background: white;
+    a, i {
+      color: $primary !important;
+    }
+  }
+
+  .active_sub_tab, .sub_tab:hover {
+    background-color: rgba(var(--bs-secondary-bg-rgb), 0.8) !important;
+
     a, i {
       color: $primary !important;
     }

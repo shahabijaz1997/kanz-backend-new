@@ -8,7 +8,7 @@ class AdminUserPolicy < ApplicationPolicy
   end
 
   def index?
-    user_context.admin? || user_context.super_admin? # Only allow admin users to access the index page
+    user_context.admin? || user_context.super_admin?
   end
 
   def show?

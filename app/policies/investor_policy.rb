@@ -7,15 +7,19 @@ class InvestorPolicy < ApplicationPolicy
     end
   end
 
-  def index?
-    user_context.customer_support_rep? || user_context.compliance_officer? # Only allow customer users to access the index page
+  def individuals?
+    user_context.customer_support_rep? || user_context.compliance_officer?
+  end
+
+  def firms?
+    individuals?
   end
 
   def show?
-    index?
+    individuals?
   end
 
   def update?
-    index?
+    individuals?
   end
 end
