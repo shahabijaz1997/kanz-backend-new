@@ -158,9 +158,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_105048) do
   create_table "options", force: :cascade do |t|
     t.string "statement"
     t.string "statement_ar"
-    t.integer "index"
-    t.string "unit"
-    t.string "currency"
+    t.integer "index", default: 1
+    t.string "unit", default: "Million"
+    t.string "currency", default: "USD"
     t.boolean "is_range"
     t.float "lower_limit"
     t.float "uper_limit"
