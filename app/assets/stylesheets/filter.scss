@@ -25,7 +25,13 @@
     }
 
     .submit {
-      align-self: flex-end
+      display: flex;
+      align-self: flex-end;
+      gap: 10px;
+
+      input, a {
+        width: 75px !important;
+      }
     }
 
   }
