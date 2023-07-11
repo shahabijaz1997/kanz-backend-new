@@ -15,34 +15,24 @@ class QuestionSerializer
   end
 
   attribute :en do |q|
-    options = q&.options.try(:[], 'schema')&.map do |option|
-      option.except('statement_ar')
-    end
-
     {
       category: q.category,
       title: q.title,
       statement: q.statement,
       description: q.description,
       answer: q.try(:answer),
-      options:
+      options: q.options
     }
   end
 
   attribute :ar do |q|
-    options = q&.options.try(:[], 'schema')&.map do |option|
-      option.except('statement')
-      option['statement'] = option.delete 'statement_ar'
-      option
-    end
-
     {
       category: q.category_ar,
       title: q.title_ar,
       statement: q.statement_ar,
       description: q.description_ar,
       answer: q.try(:answer),
-      options:
+      options: q.options
     }
   end
 
