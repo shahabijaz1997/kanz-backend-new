@@ -36,8 +36,7 @@ module V1
         :step,
         questions: [
           :question_id,
-          { answers: [],
-            answer_meta: [options: %i[index statement is_range lower_limit uper_limit unit]] }
+          answers: []
         ]
       )
     end

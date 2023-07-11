@@ -48,7 +48,14 @@ class InvestorProfileSerializer
       {
         question_statement: question.statement_ar,
         options: question.options.map { |o| {
-          id: o.id, statement: o.statement_ar, selected: o.id == selected_option
+          id: o.id,
+          statement: o.statement_ar,
+          selected: o.id == selected_option,
+          lower_limit: o.lower_limit,
+          upper_limit: o.uper_limit,
+          is_range: o.is_range,
+          unit: o.unit&.titleize,
+          currency: o.currency
         } },
       }
     end
@@ -60,7 +67,14 @@ class InvestorProfileSerializer
       {
         question_statement: question.statement,
         options: question.options.map { |o| {
-          id: o.id, statement: o.statement, selected: o.id == selected_option
+          id: o.id,
+          statement: o.statement,
+          selected: o.id == selected_option,
+          lower_limit: o.lower_limit,
+          upper_limit: o.uper_limit,
+          is_range: o.is_range,
+          unit: o.unit&.titleize,
+          currency: o.currency
         } },
       }
     end

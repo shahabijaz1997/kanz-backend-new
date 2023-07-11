@@ -21,7 +21,7 @@ class QuestionSerializer
       statement: q.statement,
       description: q.description,
       answer: q.try(:answer),
-      options: q.options
+      options: OptionSerializer.new(q.options).serializable_hash[:data].map { |d| d[:attributes][:en] }
     }
   end
 
@@ -32,7 +32,7 @@ class QuestionSerializer
       statement: q.statement_ar,
       description: q.description_ar,
       answer: q.try(:answer),
-      options: q.options
+      options: OptionSerializer.new(q.options).serializable_hash[:data].map { |d| d[:attributes][:ar] }
     }
   end
 
@@ -40,8 +40,8 @@ class QuestionSerializer
     answers = user_response.answers
     if question.question_type.in?(["multiple_choice", "checkbox"])
       options = question.options.map do |option|
-        option.merge("selected" => option["statement"].in?(answers) ||
-                     option["statement_ar"].in?(answers))
+        option.class_eval { attr_accessor 'selected' }
+        question.instance_variable_set "@selected", option.id.in?(answers)
       end
       question.options = options
     elsif question.question_type == 'text'
