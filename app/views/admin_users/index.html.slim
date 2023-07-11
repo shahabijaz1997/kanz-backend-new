@@ -33,3 +33,5 @@ div.table
               div.ms-2.position-relative
                 a.btn.btn-outline-primary.stretched-link href=edit_admin_user_path(admin_user)
                   i class="bi bi-pen"
+      - if @pagy.pages > 1
+        == pagy_nav(@pagy)

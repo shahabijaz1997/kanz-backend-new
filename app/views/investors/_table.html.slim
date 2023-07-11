@@ -18,6 +18,7 @@ div.table
             span.col = investor.profile&.country&.name
             span.col = render 'shared/user_status', status: investor.status
             span.col = link_to "View", investor_path(investor), class: 'stretched-link'            
-      == pagy_nav(@pagy)
+      - if @pagy.pages > 1
+        == pagy_nav(@pagy)
     - else
       div.not_found No Investor Found

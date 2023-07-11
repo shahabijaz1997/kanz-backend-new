@@ -21,6 +21,7 @@ div.table
             span.col = syndicate.profile&.industry_market&.join(", ")
             span.col = render 'shared/user_status', status: syndicate.status
             span.col = link_to "View", syndicate_path(syndicate), class: 'stretched-link'
-      == pagy_nav(@pagy)
+      - if @pagy.pages > 1
+        == pagy_nav(@pagy)
     - else
       div.not_found No Syndicate Found

@@ -5,7 +5,7 @@ class AdminUsersController < ApplicationController
   def index
     load_admin_roles
     @filtered_admin_users = AdminUser.ransack(params[:search])
-    @admin_users = policy_scope(@filtered_admin_users.result(distinct: true).order(created_at: :desc))
+    @pagy, @admin_users = pagy(policy_scope(@filtered_admin_users.result(distinct: true).order(created_at: :desc)))
   end
 
   def show

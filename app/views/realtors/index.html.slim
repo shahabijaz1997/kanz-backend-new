@@ -22,6 +22,7 @@ div.table
             span.col = realtor.profile.nationality.name
             span.col = render 'shared/user_status', status: realtor.status
             span.col = link_to "View", realtor_path(realtor), class: 'stretched-link'
-      == pagy_nav(@pagy)
+      - if @pagy.pages > 1
+        == pagy_nav(@pagy)
     - else
       div.not_found No Realtor Found
