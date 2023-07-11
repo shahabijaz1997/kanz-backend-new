@@ -8,8 +8,9 @@ class InvestorSerializer
   attributes :name, :email, :type, :status, :language, :profile_states
 
   attribute :profile do |investor|
+    profile = investor.profile || InvestorProfile.new(investor: investor)
     InvestorProfileSerializer.new(
-      investor.profile
+      profile
     ).serializable_hash[:data]&.fetch(:attributes)
   end
 

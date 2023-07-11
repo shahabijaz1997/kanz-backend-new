@@ -9,9 +9,9 @@ class InvestorProfileSerializer
   attribute :en do |profile|
     {
       legal_name: profile.legal_name,
-      nationality: profile.country.name,
-      location: profile.country.name,
-      residence: profile.residence.name,
+      nationality: profile.country&.name,
+      location: profile.country&.name,
+      residence: profile.residence&.name,
       accreditation: accreditation_en(profile),
       accepted_investment_criteria: profile.accepted_investment_criteria
     }.except(*keys_to_remove(profile.investor))
@@ -20,9 +20,9 @@ class InvestorProfileSerializer
   attribute :ar do |profile|
     {
       legal_name: profile.legal_name,
-      nationality: profile.country.name_ar,
-      location: profile.country.name_ar,
-      residence: profile.residence.name_ar,
+      nationality: profile.country&.name_ar,
+      location: profile.country&.name_ar,
+      residence: profile.residence&.name_ar,
       accreditation: accreditation_ar(profile),
       accepted_investment_criteria: profile.accepted_investment_criteria
     }.except(*keys_to_remove(profile.investor))
