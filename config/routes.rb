@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  devise_for :admin_users
+  devise_for :admin_users, controllers: {
+    passwords: 'passwords'
+  }
 
   devise_for :users, path: '', path_names: {
                                  sign_in: 'login',
@@ -45,7 +47,13 @@ Rails.application.routes.draw do
   resources :realtors, only: %i[index show update]
   resources :startups, only: %i[index show update]
   resources :syndicates, only: %i[index show update]
+  resources :profile, only: %i[index] do
+    collection do
+      get :edit
+      put :update
+    end
+  end
+  resources :dashboard, only: %i[index]
 
-  get "dashboard/index"  
   root to: "dashboard#index"
 end

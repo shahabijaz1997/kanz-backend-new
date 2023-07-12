@@ -7,6 +7,13 @@ div.d-flex.justify-content-between.bg-body-tertiary
       span.text-secondary
         | Hi, 
         = current_admin_user.first_name
-      div.m-2
-      = button_to destroy_admin_user_session_path, method: :delete, class: 'btn btn-outline-secondary' do
-        i class="fa-solid fa-arrow-right-from-bracket"
+      div.user-menu data-controller='menu'
+        a.btn data-action='menu#toggleMenu'
+          i.bi.bi-person-circle.fa-2xl.text-body-secondary
+        div class="dropdown-menu" data-menu-target='dropdown'
+          a class="dropdown-item text-secondary" href='/profile'
+            i.fa.fa-user-large
+            span.ms-3 Profile
+          = button_to destroy_admin_user_session_path, method: :delete, class: 'dropdown-item text-secondary' do
+            i.fa.fa-arrow-right-from-bracket
+            span.ms-3 Logout

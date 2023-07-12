@@ -2,7 +2,7 @@
 
 module DatesHelper
   DATE_WITH_TIME_AND_ZONE = '%b %d, %Y %H:%M:%S (%Z)'
-  DATE_WITHOUT_TIME_AND_ZONE = '%b %d, %Y %H:%M:%S'
+  DATE_WITHOUT_TIME_AND_ZONE = '%b %d, %Y %I:%M %p'
   DEFAULT_DISPLAY_TIME_ZONE = 'Asia/Muscat'
 
   class << self
