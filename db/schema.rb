@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_06_080650) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_12_093345) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -141,16 +141,53 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_06_080650) do
   end
 
   create_table "investor_profiles", force: :cascade do |t|
-    t.string "residence"
-    t.string "accreditation", null: false
     t.boolean "accepted_investment_criteria"
     t.bigint "country_id"
     t.bigint "investor_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "legal_name"
+    t.bigint "residence_id"
+    t.bigint "accreditation_option_id"
+    t.index ["accreditation_option_id"], name: "index_investor_profiles_on_accreditation_option_id"
     t.index ["country_id"], name: "index_investor_profiles_on_country_id"
     t.index ["investor_id"], name: "index_investor_profiles_on_investor_id"
+    t.index ["residence_id"], name: "index_investor_profiles_on_residence_id"
+  end
+
+  create_table "options", force: :cascade do |t|
+    t.string "statement"
+    t.string "statement_ar"
+    t.integer "index", default: 1
+    t.string "unit", default: "Million"
+    t.string "currency", default: "USD"
+    t.boolean "is_range"
+    t.float "lower_limit"
+    t.float "uper_limit"
+    t.bigint "question_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_options_on_question_id"
+  end
+
+  create_table "profiles_industries", force: :cascade do |t|
+    t.string "profile_type"
+    t.bigint "profile_id"
+    t.bigint "industry_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["industry_id"], name: "index_profiles_industries_on_industry_id"
+    t.index ["profile_type", "profile_id"], name: "index_profiles_industries_on_profile"
+  end
+
+  create_table "profiles_regions", force: :cascade do |t|
+    t.string "profile_type"
+    t.bigint "profile_id"
+    t.bigint "region_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["profile_type", "profile_id"], name: "index_profiles_regions_on_profile"
+    t.index ["region_id"], name: "index_profiles_regions_on_region_id"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -169,6 +206,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_06_080650) do
     t.string "statement_ar"
     t.string "category_ar"
     t.text "description_ar"
+    t.integer "kind", default: 0
   end
 
   create_table "realtor_profiles", force: :cascade do |t|
@@ -203,12 +241,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_06_080650) do
     t.string "industry_market", array: true
     t.string "website"
     t.string "address"
-    t.string "logo"
     t.text "description"
     t.string "ceo_name"
     t.string "ceo_email"
-    t.float "total_capital_raised", null: false
-    t.float "current_round_capital_target", null: false
+    t.float "total_capital_raised"
+    t.float "current_round_capital_target"
     t.bigint "startup_id"
     t.bigint "country_id"
     t.datetime "created_at", null: false
@@ -228,7 +265,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_06_080650) do
     t.string "region", array: true
     t.string "profile_link"
     t.string "dealflow"
-    t.string "logo"
     t.integer "syndicate_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

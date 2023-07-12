@@ -25,11 +25,18 @@ module V1
     private
 
     def profile_params
-      params.require(:startup).permit(
-        :company_name, :legal_name, :website, :address, :logo, :description, :country_id,
-        :ceo_name, :ceo_email, :total_capital_raised, :current_round_capital_target, :currency,
-        industry_market: []
-      )
+      return [] unless params[:startup_profile][:step].to_i.in?([1,2])
+
+      if params[:startup_profile][:step].to_i == 1
+        params.require(:startup_profile).permit(
+          :step, :company_name, :legal_name, :country_id, :website, :address, industry_market: []
+        )
+      else
+        params.require(:startup_profile).permit(
+          :step, :logo, :description, :ceo_name, :ceo_email, :total_capital_raised,
+          :current_round_capital_target, :currency
+        )
+      end
     end
 
     def validate_startup
@@ -39,7 +46,7 @@ module V1
     end
 
     def check_file_presence
-      return if @startup.profile.present? && @startup.profile.attachment.present?
+      return if @startup.profile&.attachment || params[:startup_profile][:step].to_i == 1
 
       failure(I18n.t('errors.exceptions.file_missing')) if profile_params[:logo].blank?
     end
