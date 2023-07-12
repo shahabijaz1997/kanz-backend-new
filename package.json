@@ -30,6 +30,7 @@
     "postcss-cli": "^10.1.0",
     "sass": "^1.63.6",
     "sass-loader": "^13.0.0",
+    "stimulus-use": "^0.52.0",
     "toastr": "^2.1.4"
   },
   "browserslist": [
