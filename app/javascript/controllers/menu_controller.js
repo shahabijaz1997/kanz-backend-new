@@ -15,7 +15,6 @@ export default class extends Controller {
   }
 
   clickOutside(event) {
-    event.preventDefault()
     Dom.removeClass(this.dropdownTarget, 'show')
   }
 }
