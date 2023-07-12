@@ -4,10 +4,18 @@
 class SyndicateProfileSerializer
   include JSONAPI::Serializer
 
-  attributes :have_you_ever_raised, :raised_amount, :no_times_raised, :industry_market,
-             :region, :profile_link, :dealflow, :name, :tagline
+  attributes :have_you_ever_raised, :raised_amount, :no_times_raised,
+             :profile_link, :dealflow, :name, :tagline
 
   attribute :logo do |profile|
     profile.attachment&.url
+  end
+
+  attribute :region_ids do |profile|
+    profile.regions&.pluck(:id)
+  end
+
+  attribute :industry_ids do |profile|
+    profile.industries&.pluck(:id)
   end
 end

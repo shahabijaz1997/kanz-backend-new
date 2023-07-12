@@ -9,9 +9,17 @@ class Question < ApplicationRecord
     checkbox: 3
   }
 
+  has_many :options, dependent: :destroy
   has_many :users_responses, dependent: :destroy
   has_many :users, through: :users_responses
 
   validates :statement, presence: true
   validates :question_type, inclusion: { in: question_types.keys }
+
+  enum kind: QUESTION_KIND
+  accepts_nested_attributes_for :options
+
+  scope :individual_accredition, -> { where(kind: QUESTION_KIND[:individual_accredition]).first }
+  scope :firm_accredition, -> { where(kind: QUESTION_KIND[:firm_accredition]).first }
+  scope :investment_philosophy, -> { where(kind: QUESTION_KIND[:investment_philosophy]) }
 end
