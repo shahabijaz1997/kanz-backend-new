@@ -1,0 +1,28 @@
+= render 'shared/page_title', title: "Realtors"
+= render 'filters'
+
+div.table
+  div.header
+    div.col = sort_link(@filtered_realtors, :name)
+    div.col = sort_link(@filtered_realtors, :email)
+    div.col = sort_link(@filtered_realtors, :profile_residence_name, "Residence")
+    div.col = sort_link(@filtered_realtors, :profile_nationality_name, "Nationality")
+    div.col = sort_link(@filtered_realtors, :status)
+    div.col
+      span Actions
+
+  div.content
+    - if @realtors.present?
+      - @realtors.each do |realtor|
+        div.card.position-relative.shadow-sm
+          div.card-body.d-flex
+            span.col = realtor.name
+            span.col = realtor.email
+            span.col = realtor.profile.residence.name
+            span.col = realtor.profile.nationality.name
+            span.col = render 'shared/user_status', status: realtor.status
+            span.col = link_to "View", realtor_path(realtor), class: 'stretched-link'
+      - if @pagy.pages > 1
+        == pagy_nav(@pagy)
+    - else
+      div.not_found No Realtor Found

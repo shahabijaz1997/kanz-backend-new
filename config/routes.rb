@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  devise_for :admin_users,
+    controllers: {
+      passwords: 'admin_users/passwords',
+      sessions: 'admin_users/sessions'
+    }
+
   devise_for :users, path: '', path_names: {
                                  sign_in: 'login',
                                  sign_out: 'logout',
@@ -35,4 +41,27 @@ Rails.application.routes.draw do
     get 'regions' => 'industries#regions'
     post 'attachments/submit', to: 'attachments#submit'
   end
+
+  # Admin routes
+  resources :admin_users do
+    get :reactivate, on: :member
+  end
+  resources :investors, only: %i[show update] do
+    collection do
+      get :individuals
+      get :firms
+    end
+  end
+  resources :realtors, only: %i[index show update]
+  resources :startups, only: %i[index show update]
+  resources :syndicates, only: %i[index show update]
+  resources :profile, only: %i[index] do
+    collection do
+      get :edit
+      put :update
+    end
+  end
+  resources :dashboard, only: %i[index]
+
+  root to: "dashboard#index"
 end

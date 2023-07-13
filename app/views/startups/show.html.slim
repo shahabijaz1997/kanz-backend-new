@@ -1,0 +1,31 @@
+= link_to '< Back', startups_path, class: 'mb-2'
+= render 'shared/page_title', title: "Startup Details"
+
+div.w-75
+  = render 'shared/section_card', section_title: 'Startup User', editable: false do
+    = render 'shared/section_list_item', title: 'Name', value: @startup.name
+    = render 'shared/section_list_item', title: 'Email', value: @startup.email
+    li.list-group-item
+      span.col-3.title Status
+      span.col = render 'shared/user_status', status: @startup.status
+
+  - if @startup.profile.present?
+    = render 'shared/section_card', section_title: 'Company Details', editable: false do
+      li.list-group-item
+        span.col-3.title Logo
+        = render 'shared/attached_logo', logo_url: @startup.profile.attachment.file.url
+      = render 'shared/section_list_item', title: 'Name', value: @startup.profile.company_name
+      = render 'shared/section_list_item', title: 'Legal Name', value: @startup.profile.legal_name
+      = render 'shared/section_list_item', title: 'Industry/Market', value: @startup.profile.industry_market.join(", ")
+      = render 'shared/section_list_item', title: 'Website', value: @startup.profile.website
+      = render 'shared/section_list_item', title: 'Address', value: @startup.profile.address
+      = render 'shared/section_list_item', title: 'Description', value: @startup.profile.description
+      = render 'shared/section_list_item', title: 'CEO Name', value: @startup.profile.ceo_name
+      = render 'shared/section_list_item', title: 'CEO Email', value: @startup.profile.ceo_email
+      = render 'shared/section_list_item', title: 'Total Capital Raised', value: @startup.profile.total_capital_raised
+      = render 'shared/section_list_item', title: 'Current Round Capital Target', value: @startup.profile.current_round_capital_target
+
+  = render 'shared/attachments_section', resource: @startup
+
+  = render 'shared/approval_section', resource: @startup
+  = render 'shared/history_section', resource: @startup

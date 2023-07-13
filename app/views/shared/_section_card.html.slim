@@ -1,0 +1,8 @@
+div.card.content_card.shadow-sm
+  div.card-header.position-relative
+    span = section_title
+    - if editable
+      a.ms-auto.btn.btn-outline-primary.rounded-circle.stretched-link href=editable_path
+        i class="bi bi-pen"
+  ul.list-group.list-group-flush
+   = yield

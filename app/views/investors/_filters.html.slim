@@ -1,0 +1,23 @@
+div.filters.bg-light.border.rounded
+  span.title Filters
+  = search_form_for @filtered_investors, url: search_path, class: 'form' do |form|
+    div.search_field
+      = form.label :name_cont, 'Name'
+      = form.search_field :name_cont, class: 'form-control'
+
+    div.search_field
+      = form.label :email_cont, 'Email'
+      = form.search_field :email_cont, class: 'form-control'
+
+    - unless firm
+      div.search_field
+        = form.label :profile_residence_eq, 'Residence'
+        = form.select :profile_residence_eq, @countries, { include_blank: true }, { class: 'form-control' }
+
+    div.search_field
+      = form.label :profile_country_name_eq, 'Nationality'
+      = form.select :profile_country_name_eq, @countries, { include_blank: true }, { class: 'form-control' }
+
+    div.submit
+      = form.submit 'Search', class: 'btn btn-primary'
+      = link_to "Clear", request.path, class:"btn btn-secondary"

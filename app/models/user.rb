@@ -21,6 +21,8 @@ class User < ApplicationRecord
   before_validation :update_role, on: :create
   after_create :update_profile_state
 
+  audited only: :status
+
   # Devise override the confirmation token
   def generate_confirmation_token
     return if provider.present?
@@ -101,7 +103,7 @@ class User < ApplicationRecord
     self.role_id = Role.find_by(title:).id
   end
 
-  def self.generate_password(length = 12)
+  def generate_password(length = 12)
     chars = [('a'..'z'), ('A'..'Z'), (0..9),
              ['!', '@', '#', '$', '%', '^', '&', '*', '_', '-']].map(&:to_a).flatten
     password = SecureRandom.base64(length)

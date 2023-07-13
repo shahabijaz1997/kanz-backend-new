@@ -1,0 +1,5 @@
+- if status.present?
+  span.bg-gradient.rounded.text-white class="bg-#{StatusHelper.colorized_status(status.to_sym)}" style="padding: 5px"
+    = status.capitalize
+- else
+  span NA

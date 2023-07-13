@@ -2,7 +2,7 @@
 
 # Investor persona
 module V1
-  class InvestorsController < ApplicationController
+  class InvestorsController < ApiController
     before_action :validate_persona
 
     def show

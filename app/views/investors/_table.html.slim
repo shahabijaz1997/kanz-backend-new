@@ -1,0 +1,26 @@
+div.table
+  div.header
+    div.col = sort_link(@filtered_investors, :name)
+    div.col = sort_link(@filtered_investors, :email)
+    - unless firm
+      div.col = sort_link(@filtered_investors, :profile_residence)
+    div.col = sort_link(@filtered_investors, :profile_nationality_name, "Nationality")
+    div.col = sort_link(@filtered_investors, :status)
+    div.col
+      span Actions
+  div.content
+    - if investors.present?
+      - investors.each do |investor|
+        div.card.position-relative.shadow-sm
+          div.card-body.d-flex
+            span.col = investor.name
+            span.col = investor.email
+            - unless firm
+              span.col = investor.profile&.residence
+            span.col = investor.profile&.country&.name
+            span.col = render 'shared/user_status', status: investor.status
+            span.col = link_to "View", investor_path(investor), class: 'stretched-link'            
+      - if @pagy.pages > 1
+        == pagy_nav(@pagy)
+    - else
+      div.not_found No Investor Found
