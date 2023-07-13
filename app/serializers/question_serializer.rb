@@ -12,7 +12,7 @@ class QuestionSerializer
       statement: q.statement,
       description: q.description,
       answer: '',
-      options: OptionSerializer.new(q.options).serializable_hash[:data].map { |d| d[:attributes][:ar] }
+      options: OptionSerializer.new(q.options).serializable_hash[:data].map { |d| d[:attributes][:en] }
     }
   end
 

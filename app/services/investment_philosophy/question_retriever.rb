@@ -43,6 +43,10 @@ module InvestmentPhilosophy
             opt[:selected] = true if opt[:id].in? users_answer.selected_option_ids
             opt
           end
+          data[:attributes][:ar][:options].map do |opt|
+            opt[:selected] = true if opt[:id].in? users_answer.selected_option_ids
+            opt
+          end
         end
         data[:attributes][:en][:answer] = users_answer.answer
         data[:attributes]
