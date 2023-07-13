@@ -36,21 +36,26 @@ module InvestmentPhilosophy
 
       QuestionSerializer.new(questions).serializable_hash[:data].map do |data|
         users_answer = user.investment_philosophies.find_by(question_id: data[:attributes][:id])
-        return data[:attributes] if users_answer.blank?
-
-        if data[:attributes][:question_type].in? ['multiple_choice', 'checkbox']
-          data[:attributes][:en][:options].map do |opt|
-            opt[:selected] = true if opt[:id].in? users_answer.selected_option_ids
-            opt
-          end
-          data[:attributes][:ar][:options].map do |opt|
-            opt[:selected] = true if opt[:id].in? users_answer.selected_option_ids
-            opt
-          end
-        end
-        data[:attributes][:en][:answer] = users_answer.answer
+        data[:attributes] = data_with_answers(data[:attributes], users_answer) if users_answer.present?
         data[:attributes]
       end
+    end
+
+    def data_with_answers(data, users_answer)
+      data[:en][:answer] = users_answer.answer
+      return data unless data[:question_type].in? ['multiple_choice', 'checkbox']
+
+      selected_options = users_answer.selected_option_ids
+      data[:en][:options].map do |opt|
+        opt[:selected] = (opt[:id].in? selected_options)
+        opt
+      end
+
+      data[:ar][:options].map do |opt|
+        opt[:selected] = (opt[:id].in? selected_options)
+        opt
+      end
+      data
     end
   end
 end
