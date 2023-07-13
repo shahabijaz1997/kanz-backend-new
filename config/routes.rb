@@ -40,7 +40,7 @@ Rails.application.routes.draw do
 
   # Admin routes
   resources :admin_users
-  resources :investors, only: %i[index show update] do
+  resources :investors, only: %i[show update] do
     collection { get :individuals }
     collection { get :firms }
   end

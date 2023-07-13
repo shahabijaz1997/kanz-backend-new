@@ -13,4 +13,9 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   rescue_from ActiveRecord::RecordNotFound, with: :user_not_authorized
+
+  def authorize_role!
+    policy_name = controller_name.camelize.singularize
+    authorize policy_name.constantize
+  end
 end

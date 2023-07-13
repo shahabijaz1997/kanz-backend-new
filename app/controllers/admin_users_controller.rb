@@ -3,6 +3,7 @@
 class AdminUsersController < ApplicationController
   before_action :set_admin_user, only: %i[show edit update]
   before_action :load_admin_roles, only: %i[index new edit create]
+  before_action :authorize_role!
 
   def index
     @filtered_admin_users = AdminUser.ransack(params[:search])

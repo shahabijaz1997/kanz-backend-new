@@ -2,23 +2,20 @@
 
 class StartupsController < ApplicationController
   before_action :set_startup, only: %i[show update]
+  before_action :authorize_role!
 
   def index
     load_industry_markets
     @filtered_startups = Startup.ransack(params[:search])
     @pagy, @startups = pagy(policy_scope(@filtered_startups.result.includes(:profile).order(created_at: :desc)))
-    authorize @startups
   end
 
-  def show
-    authorize @startup
-  end
+  def show; end
 
   def update
-    authorize @startup
     respond_to do |format|
       if @startup.update(update_status_params)
-        format.html { redirect_to @startup, notice: 'Startup was successfully updated.' }
+        format.html { redirect_to @startup, notice: 'Successfully updated.' }
       else
         format.html { render :show, status: :unprocessable_entity }
       end

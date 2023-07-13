@@ -2,24 +2,21 @@
 
 class SyndicatesController < ApplicationController
   before_action :set_syndicate, only: %i[show update]
+  before_action :authorize_role!
 
   def index
     load_regions
     load_industry_markets
     @filtered_syndicates = Syndicate.ransack(params[:search])
     @pagy, @syndicates = pagy(policy_scope(@filtered_syndicates.result.includes(:profile).order(created_at: :desc)))
-    authorize @syndicates
   end
 
-  def show
-    authorize @syndicate
-  end
+  def show; end
 
   def update
-    authorize @syndicate
     respond_to do |format|
       if @syndicate.update(update_status_params)
-        format.html { redirect_to @syndicate, notice: 'Syndicate was successfully updated.' }
+        format.html { redirect_to @syndicate, notice: 'Successfully updated.' }
       else
         format.html { render :show, status: :unprocessable_entity }
       end
