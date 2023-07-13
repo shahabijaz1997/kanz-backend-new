@@ -6,8 +6,8 @@ class Investor < User
   has_many :questions, through: :users_responses
   has_one :profile, class_name: 'InvestorProfile', dependent: :destroy
 
-  scope :individuals, -> { where(role_id: 1) }
-  scope :firms, -> { where(role_id: 2) }
+  scope :individuals, -> { where(user_role: Role.find_by(title: 'Individual Investor')) }
+  scope :firms, -> { where(user_role: Role.find_by(title: 'Investment Firm')) }
 
   def firm?
     role_id == 2

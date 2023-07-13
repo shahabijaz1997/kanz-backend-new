@@ -18,8 +18,8 @@ div.table
           div.card-body.d-flex
             span.col = realtor.name
             span.col = realtor.email
-            span.col = realtor.profile.residence.name
-            span.col = realtor.profile.nationality.name
+            span.col = realtor.profile&.residence&.name
+            span.col = realtor.profile&.nationality&.name
             span.col = render 'shared/user_status', status: realtor.status
             span.col = link_to "View", realtor_path(realtor), class: 'stretched-link'
       - if @pagy.pages > 1
