@@ -38,7 +38,7 @@ module InvestmentPhilosophy
         users_answer = user.investment_philosophies.find_by(question_id: data[:attributes][:id])
         return data[:attributes] if users_answer.blank?
 
-        if question_type.in? ['multiple_choice', 'checkbox']
+        if data[:attributes][:question_type].in? ['multiple_choice', 'checkbox']
           data[:attributes][:en][:options].map do |opt|
             opt[:selected] = true if opt[:id].in? users_answer.selected_option_ids
             opt
