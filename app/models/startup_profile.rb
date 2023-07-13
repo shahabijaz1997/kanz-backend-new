@@ -13,14 +13,16 @@ class StartupProfile < ApplicationRecord
   validates :total_capital_raised, :current_round_capital_target,
             :ceo_name, :ceo_email, :currency, presence: true, if: :second_step?
 
-  after_create :update_profile_state
+  after_save :update_profile_state
   after_save :update_profile_industries
 
   private
 
   def update_profile_state
+    debugger
     profile_states = startup.profile_states
-    profile_states[:profile_completed] = true
+    profile_states[:profile_completed] = (step == 2)
+    profile_states[:profile_current_step] = step
     startup.update(profile_states: profile_states)
   end
 

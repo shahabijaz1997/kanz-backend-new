@@ -9,7 +9,7 @@ class OptionSerializer
       id: option.id,
       index: option.index,
       statement: option.statement,
-      selected: option.try(:selected) | false
+      selected: false
     }
   end
 
@@ -18,7 +18,7 @@ class OptionSerializer
       id: option.id,
       index: option.index,
       statement: option.statement_ar,
-      selected: option.try(:selected) | false
+      selected: false
     }
   end
 end

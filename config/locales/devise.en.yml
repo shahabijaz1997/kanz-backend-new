@@ -4,7 +4,6 @@ en:
   devise:
     confirmations:
       confirmed: "Your email address has been successfully confirmed."
-      resent_instruction: "New token is on its way!"
       send_instructions: "You will receive an email with instructions for how to confirm your email address in a few minutes."
       send_paranoid_instructions: "If your email address exists in our database, you will receive an email with instructions for how to confirm your email address in a few minutes."
       resent_instruction: "Verification code resent on your email."

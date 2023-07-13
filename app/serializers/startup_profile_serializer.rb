@@ -6,7 +6,7 @@ class StartupProfileSerializer
 
   attributes :company_name, :legal_name, :website, :address,
              :description, :ceo_name, :ceo_email, :total_capital_raised,
-             :current_round_capital_target
+             :current_round_capital_target, :currency
 
   attribute :logo do |profile|
     profile.attachment&.url

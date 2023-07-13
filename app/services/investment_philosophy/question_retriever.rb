@@ -34,7 +34,19 @@ module InvestmentPhilosophy
       questions = Question.where(step:)
       return [] if questions.blank?
 
-      QuestionSerializer.new(questions, user).serializable_hash[:data].map { |d| d[:attributes] }
+      QuestionSerializer.new(questions).serializable_hash[:data].map do |data|
+        users_answer = user.investment_philosophies.find_by(question_id: data[:attributes][:id])
+        return data[:attributes] if users_answer.blank?
+
+        if question_type.in? ['multiple_choice', 'checkbox']
+          data[:attributes][:en][:options].map do |opt|
+            opt[:selected] = true if opt[:id].in? users_answer.selected_option_ids
+            opt
+          end
+        end
+        data[:attributes][:en][:answer] = users_answer.answer
+        data[:attributes]
+      end
     end
   end
 end

@@ -36,7 +36,8 @@ module V1
         :step,
         questions: [
           :question_id,
-          answers: []
+          :answer,
+          selected_option_ids: []
         ]
       )
     end

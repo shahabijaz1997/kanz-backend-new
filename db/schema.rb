@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_12_093345) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_12_142746) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -309,11 +309,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_12_093345) do
 
   create_table "users_responses", force: :cascade do |t|
     t.integer "question_id"
-    t.text "answers", default: [], array: true
-    t.jsonb "answer_meta"
+    t.text "answer", default: ""
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
+    t.bigint "selected_option_ids", default: [], array: true
     t.index ["question_id", "user_id"], name: "index_users_responses_on_question_id_and_user_id"
   end
 

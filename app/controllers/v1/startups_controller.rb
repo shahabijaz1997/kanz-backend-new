@@ -25,6 +25,18 @@ module V1
     private
 
     def profile_params
+      return [] unless params[:startup_profile][:step].to_i.in?([1,2])
+
+      if params[:startup_profile][:step].to_i == 1
+        params.require(:startup_profile).permit(
+          :step, :company_name, :legal_name, :country_id, :website, :address, industry_market: []
+        )
+      else
+        params.require(:startup_profile).permit(
+          :step, :logo, :description, :ceo_name, :ceo_email, :total_capital_raised,
+          :current_round_capital_target, :currency
+        )
+      end
     end
 
     def validate_startup
