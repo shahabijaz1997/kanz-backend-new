@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AdminUsersController < ApplicationController
-  before_action :set_admin_user, only: %i[show edit update]
+  before_action :set_admin_user, only: %i[show edit update destroy reactivate]
   before_action :load_admin_roles, only: %i[index new edit create]
   before_action :authorize_role!
 
@@ -38,6 +38,28 @@ class AdminUsersController < ApplicationController
       else
         flash[:alert] = @admin_user.errors.full_messages.join('<br>')
         format.html { redirect_to edit_admin_user_path(@admin_user) }
+      end
+    end
+  end
+
+  def destroy
+    respond_to do |format|
+      if @admin_user.destroy
+        format.html { redirect_to admin_users_path, notice: 'Successfully updated.' }
+      else
+        flash[:alert] = @admin_user.errors.full_messages.join('<br>')
+        format.html { redirect_to edit_admin_user_path(@admin_user) }
+      end
+    end
+  end
+
+  def reactivate
+    respond_to do |format|
+      if @admin_user.reactivate
+        format.html { redirect_to admin_users_path, notice: 'Successfully updated.' }
+      else
+        flash[:alert] = @admin_user.errors.full_messages.join('<br>')
+        format.html { redirect_to admin_user_path(@admin_user) }
       end
     end
   end

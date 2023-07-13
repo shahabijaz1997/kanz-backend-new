@@ -4,8 +4,6 @@ export default class extends Controller {
   static values = { notice: String, alert: String }
 
   connect() {
-    console.log('notice', this.noticeValue)
-    console.log('alert', this.alertValue)
     this.flast_toast()
   }
 

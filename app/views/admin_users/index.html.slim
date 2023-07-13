@@ -28,10 +28,16 @@ div.table
             span.col = DatesHelper.standard_format(admin_user.created_at)
             span.col.d-flex
               div.ms-2
-                a.btn.btn-outline-primary.stretched-link href=admin_user_path(admin_user)
-                  i class="bi bi-info"
+                a.btn.btn-outline-primary.btn-sm.stretched-link href=admin_user_path(admin_user)
+                  i class="fa fa-info"
               div.ms-2.position-relative
-                a.btn.btn-outline-primary.stretched-link href=edit_admin_user_path(admin_user)
-                  i class="bi bi-pen"
+                a.btn.btn-outline-primary.btn-sm.stretched-link href=edit_admin_user_path(admin_user)
+                  i class="fa fa-pen"
+              - unless admin_user.deactivated || admin_user == current_admin_user
+                div.ms-2.position-relative
+                  = link_to admin_user_path(admin_user), \
+                    data: { turbo_method: :delete, turbo_confirm: 'Are you sure you want to deactivate this admin user?'},
+                    class: 'btn btn-outline-danger btn-sm stretched-link' do
+                      i class="fa fa-light fa-user-lock"
       - if @pagy.pages > 1
         == pagy_nav(@pagy)

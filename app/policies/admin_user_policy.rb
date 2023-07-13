@@ -26,4 +26,8 @@ class AdminUserPolicy < ApplicationPolicy
   def destroy?
     index?
   end
+
+  def reactivate?
+    index?
+  end
 end

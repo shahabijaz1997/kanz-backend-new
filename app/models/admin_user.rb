@@ -37,8 +37,24 @@ class AdminUser < ApplicationRecord
     admin? || super_admin? ? :admin : :customer_user
   end
 
-  def self.ransackable_attributes(auth_object = nil)
+  def self.ransackable_attributes(_auth_object = nil)
     %w[id email first_name last_name admin_role_id created_at]
+  end
+
+  def destroy
+    update(deactivated: true) unless deactivated
+  end
+
+  def reactivate
+    update(deactivated: false) if deactivated
+  end
+
+  def active_for_authentication?
+    super && !deactivated
+  end
+
+  def inactive_message
+    deactivated ? :is_deactivated : super
   end
 
   private

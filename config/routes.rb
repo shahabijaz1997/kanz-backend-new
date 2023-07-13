@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  devise_for :admin_users, controllers: {
-    passwords: 'passwords'
-  }
+  devise_for :admin_users,
+    controllers: {
+      passwords: 'admin_users/passwords',
+      sessions: 'admin_users/sessions'
+    }
 
   devise_for :users, path: '', path_names: {
                                  sign_in: 'login',
@@ -39,10 +41,14 @@ Rails.application.routes.draw do
   end
 
   # Admin routes
-  resources :admin_users
+  resources :admin_users do
+    get :reactivate, on: :member
+  end
   resources :investors, only: %i[show update] do
-    collection { get :individuals }
-    collection { get :firms }
+    collection do
+      get :individuals
+      get :firms
+    end
   end
   resources :realtors, only: %i[index show update]
   resources :startups, only: %i[index show update]
