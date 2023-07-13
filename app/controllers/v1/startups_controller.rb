@@ -29,7 +29,7 @@ module V1
 
       if params[:startup_profile][:step].to_i == 1
         params.require(:startup_profile).permit(
-          :step, :company_name, :legal_name, :country_id, :website, :address, industry_market: []
+          :step, :company_name, :legal_name, :country_id, :website, :address, industry_ids: []
         )
       else
         params.require(:startup_profile).permit(

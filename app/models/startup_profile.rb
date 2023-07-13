@@ -19,7 +19,6 @@ class StartupProfile < ApplicationRecord
   private
 
   def update_profile_state
-    debugger
     profile_states = startup.profile_states
     profile_states[:profile_completed] = (step == 2)
     profile_states[:profile_current_step] = step

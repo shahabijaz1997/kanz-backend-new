@@ -37,7 +37,7 @@ module V1
       if params[:syndicate_profile][:step].to_i == 1
         params.require(:syndicate_profile).permit(
           :have_you_ever_raised, :raised_amount, :no_times_raised, :profile_link,
-          :dealflow, region: [], industry_market: []
+          :dealflow, region_ids: [], industry_ids: []
         )
       else
         params.require(:syndicate_profile).permit(:name, :tagline, :logo)
