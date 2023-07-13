@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :null_session
   before_action :authenticate_admin_user!
+  before_action :set_locale
 
   alias user_context pundit_user
 
@@ -17,5 +18,9 @@ class ApplicationController < ActionController::Base
   def authorize_role!
     policy_name = controller_name.camelize.singularize
     authorize policy_name.constantize
+  end
+
+  def set_locale
+    I18n.locale = :en
   end
 end
