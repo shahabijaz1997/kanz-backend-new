@@ -20,6 +20,7 @@ class User < ApplicationRecord
 
   before_validation :update_role, on: :create
   after_create :update_profile_state
+  after_save :update_profile_state, if: :profile_reopened?
 
   audited only: :status, on: %i[update]
 
@@ -31,14 +32,6 @@ class User < ApplicationRecord
 
     self.confirmation_token = @raw_confirmation_token
     self.confirmation_sent_at = Time.now.utc
-  end
-
-  def individual_investor?
-    role_title == 'Individual Investor'
-  end
-
-  def investment_firm?
-    role_title == 'Investment Firm'
   end
 
   def investor?
@@ -83,7 +76,9 @@ class User < ApplicationRecord
 
   def update_profile_state
     self.profile_states = {
+      investor_type: '',
       account_confirmed: self.confirmed?,
+      profile_current_step: 1,
       profile_completed: false,
       questionnaire_steps_completed: 0,
       questionnaire_completed: false,
@@ -93,6 +88,10 @@ class User < ApplicationRecord
   end
 
   private
+
+  def profile_reopened?
+    status_changed? && reopened?
+  end
 
   def password_validation_needed?
     new_record? || encrypted_password_changed?

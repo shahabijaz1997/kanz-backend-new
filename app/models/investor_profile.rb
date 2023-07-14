@@ -2,7 +2,9 @@
 
 class InvestorProfile < ApplicationRecord
   belongs_to :investor
-  belongs_to :country
+  belongs_to :country, foreign_key: :country_id
+  belongs_to :residence, class_name: 'Country'
+  belongs_to :accreditation_option, class_name: 'Option'
 
   validates_presence_of :country_id
   validates_presence_of :residence, if: -> { investor.individual_investor? }

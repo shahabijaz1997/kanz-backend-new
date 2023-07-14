@@ -28,6 +28,12 @@ STATUSES = {
   approved: 5
 }.freeze
 
+QUESTION_KIND = {
+  investment_philosophy: 0,
+  individual_accredition: 1,
+  firm_accredition: 2
+}.freeze
+
 ROUTES = {
   admin: [
     {
