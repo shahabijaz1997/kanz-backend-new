@@ -42,7 +42,7 @@ module InvestmentPhilosophy
     end
 
     def data_with_answers(data, users_answer)
-      data[:en][:answer] = users_answer.answer
+      data[:answer] = users_answer.answer
       return data unless data[:question_type].in? ['multiple_choice', 'checkbox']
 
       selected_options = users_answer.selected_option_ids
