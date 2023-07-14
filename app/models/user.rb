@@ -76,6 +76,7 @@ class User < ApplicationRecord
     self.profile_states = {
       investor_type: '',
       account_confirmed: self.confirmed?,
+      profile_current_step: 1,
       profile_completed: false,
       questionnaire_steps_completed: 0,
       questionnaire_completed: false,
