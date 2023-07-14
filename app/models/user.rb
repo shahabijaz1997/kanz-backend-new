@@ -76,7 +76,7 @@ class User < ApplicationRecord
 
   def update_profile_state
     self.profile_states = {
-      investor_type: '',
+      investor_type: investor? ? (user_role&.title || '') : '',
       account_confirmed: self.confirmed?,
       profile_current_step: 1,
       profile_completed: false,
@@ -90,7 +90,7 @@ class User < ApplicationRecord
   private
 
   def profile_reopened?
-    status_changed? && reopened?
+    saved_change_to_status && saved_change_to_status.last == 'reopened'
   end
 
   def password_validation_needed?
