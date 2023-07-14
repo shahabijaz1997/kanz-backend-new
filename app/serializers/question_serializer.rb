@@ -3,7 +3,7 @@
 # Question's json serializer
 class QuestionSerializer
   include JSONAPI::Serializer
-  attributes :id, :step, :index, :required, :question_type, :answer
+  attributes :id, :step, :index, :required, :question_type
 
   attribute :en do |q|
     {
