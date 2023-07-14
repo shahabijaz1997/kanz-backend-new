@@ -1,0 +1,13 @@
+.nav-tabs {
+  margin: 30px 0;
+  border-color: $primary !important;
+
+  .nav-link {
+    color: $secondary !important;
+  }
+  .active {
+    color: $primary !important;
+    border-color: $primary !important;
+    border-bottom: none;
+  }
+}

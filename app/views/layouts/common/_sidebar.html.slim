@@ -1,0 +1,17 @@
+div.sidebar.bg-primary
+  div.my-5
+    div.tab.position-relative class="#{'active_tab' if controller_name == 'dashboard'}"
+      i.bi.bi-speedometer2
+      = link_to "Dashboard", root_path, class: 'stretched-link'
+    - ROUTES[current_admin_user.role].each do |route|
+      div.tab.position-relative class="#{'active_tab' if controller_name == route[:path]}"
+        i class="#{route[:icon]}"
+        - if route[:sub_routes]
+          = link_to route[:name], "/#{route[:path]}/#{route[:sub_routes][0][:path]}", class: 'stretched-link'
+        - else
+          = link_to route[:name], "/#{route[:path]}", class: 'stretched-link'
+
+      - if route[:sub_routes]
+        - route[:sub_routes].each do |sub_route|
+          div.tab.sub_tab.position-relative class="#{'active_sub_tab' if action_name == sub_route[:path]} #{'active_parent_tab' if controller_name == route[:path]}"
+            = link_to sub_route[:name], "/#{route[:path]}/#{sub_route[:path]}", class: 'stretched-link'

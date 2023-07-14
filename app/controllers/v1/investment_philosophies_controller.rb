@@ -2,7 +2,7 @@
 
 # Investor philosophy
 module V1
-  class InvestmentPhilosophiesController < ApplicationController
+  class InvestmentPhilosophiesController < ApiController
     before_action :validate_persona
 
     def show

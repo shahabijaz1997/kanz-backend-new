@@ -1,0 +1,15 @@
+= render 'shared/section_card', section_title: 'Attachments', editable: false do
+  - if resource.attachments.present?
+    - resource.attachments.each do |attachment|
+      li.list-group-item
+        span.col-3.title = attachment.name
+        div.card.attachment
+          = image_tag(attachment.file.url)
+          div.card-img-overlay
+            a.btn.btn-outline-light href=attachment.file.url target="_blank"
+              i.bi.bi-arrows-angle-expand
+            a.ms-3.btn.btn-outline-light href=attachment.file.url download="proof"
+              i.bi.bi-cloud-arrow-down
+
+  - else
+    div.not_found No attachments Found

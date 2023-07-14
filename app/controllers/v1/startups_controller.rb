@@ -2,7 +2,7 @@
 
 # Startups apis
 module V1
-  class StartupsController < ApplicationController
+  class StartupsController < ApiController
     before_action :validate_startup
     before_action :check_file_presence, only: %i[create]
 

@@ -1,0 +1,17 @@
+.signin {
+  display: flex;
+  justify-content: center;
+  padding: 80px;
+  min-height: calc(100vh - 200px) !important;
+
+  .form {
+    padding: 50px;
+    height: fit-content;
+
+    .input-group {
+      input {
+        width: 280px;
+      }
+    }
+  }
+}

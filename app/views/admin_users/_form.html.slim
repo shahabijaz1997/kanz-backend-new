@@ -1,0 +1,35 @@
+div.w-75
+  = render 'shared/section_card', section_title: 'Admin User', editable: false do
+    = simple_form_for(@admin_user, url: form_path, method: method) do |form|
+      li.list-group-item
+        span.col-3.title First Name
+        span.col.value
+          = form.text_field :first_name, required: true, class: "form-control", label: false, autofocus: true, placeholder: 'First Name', input_html: { autocomplete: "first_name" }
+      li.list-group-item
+        span.col-3.title Last Name
+        span.col.value
+          = form.text_field :last_name, required: true, class: "form-control", label: false, autofocus: true, placeholder: 'Last Name', input_html: { autocomplete: "first_name" }
+      li.list-group-item
+        span.col-3.title Email
+        span.col.value
+          = form.email_field :email, required: true, class: "form-control", label: false, autofocus: true, placeholder: 'Email', input_html: { autocomplete: "email" }
+      - unless current_admin_user == @admin_user
+        li.list-group-item
+          span.col-3.title Admin Role
+          span.col.value
+            = form.input :admin_role_id, required: true, as: :select, collection: @admin_roles, prompt: 'Select Admin Role', class: "form-control", label: false, autofocus: true, input_html: { autocomplete: "admin_role_id" }
+      - if !@admin_user.persisted? || current_admin_user == @admin_user
+        li.list-group-item
+          span.col-3.title Password
+          span.col.value
+            - if current_admin_user == @admin_user
+              small.text-secondary.fa-xs Leave passwords blank if you don't want to change them.
+            = form.password_field :password, required: true, autofocus: true, class: "form-control", label: false, placeholder: 'Password'
+        li.list-group-item
+          span.col-3.title Confirm Password
+          span.col.value
+              = form.password_field :password_confirmation, required: true, autofocus: true, class: "form-control", label: false, placeholder: 'Password Confirmation'
+      li.list-group-item
+        span.col-3.title
+        span.col.value
+            = form.submit "Save", class: 'btn btn-primary'

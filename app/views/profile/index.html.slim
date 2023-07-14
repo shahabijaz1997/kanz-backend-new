@@ -1,0 +1,10 @@
+= link_to '< Back', root_path, class: 'mb-2'
+= render 'shared/page_title', title: "Profile"
+
+div.w-75
+  = render 'shared/section_card', section_title: 'User', editable: true, editable_path: edit_profile_index_path  do
+    = render 'shared/section_list_item', title: 'First Name', value: @admin_user.first_name
+    = render 'shared/section_list_item', title: 'Last Name', value: @admin_user.last_name
+    = render 'shared/section_list_item', title: 'Email', value: @admin_user.email
+    = render 'shared/section_list_item', title: 'Admin Role', value: @admin_user.admin_role.title
+    = render 'shared/section_list_item', title: 'Password', value: '**********'

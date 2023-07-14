@@ -1,0 +1,27 @@
+// Place all the styles related to the welcome controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+.dashboard {
+  .stats {
+    display: flex;
+    gap: 20px;
+
+    .stat {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      border-radius: 10px;
+
+      .title {
+        color: $secondary;
+      }
+      .value {
+
+        font-size: 25px;
+        font-weight: 500;
+      }
+    }
+  }
+}

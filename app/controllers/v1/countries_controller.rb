@@ -1,5 +1,5 @@
 module V1
-  class CountriesController < ApplicationController
+  class CountriesController < ApiController
     def index
       success(
         I18n.t('general.countries_list'),

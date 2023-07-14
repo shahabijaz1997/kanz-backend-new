@@ -8,6 +8,14 @@ class RealtorProfile < ApplicationRecord
   validates_presence_of :no_of_properties
   after_create :update_profile_state
 
+  def self.ransackable_attributes(auth_object = nil)
+    %w[residence_id nationality_id]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    %w[nationality residence]
+  end
+
   private
 
   def update_profile_state

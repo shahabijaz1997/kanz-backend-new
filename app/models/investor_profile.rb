@@ -12,6 +12,14 @@ class InvestorProfile < ApplicationRecord
 
   after_create :update_profile_state
 
+  def self.ransackable_attributes(auth_object = nil)
+    %w[residence country_id]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ['country']
+  end
+
   private
 
   def update_profile_state

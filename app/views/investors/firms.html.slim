@@ -1,0 +1,12 @@
+= render 'shared/page_title', title: "Investor - Firms"
+= render 'filters', search_path: firms_investors_path, firm: true
+
+/ div data-controller='tabs'
+  div.nav.nav-tabs.nav-fill
+    a.nav-link.active href="#nav-individuals" id="nav-individuals" data-action="click->tabs#switchTab" data-tabs-target="tab" Individuals
+    a.nav-link href="#nav-firms" id="nav-firms" data-action="click->tabs#switchTab" data-tabs-target="tab" Firms
+  div.tab-content
+    div.tab-pane.fade.show.active id="nav-individuals" data-tabs-target="pane"
+    div.tab-pane.fade id="nav-firms" data-tabs-target="pane"
+
+= render 'table', investors: @firm_investors, firm: true

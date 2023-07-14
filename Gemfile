@@ -6,13 +6,36 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.1.3'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem 'rails', '~> 7.0.4', '>= 7.0.4.3'
+gem 'rails', '~> 7.0.6'
+
+# The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
+gem "sprockets-rails"
 
 # Use sqlite3 as the database for Active Record
 gem 'pg'
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem 'puma', '~> 5.0'
+
+# Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
+gem 'jsbundling-rails'
+gem 'cssbundling-rails'
+gem 'jquery-rails'
+
+# Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
+gem "turbo-rails"
+
+# Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
+gem "stimulus-rails"
+
+# For simple html and embedded ruby syntax
+gem 'slim-rails'
+gem 'slim_lint'
+
+gem 'simple_form'
+
+# For searching and filtering
+gem 'ransack'
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
@@ -35,7 +58,8 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 
-gem 'rack-cors'
+# Use Sass to process CSS
+gem "sassc-rails"
 
 gem 'devise'
 gem 'devise-jwt'
@@ -43,13 +67,17 @@ gem 'httparty'
 gem 'jsonapi-serializer'
 gem 'pundit'
 
+gem "audited"
+
+gem 'pagy', '~> 6.0'
+
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem 'image_processing', '~> 1.2'
 
 gem 'aws-sdk-s3', require: false
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-# gem "rack-cors"
+gem "rack-cors"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -62,6 +90,7 @@ group :development, :test do
   gem 'pronto-rails_best_practices', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
+  gem "ruby-lsp", require: false
 end
 
 group :development do
