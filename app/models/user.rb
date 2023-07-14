@@ -21,7 +21,7 @@ class User < ApplicationRecord
   before_validation :update_role, on: :create
   after_create :update_profile_state
 
-  audited only: :status
+  audited only: :status, on: %i[update]
 
   # Devise override the confirmation token
   def generate_confirmation_token

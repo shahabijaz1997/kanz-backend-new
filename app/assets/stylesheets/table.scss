@@ -2,7 +2,8 @@
   margin-top: 20px;
   .header {
     display: flex;
-    margin: 10px 0px;
+    margin: 10px 0 !important;
+    margin: 0 5px !important;
     
     a, span {
       text-align: center;
