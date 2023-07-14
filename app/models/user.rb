@@ -75,8 +75,9 @@ class User < ApplicationRecord
   end
 
   def update_profile_state
+    investor_type = (profile_reopened? && investor?) ? user_role&.title : ''
     self.profile_states = {
-      investor_type: investor? ? (user_role&.title || '') : '',
+      investor_type: investor_type || '',
       account_confirmed: self.confirmed?,
       profile_current_step: 1,
       profile_completed: false,
