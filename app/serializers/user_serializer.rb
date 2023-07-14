@@ -6,6 +6,6 @@ class UserSerializer
   attributes :id, :name, :email, :type, :status, :language, :profile_states
 
   attribute :role do |user|
-    user.role_title
+    user.user_role&.title
   end
 end

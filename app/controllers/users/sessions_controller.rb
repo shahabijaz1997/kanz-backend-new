@@ -14,7 +14,11 @@ module Users
     def respond_with(resource, _opts = {})
       data = UserSerializer.new(resource).serializable_hash[:data][:attributes]
       I18n.locale = resource.arabic? ? :ar : :en
-      success(I18n.t('devise.sessions.signed_in'), data)
+      if resource.persisted?
+        success(I18n.t('devise.sessions.signed_in'), data)
+      else
+        failure(I18n.t('auth.invalid'), 401)
+      end
     end
 
     def respond_to_on_destroy

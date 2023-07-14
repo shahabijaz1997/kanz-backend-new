@@ -11,7 +11,6 @@ class QuestionSerializer
       title: q.title,
       statement: q.statement,
       description: q.description,
-      answer: '',
       options: OptionSerializer.new(q.options).serializable_hash[:data].map { |d| d[:attributes][:en] }
     }
   end
@@ -22,7 +21,6 @@ class QuestionSerializer
       title: q.title_ar,
       statement: q.statement_ar,
       description: q.description_ar,
-      answer: '',
       options: OptionSerializer.new(q.options).serializable_hash[:data].map { |d| d[:attributes][:ar] }
     }
   end
