@@ -13,8 +13,7 @@ class StartupProfile < ApplicationRecord
   validates :total_capital_raised, :current_round_capital_target,
             :ceo_name, :ceo_email, :currency, presence: true, if: :second_step?
 
-  after_save :update_profile_state
-  after_save :update_profile_industries
+  after_save :update_profile_industries, :update_profile_state
 
   def self.ransackable_attributes(auth_object = nil)
     %w[company_name legal_name industry_market]

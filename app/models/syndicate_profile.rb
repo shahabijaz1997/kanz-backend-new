@@ -13,8 +13,7 @@ class SyndicateProfile < ApplicationRecord
   validates :raised_amount, :no_times_raised, presence: true, if: :raised_before?
   validates :name, :tagline, :logo, presence: true, if: :second_step?
 
-  after_create :update_profile_state
-  after_save :update_profile_industries, :update_profile_regions
+  after_save :update_profile_state, :update_profile_industries, :update_profile_regions
 
   def self.ransackable_attributes(auth_object = nil)
     %w[region industry_market]
