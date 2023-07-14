@@ -16,10 +16,6 @@ class Investor < User
   def investment_firm?
     role_title == 'Investment Firm'
   end
-  
-  def firm?
-    role_id == 2
-  end
 
   def self.ransackable_attributes(auth_object = nil)
     %w[email name status]
