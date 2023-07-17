@@ -1,7 +1,7 @@
 div.card.attached_logo
-  = image_tag(logo_url)
+  = image_tag(logo.url)
   div.card-img-overlay
-    a.btn.btn-outline-light href=logo_url target="_blank"
+    a.btn.btn-outline-light href=logo.url target="_blank"
       i.bi.bi-arrows-angle-expand
-    a.ms-3.btn.btn-outline-light href=logo_url download="proof"
+    = link_to rails_blob_path(logo, disposition: 'attachment'), class: 'ms-3 btn btn-outline-light' do
       i.bi.bi-cloud-arrow-down
