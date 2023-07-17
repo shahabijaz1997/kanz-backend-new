@@ -16,7 +16,11 @@ class StartupProfile < ApplicationRecord
   after_save :update_profile_industries, :update_profile_state
 
   def self.ransackable_attributes(auth_object = nil)
-    %w[company_name legal_name industry_market]
+    %w[company_name legal_name industry_id]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ['industries']
   end
 
   private

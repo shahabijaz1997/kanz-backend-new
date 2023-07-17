@@ -30,11 +30,11 @@ class SyndicatesController < ApplicationController
   end
 
   def load_regions
-    @regions = SyndicateProfile.pluck(:region).flatten.compact.uniq
+    @regions = Region.pluck(:name, :id)
   end
 
   def load_industry_markets
-    @industry_markets = SyndicateProfile.pluck(:industry_market).flatten.compact.uniq
+    @industries = Industry.pluck(:name, :id)
   end
 
   def update_status_params

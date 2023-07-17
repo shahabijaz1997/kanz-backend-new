@@ -29,7 +29,7 @@ class StartupsController < ApplicationController
   end
 
   def load_industry_markets
-    @industry_markets = StartupProfile.pluck(:industry_market).flatten.compact.uniq
+    @industries = Industry.pluck(:name, :id)
   end
 
   def update_status_params

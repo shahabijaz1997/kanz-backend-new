@@ -16,7 +16,11 @@ class SyndicateProfile < ApplicationRecord
   after_save :update_profile_state, :update_profile_industries, :update_profile_regions
 
   def self.ransackable_attributes(auth_object = nil)
-    %w[region industry_market]
+    %w[region_id industry_id]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    %w[industries regions]
   end
 
   private
