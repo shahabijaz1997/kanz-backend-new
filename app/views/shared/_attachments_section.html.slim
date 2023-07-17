@@ -4,11 +4,14 @@
       li.list-group-item
         span.col-3.title = attachment.name
         div.card.attachment
-          = image_tag(attachment.file.url)
+          - if attachment.attachment_kind == 'pdf'
+            object data=attachment.file.url width=250
+          - else
+            = image_tag(attachment.file.url)
           div.card-img-overlay
             a.btn.btn-outline-light href=attachment.file.url target="_blank"
               i.bi.bi-arrows-angle-expand
-            a.ms-3.btn.btn-outline-light href=attachment.file.url download="proof"
+            = link_to rails_blob_path(attachment.file, disposition: 'attachment'), class: 'ms-3 btn btn-outline-light' do
               i.bi.bi-cloud-arrow-down
 
   - else
