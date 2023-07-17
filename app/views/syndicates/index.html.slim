@@ -17,8 +17,8 @@ div.table
           div.card-body.d-flex
             span.col = syndicate.name
             span.col = syndicate.email
-            span.col = syndicate.profile&.region&.join(", ")
-            span.col = syndicate.profile&.industry_market&.join(", ")
+            span.col = syndicate.profile&.regions&.pluck(:name)&.join(", ")
+            span.col = syndicate.profile&.industries&.pluck(:name)&.join(", ")
             span.col = render 'shared/user_status', status: syndicate.status
             span.col = link_to "View", syndicate_path(syndicate), class: 'stretched-link'
       - if @pagy.pages > 1

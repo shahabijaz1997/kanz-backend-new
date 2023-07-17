@@ -15,7 +15,7 @@ div.filters.bg-light.border.rounded
 
     div.search_field
       = form.label :profile_industry_market_array_contains, 'Industry/Market'
-      = form.select :profile_industry_market_array_contains, @industry_markets, { include_blank: true}, { class: 'form-control' }
+      = form.select :profile_industries_id_eq, @industries, { include_blank: true }, { class: 'form-control' }
 
     div.submit
       = form.submit 'Search', class: 'btn btn-primary'
