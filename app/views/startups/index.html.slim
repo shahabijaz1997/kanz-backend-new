@@ -20,7 +20,7 @@ div.table
             span.col = startup.email
             span.col = startup.profile&.company_name
             span.col = startup.profile&.legal_name
-            span.col = startup.profile&.industry_market&.join(", ")
+            span.col = startup.profile&.industries&.map(&:name)&.join(", ")
             span.col = render 'shared/user_status', status: startup.status
             span.col = link_to "View", startup_path(startup), class: 'stretched-link'
       - if @pagy.pages > 1        
