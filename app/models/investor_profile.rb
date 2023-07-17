@@ -10,7 +10,7 @@ class InvestorProfile < ApplicationRecord
   validates_presence_of :residence, if: -> { investor.individual_investor? }
   validates_presence_of :legal_name, if: -> { investor.investment_firm? }
 
-  after_create :update_profile_state
+  after_save :update_profile_state
 
   def self.ransackable_attributes(auth_object = nil)
     %w[residence_id country_id]
