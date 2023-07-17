@@ -2,6 +2,10 @@
 
 module QuestionsHelper
   def get_answer(user, question)
-    user.investment_philosophies.where(question:).first.try(:answers)&.join(', ')
+    answer = user.investment_philosophies.find_by(question_id: question.id)
+    return '' if answer.blank?
+    return answer.answer if question.question_type == 'text'
+
+    Option.where(id: answer.selected_option_ids).pluck(:statement)&.join(', ')
   end
 end

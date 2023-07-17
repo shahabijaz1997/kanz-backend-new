@@ -1,5 +1,5 @@
 - if resource.investment_philosophies.present?
-  - Question.all.group_by(&:step).each do |question_group|
+  - Question.investment_philosophy.group_by(&:step).each do |question_group|
     = render 'shared/section_card', section_title: question_group.last.first.category, editable: false do
       - question_group.last.each do |question| 
         = render 'shared/section_list_question_item', question: question, resource: resource

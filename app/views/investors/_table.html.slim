@@ -16,7 +16,7 @@ div.table
             span.col = investor.name
             span.col = investor.email
             - unless firm
-              span.col = investor.profile&.residence
+              span.col = investor.profile&.residence&.name
             span.col = investor.profile&.country&.name
             span.col = render 'shared/user_status', status: investor.status
             span.col = link_to "View", investor_path(investor), class: 'stretched-link'            

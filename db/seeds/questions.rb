@@ -257,19 +257,6 @@ questions = [
       uper_limit: 0,
       unit: ''
     }]
-  },{
-    index: 1,
-    required: true,
-    statement: 'For investments, I have:',
-    statement_ar: 'كيف يمكنني الحصول على الاعتماد؟',
-    question_type: Question.question_types['multiple_choice'],
-    description: '',
-    description_ar: '',
-    options_attributes: [
-      { index: 1, statement: 'Income', statement_ar: 'دخل', is_range: false, lower_limit: 0, uper_limit: 0 },
-      { index: 2, statement: 'Total Return', statement_ar: 'عودة كاملة', is_range: false, lower_limit: 0, uper_limit: 0 },
-      { index: 3,	statement: 'Growth', statement_ar: 'نمو' ,is_range: false, lower_limit: 0, uper_limit: 0 }
-    ]
   }
 ]
 

@@ -10,9 +10,9 @@ div.w-75
       span.col = render 'shared/user_status', status: @investor.status
     = render 'shared/section_list_item', title: 'Investor Type', value: @investor.individual_investor? ? 'Individual' : 'Firm'
     - unless @investor.investment_firm?
-      = render 'shared/section_list_item', title: 'Residence', value: @investor.profile&.residence
+      = render 'shared/section_list_item', title: 'Residence', value: @investor.profile&.residence&.name
     = render 'shared/section_list_item', title: 'Nationality', value: @investor.profile&.country&.name
-    = render 'shared/section_list_item', title: 'Accreditation', value: @investor.profile&.accreditation
+    = render 'shared/section_list_item', title: 'Accreditation', value: @investor.profile&.accreditation_option&.statement
 
 
   = render 'investment_philosophies', resource: @investor
