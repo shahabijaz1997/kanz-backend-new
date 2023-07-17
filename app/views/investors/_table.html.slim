@@ -19,7 +19,7 @@ div.table
               span.col = investor.profile&.residence&.name
             span.col = investor.profile&.country&.name
             span.col = render 'shared/user_status', status: investor.status
-            span.col = link_to "View", investor_path(investor), class: 'stretched-link'            
+            span.col = link_to "View", @firms_page ? firm_path(investor) : individual_path(investor), class: 'stretched-link'            
       - if @pagy.pages > 1
         == pagy_nav(@pagy)
     - else

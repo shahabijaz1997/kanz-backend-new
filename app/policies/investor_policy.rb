@@ -7,19 +7,15 @@ class InvestorPolicy < ApplicationPolicy
     end
   end
 
-  def individuals?
+  def index?
     user_context.customer_support_rep? || user_context.compliance_officer?
   end
 
-  def firms?
-    individuals?
-  end
-
   def show?
-    individuals?
+    index?
   end
 
   def update?
-    individuals?
+    index?
   end
 end

@@ -1,0 +1,3 @@
+= render 'shared/page_title', title: "Investor - #{params[:type].capitalize}"
+= render 'filters', search_path: @firms_page ? firms_path : individuals_path, firm: @firms_page
+= render 'table', investors: @investors, firm: @firms_page

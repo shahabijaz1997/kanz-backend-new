@@ -4,16 +4,11 @@ class InvestorsController < ApplicationController
   before_action :set_investor, only: %i[show update]
   before_action :authorize_role!
 
-  def individuals
+  def index
     load_countries
-    @filtered_investors = Investor.individuals.ransack(params[:search])
-    @pagy, @individual_investors = pagy(policy_scope(@filtered_investors.result.includes(:profile).order(created_at: :desc)))
-  end
-
-  def firms
-    load_countries
-    @filtered_investors = Investor.firms.ransack(params[:search])
-    @pagy, @firm_investors = pagy(policy_scope(@filtered_investors.result.includes(:profile).order(created_at: :desc)))
+    @firms_page = params[:type] == 'firms'
+    @filtered_investors = Investor.send(params[:type]).ransack(params[:search])
+    @pagy, @investors = pagy(policy_scope(@filtered_investors.result.includes(:profile).order(created_at: :desc)))
   end
 
   def show; end
@@ -21,7 +16,7 @@ class InvestorsController < ApplicationController
   def update
     respond_to do |format|
       if @investor.update(update_status_params)
-        format.html { redirect_to @investor, notice: 'Investor was successfully updated.' }
+        format.html { redirect_to @investor, notice: 'Successfully updated.' }
       else
         format.html { render :show, status: :unprocessable_entity }
       end
@@ -31,7 +26,8 @@ class InvestorsController < ApplicationController
   private
 
   def set_investor
-    @investor = policy_scope(Investor).find(params[:id])
+    @investors = params[:type].present? ? Investor.send(params[:type]) : Investor
+    @investor = policy_scope(@investors).find(params[:id])
   end
 
   def load_countries
