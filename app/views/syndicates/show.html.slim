@@ -13,7 +13,7 @@ div.w-75
     = render 'shared/section_card', section_title: 'Syndicate Profile', editable: false do
       li.list-group-item
         span.col-3.title Logo
-        = render 'shared/attached_logo', logo_url: @syndicate.profile.attachment.file.url if @syndicate.profile.attachment.present?
+        = render 'shared/attached_logo', logo: @syndicate.profile.attachment.file if @syndicate.profile.attachment.present?
       = render 'shared/section_list_item', title: 'Name', value: @syndicate.profile.name
       = render 'shared/section_list_item', title: 'Tagline', value: @syndicate.profile.tagline
       = render 'shared/section_list_item', title: 'Raised Amount', value: @syndicate.profile.raised_amount
