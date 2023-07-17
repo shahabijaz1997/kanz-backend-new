@@ -12,7 +12,7 @@ div.filters.bg-light.border.rounded
     - unless firm
       div.search_field
         = form.label :profile_residence_eq, 'Residence'
-        = form.select :profile_residence_eq, @countries, { include_blank: true }, { class: 'form-control' }
+        = form.select :profile_residence_name_eq, @countries, { include_blank: true }, { class: 'form-control' }
 
     div.search_field
       = form.label :profile_country_name_eq, 'Nationality'
