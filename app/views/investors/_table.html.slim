@@ -3,8 +3,8 @@ div.table
     div.col = sort_link(@filtered_investors, :name)
     div.col = sort_link(@filtered_investors, :email)
     - unless firm
-      div.col = sort_link(@filtered_investors, :profile_residence)
-    div.col = sort_link(@filtered_investors, :profile_nationality_name, "Nationality")
+      div.col = sort_link(@filtered_investors, :profile_residence_name, "Residence")
+    div.col = sort_link(@filtered_investors, :profile_country_name, "Nationality")
     div.col = sort_link(@filtered_investors, :status)
     div.col
       span Actions

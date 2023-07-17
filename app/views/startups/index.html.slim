@@ -7,7 +7,8 @@ div.table
     div.col = sort_link(@filtered_startups, :email)
     div.col = sort_link(@filtered_startups, :profile_company_name)
     div.col = sort_link(@filtered_startups, :profile_legal_name)
-    div.col = sort_link(@filtered_startups, :profile_industry_market, "Industry/Market")
+    div.col
+      span Industry/Market
     div.col = sort_link(@filtered_startups, :status)
     div.col
       span Actions
