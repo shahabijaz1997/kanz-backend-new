@@ -1,4 +1,4 @@
-= link_to 'Back', syndicates_path, class: 'mb-2'
+= link_to '< Back', syndicates_path, class: 'mb-2'
 = render 'shared/page_title', title: "Syndicate Details"
 
 div.w-75
@@ -13,13 +13,13 @@ div.w-75
     = render 'shared/section_card', section_title: 'Syndicate Profile', editable: false do
       li.list-group-item
         span.col-3.title Logo
-        = render 'shared/attached_logo', logo_url: @syndicate.profile.attachment.file.url
+        = render 'shared/attached_logo', logo_url: @syndicate.profile.attachment.file.url if @syndicate.profile.attachment.present?
       = render 'shared/section_list_item', title: 'Name', value: @syndicate.profile.name
       = render 'shared/section_list_item', title: 'Tagline', value: @syndicate.profile.tagline
       = render 'shared/section_list_item', title: 'Raised Amount', value: @syndicate.profile.raised_amount
       = render 'shared/section_list_item', title: 'Number of Times Raised', value: @syndicate.profile.no_times_raised
-      = render 'shared/section_list_item', title: 'Industry/Market', value: @syndicate.profile&.industries&.pluck(:name)&.join(", ")
-      = render 'shared/section_list_item', title: 'Region', value: @syndicate.profile&.regions&.pluck(:name)&.join(", ")
+      = render 'shared/section_list_item', title: 'Industry/Market', value: @syndicate.profile.industries&.pluck(:name)&.join(", ")
+      = render 'shared/section_list_item', title: 'Region', value: @syndicate.profile.regions&.pluck(:name)&.join(", ")
       = render 'shared/section_list_item', title: 'Profile Link', value: @syndicate.profile.profile_link
       = render 'shared/section_list_item', title: 'Excepted Dealflow', value: @syndicate.profile.dealflow
 
