@@ -30,6 +30,8 @@ module Users
     end
 
     def update_language
+      return if params[:user].blank? || params[:user][:language].blank?
+
       I18n.locale = params[:user][:language] == 'ar' ? :ar : :en
     end
   end
