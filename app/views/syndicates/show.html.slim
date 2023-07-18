@@ -16,7 +16,7 @@ div.w-75
         = render 'shared/attached_logo', logo: @syndicate.profile.attachment.file if @syndicate.profile.attachment.present?
       = render 'shared/section_list_item', title: 'Name', value: @syndicate.profile.name
       = render 'shared/section_list_item', title: 'Tagline', value: @syndicate.profile.tagline
-      = render 'shared/section_list_item', title: 'Raised Amount', value: @syndicate.profile.raised_amount
+      = render 'shared/section_list_item', title: 'Raised Amount', value: @syndicate.profile.raised_amount&.to_i
       = render 'shared/section_list_item', title: 'Number of Times Raised', value: @syndicate.profile.no_times_raised
       = render 'shared/section_list_item', title: 'Industry/Market', value: @syndicate.profile.industries&.pluck(:name)&.join(", ")
       = render 'shared/section_list_item', title: 'Region', value: @syndicate.profile.regions&.pluck(:name)&.join(", ")

@@ -11,7 +11,7 @@ div.sidebar.bg-primary
         - else
           = link_to route[:name], "/#{route[:path]}", class: 'stretched-link'
 
-      - if route[:sub_routes]
+      - if route[:sub_routes] && controller_name == route[:path]
         - route[:sub_routes].each do |sub_route|
-          div.tab.sub_tab.position-relative class="#{'active_sub_tab' if action_name == sub_route[:path]} #{'active_parent_tab' if controller_name == route[:path]}"
+          div.tab.sub_tab.position-relative class="#{'active_sub_tab' if params[:type] == sub_route[:path]} #{'active_parent_tab' if controller_name == route[:path]}"
             = link_to sub_route[:name], "/#{route[:path]}/#{sub_route[:path]}", class: 'stretched-link'

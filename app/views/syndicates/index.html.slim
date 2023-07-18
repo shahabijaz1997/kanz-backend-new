@@ -5,8 +5,10 @@ div.table
   div.header
     div.col = sort_link(@filtered_syndicates, :name)
     div.col = sort_link(@filtered_syndicates, :email)
-    div.col = sort_link(@filtered_syndicates, :profile_region, "Region")
-    div.col = sort_link(@filtered_syndicates, :profile_industry_market, "Industry/Market")
+    div.col
+      span Region
+    div.col
+      span Industry/Market
     div.col = sort_link(@filtered_syndicates, :status)
     div.col 
       span Actions

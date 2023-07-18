@@ -3,8 +3,8 @@ div.table
     div.col = sort_link(@filtered_investors, :name)
     div.col = sort_link(@filtered_investors, :email)
     - unless firm
-      div.col = sort_link(@filtered_investors, :profile_residence)
-    div.col = sort_link(@filtered_investors, :profile_nationality_name, "Nationality")
+      div.col = sort_link(@filtered_investors, :profile_residence_name, "Residence")
+    div.col = sort_link(@filtered_investors, :profile_country_name, "Nationality")
     div.col = sort_link(@filtered_investors, :status)
     div.col
       span Actions
@@ -19,7 +19,7 @@ div.table
               span.col = investor.profile&.residence&.name
             span.col = investor.profile&.country&.name
             span.col = render 'shared/user_status', status: investor.status
-            span.col = link_to "View", investor_path(investor), class: 'stretched-link'            
+            span.col = link_to "View", @firms_page ? firm_path(investor) : individual_path(investor), class: 'stretched-link'            
       - if @pagy.pages > 1
         == pagy_nav(@pagy)
     - else
