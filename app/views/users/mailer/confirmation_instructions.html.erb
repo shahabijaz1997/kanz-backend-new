@@ -1,5 +1,7 @@
-<p>Welcome <%= @email %>!</p>
-
-<p>You can confirm your account email using the below confirmation token</p>
-
-<h4><%= @token %></h4>
+<%= render partial: 'users/mailer/header' %>
+<div>
+  <h1>Hi <em><%= @name %></em>, Welcome to Kanz!</h1>
+  <p>Your verification code is <code style="background-color: #ebe0e0; padding: 2px 5px;border-radius: 2px;"><strong><%= @token %></strong></code></p>
+  <p>If you have any questions or need assistance, contact us here <a href="mailto:hello@kanz.capital" style="background-color: #ebe0e0; padding: 2px 5px;border-radius: 2px;">hello@kanz.capital</a></p>
+  <p>To keep your account safe, please do not share your <strong>password</strong> or <strong>OTP</strong> with anyone</p>
+</div>
