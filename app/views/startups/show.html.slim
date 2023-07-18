@@ -22,8 +22,8 @@ div.w-75
       = render 'shared/section_list_item', title: 'Description', value: @startup.profile.description
       = render 'shared/section_list_item', title: 'CEO Name', value: @startup.profile.ceo_name
       = render 'shared/section_list_item', title: 'CEO Email', value: @startup.profile.ceo_email
-      = render 'shared/section_list_item', title: 'Total Capital Raised', value: @startup.profile.total_capital_raised&.to_i
-      = render 'shared/section_list_item', title: 'Current Round Capital Target', value: @startup.profile.current_round_capital_target&.to_i
+      = render 'shared/section_list_item', title: 'Total Capital Raised', value: @startup.profile.total_capital_raised_with_currency
+      = render 'shared/section_list_item', title: 'Current Round Capital Target', value: @startup.profile.current_round_capital_target_with_currency
 
   = render 'shared/attachments_section', resource: @startup
 

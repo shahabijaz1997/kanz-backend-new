@@ -15,11 +15,19 @@ class StartupProfile < ApplicationRecord
 
   after_save :update_profile_industries, :update_profile_state
 
-  def self.ransackable_attributes(auth_object = nil)
+  def total_capital_raised_with_currency
+    "#{total_capital_raised.to_i} #{currency}" if total_capital_raised.present?
+  end
+
+  def current_round_capital_target_with_currency
+    "#{current_round_capital_target.to_i} #{currency}" if current_round_capital_target.present?
+  end
+
+  def self.ransackable_attributes(_auth_object = nil)
     %w[company_name legal_name industry_id]
   end
 
-  def self.ransackable_associations(auth_object = nil)
+  def self.ransackable_associations(_auth_object = nil)
     ['industries']
   end
 
