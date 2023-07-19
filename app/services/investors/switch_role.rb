@@ -9,6 +9,7 @@ module Investors
     end
 
     def call
+      return if investor.reopened?
       update_state
       remove_profile
       remove_investment_philosophies

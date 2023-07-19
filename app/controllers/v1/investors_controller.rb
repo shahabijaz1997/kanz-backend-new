@@ -15,6 +15,8 @@ module V1
         if @investor.role_id != role.id
           @investor.update!(role_id: role.id)
           Investors::SwitchRole.call(@investor)
+        else
+          update_state
         end
       end
       success(I18n.t('investor.update.success.role', kind: investor_params[:role]))
@@ -51,6 +53,12 @@ module V1
 
     def role
       Role.find_by(title: investor_params[:role])
+    end
+
+    def update_state
+      profile_states = @investor.profile_states
+      profile_states[:investor_type] = @investor.role_title
+      @investor.update(profile_states: profile_states)
     end
   end
 end
