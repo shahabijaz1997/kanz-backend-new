@@ -4,7 +4,7 @@
 div.w-75
   = render 'shared/section_card', section_title: 'Investor User', editable: false do
     = render 'shared/section_list_item', title: 'Name', value: @investor.name
-    = render 'shared/section_list_item', title: 'Email', value: @investor.name
+    = render 'shared/section_list_item', title: 'Email', value: @investor.email
     li.list-group-item
       span.col-3.title Status
       span.col = render 'shared/user_status', status: @investor.status
