@@ -1,0 +1,28 @@
+attributes:
+  - primary_keys
+  - content
+  - foreign_key
+  - timestamps
+  - inheritance
+disconnected: true
+filename: erd
+filetype: pdf
+indirect: true
+inheritance: true
+markup: true
+notation: simple
+orientation: vertical
+polymorphism: true
+sort: true
+warn: true
+title: KANZ ERD
+exclude: null
+only: null
+only_recursion_depth: null
+prepend_primary: false
+cluster: false
+splines: spline
+fonts:
+ normal: "Arial"
+ bold: "Arial Bold"
+ italic: "Arial Italic"
