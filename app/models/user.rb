@@ -103,7 +103,7 @@ class User < ApplicationRecord
     self.role_id = Role.find_by(title:).id
   end
 
-  def generate_password(length = 12)
+  def self.generate_password(length = 12)
     chars = [('a'..'z'), ('A'..'Z'), (0..9),
              ['!', '@', '#', '$', '%', '^', '&', '*', '_', '-']].map(&:to_a).flatten
     password = SecureRandom.base64(length)
