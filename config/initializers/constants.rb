@@ -74,3 +74,10 @@ ROUTES = {
     }
   ]
 }.freeze
+
+MAX_STEPS = {
+  investor_profile: 1,
+  startup_profile: 2,
+  syndicate_profile: 2,
+  realtor_profile: 1
+}.freeze

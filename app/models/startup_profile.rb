@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class StartupProfile < ApplicationRecord
-  attr_accessor :step, :industry_ids
+  include ProfileState
+
+  attr_accessor :industry_ids
 
   belongs_to :startup
   belongs_to :country
@@ -13,7 +15,7 @@ class StartupProfile < ApplicationRecord
   validates :total_capital_raised, :current_round_capital_target,
             :ceo_name, :ceo_email, :currency, presence: true, if: :second_step?
 
-  after_save :update_profile_industries, :update_profile_state
+  after_save :update_profile_industries
 
   def total_capital_raised_with_currency
     "#{total_capital_raised.to_i} #{currency}" if total_capital_raised.present?
@@ -32,13 +34,6 @@ class StartupProfile < ApplicationRecord
   end
 
   private
-
-  def update_profile_state
-    profile_states = startup.profile_states
-    profile_states[:profile_completed] = (step.to_i == 2)
-    profile_states[:profile_current_step] = 2 if step.to_i == 1
-    startup.update(profile_states: profile_states)
-  end
 
   def second_step?
     step == 2

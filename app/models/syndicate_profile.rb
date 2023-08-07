@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class SyndicateProfile < ApplicationRecord
-  attr_accessor :step, :industry_ids, :region_ids
+  include ProfileState
+
+  attr_accessor :industry_ids, :region_ids
   belongs_to :syndicate
   has_one :attachment, as: :parent, dependent: :destroy
   has_many :profiles_industries, as: :profile, dependent: :destroy
@@ -13,7 +15,7 @@ class SyndicateProfile < ApplicationRecord
   validates :raised_amount, :no_times_raised, presence: true, if: :raised_before?
   validates :name, :tagline, :logo, presence: true, if: :second_step?
 
-  after_save :update_profile_state, :update_profile_industries, :update_profile_regions
+  after_save :update_profile_industries, :update_profile_regions
 
   def self.ransackable_attributes(auth_object = nil)
     %w[region_id industry_id]
@@ -24,13 +26,6 @@ class SyndicateProfile < ApplicationRecord
   end
 
   private
-
-  def update_profile_state
-    profile_states = syndicate.profile_states
-    profile_states[:profile_current_step] = 2 if step.to_i == 1
-    profile_states[:profile_completed] = (step.to_i == 2)
-    syndicate.update(profile_states: profile_states)
-  end
 
   def raised_before?
     have_you_ever_raised

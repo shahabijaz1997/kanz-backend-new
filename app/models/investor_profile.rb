@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class InvestorProfile < ApplicationRecord
+  include ProfileState
+
   belongs_to :investor
   belongs_to :country, foreign_key: :country_id
   belongs_to :residence, class_name: 'Country', optional: true
@@ -10,21 +12,11 @@ class InvestorProfile < ApplicationRecord
   validates_presence_of :residence, if: -> { investor.individual_investor? }
   validates_presence_of :legal_name, if: -> { investor.investment_firm? }
 
-  after_save :update_profile_state
-
   def self.ransackable_attributes(auth_object = nil)
     %w[residence_id country_id]
   end
 
   def self.ransackable_associations(auth_object = nil)
     ['country', 'residence']
-  end
-
-  private
-
-  def update_profile_state
-    profile_states = investor.profile_states
-    profile_states[:profile_completed] = true
-    investor.update(profile_states: profile_states)
   end
 end
