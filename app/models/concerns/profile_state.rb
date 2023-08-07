@@ -13,15 +13,15 @@ module ProfileState
     def update_profile_state
       user = associated_user
       profile_states = user.profile_states
-      profile_states[:profile_current_step] = current_step
       profile_states[:profile_completed] = last_step?
+      profile_states[:profile_current_step] = current_step
       user.update(profile_states: profile_states)
     end
 
     def current_step
       return step if last_step?
 
-      self.step.to_i += 1
+      self.step = step.to_i + 1
     end
 
     def last_step?
