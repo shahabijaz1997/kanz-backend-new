@@ -1,0 +1,28 @@
+= render 'layouts/common/flash_message'
+h1.text-light.text-opacity-75 Register
+= simple_form_for(resource, as: resource_name, url: registration_path(resource_name),
+  html: { class: 'mt-4 d-flex align-items-center flex-column' }) do |form|
+  div class="form-inputs"
+    div.mt-3
+      div.input-group
+        span.input-group-text
+          i class="bi bi-person-fill fs-4"
+        = form.email_field :email, required: true, class: "form-control", label: false, autofocus: true, placeholder: 'Email', input_html: { autocomplete: "email" }
+
+    div.mt-3
+      div.input-group
+        span.input-group-text
+          i class="bi bi-shield-lock-fill fs-4"
+        = form.password_field :password, required: true, autofocus: true, class: "form-control", label: false,
+          placeholder: 'Password', input_html: { autocomplete: "new-password" }
+
+    div.mt-3
+      div.input-group
+        span.input-group-text
+          i class="bi bi-shield-lock-fill fs-4"
+        = form.password_field :password_confirmation, required: true, autofocus: true, class: "form-control", label: false,
+          placeholder: 'Password Confirmation', input_html: { autocomplete: "new-password" }
+
+  div.form-actions.my-3.d-flex.flex-column.col-4.mt-4
+    = form.submit 'Sign up', class: 'btn btn-outline-light'
+    = render "devise/shared/links"

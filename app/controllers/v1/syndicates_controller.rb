@@ -2,7 +2,7 @@
 
 # Syndicates apis
 module V1
-  class SyndicatesController < ApplicationController
+  class SyndicatesController < ApiController
     before_action :validate_persona
     before_action :check_file_presence, only: %i[create]
 
@@ -14,12 +14,11 @@ module V1
 
     def create
       profile = @syndicate.profile || SyndicateProfile.new(syndicate_id: @syndicate.id)
-
       SyndicateProfile.transaction do
         profile.update!(profile_params.except(:logo))
         Attachment.upload_file(profile, profile_params[:logo]) if profile_params[:logo].present?
       end
-      success(I18n.t('syndicate.update.success.comapny_info'))
+      success(I18n.t('syndicate.update.success'))
     rescue StandardError => e
       failure(profile.errors.full_messages.to_sentence.presence || e.message)
     end
@@ -33,18 +32,20 @@ module V1
     end
 
     def profile_params
-      params.require(:syndicate_profile).permit(
-        :have_you_ever_raised, :raised_amount, :no_times_raised, :profile_link,
-        :dealflow, :name, :tagline, :logo, region: [], industry_market: []
-      )
+      return [] unless params[:syndicate_profile][:step].to_i.in?([1,2])
+
+      if params[:syndicate_profile][:step].to_i == 1
+        params.require(:syndicate_profile).permit(
+          :step, :have_you_ever_raised, :raised_amount, :no_times_raised, :profile_link,
+          :dealflow, region_ids: [], industry_ids: []
+        )
+      else
+        params.require(:syndicate_profile).permit(:step, :name, :tagline, :logo)
+      end
     end
 
     def check_file_presence
-      failure(I18n.t('errors.exceptions.file_missing')) if profile_params[:logo].blank?
-    end
-
-    def check_file_presence
-      return if @syndicate.profile.present? && @syndicate.profile.attachment.present?
+      return if @syndicate.profile&.attachment || params[:syndicate_profile][:step].to_i == 1
 
       failure(I18n.t('errors.exceptions.file_missing')) if profile_params[:logo].blank?
     end

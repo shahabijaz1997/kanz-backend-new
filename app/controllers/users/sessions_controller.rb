@@ -13,8 +13,12 @@ module Users
 
     def respond_with(resource, _opts = {})
       data = UserSerializer.new(resource).serializable_hash[:data][:attributes]
-      I18n.locale = resource.arabic? ? :ar : :en
-      success(I18n.t('devise.sessions.signed_in'), data)
+      if resource.persisted?
+        I18n.locale = resource.arabic? ? :ar : :en
+        success(I18n.t('devise.sessions.signed_in'), data)
+      else
+        failure(I18n.t('auth.invalid'), 401)
+      end
     end
 
     def respond_to_on_destroy
@@ -26,6 +30,8 @@ module Users
     end
 
     def update_language
+      return if params[:user].blank? || params[:user][:language].blank?
+
       I18n.locale = params[:user][:language] == 'ar' ? :ar : :en
     end
   end

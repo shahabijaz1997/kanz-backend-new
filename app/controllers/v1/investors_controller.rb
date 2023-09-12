@@ -2,7 +2,7 @@
 
 # Investor persona
 module V1
-  class InvestorsController < ApplicationController
+  class InvestorsController < ApiController
     before_action :validate_persona
 
     def show
@@ -11,11 +11,17 @@ module V1
     end
 
     def set_role
-      if @investor.update(role_id: role.id)
-        success(I18n.t('investor.update.success.role', kind: investor_params[:role]))
-      else
-        failure(@investor.errors.full_messages.to_sentence)
+      UsersResponse.transaction do
+        if @investor.role_id != role.id
+          @investor.update!(role_id: role.id)
+          Investors::SwitchRole.call(@investor)
+        else
+          update_state
+        end
       end
+      success(I18n.t('investor.update.success.role', kind: investor_params[:role]))
+    rescue StandardError => error
+      failure(error.message)
     end
 
     def accreditation
@@ -37,8 +43,8 @@ module V1
     end
 
     def accreditation_params
-      params.require(:investor_profile).permit(%i[legal_name country_id residence accreditation
-                                                  accepted_investment_criteria])
+      params.require(:investor_profile).permit(%i[legal_name country_id accreditation_option_id
+                                                  residence_id accepted_investment_criteria])
     end
 
     def investor_params
@@ -47,6 +53,12 @@ module V1
 
     def role
       Role.find_by(title: investor_params[:role])
+    end
+
+    def update_state
+      profile_states = @investor.profile_states
+      profile_states[:investor_type] = @investor.role_title
+      @investor.update(profile_states: profile_states)
     end
   end
 end

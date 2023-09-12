@@ -8,24 +8,24 @@ class InvestorSerializer
   attributes :name, :email, :type, :status, :language, :profile_states
 
   attribute :profile do |investor|
-    keys = investor.individual_investor? ? [:legal_name,:location] : [:nationality, :residence]
+    profile = investor.profile || InvestorProfile.new(investor: investor)
     InvestorProfileSerializer.new(
-      investor.profile
-    ).serializable_hash[:data]&.fetch(:attributes)&.except(*keys)
+      profile
+    ).serializable_hash[:data]&.fetch(:attributes)
   end
 
   attribute :role do |user|
-    user.role_title
+    user.user_role&.title
   end
 
   attribute :role_ar do |user|
-    user.role_title_ar
+    user.user_role&.title_ar
   end
 
   attribute :steps_completed do |user|
     if UsersResponse.exists?(user_id: user.id)
-      question_id = user.investment_philosophies.order(:created_at).last.question_id
-      Question.find_by(id: question_id).step
+      question_ids = user.investment_philosophies.pluck(:question_id)
+      Question.where(id: question_ids).maximum(:step)
     else
       0
     end

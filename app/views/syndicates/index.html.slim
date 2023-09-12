@@ -1,0 +1,29 @@
+= render 'shared/page_title', title: "Syndicates"
+= render 'filters'
+
+div.table
+  div.header
+    div.col = sort_link(@filtered_syndicates, :name)
+    div.col = sort_link(@filtered_syndicates, :email)
+    div.col
+      span Region
+    div.col
+      span Industry/Market
+    div.col = sort_link(@filtered_syndicates, :status)
+    div.col 
+      span Actions
+  div.content
+    - if @syndicates.present?
+      - @syndicates.each do |syndicate|
+        div.card.position-relative.shadow-sm
+          div.card-body.d-flex
+            span.col = syndicate.name
+            span.col = syndicate.email
+            span.col = syndicate.profile&.regions&.pluck(:name)&.join(", ")
+            span.col = syndicate.profile&.industries&.pluck(:name)&.join(", ")
+            span.col = render 'shared/user_status', status: syndicate.status
+            span.col = link_to "View", syndicate_path(syndicate), class: 'stretched-link'
+      - if @pagy.pages > 1
+        == pagy_nav(@pagy)
+    - else
+      div.not_found No Syndicate Found

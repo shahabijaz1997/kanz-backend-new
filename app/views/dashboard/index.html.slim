@@ -1,0 +1,11 @@
+= render 'shared/page_title', title: "Dashboards"
+div.dashboard data-controller='dashboard'
+  p.my-5.text-secondary Welcome to Kanz Back Office.
+
+  div.stats
+    = render 'stat', title: 'Approved', value: User.approved.count
+    = render 'stat', title: 'Verified', value: User.verified.count
+    = render 'stat', title: 'Submitted', value: User.submitted.count
+    = render 'stat', title: 'Reopened', value: User.reopened.count
+    = render 'stat', title: 'Rejected', value: User.rejected.count
+    = render 'stat', title: 'Opened', value: User.opened.count

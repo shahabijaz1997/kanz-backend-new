@@ -7,7 +7,6 @@ class Attachment < ApplicationRecord
   has_one_attached :file
 
   before_validation :set_directory_path
-  # after_save :update_user_status
 
   def url
     Rails.env.development? ? local_storage_path : file.url

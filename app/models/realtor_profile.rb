@@ -1,18 +1,19 @@
 # frozen_string_literal: true
 
 class RealtorProfile < ApplicationRecord
+  include ProfileState
+
   belongs_to :realtor
   belongs_to :nationality, class_name: 'Country'
   belongs_to :residence, class_name: 'Country'
 
   validates_presence_of :no_of_properties
-  after_create :update_profile_state
 
-  private
+  def self.ransackable_attributes(auth_object = nil)
+    %w[residence_id nationality_id]
+  end
 
-  def update_profile_state
-    profile_states = realtor.profile_states
-    profile_states[:profile_completed] = true
-    realtor.update(profile_states: profile_states)
+  def self.ransackable_associations(auth_object = nil)
+    %w[nationality residence]
   end
 end

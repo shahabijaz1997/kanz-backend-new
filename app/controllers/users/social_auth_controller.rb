@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Users
-  class SocialAuthController < ApplicationController
+  class SocialAuthController < ApiController
     include RackSessionSolution
     include HTTParty
     skip_before_action :authenticate_user!
