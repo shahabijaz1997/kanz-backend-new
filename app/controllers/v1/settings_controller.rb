@@ -18,5 +18,10 @@ module V1
 
       success(I18n.t('realtor.get.success.show'), attachment_configs)
     end
+
+    def steps_schema
+      resp = Settings::QuestionRetriever.call(params[:step], current_user, params[:type])
+      resp.status ? success(resp.message, resp.data) : failure(resp.message, resp.code)
+    end
   end
 end

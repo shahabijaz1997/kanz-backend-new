@@ -1,16 +1,18 @@
 # frozen_string_literal: true
 
-module InvestmentPhilosophy
+module Settings
   class QuestionRetriever < ApplicationService
-    attr_reader :step, :user
+    attr_reader :step, :user, :kind
 
-    def initialize(step = nil, user)
+    def initialize(step = nil, user, kind)
       @step = step.to_i
-      @last_step = Question.maximum(:step)
+      @kind = kind
+      @last_step = Question.where(kind: kind).maximum(:step)
       @user = user
     end
 
     def call
+      return response('Invalid params for question type') unless valid_kind?
       return response(I18n.t('investor.get.failure.step'), false) unless valid_step?
 
       questions = fetch_questions
@@ -30,12 +32,16 @@ module InvestmentPhilosophy
       step <= @last_step && step >= 1
     end
 
+    def valid_kind?
+      QUESTION_KIND[kind.to_sym]
+    end
+
     def fetch_questions
-      questions = Question.where(step:)
+      questions = Question.where(kind:, step:)
       return [] if questions.blank?
 
       QuestionSerializer.new(questions).serializable_hash[:data].map do |data|
-        users_answer = user.investment_philosophies.find_by(question_id: data[:attributes][:id])
+        users_answer = nil #user.investment_philosophies.find_by(question_id: data[:attributes][:id])
 
         data[:attributes] = data_with_answers(data[:attributes], users_answer) if users_answer.present?
         data[:attributes][:answer] = users_answer&.answer

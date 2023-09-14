@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     resources :users, only: %i[show update]
     resources :industries, only: %i[index]
     get 'settings/attachments' => 'settings#attachments'
+    get 'settings/steps_schema' => 'settings#steps_schema'
     get 'regions' => 'industries#regions'
     post 'attachments/submit', to: 'attachments#submit'
   end
