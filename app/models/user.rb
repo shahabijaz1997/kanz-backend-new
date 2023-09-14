@@ -75,17 +75,17 @@ class User < ApplicationRecord
   end
 
   def update_profile_state
-    investor_type = (profile_reopened? && investor?) ? user_role&.title : ''
+    investor_type = profile_reopened? && investor? ? user_role&.title : ''
     self.profile_states = {
       investor_type: investor_type || '',
-      account_confirmed: self.confirmed?,
+      account_confirmed: confirmed?,
       profile_current_step: 1,
       profile_completed: false,
       questionnaire_steps_completed: 0,
       questionnaire_completed: false,
       attachments_completed: false
     }
-    self.save
+    save
   end
 
   private
@@ -112,14 +112,14 @@ class User < ApplicationRecord
   end
 
   def password_strength
-    unless PASSWORD_REGEX.match(password)
-      errors.add(:base, I18n.t('errors.weak_password'))
-    end
+    return if PASSWORD_REGEX.match(password)
+
+    errors.add(:base, I18n.t('errors.weak_password'))
   end
 
   def check_email_uniqueness
-    if new_record? && User.exists?(email: email)
-      errors.add(:base, I18n.t('errors.email_taken'))
-    end
+    return unless new_record? && User.exists?(email:)
+
+    errors.add(:base, I18n.t('errors.email_taken'))
   end
 end

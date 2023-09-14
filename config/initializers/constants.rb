@@ -31,7 +31,9 @@ STATUSES = {
 QUESTION_KIND = {
   investment_philosophy: 0,
   individual_accredition: 1,
-  firm_accredition: 2
+  firm_accredition: 2,
+  startup_deal: 3,
+  property_deal: 4
 }.freeze
 
 ROUTES = {

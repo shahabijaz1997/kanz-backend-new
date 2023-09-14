@@ -44,7 +44,7 @@ class StartupProfile < ApplicationRecord
 
     profiles_industries&.destroy_all
     industry_ids.each do |industry_id|
-      profiles_industries.create(industry_id: industry_id)
+      profiles_industries.create(industry_id:)
     end
   end
 end

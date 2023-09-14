@@ -6,7 +6,9 @@ class Question < ApplicationRecord
     multiple_choice: 0,
     true_false: 1,
     text: 2,
-    checkbox: 3
+    checkbox: 3,
+    number_input: 4,
+    dropdown: 5
   }
 
   has_many :options, dependent: :destroy

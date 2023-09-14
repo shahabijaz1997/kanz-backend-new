@@ -16,8 +16,9 @@ questions = [
     description_ar: '',
     options_attributes: [
       { index: 1, statement: 'Income', statement_ar: 'دخل', is_range: false, lower_limit: 0, uper_limit: 0 },
-      { index: 2, statement: 'Total Return', statement_ar: 'عودة كاملة', is_range: false, lower_limit: 0, uper_limit: 0 },
-      { index: 3,	statement: 'Growth', statement_ar: 'نمو' ,is_range: false, lower_limit: 0, uper_limit: 0 }
+      { index: 2, statement: 'Total Return', statement_ar: 'عودة كاملة', is_range: false, lower_limit: 0,
+        uper_limit: 0 },
+      { index: 3,	statement: 'Growth', statement_ar: 'نمو', is_range: false, lower_limit: 0, uper_limit: 0 }
     ]
   },
   {
@@ -36,8 +37,10 @@ questions = [
     description: '',
     description_ar: '',
     options_attributes: [
-      { index: 1, statement: 'Require Regular Income', statement_ar: 'تتطلب الدخل العادي', is_range: false, lower_limit: 0, uper_limit: 0 },
-      { index: 2, statement: 'Require some income', statement_ar: 'تتطلب بعض الدخل' ,is_range: false, lower_limit: 0, uper_limit: 0 }
+      { index: 1, statement: 'Require Regular Income', statement_ar: 'تتطلب الدخل العادي', is_range: false,
+        lower_limit: 0, uper_limit: 0 },
+      { index: 2, statement: 'Require some income', statement_ar: 'تتطلب بعض الدخل', is_range: false, lower_limit: 0,
+        uper_limit: 0 }
     ]
   },
   {
@@ -50,17 +53,21 @@ questions = [
     category_ar: 'هدف الاستثمار',
     statement: 'Please indicate the percentage of your portfolio that needs to be liquid ' \
                '(i.e., Cash, Marketable securities)',
-    statement_ar: 'يرجى تحديد النسبة المئوية لمحفظتك التي يجب أن تكون سائلة '\
-               '(أي النقد ، الأوراق المالية القابلة للتسويق)',
+    statement_ar: 'يرجى تحديد النسبة المئوية لمحفظتك التي يجب أن تكون سائلة ' \
+                  '(أي النقد ، الأوراق المالية القابلة للتسويق)',
     question_type: Question.question_types['multiple_choice'],
     description: '',
     description_ar: '',
     options_attributes: [
       { index: 1, statement: '0%', statement_ar: '0%', is_range: true, lower_limit: 0, uper_limit: 5, unit: '%' },
-      { index: 2, statement: 'up to 33%', statement_ar: 'حتى 33٪', is_range: true, lower_limit: 0, uper_limit: 33, unit: '%' },
-      { index: 3, statement: '34 to 66%', statement_ar: '34 إلى 66٪' ,is_range: true, lower_limit: 34, uper_limit: 66, unit: '%' },
-      { index: 4, statement: '67% and higher', statement_ar: '67٪ فأكثر' ,is_range: true, lower_limit: 67, uper_limit: 100, unit: '%' },
-      { index: 5, statement: '100% (Full portfolio must be liquid)', statement_ar: '100٪ (المحفظة الكاملة يجب أن تكون سائلة)' , is_range: true, lower_limit: 100,
+      { index: 2, statement: 'up to 33%', statement_ar: 'حتى 33٪', is_range: true, lower_limit: 0, uper_limit: 33,
+        unit: '%' },
+      { index: 3, statement: '34 to 66%', statement_ar: '34 إلى 66٪', is_range: true, lower_limit: 34, uper_limit: 66,
+        unit: '%' },
+      { index: 4, statement: '67% and higher', statement_ar: '67٪ فأكثر', is_range: true, lower_limit: 67,
+        uper_limit: 100, unit: '%' },
+      { index: 5, statement: '100% (Full portfolio must be liquid)',
+        tatement_ar: '100٪ (المحفظة الكاملة يجب أن تكون سائلة)', is_range: true, lower_limit: 100,
         uper_limit: 100, unit: '%' }
     ]
   },
@@ -79,7 +86,7 @@ questions = [
     description_ar: '',
     options_attributes: [
       { index: 1, statement: 'Yes', statement_ar: 'نعم', is_range: false, lower_limit: 0, uper_limit: 0 },
-      { index: 2, statement: 'No', statement_ar: 'لا' ,is_range: false, lower_limit: 0, uper_limit: 0 }
+      { index: 2, statement: 'No', statement_ar: 'لا', is_range: false, lower_limit: 0, uper_limit: 0 }
     ]
   },
   {
@@ -96,8 +103,8 @@ questions = [
     description: '',
     description_ar: '',
     options_attributes: [
-      { index: 1, statement: 'None', statement_ar: 'لا أحد' , is_range: false, lower_limit: 0, uper_limit: 0 },
-      { index: 2, statement: 'Some', statement_ar: 'بعض' ,is_range: false, lower_limit: 0, uper_limit: 0 },
+      { index: 1, statement: 'None', statement_ar: 'لا أحد', is_range: false, lower_limit: 0, uper_limit: 0 },
+      { index: 2, statement: 'Some', statement_ar: 'بعض', is_range: false, lower_limit: 0, uper_limit: 0 },
       { index: 3, statement: 'Moderate', statement_ar: 'معتدل', is_range: false, lower_limit: 0, uper_limit: 0 },
       { index: 4, statement: 'Good', statement_ar: 'جيد', is_range: false, lower_limit: 0, uper_limit: 0 },
       { index: 5, statement: 'Extensive', statement_ar: 'شاسِع', is_range: false, lower_limit: 0, uper_limit: 0 }
@@ -116,7 +123,8 @@ questions = [
     description: '',
     description_ar: '',
     options_attributes: [
-      { index: 1, statement: 'Startups', statement_ar: 'الشركات الناشئة', is_range: false, lower_limit: 0, uper_limit: 0 },
+      { index: 1, statement: 'Startups', statement_ar: 'الشركات الناشئة', is_range: false, lower_limit: 0,
+        uper_limit: 0 },
       { index: 2, statement: 'Real Estate', statement_ar: 'العقارات', is_range: false, lower_limit: 0, uper_limit: 0 },
       { index: 3, statement: 'Equities', statement_ar: 'الأسهم', is_range: false, lower_limit: 0, uper_limit: 0 }
     ]
@@ -146,7 +154,7 @@ questions = [
     title_ar: 'آفاق الاستثمار',
     statement: 'For what time do you think you can comfortably invest a substantial part of this portfolio without ' \
                'the requirement of any withdrawals?',
-    statement_ar: 'في أي وقت تعتقد أنه يمكنك استثمار جزء كبير من هذه المحفظة بشكل مريح بدون '\
+    statement_ar: 'في أي وقت تعتقد أنه يمكنك استثمار جزء كبير من هذه المحفظة بشكل مريح بدون ' \
                   'شرط أي سحوبات؟',
     question_type: Question.question_types['multiple_choice'],
     description: '<h3>Modern portfolio Theory</h3>
@@ -159,12 +167,16 @@ questions = [
 							<p><img src="https://i.ibb.co/SPQzC8c/investment-horizon-graph.png" /></p>',
     description_ar: '',
     options_attributes: [
-        { index: 1, statement: 'Less than 1 year', statement_ar: 'أقل من 1 سنة', is_range: true, lower_limit: 0, uper_limit: 1, unit: 'year' },
-        { index: 2, statement: '1-3 years', statement_ar: '1-3 سنوات' ,is_range: true, lower_limit: 1, uper_limit: 3, unit: 'year' },
-        { index: 3, statement: '3-5 years', statement_ar: '3-5 سنوات' ,is_range: true, lower_limit: 3, uper_limit: 5, unit: 'year' },
-        { index: 4, statement: '5-10 years', statement_ar: '5-10 سنوات' ,is_range: true, lower_limit: 5, uper_limit: 10, unit: 'year' },
-        { index: 5, statement: 'More than 10 years', statement_ar: 'أكثر من 10 سنوات' ,is_range: true, lower_limit: 10, uper_limit: 0,
-          unit: 'year' }
+      { index: 1, statement: 'Less than 1 year', statement_ar: 'أقل من 1 سنة', is_range: true, lower_limit: 0,
+        uper_limit: 1, unit: 'year' },
+      { index: 2, statement: '1-3 years', statement_ar: '1-3 سنوات', is_range: true, lower_limit: 1, uper_limit: 3,
+        unit: 'year' },
+      { index: 3, statement: '3-5 years', statement_ar: '3-5 سنوات', is_range: true, lower_limit: 3, uper_limit: 5,
+        unit: 'year' },
+      { index: 4, statement: '5-10 years', statement_ar: '5-10 سنوات', is_range: true, lower_limit: 5,
+        uper_limit: 10, unit: 'year' },
+      { index: 5, statement: 'More than 10 years', statement_ar: 'أكثر من 10 سنوات', is_range: true, lower_limit: 10,
+        uper_limit: 0, unit: 'year' }
     ]
   }, {
     step: 5,
@@ -180,13 +192,16 @@ questions = [
     description: '',
     description_ar: '',
     options_attributes: [{
-        index: 1, statement: '0 - 5%', statement_ar: '0-5٪', is_range: true, lower_limit: 0, uper_limit: 5, unit: '%'
-      },
-      { index: 2, statement: '6 to 8%', statement_ar: '6 إلى 8٪' ,is_range: true, lower_limit: 6, uper_limit: 8, unit: '%' },
-      { index: 3, statement: '8 to 10%', statement_ar: '8 إلى 10٪' ,is_range: true, lower_limit: 8, uper_limit: 10, unit: '%' },
-      { index: 4, statement: '10 - 15%', statement_ar: '10 - 15٪' ,is_range: true, lower_limit: 10, uper_limit: 15, unit: '%' },
-      { index: 5, statement: '15 - 20%', statement_ar: '15 - 20٪' ,is_range: true, lower_limit: 15, uper_limit: 20, unit: '%' }
-    ]
+      index: 1, statement: '0 - 5%', statement_ar: '0-5٪', is_range: true, lower_limit: 0, uper_limit: 5, unit: '%'
+    },
+                         { index: 2, statement: '6 to 8%', statement_ar: '6 إلى 8٪', is_range: true, lower_limit: 6,
+                           uper_limit: 8, unit: '%' },
+                         { index: 3, statement: '8 to 10%', statement_ar: '8 إلى 10٪', is_range: true, lower_limit: 8,
+                           uper_limit: 10, unit: '%' },
+                         { index: 4, statement: '10 - 15%', statement_ar: '10 - 15٪', is_range: true, lower_limit: 10,
+                           uper_limit: 15, unit: '%' },
+                         { index: 5, statement: '15 - 20%', statement_ar: '15 - 20٪', is_range: true, lower_limit: 15,
+                           uper_limit: 20, unit: '%' }]
   }, {
     step: 5,
     index: 3,
@@ -202,10 +217,14 @@ questions = [
     description_ar: '',
     options_attributes: [
       { index: 1, statement: 'None', statement_ar: 'لا أحد', is_range: true, lower_limit: 0, uper_limit: 5, unit: '%' },
-      { index: 2, statement: 'Up to 5%', statement_ar: 'ما يصل الى 5٪', is_range: true, lower_limit: 0, uper_limit: 5, unit: '%' },
-      { index: 3, statement: '6 - 10%', statement_ar: '6 - 10٪', is_range: true, lower_limit: 6, uper_limit: 10, unit: '%' },
-      { index: 4, statement: '11 - 20%', statement_ar: '11 - 20٪', is_range: true, lower_limit: 11, uper_limit: 20, unit: '%' },
-      { index: 5, statement: 'Over 20%', statement_ar: 'فوق 20٪', is_range: true, lower_limit: 20, uper_limit: 0, unit: '%' }
+      { index: 2, statement: 'Up to 5%', statement_ar: 'ما يصل الى 5٪', is_range: true, lower_limit: 0, uper_limit: 5,
+        unit: '%' },
+      { index: 3, statement: '6 - 10%', statement_ar: '6 - 10٪', is_range: true, lower_limit: 6, uper_limit: 10,
+        unit: '%' },
+      { index: 4, statement: '11 - 20%', statement_ar: '11 - 20٪', is_range: true, lower_limit: 11, uper_limit: 20,
+        unit: '%' },
+      { index: 5, statement: 'Over 20%', statement_ar: 'فوق 20٪', is_range: true, lower_limit: 20, uper_limit: 0,
+        unit: '%' }
     ]
   }, {
     step: 5,
@@ -241,9 +260,9 @@ questions = [
     }, {
       index: 3,
       statement: 'Hold on to your investments and ride out short-term volatility in pursuit of your long-term ' \
-                  'objectives',
-      statement_ar: 'احتفظ باستثماراتك وتخلص من التقلبات قصيرة المدى سعياً وراء تحقيقك على المدى الطويل '\
-                  'أهداف',
+                 'objectives',
+      statement_ar: 'احتفظ باستثماراتك وتخلص من التقلبات قصيرة المدى سعياً وراء تحقيقك على المدى الطويل ' \
+                    'أهداف',
       is_range: false,
       lower_limit: 0,
       uper_limit: 0,
@@ -277,7 +296,7 @@ accreditation_questions = [
     description_ar: '',
     kind: QUESTION_KIND[:individual_accredition],
     options_attributes: [
-      { 
+      {
         index: 1,
         statement: 'I have less than USD 1 million',
         statement_ar: 'أقل من 1 مليون دولار',
@@ -287,17 +306,17 @@ accreditation_questions = [
         unit: 'million',
         currency: 'USD'
       },
-      { 
+      {
         index: 2,
         statement: 'I have between USD 1 million and 10 million',
-        statement_ar: 'بين 1-10 مليون دولار', 
+        statement_ar: 'بين 1-10 مليون دولار',
         is_range: true,
         lower_limit: 1,
         uper_limit: 10,
         unit: 'million',
         currency: 'USD'
       },
-      { 
+      {
         index: 3,
         statement: 'I have over USD 10 million',
         statement_ar: 'أكثر من 10 ملايين دولار',
@@ -318,52 +337,258 @@ accreditation_questions = [
     description: '',
     description_ar: '',
     kind: QUESTION_KIND[:firm_accredition],
-    options_attributes: [{ 
+    options_attributes: [{
+      index: 1,
+      statement: 'Firm has over USD 100 million in investments',
+      statement_ar: 'الشركة لديها أكثر من 100 مليون دولار في الاستثمارات',
+      is_range: true,
+      lower_limit: 100,
+      uper_limit: 100,
+      unit: 'million',
+      currency: 'USD'
+    }, {
+      index: 2,
+      statement: 'Firm has between USD 50 million and 100 million in investment',
+      statement_ar: 'الشركة لديها بين 50 مليون و100 مليون دولار في الاستثمار',
+      is_range: true,
+      lower_limit: 50,
+      uper_limit: 100,
+      unit: 'million',
+      currency: 'USD'
+    }, {
+      index: 3,
+      statement: 'Firm has between USD 10 million and 50 million in investment',
+      statement_ar: 'الشركة لديها بين 10 ملايين و50 مليون دولار في الاستثمار',
+      is_range: true,
+      lower_limit: 10,
+      uper_limit: 50,
+      unit: 'million',
+      currency: 'USD'
+    }, {
+      index: 4,
+      statement: 'Firm has between USD 1 million and 10 million in investment',
+      statement_ar: 'الشركة لديها بين 1 مليون و10 ملايين دولار في الاستثمار',
+      is_range: true,
+      lower_limit: 1,
+      uper_limit: 10,
+      unit: 'million',
+      currency: 'USD'
+    }]
+  }
+]
+
+startup_questions = [
+  {
+    index: 0,
+    step: 1,
+    required: true,
+    statement: 'What round is this?',
+    statement_ar: '',
+    category: 'Stage',
+    category_ar: '',
+    title: "Chose a stage and we'll help you create round quickly.",
+    title_ar: '',
+    question_type: Question.question_types['multiple_choice'],
+    description: '',
+    description_ar: '',
+    kind: QUESTION_KIND[:startup_deal],
+    options_attributes: [
+      {
+        index: 0,
+        statement: 'Angel Round',
+        statement_ar: '',
+        is_range: false
+      },
+      {
         index: 1,
-        statement: 'Firm has over USD 100 million in investments',
-        statement_ar: "الشركة لديها أكثر من 100 مليون دولار في الاستثمارات",
-        is_range: true,
-        lower_limit: 100,
-        uper_limit: 100,
-        unit: 'million',
-        currency: 'USD'
-      },{ 
+        statement: 'Pre-seed',
+        statement_ar: '',
+        is_range: false
+      },
+      {
         index: 2,
-        statement: 'Firm has between USD 50 million and 100 million in investment',
-        statement_ar: "الشركة لديها بين 50 مليون و100 مليون دولار في الاستثمار", 
-        is_range: true,
-        lower_limit: 50,
-        uper_limit: 100,
-        unit: 'million',
-        currency: 'USD'
-      },{
+        statement: 'Seed',
+        statement_ar: '',
+        is_range: false
+      },
+      {
         index: 3,
-        statement: 'Firm has between USD 10 million and 50 million in investment',
-        statement_ar: "الشركة لديها بين 10 ملايين و50 مليون دولار في الاستثمار",
-        is_range: true,
-        lower_limit: 10,
-        uper_limit: 50,
-        unit: 'million',
-        currency: 'USD'
-      },{ 
+        statement: 'Series A',
+        statement_ar: '',
+        is_range: false
+      },
+      {
         index: 4,
-        statement: 'Firm has between USD 1 million and 10 million in investment',
-        statement_ar: "الشركة لديها بين 1 مليون و10 ملايين دولار في الاستثمار",
-        is_range: true,
-        lower_limit: 1,
-        uper_limit: 10,
-        unit: 'million',
-        currency: 'USD'
+        statement: 'Other',
+        statement_ar: '',
+        is_range: false
+      }
+    ]
+  },
+  {
+    index: 0,
+    step: 2,
+    required: true,
+    statement: 'Istrument Type',
+    statement_ar: '',
+    category: 'Istrument Type',
+    category_ar: '',
+    title: '',
+    title_ar: '',
+    question_type: Question.question_types['multiple_choice'],
+    description: '',
+    description_ar: '',
+    kind: QUESTION_KIND[:startup_deal],
+    options_attributes: [
+      {
+        index: 0,
+        statement: 'SAFE Round',
+        statement_ar: '',
+        label: 'Description related SAFE',
+        label_ar: '',
+        is_range: false
+      },
+      {
+        index: 1,
+        statement: 'Equity',
+        statement_ar: 'Description related equity',
+        label: '',
+        label_ar: '',
+        is_range: false
+      }
+    ]
+  }, {
+    index: 0,
+    step: 2,
+    required: true,
+    statement: 'SAFE Type',
+    statement_ar: '',
+    category: '',
+    category_ar: '',
+    title: '',
+    title_ar: '',
+    question_type: Question.question_types['multiple_choice'],
+    description: '',
+    description_ar: '',
+    kind: QUESTION_KIND[:startup_deal],
+    options_attributes: [
+      {
+        index: 1,
+        statement: 'Post-Money',
+        statement_ar: '',
+        label: 'Description related post-money SAFE',
+        label_ar: '',
+        is_range: false
+      },
+      {
+        index: 0,
+        statement: 'Pre-Money',
+        statement_ar: '',
+        label: 'Description related pre-money SAFE',
+        label_ar: '',
+        is_range: false
+      }
+    ]
+  }, {
+    index: 0,
+    step: 2,
+    required: true,
+    statement: 'Equity Type',
+    statement_ar: '',
+    category: '',
+    category_ar: '',
+    title: '',
+    title_ar: '',
+    question_type: Question.question_types['multiple_choice'],
+    description: '',
+    description_ar: '',
+    kind: QUESTION_KIND[:startup_deal],
+    options_attributes: [
+      {
+        index: 0,
+        statement: 'Preferred',
+        statement_ar: '',
+        label: 'Description related preferred shares',
+        label_ar: '',
+        is_range: false
+      },
+      {
+        index: 1,
+        statement: 'Common',
+        statement_ar: '',
+        label: 'Description related common shares',
+        label_ar: '',
+        is_range: false
+      }
+    ]
+  },
+  {
+    index: 0,
+    step: 3,
+    required: true,
+    statement: 'Deal Target',
+    statement_ar: '',
+    category: 'Round Size',
+    category_ar: '',
+    title: '',
+    title_ar: '',
+    question_type: Question.question_types['number_input'],
+    description: '',
+    description_ar: '',
+    suggestions: { type: 'number', value: [500_000, 1_000_000, 2_000_000, 3_000_000] },
+    kind: QUESTION_KIND[:startup_deal]
+  },
+  {
+    index: 0,
+    step: 4,
+    required: true,
+    statement: 'Valuation',
+    statement_ar: '',
+    category: 'Valuation',
+    category_ar: '',
+    title: '',
+    title_ar: '',
+    question_type: Question.question_types['number_input'],
+    description: '',
+    description_ar: '',
+    kind: QUESTION_KIND[:startup_deal]
+  }, {
+    index: 0,
+    step: 4,
+    required: true,
+    statement: 'Type',
+    statement_ar: '',
+    category: '',
+    category_ar: '',
+    title: '',
+    title_ar: '',
+    question_type: Question.question_types['dropdown'],
+    description: '',
+    description_ar: '',
+    kind: QUESTION_KIND[:startup_deal],
+    options_attributes: [
+      {
+        index: 0,
+        statement: 'Pre-Money',
+        statement_ar: '',
+        is_range: false
+      },
+      {
+        index: 1,
+        statement: 'Post-Money',
+        statement_ar: '',
+        is_range: false
       }
     ]
   }
 ]
 
-accreditation_questions.each do |question|
+questions = accreditation_questions + startup_questions
+questions.each do |question|
   record = Question.find_or_initialize_by(statement: question[:statement], kind: question[:kind])
   if record.update(question)
-    p 'Successfull'
+    Rails.logger.debug 'Successfull'
   else
-    p record.errors.full_messages
+    Rails.logger.debug record.errors.full_messages
   end
 end

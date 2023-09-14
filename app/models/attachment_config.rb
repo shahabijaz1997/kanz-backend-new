@@ -2,8 +2,8 @@
 
 class AttachmentConfig < ApplicationRecord
   belongs_to :role
-  has_many :attachments
+  has_many :attachments, dependent: :nullify
 
-  validates_presence_of :name
+  validates :name, presence: true
   validates :name, uniqueness: { scope: [:role_id] }
 end
