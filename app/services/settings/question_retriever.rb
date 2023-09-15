@@ -6,7 +6,7 @@ module Settings
 
     def initialize(step = nil, user, kind)
       @step = step.to_i
-      @kind = kind
+      @kind = QUESTION_KIND[kind.to_sym]
       @last_step = Question.where(kind: kind).maximum(:step)
       @user = user
     end
@@ -33,7 +33,7 @@ module Settings
     end
 
     def valid_kind?
-      QUESTION_KIND[kind.to_sym]
+      !kind.nil?
     end
 
     def fetch_questions
