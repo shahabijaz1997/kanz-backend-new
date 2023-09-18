@@ -25,8 +25,8 @@ class CreatePropertyDetails < ActiveRecord::Migration[7.0]
       t.boolean :is_rental
       t.integer :rental_period, default: 0
       t.decimal :rental_amount
-      t.integer :dividend_yeild
-      t.integer :yearly_appreciation
+      t.float :dividend_yeild
+      t.float :yearly_appreciation
       t.jsonb :external_links, default: {}
       t.references :deal, index: true
       t.timestamps

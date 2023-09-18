@@ -381,6 +381,7 @@ startup_questions = [
   {
     index: 0,
     step: 1,
+    step_title: 'stage',
     required: true,
     statement: 'What round is this?',
     statement_ar: '',
@@ -428,6 +429,7 @@ startup_questions = [
   {
     index: 0,
     step: 2,
+    step_title: 'Instrument',
     required: true,
     statement: 'Istrument Type',
     statement_ar: '',
@@ -460,6 +462,7 @@ startup_questions = [
   }, {
     index: 0,
     step: 2,
+    step_title: 'Instrument',
     required: true,
     statement: 'SAFE Type',
     statement_ar: '',
@@ -492,6 +495,7 @@ startup_questions = [
   }, {
     index: 0,
     step: 2,
+    step_title: 'Instrument',
     required: true,
     statement: 'Equity Type',
     statement_ar: '',
@@ -525,6 +529,7 @@ startup_questions = [
   {
     index: 0,
     step: 3,
+    step_title: 'Round Size',
     required: true,
     statement: 'Deal Target',
     statement_ar: '',
@@ -541,6 +546,7 @@ startup_questions = [
   {
     index: 0,
     step: 4,
+    step_title: 'Valuation',
     required: true,
     statement: 'Valuation',
     statement_ar: '',
@@ -555,6 +561,7 @@ startup_questions = [
   }, {
     index: 0,
     step: 4,
+    step_title: 'Valuation',
     required: true,
     statement: 'Type',
     statement_ar: '',
