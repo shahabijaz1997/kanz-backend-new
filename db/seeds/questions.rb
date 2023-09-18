@@ -67,7 +67,7 @@ questions = [
       { index: 4, statement: '67% and higher', statement_ar: '67٪ فأكثر', is_range: true, lower_limit: 67,
         uper_limit: 100, unit: '%' },
       { index: 5, statement: '100% (Full portfolio must be liquid)',
-        tatement_ar: '100٪ (المحفظة الكاملة يجب أن تكون سائلة)', is_range: true, lower_limit: 100,
+        statement_ar: '100٪ (المحفظة الكاملة يجب أن تكون سائلة)', is_range: true, lower_limit: 100,
         uper_limit: 100, unit: '%' }
     ]
   },
