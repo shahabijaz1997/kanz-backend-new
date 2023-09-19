@@ -4,7 +4,7 @@
 class Question < ApplicationRecord
   enum question_type: {
     multiple_choice: 0,
-    toggle: 1,
+    switch: 1,
     text: 2,
     checkbox: 3,
     number_input: 4,
@@ -14,6 +14,8 @@ class Question < ApplicationRecord
   has_many :options, dependent: :destroy
   has_many :users_responses, dependent: :destroy
   has_many :users, through: :users_responses
+  has_many :questions_sections, dependent: :destroy
+  has_many :sections, through: :questions_sections
 
   validates :statement, presence: true
   validates :question_type, inclusion: { in: question_types.keys }

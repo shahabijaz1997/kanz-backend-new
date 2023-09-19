@@ -88,3 +88,8 @@ DEAL_TYPES = {
   startup: 0,
   property: 1
 }.freeze
+
+STEPPERS = {
+  startup_deal: 0,
+  property_deal: 1
+}

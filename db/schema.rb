@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_14_075021) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_19_082331) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -290,6 +290,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_14_075021) do
     t.jsonb "suggestions", default: {}
   end
 
+  create_table "questions_sections", id: false, force: :cascade do |t|
+    t.bigint "question_id", null: false
+    t.bigint "section_id", null: false
+    t.index ["question_id", "section_id"], name: "index_questions_sections_on_question_id_and_section_id"
+  end
+
   create_table "realtor_profiles", force: :cascade do |t|
     t.integer "no_of_properties"
     t.bigint "nationality_id"
@@ -316,6 +322,21 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_14_075021) do
     t.string "title_ar"
   end
 
+  create_table "sections", force: :cascade do |t|
+    t.integer "index"
+    t.string "title", limit: 50
+    t.string "title_ar", limit: 50
+    t.string "description"
+    t.string "description_ar"
+    t.boolean "is_multiple"
+    t.string "button_label", limit: 50
+    t.string "button_label_ar", limit: 50
+    t.bigint "stepper_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["stepper_id"], name: "index_sections_on_stepper_id"
+  end
+
   create_table "startup_profiles", force: :cascade do |t|
     t.string "company_name", null: false
     t.string "legal_name", null: false
@@ -334,6 +355,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_14_075021) do
     t.string "currency", default: "USD", null: false
     t.index ["country_id"], name: "index_startup_profiles_on_country_id"
     t.index ["startup_id"], name: "index_startup_profiles_on_startup_id"
+  end
+
+  create_table "steppers", force: :cascade do |t|
+    t.integer "index"
+    t.integer "stepper_type", default: 0
+    t.string "title", limit: 100
+    t.string "title_ar", limit: 100
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "syndicate_profiles", force: :cascade do |t|
