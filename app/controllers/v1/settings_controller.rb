@@ -19,9 +19,21 @@ module V1
       success(I18n.t('realtor.get.success.show'), attachment_configs)
     end
 
-    def steps_schema
-      resp = Settings::QuestionRetriever.call(params[:step], current_user, params[:type])
-      resp.status ? success(resp.message, resp.data) : failure(resp.message, resp.code)
+    def stepper
+      steps = StepperSerializer.new(
+                Stepper.where(stepper_type: STEPPERS[params[:type].to_sym])
+              ).serializable_hash[:data].map { |d| d[:attributes] }
+      success('Success', { step_titles: step_titles, steps: steps })
+    end
+
+    private
+
+    def step_titles
+      deal_steps = Stepper.where(stepper_type: STEPPERS[params[:type].to_sym]).order(:index)
+      { 
+        en: deal_steps.pluck(:title),
+        ar: deal_steps.pluck(:title_ar)
+      }
     end
   end
 end

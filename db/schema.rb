@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_14_075021) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_19_082331) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -136,18 +136,29 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_14_075021) do
 
   create_table "deals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.decimal "target"
-    t.integer "type", default: 0
+    t.integer "deal_type", default: 0
     t.integer "status", default: 0
     t.datetime "start_at"
     t.datetime "end_at"
     t.datetime "submitted_at"
     t.bigint "author_id", null: false
     t.integer "success_benchmark"
-    t.integer "acheivements"
+    t.float "how_much_funded"
     t.boolean "agreed_with_kanz_terms", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_deals_on_author_id"
+  end
+
+  create_table "features", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.string "title_ar"
+    t.text "description"
+    t.text "description_ar"
+    t.bigint "deal_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deal_id"], name: "index_features_on_deal_id"
   end
 
   create_table "funding_rounds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -184,18 +195,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_14_075021) do
     t.index ["residence_id"], name: "index_investor_profiles_on_residence_id"
   end
 
-  create_table "notification_templates", force: :cascade do |t|
-    t.string "name"
-    t.text "body"
-    t.string "path"
-    t.string "locale"
-    t.string "handler"
-    t.boolean "partial", default: false
-    t.string "format"
-    t.bigint "admin_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["admin_id"], name: "index_notification_templates_on_admin_id"
+  create_table "notification_templates", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
   end
 
   create_table "options", force: :cascade do |t|
@@ -260,8 +260,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_14_075021) do
     t.boolean "is_rental"
     t.integer "rental_period", default: 0
     t.decimal "rental_amount"
-    t.integer "dividend_yeild"
-    t.integer "yearly_appreciation"
+    t.float "dividend_yeild"
+    t.float "yearly_appreciation"
     t.jsonb "external_links", default: {}
     t.bigint "deal_id"
     t.datetime "created_at", null: false
@@ -290,6 +290,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_14_075021) do
     t.jsonb "suggestions", default: {}
   end
 
+  create_table "questions_sections", id: false, force: :cascade do |t|
+    t.bigint "question_id", null: false
+    t.bigint "section_id", null: false
+    t.index ["question_id", "section_id"], name: "index_questions_sections_on_question_id_and_section_id"
+  end
+
   create_table "realtor_profiles", force: :cascade do |t|
     t.integer "no_of_properties"
     t.bigint "nationality_id"
@@ -316,6 +322,21 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_14_075021) do
     t.string "title_ar"
   end
 
+  create_table "sections", force: :cascade do |t|
+    t.integer "index"
+    t.string "title", limit: 50
+    t.string "title_ar", limit: 50
+    t.string "description"
+    t.string "description_ar"
+    t.boolean "is_multiple"
+    t.string "button_label", limit: 50
+    t.string "button_label_ar", limit: 50
+    t.bigint "stepper_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["stepper_id"], name: "index_sections_on_stepper_id"
+  end
+
   create_table "startup_profiles", force: :cascade do |t|
     t.string "company_name", null: false
     t.string "legal_name", null: false
@@ -336,6 +357,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_14_075021) do
     t.index ["startup_id"], name: "index_startup_profiles_on_startup_id"
   end
 
+  create_table "steppers", force: :cascade do |t|
+    t.integer "index"
+    t.integer "stepper_type", default: 0
+    t.string "title", limit: 100
+    t.string "title_ar", limit: 100
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "syndicate_profiles", force: :cascade do |t|
     t.string "name"
     t.string "tagline"
@@ -352,7 +382,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_14_075021) do
   end
 
   create_table "terms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "title"
+    t.string "statement"
+    t.string "statement_ar"
     t.boolean "enabled"
     t.decimal "value"
     t.bigint "deal_id"
@@ -362,12 +393,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_14_075021) do
   end
 
   create_table "unique_selling_points", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.bigint "porperty_detail_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["porperty_detail_id"], name: "index_unique_selling_points_on_porperty_detail_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -421,5 +446,4 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_14_075021) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_users", "admin_roles"
   add_foreign_key "deals", "users", column: "author_id"
-  add_foreign_key "notification_templates", "admin_users", column: "admin_id"
 end

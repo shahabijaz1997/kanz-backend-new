@@ -583,7 +583,7 @@ startup_questions = [
   }
 ]
 
-questions = accreditation_questions + startup_questions
+questions = accreditation_questions
 questions.each do |question|
   record = Question.find_or_initialize_by(statement: question[:statement], kind: question[:kind])
   if record.update(question)

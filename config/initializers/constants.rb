@@ -83,3 +83,13 @@ MAX_STEPS = {
   syndicate_profile: 2,
   realtor_profile: 1
 }.freeze
+
+DEAL_TYPES = {
+  startup: 0,
+  property: 1
+}.freeze
+
+STEPPERS = {
+  startup_deal: 0,
+  property_deal: 1
+}
