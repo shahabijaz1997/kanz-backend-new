@@ -234,7 +234,7 @@ startup_steps = [
       {
         index: 0,
         title: 'Add Attachments',
-        description: 'Upload the necessary documents'
+        description: 'Upload the necessary documents',
         fields_attributes: [
           {
             index: 0,
