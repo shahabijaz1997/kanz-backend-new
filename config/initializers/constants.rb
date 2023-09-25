@@ -103,4 +103,4 @@ FIELD_TYPE = {
   dropdown: 5,
   text_field: 6,
   file: 7
-}
+}.freeze

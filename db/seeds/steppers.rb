@@ -15,7 +15,7 @@ startup_steps = [
             statement_ar: '',
             label: "Chose a stage and we'll help you create round quickly.",
             label_ar: '',
-            field_type: FIELD_TYPE['multiple_choice'],
+            field_type: FIELD_TYPE[:multiple_choice],
             description: '',
             description_ar: '',
             options_attributes: [
@@ -71,7 +71,7 @@ startup_steps = [
             statement_ar: '',
             label: '',
             label_ar: '',
-            field_type: FIELD_TYPE['multiple_choice'],
+            field_type: FIELD_TYPE[:multiple_choice],
             description: '',
             description_ar: '',
             options_attributes: [
@@ -99,7 +99,7 @@ startup_steps = [
             statement_ar: '',
             label: '',
             label_ar: '',
-            field_type: FIELD_TYPE['multiple_choice'],
+            field_type: FIELD_TYPE[:multiple_choice],
             description: '',
             description_ar: '',
             options_attributes: [
@@ -127,7 +127,7 @@ startup_steps = [
             statement_ar: '',
             label: '',
             label_ar: '',
-            field_type: FIELD_TYPE['multiple_choice'],
+            field_type: FIELD_TYPE[:multiple_choice],
             description: '',
             description_ar: '',
             options_attributes: [
@@ -169,7 +169,7 @@ startup_steps = [
             statement_ar: '',
             label: '',
             label_ar: '',
-            field_type: FIELD_TYPE['number'],
+            field_type: FIELD_TYPE[:number],
             description: '',
             description_ar: '',
             suggestions: [500_000, 1_000_000, 2_000_000, 3_000_000]
@@ -194,7 +194,7 @@ startup_steps = [
             statement_ar: '',
             label: '',
             label_ar: '',
-            field_type: FIELD_TYPE['number'],
+            field_type: FIELD_TYPE[:number],
             description: '',
             description_ar: '',
           }, {
@@ -204,7 +204,7 @@ startup_steps = [
             statement_ar: '',
             label: '',
             label_ar: '',
-            field_type: FIELD_TYPE['dropdown'],
+            field_type: FIELD_TYPE[:dropdown],
             description: '',
             description_ar: '',
             options_attributes: [
@@ -243,7 +243,7 @@ startup_steps = [
             statement_ar: '',
             label: 'Upload PDF of your pitch deck',
             label_ar: '',
-            field_type: FIELD_TYPE['file'],
+            field_type: FIELD_TYPE[:file],
             permitted_types: ['pdf'],
             size_constraints: { unit: 'mb', limit: 10 }
           }, {
@@ -253,7 +253,7 @@ startup_steps = [
             statement_ar: '',
             label: 'Upload PDF of your documents',
             label_ar: '',
-            field_type: FIELD_TYPE['file'],
+            field_type: FIELD_TYPE[:file],
             permitted_types: ['pdf'],
             size_constraints: { unit: 'mb', limit: 10 }
           }
@@ -277,13 +277,13 @@ startup_steps = [
             statement_ar: '',
             label: 'Description related valuation cap',
             label_ar: '',
-            field_type: FIELD_TYPE['switch']
+            field_type: FIELD_TYPE[:switch]
           }, {
             index: 1,
             is_required: false,
             statement: 'Valuation Cap',
             statement_ar: '',
-            field_type: FIELD_TYPE['number']
+            field_type: FIELD_TYPE[:number]
           }, {
             index: 2,
             is_required: true,
@@ -291,13 +291,13 @@ startup_steps = [
             statement_ar: '',
             label: 'Description related discount',
             label_ar: '',
-            field_type: FIELD_TYPE['switch']
+            field_type: FIELD_TYPE[:switch]
           }, {
             index: 3,
             is_required: false,
             statement: 'Discount',
             statement_ar: '',
-            field_type: FIELD_TYPE['number']
+            field_type: FIELD_TYPE[:number]
           }, {
             index: 4,
             is_required: true,
@@ -305,13 +305,13 @@ startup_steps = [
             statement_ar: '',
             label: 'Description related MFN',
             label_ar: '',
-            field_type: FIELD_TYPE['switch']
+            field_type: FIELD_TYPE[:switch]
           }, {
             index: 5,
             is_required: false,
             statement: 'MFN',
             statement_ar: '',
-            field_type: FIELD_TYPE['number']
+            field_type: FIELD_TYPE[:number]
           }, {
             index: 6,
             is_required: true,
@@ -319,13 +319,13 @@ startup_steps = [
             statement_ar: '',
             label: 'Description related investment',
             label_ar: '',
-            field_type: FIELD_TYPE['switch']
+            field_type: FIELD_TYPE[:switch]
           }, {
             index: 7,
             is_required: false,
             statement: 'Minimum Investment',
             statement_ar: '',
-            field_type: FIELD_TYPE['number']
+            field_type: FIELD_TYPE[:number]
           },          {
             index: 8,
             is_required: true,
@@ -333,13 +333,13 @@ startup_steps = [
             statement_ar: '',
             label: 'Description related Pro Rata',
             label_ar: '',
-            field_type: FIELD_TYPE['switch']
+            field_type: FIELD_TYPE[:switch]
           }, {
             index: 9,
             is_required: false,
             statement: 'Pro Rata',
             statement_ar: '',
-            field_type: FIELD_TYPE['text_field']
+            field_type: FIELD_TYPE[:text_field]
           },          {
             index: 10,
             is_required: true,
@@ -347,13 +347,13 @@ startup_steps = [
             statement_ar: '',
             label: 'Description related additional terms',
             label_ar: '',
-            field_type: FIELD_TYPE['switch']
+            field_type: FIELD_TYPE[:switch]
           }, {
             index: 11,
             is_required: false,
             statement: 'Additional Terms',
             statement_ar: '',
-            field_type: FIELD_TYPE['text_box']
+            field_type: FIELD_TYPE[:text_box]
           },
         ]
       }
