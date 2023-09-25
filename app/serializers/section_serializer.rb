@@ -11,8 +11,8 @@ class SectionSerializer
       title: section.title,
       description: section.description,
       is_multiple: section.is_multiple,
-      button_label: section.button_label,
-      questions: QuestionSerializer.new(section.questions).serializable_hash[:data].map { |d| d[:attributes][:en] }
+      add_more_label: section.add_more_label,
+      fields: FieldAttributeSerializer.new(section.fields).serializable_hash[:data].map { |d| d[:attributes][:en] }
     }
   end
 
@@ -22,8 +22,8 @@ class SectionSerializer
       title: section.title_ar,
       description: section.description_ar,
       is_multiple: section.is_multiple,
-      button_label: section.button_label_ar,
-      questions: QuestionSerializer.new(section.questions).serializable_hash[:data].map { |d| d[:attributes][:ar] }
+      add_more_label: section.add_more_label_ar,
+      fields: FieldAttributeSerializer.new(section.fields).serializable_hash[:data].map { |d| d[:attributes][:ar] }
     }
   end
 end

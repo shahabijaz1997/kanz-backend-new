@@ -6,7 +6,13 @@ class Section < ApplicationRecord
   has_many :questions_sections, dependent: :destroy
   has_many :questions, through: :questions_sections, dependent: :destroy
 
+  has_many :fields_sections, dependent: :destroy
+  has_many :fields, through: :fields_sections, source: :field, dependent: :destroy
+
+  has_many :dependents, as: :dependent, class_name: 'DependencyTree', dependent: :destroy
+
   validates :title, presence: true
 
   accepts_nested_attributes_for :questions
+  accepts_nested_attributes_for :fields
 end

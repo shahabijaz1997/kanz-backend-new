@@ -7,21 +7,17 @@ startup_steps = [
       {
         index: 0,
         title: 'Stage',
-        questions_attributes: [
+        fields_attributes: [
           {
             index: 0,
-            step: 1,
-            required: true,
+            is_required: true,
             statement: 'What round is this?',
             statement_ar: '',
-            category: 'Stage',
-            category_ar: '',
-            title: "Chose a stage and we'll help you create round quickly.",
-            title_ar: '',
-            question_type: Question.question_types['multiple_choice'],
+            label: "Chose a stage and we'll help you create round quickly.",
+            label_ar: '',
+            field_type: FIELD_TYPE['multiple_choice'],
             description: '',
             description_ar: '',
-            kind: QUESTION_KIND[:startup_deal],
             options_attributes: [
               {
                 index: 0,
@@ -67,21 +63,17 @@ startup_steps = [
       {
         index: 0,
         title: 'Instrument Type',
-        questions_attributes: [
+        fields_attributes: [
           {
             index: 0,
-            step: 2,
-            required: true,
+            is_required: true,
             statement: 'Istrument Type',
             statement_ar: '',
-            category: 'Istrument Type',
-            category_ar: '',
-            title: '',
-            title_ar: '',
-            question_type: Question.question_types['multiple_choice'],
+            label: '',
+            label_ar: '',
+            field_type: FIELD_TYPE['multiple_choice'],
             description: '',
             description_ar: '',
-            kind: QUESTION_KIND[:startup_deal],
             options_attributes: [
               {
                 index: 0,
@@ -102,18 +94,14 @@ startup_steps = [
             ]
           }, {
             index: 1,
-            step: 2,
-            required: true,
+            is_required: true,
             statement: 'SAFE Type',
             statement_ar: '',
-            category: '',
-            category_ar: '',
-            title: '',
-            title_ar: '',
-            question_type: Question.question_types['multiple_choice'],
+            label: '',
+            label_ar: '',
+            field_type: FIELD_TYPE['multiple_choice'],
             description: '',
             description_ar: '',
-            kind: QUESTION_KIND[:startup_deal],
             options_attributes: [
               {
                 index: 1,
@@ -133,19 +121,15 @@ startup_steps = [
               }
             ]
           }, {
-            index: 2,
-            step: 2,
-            required: true,
+            index: 1,
+            is_required: true,
             statement: 'Equity Type',
             statement_ar: '',
-            category: '',
-            category_ar: '',
-            title: '',
-            title_ar: '',
-            question_type: Question.question_types['multiple_choice'],
+            label: '',
+            label_ar: '',
+            field_type: FIELD_TYPE['multiple_choice'],
             description: '',
             description_ar: '',
-            kind: QUESTION_KIND[:startup_deal],
             options_attributes: [
               {
                 index: 0,
@@ -177,22 +161,18 @@ startup_steps = [
       {
         index: 0,
         title: 'Round Size',
-        questions_attributes: [
+        fields_attributes: [
           {
             index: 0,
-            step: 3,
-            required: true,
+            is_required: true,
             statement: 'Deal Target',
             statement_ar: '',
-            category: 'Round Size',
-            category_ar: '',
-            title: '',
-            title_ar: '',
-            question_type: Question.question_types['number_input'],
+            label: '',
+            label_ar: '',
+            field_type: FIELD_TYPE['number'],
             description: '',
             description_ar: '',
-            suggestions: { type: 'number', value: [500_000, 1_000_000, 2_000_000, 3_000_000] },
-            kind: QUESTION_KIND[:startup_deal]
+            suggestions: [500_000, 1_000_000, 2_000_000, 3_000_000]
           }
         ]
       }
@@ -206,35 +186,27 @@ startup_steps = [
       {
         index: 0,
         title: 'Valuation',
-        questions_attributes: [
+        fields_attributes: [
           {
             index: 0,
-            step: 4,
-            required: true,
+            is_required: true,
             statement: 'Valuation',
             statement_ar: '',
-            category: 'Valuation',
-            category_ar: '',
-            title: '',
-            title_ar: '',
-            question_type: Question.question_types['number_input'],
+            label: '',
+            label_ar: '',
+            field_type: FIELD_TYPE['number'],
             description: '',
             description_ar: '',
-            kind: QUESTION_KIND[:startup_deal]
           }, {
             index: 1,
-            step: 4,
-            required: true,
+            is_required: true,
             statement: 'Type',
             statement_ar: '',
-            category: '',
-            category_ar: '',
-            title: '',
-            title_ar: '',
-            question_type: Question.question_types['dropdown'],
+            label: '',
+            label_ar: '',
+            field_type: FIELD_TYPE['dropdown'],
             description: '',
             description_ar: '',
-            kind: QUESTION_KIND[:startup_deal],
             options_attributes: [
               {
                 index: 0,
@@ -263,6 +235,29 @@ startup_steps = [
         index: 0,
         title: 'Add Attachments',
         description: 'Upload the necessary documents'
+        fields_attributes: [
+          {
+            index: 0,
+            is_required: true,
+            statement: 'Pitch Deck',
+            statement_ar: '',
+            label: 'Upload PDF of your pitch deck',
+            label_ar: '',
+            field_type: FIELD_TYPE['file'],
+            permitted_types: ['pdf'],
+            size_constraints: { unit: 'mb', limit: 10 }
+          }, {
+            index: 1,
+            is_required: true,
+            statement: 'Documents',
+            statement_ar: '',
+            label: 'Upload PDF of your documents',
+            label_ar: '',
+            field_type: FIELD_TYPE['file'],
+            permitted_types: ['pdf'],
+            size_constraints: { unit: 'mb', limit: 10 }
+          }
+        ]
       }
     ]
   },
@@ -273,7 +268,94 @@ startup_steps = [
     sections_attributes: [
       {
         index: 0,
-        title: 'Terms'
+        title: 'Terms',
+        fields_attributes: [
+          {
+            index: 0,
+            is_required: true,
+            statement: 'Valuation Cap',
+            statement_ar: '',
+            label: 'Description related valuation cap',
+            label_ar: '',
+            field_type: FIELD_TYPE['switch']
+          }, {
+            index: 1,
+            is_required: false,
+            statement: 'Valuation Cap',
+            statement_ar: '',
+            field_type: FIELD_TYPE['number']
+          }, {
+            index: 2,
+            is_required: true,
+            statement: 'Discount',
+            statement_ar: '',
+            label: 'Description related discount',
+            label_ar: '',
+            field_type: FIELD_TYPE['switch']
+          }, {
+            index: 3,
+            is_required: false,
+            statement: 'Discount',
+            statement_ar: '',
+            field_type: FIELD_TYPE['number']
+          }, {
+            index: 4,
+            is_required: true,
+            statement: 'MFN Only',
+            statement_ar: '',
+            label: 'Description related MFN',
+            label_ar: '',
+            field_type: FIELD_TYPE['switch']
+          }, {
+            index: 5,
+            is_required: false,
+            statement: 'MFN',
+            statement_ar: '',
+            field_type: FIELD_TYPE['number']
+          }, {
+            index: 6,
+            is_required: true,
+            statement: 'Minimum Investment Size',
+            statement_ar: '',
+            label: 'Description related investment',
+            label_ar: '',
+            field_type: FIELD_TYPE['switch']
+          }, {
+            index: 7,
+            is_required: false,
+            statement: 'Minimum Investment',
+            statement_ar: '',
+            field_type: FIELD_TYPE['number']
+          },          {
+            index: 8,
+            is_required: true,
+            statement: 'Pro Rata',
+            statement_ar: '',
+            label: 'Description related Pro Rata',
+            label_ar: '',
+            field_type: FIELD_TYPE['switch']
+          }, {
+            index: 9,
+            is_required: false,
+            statement: 'Pro Rata',
+            statement_ar: '',
+            field_type: FIELD_TYPE['text_field']
+          },          {
+            index: 10,
+            is_required: true,
+            statement: 'Additional Terms',
+            statement_ar: '',
+            label: 'Description related additional terms',
+            label_ar: '',
+            field_type: FIELD_TYPE['switch']
+          }, {
+            index: 11,
+            is_required: false,
+            statement: 'Additional Terms',
+            statement_ar: '',
+            field_type: FIELD_TYPE['text_box']
+          },
+        ]
       }
     ]
   },

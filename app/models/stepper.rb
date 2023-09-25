@@ -5,6 +5,7 @@ class Stepper < ApplicationRecord
   enum stepper_type: STEPPERS
 
   has_many :sections, dependent: :destroy
+  has_many :dependents, as: :dependent, class_name: 'DependencyTree', dependent: :destroy
 
   validates :index, presence: true
   validates :title, presence: true, uniqueness: { scope: :stepper_type }

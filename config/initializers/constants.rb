@@ -92,4 +92,15 @@ DEAL_TYPES = {
 STEPPERS = {
   startup_deal: 0,
   property_deal: 1
+}.freeze
+
+FIELD_TYPE = {
+  multiple_choice: 0,
+  switch: 1,
+  text_box: 2,
+  checkbox: 3,
+  number: 4,
+  dropdown: 5,
+  text_field: 6,
+  file: 7
 }
