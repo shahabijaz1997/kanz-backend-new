@@ -7,8 +7,9 @@ class Question < ApplicationRecord
     switch: 1,
     text: 2,
     checkbox: 3,
-    number_input: 4,
-    dropdown: 5
+    number: 4,
+    dropdown: 5,
+    text_field: 6
   }
 
   has_many :options, dependent: :destroy

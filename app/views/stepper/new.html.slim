@@ -1,0 +1,30 @@
+h1 Stepper#new
+= form_for(@stepper, url: {action: 'create'}) do |f|
+  .form-group
+    = f.text_field :index
+  .form-group 
+    = f.text_field :title
+  .form-group 
+    = f.text_field :title_ar
+  .form-group
+    = f.select :stepper_type, STEPPERS
+
+  = f.fields_for :sections, @stepper.sections.build do |sf|
+    .form-group
+      = sf.text_field :index
+    .form-group 
+      = sf.text_field :title
+    .form-group 
+      = sf.text_field :title_ar
+    .form-group 
+      = sf.text_field :description
+    .form-group 
+      = sf.text_field :description_ar
+    .form-group
+      = sf.check_box :is_multiple
+    .form-group
+      = sf.text_field :add_more_label
+    .form-group
+      = sf.text_field :add_more_label_ar
+  .form-group
+    = f.submit :sumbit

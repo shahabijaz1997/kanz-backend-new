@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
 # Question's json serializer
-class QuestionSerializer
+class FieldAttributeSerializer
   include JSONAPI::Serializer
-  attributes :id, :step, :index, :required, :question_type
 
   attribute :en do |q|
     {
       id: q.id,
       index: q.index,
-      required: q.required,
-      question_type: q.question_type,
-      category: q.category,
-      title: q.title,
+      is_required: q.is_required,
+      field_type: q.field_type,
       statement: q.statement,
+      description: q.label,
       description: q.description,
       suggestions: q.suggestions,
+      permitted_types: q.permitted_types,
+      size_constraints: q.size_constraints,
       options: OptionSerializer.new(q.options).serializable_hash[:data].map { |d| d[:attributes][:en] }
     }
   end
@@ -24,13 +24,14 @@ class QuestionSerializer
     {
       id: q.id,
       index: q.index,
-      required: q.required,
-      question_type: q.question_type,
-      category: q.category_ar,
-      title: q.title_ar,
+      is_required: q.is_required,
+      field_type: q.field_type,
       statement: q.statement_ar,
+      description: q.label_ar,
       description: q.description_ar,
       suggestions: q.suggestions,
+      permitted_types: q.permitted_types,
+      size_constraints: q.size_constraints,
       options: OptionSerializer.new(q.options).serializable_hash[:data].map { |d| d[:attributes][:ar] }
     }
   end

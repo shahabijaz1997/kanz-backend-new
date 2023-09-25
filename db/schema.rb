@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_19_082331) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_24_063551) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -150,6 +150,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_19_082331) do
     t.index ["author_id"], name: "index_deals_on_author_id"
   end
 
+  create_table "dependency_trees", force: :cascade do |t|
+    t.integer "condition", default: 0
+    t.string "value"
+    t.string "dependable_type", null: false
+    t.bigint "dependable_id", null: false
+    t.string "dependent_type", null: false
+    t.bigint "dependent_id", null: false
+    t.integer "operation", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dependable_type", "dependable_id"], name: "index_dependency_trees_on_dependable"
+    t.index ["dependent_type", "dependent_id"], name: "index_dependency_trees_on_dependent"
+  end
+
   create_table "features", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title"
     t.string "title_ar"
@@ -159,6 +173,34 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_19_082331) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["deal_id"], name: "index_features_on_deal_id"
+  end
+
+  create_table "field_attributes", force: :cascade do |t|
+    t.integer "index", default: 0
+    t.string "statement"
+    t.string "statement_ar"
+    t.string "label"
+    t.string "label_ar"
+    t.text "description"
+    t.text "description_ar"
+    t.boolean "is_required"
+    t.boolean "is_multiple"
+    t.string "add_more_label"
+    t.string "add_more_label_ar"
+    t.integer "field_type", default: 0
+    t.jsonb "decription_link", default: {}
+    t.string "permitted_types", array: true
+    t.jsonb "size_constraints", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.float "suggestions", array: true
+  end
+
+  create_table "fields_sections", force: :cascade do |t|
+    t.bigint "field_id", null: false
+    t.bigint "section_id"
+    t.index ["field_id"], name: "index_fields_sections_on_field_id"
+    t.index ["section_id"], name: "index_fields_sections_on_section_id"
   end
 
   create_table "funding_rounds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -212,6 +254,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_19_082331) do
     t.datetime "updated_at", null: false
     t.string "label"
     t.string "label_ar"
+    t.bigint "optionable_id"
+    t.string "optionable_type"
+    t.index ["optionable_type", "optionable_id"], name: "index_options_on_optionable_type_and_optionable_id"
     t.index ["question_id"], name: "index_options_on_question_id"
   end
 
@@ -329,11 +374,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_19_082331) do
     t.string "description"
     t.string "description_ar"
     t.boolean "is_multiple"
-    t.string "button_label", limit: 50
-    t.string "button_label_ar", limit: 50
+    t.string "add_more_label", limit: 50
+    t.string "add_more_label_ar", limit: 50
     t.bigint "stepper_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "description_link", default: {}
     t.index ["stepper_id"], name: "index_sections_on_stepper_id"
   end
 
@@ -446,4 +492,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_19_082331) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_users", "admin_roles"
   add_foreign_key "deals", "users", column: "author_id"
+  add_foreign_key "fields_sections", "field_attributes", column: "field_id"
+  add_foreign_key "fields_sections", "sections"
 end

@@ -57,6 +57,7 @@ Rails.application.routes.draw do
   resources :realtors, only: %i[index show update]
   resources :startups, only: %i[index show update]
   resources :syndicates, only: %i[index show update]
+  resources :stepper, only: %i[index new create edit update]
   resources :profile, only: %i[index] do
     collection do
       get :edit
