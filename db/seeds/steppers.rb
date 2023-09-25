@@ -374,6 +374,7 @@ startup_steps = [
 
 startup_steps.each do |step|
   record = Stepper.find_or_initialize_by(title: step[:title])
+  next if record.persisted?
   if record.update(step)
     Rails.logger.debug 'Successfully added step'
   else
