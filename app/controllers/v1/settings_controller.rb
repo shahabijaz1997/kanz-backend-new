@@ -20,9 +20,8 @@ module V1
     end
 
     def stepper
-      steps = StepperSerializer.new(
-                Stepper.where(stepper_type: STEPPERS[params[:type].to_sym])
-              ).serializable_hash[:data].map { |d| d[:attributes] }
+      steppers = Stepper.where(stepper_type: STEPPERS[params[:type].to_sym])
+      steps = StepperSerializer.new(steppers).serializable_hash[:data].map { |d| d[:attributes] }
       success('Success', { step_titles: step_titles, steps: steps })
     end
 

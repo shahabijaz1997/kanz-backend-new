@@ -5,6 +5,15 @@ class StepperSerializer
   include JSONAPI::Serializer
   attributes :id, :index
 
+  attribute :dependencies do |step|
+    dependencies = DependencyTree.where(
+                     dependable_id: FieldsSection.where(
+                       section_id: step.sections.pluck(:id)
+                     ).pluck(:field_id), dependable_type: 'FieldAttribute'
+                   )
+    DependencyTreeSerializer.new(dependencies).serializable_hash[:data].map { |d| d[:attributes] }
+  end
+
   attribute :en do |step|
     {
       title: step.title,
