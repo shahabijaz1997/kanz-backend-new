@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_24_063551) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_26_103200) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -194,6 +194,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_24_063551) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float "suggestions", array: true
+    t.string "field_mapping"
   end
 
   create_table "fields_sections", force: :cascade do |t|
@@ -428,13 +429,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_24_063551) do
   end
 
   create_table "terms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "statement"
-    t.string "statement_ar"
     t.boolean "enabled"
-    t.decimal "value"
     t.bigint "deal_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "field_attribute_id"
+    t.jsonb "custom_input", default: {}
     t.index ["deal_id"], name: "index_terms_on_deal_id"
   end
 

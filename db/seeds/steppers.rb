@@ -11,6 +11,7 @@ startup_steps = [
           {
             index: 0,
             is_required: true,
+            field_mapping: 'funding_round_attributes.round',
             statement: 'What round is this?',
             statement_ar: '',
             label: "Chose a stage and we'll help you create round quickly.",
@@ -67,6 +68,7 @@ startup_steps = [
           {
             index: 0,
             is_required: true,
+            field_mapping: 'funding_round_attributes.instrument_type',
             statement: 'Istrument Type',
             statement_ar: '',
             label: '',
@@ -95,6 +97,7 @@ startup_steps = [
           }, {
             index: 1,
             is_required: true,
+            field_mapping: 'funding_round_attributes.instrument_sub_type',
             statement: 'SAFE Type',
             statement_ar: '',
             label: '',
@@ -123,6 +126,7 @@ startup_steps = [
           }, {
             index: 1,
             is_required: true,
+            field_mapping: 'funding_round_attributes.instrument_sub_type',
             statement: 'Equity Type',
             statement_ar: '',
             label: '',
@@ -165,6 +169,7 @@ startup_steps = [
           {
             index: 0,
             is_required: true,
+            field_mapping: 'target',
             statement: 'Deal Target',
             statement_ar: '',
             label: '',
@@ -190,6 +195,7 @@ startup_steps = [
           {
             index: 0,
             is_required: true,
+            field_mapping: 'funding_round_attributes.valuation',
             statement: 'Valuation',
             statement_ar: '',
             label: '',
@@ -200,6 +206,7 @@ startup_steps = [
           }, {
             index: 1,
             is_required: true,
+            field_mapping: 'funding_round_attributes.valuation_phase',
             statement: 'Type',
             statement_ar: '',
             label: '',
@@ -273,6 +280,7 @@ startup_steps = [
           {
             index: 0,
             is_required: true,
+            field_mapping: 'terms_attributes.enabled',
             statement: 'Valuation Cap',
             statement_ar: '',
             label: 'Description related valuation cap',
@@ -281,12 +289,14 @@ startup_steps = [
           }, {
             index: 1,
             is_required: false,
+            field_mapping: 'terms_attributes.custom_input',
             statement: 'Valuation Cap',
             statement_ar: '',
             field_type: FIELD_TYPE[:number]
           }, {
             index: 2,
             is_required: true,
+            field_mapping: 'terms_attributes.enabled',
             statement: 'Discount',
             statement_ar: '',
             label: 'Description related discount',
@@ -295,12 +305,14 @@ startup_steps = [
           }, {
             index: 3,
             is_required: false,
+            field_mapping: 'terms_attributes.custom_input',
             statement: 'Discount',
             statement_ar: '',
             field_type: FIELD_TYPE[:number]
           }, {
             index: 4,
             is_required: true,
+            field_mapping: 'terms_attributes.enabled',
             statement: 'MFN Only',
             statement_ar: '',
             label: 'Description related MFN',
@@ -309,12 +321,14 @@ startup_steps = [
           }, {
             index: 5,
             is_required: false,
+            field_mapping: 'terms_attributes.custom_input',
             statement: 'MFN',
             statement_ar: '',
             field_type: FIELD_TYPE[:number]
           }, {
             index: 6,
             is_required: true,
+            field_mapping: 'terms_attributes.enabled',
             statement: 'Minimum Investment Size',
             statement_ar: '',
             label: 'Description related investment',
@@ -323,12 +337,14 @@ startup_steps = [
           }, {
             index: 7,
             is_required: false,
+            field_mapping: 'terms_attributes.custom_input',
             statement: 'Minimum Investment',
             statement_ar: '',
             field_type: FIELD_TYPE[:number]
           },          {
             index: 8,
             is_required: true,
+            field_mapping: 'terms_attributes.enabled',
             statement: 'Pro Rata',
             statement_ar: '',
             label: 'Description related Pro Rata',
@@ -337,12 +353,14 @@ startup_steps = [
           }, {
             index: 9,
             is_required: false,
+            field_mapping: 'terms_attributes.custom_input',
             statement: 'Pro Rata',
             statement_ar: '',
             field_type: FIELD_TYPE[:text_field]
           },          {
             index: 10,
             is_required: true,
+            field_mapping: 'terms_attributes.enabled',
             statement: 'Additional Terms',
             statement_ar: '',
             label: 'Description related additional terms',
@@ -351,10 +369,11 @@ startup_steps = [
           }, {
             index: 11,
             is_required: false,
+            field_mapping: 'terms_attributes.custom_input',
             statement: 'Additional Terms',
             statement_ar: '',
             field_type: FIELD_TYPE[:text_box]
-          },
+          }
         ]
       }
     ]

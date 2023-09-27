@@ -1,11 +1,10 @@
 class CreateTerms < ActiveRecord::Migration[7.0]
   def change
     create_table :terms, id: :uuid do |t|
-      t.string :statement
-      t.string :statement_ar
       t.boolean :enabled
-      t.decimal :value
+      t.jsonb :custom_input, default: {}
       t.references :deal, index: true
+      t.references :field_attribute
       t.timestamps   
     end
   end
