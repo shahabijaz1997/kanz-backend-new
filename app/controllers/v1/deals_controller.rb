@@ -12,11 +12,11 @@ module V1
 
     def create
       response = Deals::ParamComposer.call(deal_params, @deal)
-      if response.status
-        @deal.update(response.data)
-        debugger
+      failure(response.message) unless response.status
+      if @deal.update(response.data)
+        success('success', { id: @deal.id })
       else
-        failure(response.message)
+        failure(@deal.errors.full_messages.to_sentence)
       end
     end
 
