@@ -13,6 +13,7 @@ module V1
     def create
       response = Deals::ParamComposer.call(deal_params, @deal)
       failure(response.message) unless response.status
+
       if @deal.update(response.data)
         success('success', { id: @deal.id })
       else

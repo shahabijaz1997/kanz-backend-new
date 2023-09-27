@@ -33,6 +33,9 @@ module Deals
         params_hash = params_hash.deep_merge(field_params)
       end
 
+      if deal.persisted? && params_hash['funding_round_attributes'].present? && deal.funding_round.present?
+        params_hash['funding_round_attributes']['id'] = deal.funding_round.id
+      end
       params_hash
     end
 
