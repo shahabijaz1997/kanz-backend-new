@@ -13,12 +13,4 @@ class Deal < ApplicationRecord
   accepts_nested_attributes_for :property_detail
 
   enum deal_type: DEAL_TYPES
-
-  def startup?
-    deal_type == DEAL_TYPES[:startup]
-  end
-
-  def property?
-    deal_type == DEAL_TYPES[:property]
-  end
 end

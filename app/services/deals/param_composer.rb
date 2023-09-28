@@ -30,6 +30,7 @@ module Deals
       params[:fields].each do |field|
         step_field = FieldAttribute.find_by(id: field[:id])
         field_params = step_field.field_mapping.split('.').reverse.inject(field[:value]) { |v, k| { k => v } }
+
         params_hash = params_hash.deep_merge(field_params)
       end
 
@@ -38,6 +39,5 @@ module Deals
       end
       params_hash
     end
-
   end
 end

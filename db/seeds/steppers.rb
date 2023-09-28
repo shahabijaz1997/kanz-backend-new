@@ -280,7 +280,7 @@ startup_steps = [
           {
             index: 0,
             is_required: true,
-            field_mapping: 'terms_attributes.enabled',
+            field_mapping: 'terms_attributes[0].enabled',
             statement: 'Valuation Cap',
             statement_ar: '',
             label: 'Description related valuation cap',
@@ -289,14 +289,14 @@ startup_steps = [
           }, {
             index: 1,
             is_required: false,
-            field_mapping: 'terms_attributes.custom_input',
+            field_mapping: 'terms_attributes[0].custom_input',
             statement: 'Valuation Cap',
             statement_ar: '',
             field_type: FIELD_TYPE[:number]
           }, {
             index: 2,
             is_required: true,
-            field_mapping: 'terms_attributes.enabled',
+            field_mapping: 'terms_attributes[1].enabled',
             statement: 'Discount',
             statement_ar: '',
             label: 'Description related discount',
@@ -305,14 +305,14 @@ startup_steps = [
           }, {
             index: 3,
             is_required: false,
-            field_mapping: 'terms_attributes.custom_input',
+            field_mapping: 'terms_attributes[1].custom_input',
             statement: 'Discount',
             statement_ar: '',
             field_type: FIELD_TYPE[:number]
           }, {
             index: 4,
             is_required: true,
-            field_mapping: 'terms_attributes.enabled',
+            field_mapping: 'terms_attributes[2].enabled',
             statement: 'MFN Only',
             statement_ar: '',
             label: 'Description related MFN',
@@ -321,14 +321,14 @@ startup_steps = [
           }, {
             index: 5,
             is_required: false,
-            field_mapping: 'terms_attributes.custom_input',
+            field_mapping: 'terms_attributes[2].custom_input',
             statement: 'MFN',
             statement_ar: '',
             field_type: FIELD_TYPE[:number]
           }, {
             index: 6,
             is_required: true,
-            field_mapping: 'terms_attributes.enabled',
+            field_mapping: 'terms_attributes[3].enabled',
             statement: 'Minimum Investment Size',
             statement_ar: '',
             label: 'Description related investment',
@@ -337,14 +337,14 @@ startup_steps = [
           }, {
             index: 7,
             is_required: false,
-            field_mapping: 'terms_attributes.custom_input',
+            field_mapping: 'terms_attributes[3].custom_input',
             statement: 'Minimum Investment',
             statement_ar: '',
             field_type: FIELD_TYPE[:number]
           },          {
             index: 8,
             is_required: true,
-            field_mapping: 'terms_attributes.enabled',
+            field_mapping: 'terms_attributes[4].enabled',
             statement: 'Pro Rata',
             statement_ar: '',
             label: 'Description related Pro Rata',
@@ -353,14 +353,14 @@ startup_steps = [
           }, {
             index: 9,
             is_required: false,
-            field_mapping: 'terms_attributes.custom_input',
+            field_mapping: 'terms_attributes[4].custom_input',
             statement: 'Pro Rata',
             statement_ar: '',
             field_type: FIELD_TYPE[:text_field]
           },          {
             index: 10,
             is_required: true,
-            field_mapping: 'terms_attributes.enabled',
+            field_mapping: 'terms_attributes[5].enabled',
             statement: 'Additional Terms',
             statement_ar: '',
             label: 'Description related additional terms',
@@ -369,7 +369,7 @@ startup_steps = [
           }, {
             index: 11,
             is_required: false,
-            field_mapping: 'terms_attributes.custom_input',
+            field_mapping: 'terms_attributes[5].custom_input',
             statement: 'Additional Terms',
             statement_ar: '',
             field_type: FIELD_TYPE[:text_box]
@@ -391,8 +391,508 @@ startup_steps = [
   }
 ]
 
-startup_steps.each do |step|
-  record = Stepper.find_or_initialize_by(title: step[:title])
+property_steps = [
+  {
+    title: 'Details',
+    index: 0,
+    stepper_type: STEPPERS[:property_deal],
+    sections_attributes: [
+      {
+        index: 0,
+        title: 'Title',
+        fields_attributes: [
+          {
+            index: 0,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'Title',
+            statement_ar: '',
+            label: "Add Title.",
+            label_ar: '',
+            field_type: FIELD_TYPE[:text_field],
+            description: '',
+            description_ar: ''
+          }
+        ]
+      },
+      {
+        index: 1,
+        title: 'Location',
+        fields_attributes: [
+          {
+            index: 0,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'Country',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:text_field],
+            description: '',
+            description_ar: ''
+          },
+          {
+            index: 1,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'State',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:text_field],
+            description: '',
+            description_ar: ''
+          },{
+            index: 2,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'City',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:text_field],
+            description: '',
+            description_ar: ''
+          },{
+            index: 3,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'Area',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:text_field],
+            description: '',
+            description_ar: ''
+          },{
+            index: 4,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'Building Name',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:text_field],
+            description: '',
+            description_ar: ''
+          },
+          {
+            index: 5,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'Street Address',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:text_field],
+            description: '',
+            description_ar: ''
+          }
+        ]
+      },
+      {
+        index: 2,
+        title: 'Size',
+        fields_attributes: [
+          {
+            index: 0,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'Size',
+            statement_ar: '',
+            label: "500 sqft",
+            label_ar: '',
+            field_type: FIELD_TYPE[:text_field],
+            description: '',
+            description_ar: ''
+          }
+        ]
+      },
+      {
+        index: 3,
+        title: 'Features',
+        fields_attributes: [
+          {
+            index: 0,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'Bedrooms',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:switch],
+            description: '',
+            description_ar: ''
+          },
+          {
+            index: 1,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'No Bedrooms',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:number],
+            description: '',
+            description_ar: ''
+          },{
+            index: 2,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'Kitchen',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:switch],
+            description: '',
+            description_ar: ''
+          },{
+            index: 3,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'No Kitchen',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:number],
+            description: '',
+            description_ar: ''
+          },{
+            index: 4,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'Washrooms',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:switch],
+            description: '',
+            description_ar: ''
+          },
+          {
+            index: 5,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'No Washrooms',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:number],
+            description: '',
+            description_ar: ''
+          },{
+            index: 4,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'Parking',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:switch],
+            description: '',
+            description_ar: ''
+          },
+          {
+            index: 5,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'No Parking',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:number],
+            description: '',
+            description_ar: ''
+          },{
+            index: 4,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'Swimming Pool',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:switch],
+            description: '',
+            description_ar: ''
+          },
+          {
+            index: 5,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'No Swimming Pools',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:number],
+            description: '',
+            description_ar: ''
+          },{
+            index: 4,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'Property on a rent?',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:switch],
+            description: '',
+            description_ar: ''
+          },
+          {
+            index: 5,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'Per-month',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:dropdown],
+            description: '',
+            description_ar: '',
+            options_attributes: [
+              {
+                index: 0,
+                statement: 'Monthly'
+              },
+              {
+                index: 1,
+                statement: 'Yearly'
+              }
+            ]
+          },
+          {
+            index: 5,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'rent',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:number],
+            description: '',
+            description_ar: ''
+          }
+        ]
+      },      {
+        index: 4,
+        title: 'Property Description',
+        fields_attributes: [
+          {
+            index: 0,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'Property Description',
+            statement_ar: '',
+            label: "Brief Description of the property",
+            label_ar: '',
+            field_type: FIELD_TYPE[:text_box],
+            description: '',
+            description_ar: ''
+          }
+        ]
+      }
+    ]
+  },
+  {
+    title: 'Unique Selling Points',
+    index: 1,
+    stepper_type: STEPPERS[:property_deal],
+    sections_attributes: [
+      {
+        index: 0,
+        title: 'Unique Selling Points',
+        is_multiple: true,
+        add_more_label: '+ Add new point',
+        add_more_label_ar: '' ,
+        fields_attributes: [
+          {
+            index: 0,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.instrument_type',
+            statement: 'Title',
+            statement_ar: '',
+            label: '',
+            label_ar: '',
+            field_type: FIELD_TYPE[:text_field],
+            description: '',
+            description_ar: ''
+          }, {
+            index: 1,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.instrument_sub_type',
+            statement: 'Description',
+            statement_ar: '',
+            label: '',
+            label_ar: '',
+            field_type: FIELD_TYPE[:text_box],
+            description: '',
+            description_ar: ''
+          }
+        ]
+      }
+    ]
+  },
+  {
+    title: 'Attachments',
+    index: 2,
+    stepper_type: STEPPERS[:property_deal],
+    sections_attributes: [
+      {
+        index: 0,
+        title: 'Add Attachments',
+        description: 'Upload the necessary documents.',
+        fields_attributes: [
+          {
+            index: 0,
+            is_required: true,
+            field_mapping: 'target',
+            statement: 'Property Images',
+            statement_ar: '',
+            label: 'Upload a image of your property',
+            label_ar: '',
+            description: '',
+            description_ar: '',
+            field_type: FIELD_TYPE[:file],
+            permitted_types: ['pdf'],
+            size_constraints: { unit: 'mb', limit: 10 }
+          },
+          {
+            index: 0,
+            is_required: true,
+            field_mapping: 'target',
+            statement: 'Property Video',
+            statement_ar: '',
+            label: 'Upload a video of your property',
+            label_ar: '',
+            description: '',
+            description_ar: '',
+            field_type: FIELD_TYPE[:file],
+            permitted_types: ['pdf'],
+            size_constraints: { unit: 'mb', limit: 10 }
+          }
+        ]
+      },{
+        index: 0,
+        title: 'Add Links',
+        description: 'Upload the necessary documents.',
+        fields_attributes: [
+          {
+            index: 0,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.valuation',
+            statement: 'External Link',
+            statement_ar: '',
+            label: 'www.example.com',
+            label_ar: '',
+            field_type: FIELD_TYPE[:url],
+            description: '',
+            description_ar: '',
+            is_multiple: true,
+            add_more_label: '+ Add new link',
+            add_more_label_ar: '' ,
+          }
+        ]
+      }
+    ]
+  },
+  {
+    title: 'Selling Price',
+    index: 3,
+    stepper_type: STEPPERS[:property_deal],
+    sections_attributes: [
+      {
+        index: 0,
+        title: 'Selling Price',
+        fields_attributes: [
+          {
+            index: 0,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.valuation',
+            statement: 'Price',
+            statement_ar: '',
+            label: '$ 0.00',
+            label_ar: '',
+            field_type: FIELD_TYPE[:number],
+            description: '',
+            description_ar: '',
+            suggestions: [500000, 1000000, 2000000, 3000000]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    title: 'Expected Return',
+    index: 4,
+    stepper_type: STEPPERS[:property_deal],
+    sections_attributes: [
+      {
+        index: 0,
+        title: 'Expected Return',
+        fields_attributes: [
+          {
+            index: 0,
+            is_required: true,
+            statement: 'Expected Dividend Yeild',
+            statement_ar: '',
+            label: '',
+            label_ar: '',
+            field_type: FIELD_TYPE[:number],
+            suggestions: ['%2.5', '%5.5', '%8.5', '%10']
+          }, {
+            index: 1,
+            is_required: true,
+            statement: 'Expected Annula Appreciation',
+            statement_ar: '',
+            label: '',
+            label_ar: '',
+            field_type: FIELD_TYPE[:number],
+            suggestions: ['%2.5', '%5.5', '%8.5', '%10']
+          }
+        ]
+      }
+    ]
+  },
+  {
+    title: 'terms',
+    index: 5,
+    stepper_type: STEPPERS[:property_deal],
+    sections_attributes: [
+      {
+        index: 0,
+        title: 'Terms',
+        fields_attributes: [
+          {
+            index: 0,
+            is_required: true,
+            field_mapping: 'terms_attributes.enabled',
+            statement: 'Agree all terms',
+            statement_ar: '',
+            label: 'Description about terms',
+            label_ar: '',
+            field_type: FIELD_TYPE[:checkbox]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    title: 'review',
+    index: 6,
+    stepper_type: STEPPERS[:property_deal],
+    sections_attributes: [
+      {
+        index: 0,
+        title: 'Review'
+      }
+    ]
+  }
+]
+
+steps = startup_steps + property_steps
+
+steps.each do |step|
+  record = Stepper.find_or_initialize_by(stepper_type: step[:stepper_type], title: step[:title])
   next if record.persisted?
   if record.update(step)
     Rails.logger.debug 'Successfully added step'

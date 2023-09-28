@@ -102,5 +102,6 @@ FIELD_TYPE = {
   number: 4,
   dropdown: 5,
   text_field: 6,
-  file: 7
+  file: 7,
+  url: 8
 }.freeze
