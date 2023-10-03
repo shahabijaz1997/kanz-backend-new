@@ -9,4 +9,8 @@ class FieldAttribute < ApplicationRecord
   has_many :dependents, as: :dependent, class_name: 'DependencyTree', dependent: :destroy
 
   accepts_nested_attributes_for :options
+
+  def dependent_field
+    self.class.find_by(id: dependent_id)
+  end
 end

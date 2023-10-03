@@ -16,6 +16,7 @@ class FieldAttributeSerializer
       suggestions: q.suggestions,
       permitted_types: q.permitted_types,
       size_constraints: q.size_constraints,
+      field_mapping: q.field_mapping,
       options: OptionSerializer.new(q.options).serializable_hash[:data].map { |d| d[:attributes][:en] }
     }
   end
@@ -32,6 +33,7 @@ class FieldAttributeSerializer
       suggestions: q.suggestions,
       permitted_types: q.permitted_types,
       size_constraints: q.size_constraints,
+      field_mapping: q.field_mapping,
       options: OptionSerializer.new(q.options).serializable_hash[:data].map { |d| d[:attributes][:ar] }
     }
   end

@@ -27,17 +27,79 @@ module Deals
 
     def deal_params
       params_hash = {}
-      params[:fields].each do |field|
-        step_field = FieldAttribute.find_by(id: field[:id])
-        field_params = step_field.field_mapping.split('.').reverse.inject(field[:value]) { |v, k| { k => v } }
+      array_hash = []
+      merged_ids = []
 
-        params_hash = params_hash.deep_merge(field_params)
+      params[:fields].each do |_field|
+        next if merged_ids.include?(_field[:id])
+
+        field = FieldAttribute.find_by(id: _field[:id])
+
+        field_params = build_nested_hash(field.field_mapping, _field[:value], _field[:id])
+        object_params = existing_object(field.field_mapping, _field[:id])
+        field_params = field_params.deep_merge(object_params)
+
+        dependent_field = field.dependent_field
+        if dependent_field.present?
+          field_params = field_params.deep_merge(build_dependent_hash(dependent_field))
+          merged_ids << dependent_field.id
+        end
+
+        array_hash << field_params
       end
 
-      if deal.persisted? && params_hash['funding_round_attributes'].present? && deal.funding_round.present?
-        params_hash['funding_round_attributes']['id'] = deal.funding_round.id
-      end
+      array_hash = array_hash.flat_map(&:entries).group_by(&:first).map{|k,v| Hash[k, v.map(&:last)]}
+      params_hash = array_hash.reduce Hash.new, :merge
+
       params_hash
+    end
+
+    def build_dependent_hash(field)
+      field_params = params[:fields].detect {|f| f[:id] == field.id }
+      value = field_params.present? ? { value: field_params[:value] } : {}
+      build_hash(field.field_mapping, value)
+    end
+
+    def build_nested_hash(mapping, value, id)
+      field_params = build_hash(mapping, value)
+
+      mapping_arr = mapping.split('.')
+      if mapping_arr.first == 'terms_attributes'
+        mapping_arr.pop()
+        mapping = mapping_arr.push('field_attribute_id').join('.')
+
+        field_params = field_params.deep_merge(build_hash(mapping, id))
+      end
+      field_params
+    end
+
+    def build_hash(mapping, value)
+      mapping.split('.').reverse.inject(value) { |v, k| { k => v } }
+    end
+
+    def existing_object(mapping, id = 0)
+      key = mapping.split('.').first
+      return {} unless deal.persisted?
+
+      class_name = class_name(key)
+      return if class_name.blank?
+
+      hash = {}
+      instance = if class_name.in?(['Feature', 'Term']) 
+        class_name.constantize.find_by(deal_id: deal.id, field_attribute_id: id)
+      else
+        class_name.constantize.find_by(deal_id: deal.id)
+      end
+      hash[key] = { 'id' => instance.id } if instance.present?
+      hash
+    end
+
+    def class_name(key)
+      word_arr = key.split('_')
+      return if word_arr.last != 'attributes'
+
+      word_arr.pop
+      word_arr.map{|w| w.titleize }.join('').singularize
     end
   end
 end

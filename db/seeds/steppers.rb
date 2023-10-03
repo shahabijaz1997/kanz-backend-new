@@ -97,7 +97,7 @@ startup_steps = [
           }, {
             index: 1,
             is_required: true,
-            field_mapping: 'funding_round_attributes.instrument_sub_type',
+            field_mapping: 'funding_round_attributes.safe_type',
             statement: 'SAFE Type',
             statement_ar: '',
             label: '',
@@ -126,7 +126,7 @@ startup_steps = [
           }, {
             index: 1,
             is_required: true,
-            field_mapping: 'funding_round_attributes.instrument_sub_type',
+            field_mapping: 'funding_round_attributes.equity_type',
             statement: 'Equity Type',
             statement_ar: '',
             label: '',
@@ -280,7 +280,7 @@ startup_steps = [
           {
             index: 0,
             is_required: true,
-            field_mapping: 'terms_attributes[0].enabled',
+            field_mapping: 'terms_attributes.enabled',
             statement: 'Valuation Cap',
             statement_ar: '',
             label: 'Description related valuation cap',
@@ -289,14 +289,14 @@ startup_steps = [
           }, {
             index: 1,
             is_required: false,
-            field_mapping: 'terms_attributes[0].custom_input',
+            field_mapping: 'terms_attributes.custom_input',
             statement: 'Valuation Cap',
             statement_ar: '',
             field_type: FIELD_TYPE[:number]
           }, {
             index: 2,
             is_required: true,
-            field_mapping: 'terms_attributes[1].enabled',
+            field_mapping: 'terms_attributes.enabled',
             statement: 'Discount',
             statement_ar: '',
             label: 'Description related discount',
@@ -305,14 +305,14 @@ startup_steps = [
           }, {
             index: 3,
             is_required: false,
-            field_mapping: 'terms_attributes[1].custom_input',
+            field_mapping: 'terms_attributes.custom_input',
             statement: 'Discount',
             statement_ar: '',
             field_type: FIELD_TYPE[:number]
           }, {
             index: 4,
             is_required: true,
-            field_mapping: 'terms_attributes[2].enabled',
+            field_mapping: 'terms_attributes.enabled',
             statement: 'MFN Only',
             statement_ar: '',
             label: 'Description related MFN',
@@ -321,14 +321,14 @@ startup_steps = [
           }, {
             index: 5,
             is_required: false,
-            field_mapping: 'terms_attributes[2].custom_input',
+            field_mapping: 'terms_attributes.custom_input',
             statement: 'MFN',
             statement_ar: '',
             field_type: FIELD_TYPE[:number]
           }, {
             index: 6,
             is_required: true,
-            field_mapping: 'terms_attributes[3].enabled',
+            field_mapping: 'terms_attributes.enabled',
             statement: 'Minimum Investment Size',
             statement_ar: '',
             label: 'Description related investment',
@@ -337,14 +337,14 @@ startup_steps = [
           }, {
             index: 7,
             is_required: false,
-            field_mapping: 'terms_attributes[3].custom_input',
+            field_mapping: 'terms_attributes.custom_input',
             statement: 'Minimum Investment',
             statement_ar: '',
             field_type: FIELD_TYPE[:number]
           },          {
             index: 8,
             is_required: true,
-            field_mapping: 'terms_attributes[4].enabled',
+            field_mapping: 'terms_attributes.enabled',
             statement: 'Pro Rata',
             statement_ar: '',
             label: 'Description related Pro Rata',
@@ -353,14 +353,14 @@ startup_steps = [
           }, {
             index: 9,
             is_required: false,
-            field_mapping: 'terms_attributes[4].custom_input',
+            field_mapping: 'terms_attributes.custom_input',
             statement: 'Pro Rata',
             statement_ar: '',
             field_type: FIELD_TYPE[:text_field]
           },          {
             index: 10,
             is_required: true,
-            field_mapping: 'terms_attributes[5].enabled',
+            field_mapping: 'terms_attributes.enabled',
             statement: 'Additional Terms',
             statement_ar: '',
             label: 'Description related additional terms',
@@ -369,7 +369,7 @@ startup_steps = [
           }, {
             index: 11,
             is_required: false,
-            field_mapping: 'terms_attributes[5].custom_input',
+            field_mapping: 'terms_attributes.custom_input',
             statement: 'Additional Terms',
             statement_ar: '',
             field_type: FIELD_TYPE[:text_box]
@@ -772,9 +772,12 @@ property_steps = [
           }
         ]
       },{
-        index: 0,
+        index: 1,
         title: 'Add Links',
         description: 'Upload the necessary documents.',
+        is_multiple: true,
+        add_more_label: '+ Add new link',
+        add_more_label_ar: ''
         fields_attributes: [
           {
             index: 0,
@@ -786,10 +789,7 @@ property_steps = [
             label_ar: '',
             field_type: FIELD_TYPE[:url],
             description: '',
-            description_ar: '',
-            is_multiple: true,
-            add_more_label: '+ Add new link',
-            add_more_label_ar: '' ,
+            description_ar: ''
           }
         ]
       }

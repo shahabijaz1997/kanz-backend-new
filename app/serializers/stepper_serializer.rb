@@ -7,9 +7,8 @@ class StepperSerializer
 
   attribute :dependencies do |step|
     dependencies = DependencyTree.where(
-                     dependable_id: FieldsSection.where(
-                       section_id: step.sections.pluck(:id)
-                     ).pluck(:field_id), dependable_type: 'FieldAttribute'
+                     dependable_id: FieldsSection.where(section_id: step.sections.pluck(:id)).pluck(:field_id),
+                     dependable_type: 'FieldAttribute'
                    )
     DependencyTreeSerializer.new(dependencies).serializable_hash[:data].map { |d| d[:attributes] }
   end

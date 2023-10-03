@@ -105,3 +105,6 @@ FIELD_TYPE = {
   file: 7,
   url: 8
 }.freeze
+
+VALUE_FIELDS = ['switch', 'text_box', 'number', 'text_field', 'url', 'file'].freeze
+OPTION_FIELDS = ['multiple_choice', 'checkbox', 'dropdown'].freeze
