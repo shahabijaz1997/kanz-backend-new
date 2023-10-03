@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_02_114346) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_03_122719) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -100,7 +100,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_02_114346) do
     t.string "attachment_kind"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "attachment_config_id"
+    t.bigint "configurable_id"
+    t.string "configurable_type", default: "AttachmentConfig"
     t.index ["parent_type", "parent_id"], name: "index_attachments_on_parent"
   end
 
@@ -168,12 +169,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_02_114346) do
 
   create_table "features", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title"
-    t.string "title_ar"
     t.text "description"
-    t.text "description_ar"
-    t.bigint "deal_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "deal_id"
+    t.bigint "field_attribute_id"
+    t.bigint "sibling_id"
     t.index ["deal_id"], name: "index_features_on_deal_id"
   end
 
@@ -213,10 +214,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_02_114346) do
     t.integer "safe_type", default: 0
     t.integer "valuation_phase", default: 0
     t.decimal "valuation"
-    t.bigint "deal_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "equity_type", default: 0
+    t.uuid "deal_id"
     t.index ["deal_id"], name: "index_funding_rounds_on_deal_id"
   end
 
@@ -311,10 +312,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_02_114346) do
     t.float "dividend_yeild"
     t.float "yearly_appreciation"
     t.jsonb "external_links", default: {}
-    t.bigint "deal_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "field_attribute_id"
+    t.uuid "deal_id"
     t.index ["country_id"], name: "index_property_details_on_country_id"
     t.index ["deal_id"], name: "index_property_details_on_deal_id"
   end
@@ -384,6 +385,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_02_114346) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "description_link", default: {}
+    t.boolean "display_card", default: false
     t.index ["stepper_id"], name: "index_sections_on_stepper_id"
   end
 
@@ -433,11 +435,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_02_114346) do
 
   create_table "terms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.boolean "enabled"
-    t.bigint "deal_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "field_attribute_id"
     t.jsonb "custom_input", default: {}
+    t.uuid "deal_id"
     t.index ["deal_id"], name: "index_terms_on_deal_id"
   end
 
@@ -495,6 +497,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_02_114346) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_users", "admin_roles"
   add_foreign_key "deals", "users", column: "author_id"
+  add_foreign_key "features", "deals"
   add_foreign_key "fields_sections", "field_attributes", column: "field_id"
   add_foreign_key "fields_sections", "sections"
+  add_foreign_key "funding_rounds", "deals"
+  add_foreign_key "property_details", "deals"
+  add_foreign_key "terms", "deals"
 end

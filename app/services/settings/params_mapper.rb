@@ -40,7 +40,7 @@ module Settings
     end
 
     def selected_value(field)
-      return file_url if field[:field_type] == 'file'
+      return file_url(field) if field[:field_type] == 'file'
 
       attribute_name = field[:field_mapping].split('.').first
       return deal.send(attribute_name) unless association?(attribute_name)
@@ -51,7 +51,6 @@ module Settings
       else
         class_name.constantize.find_by(deal_id: deal.id)
       end
-
       instance&.send(field[:field_mapping].split('.').last)
     end
 
@@ -65,8 +64,8 @@ module Settings
       key.split('_').last == 'attributes'
     end
 
-    def file_url
-      'attachment_url'
+    def file_url(field)
+      deal.attachments.find_by(configurable: field)
     end
   end
 end

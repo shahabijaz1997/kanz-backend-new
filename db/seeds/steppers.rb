@@ -322,7 +322,7 @@ startup_steps = [
             index: 5,
             is_required: false,
             field_mapping: 'terms_attributes.custom_input',
-            statement: 'MFN',
+            statement: 'MFN Only',
             statement_ar: '',
             field_type: FIELD_TYPE[:number]
           }, {
@@ -338,7 +338,7 @@ startup_steps = [
             index: 7,
             is_required: false,
             field_mapping: 'terms_attributes.custom_input',
-            statement: 'Minimum Investment',
+            statement: 'Minimum Investment Size',
             statement_ar: '',
             field_type: FIELD_TYPE[:number]
           },          {
@@ -704,6 +704,7 @@ property_steps = [
         is_multiple: true,
         add_more_label: '+ Add new point',
         add_more_label_ar: '' ,
+        display_card: true,
         fields_attributes: [
           {
             index: 0,
@@ -899,4 +900,10 @@ steps.each do |step|
   else
     Rails.logger.debug record.errors.full_messages
   end
+end
+
+statements = ['Valuation Cap', 'Discount' , 'MFN','Minimum Investment','Pro Rata','Additional Terms']
+FieldAttribute.where(statement: statements)where.not(field_type: FIELD_TYPE[:switch]).each do |f|
+  dependent_id = FieldAttribute.find_by(statement: f.statement, field_type: FIELD_TYPE[:switch])&.id
+  f.update(dependent_id: dependent_id)
 end

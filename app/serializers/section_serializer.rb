@@ -12,6 +12,7 @@ class SectionSerializer
       description: section.description,
       is_multiple: section.is_multiple,
       add_more_label: section.add_more_label,
+      display_card: section.display_card,
       fields: FieldAttributeSerializer.new(section.fields).serializable_hash[:data].map { |d| d[:attributes][:en] }
     }
   end
@@ -23,6 +24,7 @@ class SectionSerializer
       description: section.description_ar,
       is_multiple: section.is_multiple,
       add_more_label: section.add_more_label_ar,
+      display_card: section.display_card,
       fields: FieldAttributeSerializer.new(section.fields).serializable_hash[:data].map { |d| d[:attributes][:ar] }
     }
   end

@@ -6,6 +6,7 @@ class Deal < ApplicationRecord
   has_many :terms, dependent: :destroy
   has_one :funding_round
   has_one :property_detail
+  has_one :attachment, as: :parent, dependent: :destroy
 
   accepts_nested_attributes_for :features
   accepts_nested_attributes_for :terms
