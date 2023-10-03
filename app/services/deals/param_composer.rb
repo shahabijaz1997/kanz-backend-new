@@ -27,31 +27,39 @@ module Deals
 
     def deal_params
       params_hash = {}
-      array_hash = []
-      merged_ids = []
 
       params[:fields].each do |_field|
-        next if merged_ids.include?(_field[:id])
-
         field = FieldAttribute.find_by(id: _field[:id])
+        next if dependent_field_ids.include?(_field[:id]) || field.blank?
 
-        field_params = build_nested_hash(field.field_mapping, _field[:value], _field[:id])
-        object_params = existing_object(field.field_mapping, _field[:id])
-        field_params = field_params.deep_merge(object_params)
-
-        dependent_field = field.dependent_field
-        if dependent_field.present?
-          field_params = field_params.deep_merge(build_dependent_hash(dependent_field))
-          merged_ids << dependent_field.id
+        field_params = build_field_params(field, _field)
+        if one_to_many_relation?(field_params)
+          key = field_params.keys.first
+          params_hash[key] ||= []
+          params_hash[key] << field_params[key]
+        else
+          params_hash = params_hash.deep_merge(field_params)
         end
-
-        array_hash << field_params
       end
 
-      array_hash = array_hash.flat_map(&:entries).group_by(&:first).map{|k,v| Hash[k, v.map(&:last)]}
-      params_hash = array_hash.reduce Hash.new, :merge
-
       params_hash
+    end
+
+    def dependent_field_ids
+      FieldAttribute.pluck(:dependent_id).compact.uniq
+    end
+
+    def one_to_many_relation?(field_params)
+      ["terms_attributes", "features_attributes"].include?(field_params.keys.first)
+    end
+
+    def build_field_params(field, _field)
+      field_params = build_nested_hash(field.field_mapping, _field[:value], _field[:id])
+      object_params = existing_object(field.field_mapping, _field[:id])
+      field_params = field_params.deep_merge(object_params)
+
+      dependent_field = field.dependent_field
+      dependent_field.present? ? field_params.deep_merge(build_dependent_hash(dependent_field)) : field_params
     end
 
     def build_dependent_hash(field)
@@ -64,7 +72,7 @@ module Deals
       field_params = build_hash(mapping, value)
 
       mapping_arr = mapping.split('.')
-      if mapping_arr.first == 'terms_attributes'
+      if mapping_arr.first.in?(["terms_attributes", "features_attributes"])
         mapping_arr.pop()
         mapping = mapping_arr.push('field_attribute_id').join('.')
 
@@ -82,7 +90,7 @@ module Deals
       return {} unless deal.persisted?
 
       class_name = class_name(key)
-      return if class_name.blank?
+      return {} if class_name.blank?
 
       hash = {}
       instance = if class_name.in?(['Feature', 'Term']) 
