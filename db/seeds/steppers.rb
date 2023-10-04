@@ -778,7 +778,7 @@ property_steps = [
         description: 'Upload the necessary documents.',
         is_multiple: true,
         add_more_label: '+ Add new link',
-        add_more_label_ar: ''
+        add_more_label_ar: '',
         fields_attributes: [
           {
             index: 0,
@@ -903,7 +903,7 @@ steps.each do |step|
 end
 
 statements = ['Valuation Cap', 'Discount' , 'MFN','Minimum Investment','Pro Rata','Additional Terms']
-FieldAttribute.where(statement: statements)where.not(field_type: FIELD_TYPE[:switch]).each do |f|
+FieldAttribute.where(statement: statements).where.not(field_type: FIELD_TYPE[:switch]).each do |f|
   dependent_id = FieldAttribute.find_by(statement: f.statement, field_type: FIELD_TYPE[:switch])&.id
   f.update(dependent_id: dependent_id)
 end
