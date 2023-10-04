@@ -11,6 +11,5 @@ class Section < ApplicationRecord
 
   validates :title, presence: true
 
-  accepts_nested_attributes_for :questions
   accepts_nested_attributes_for :fields
 end
