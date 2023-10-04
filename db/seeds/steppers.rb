@@ -404,7 +404,7 @@ property_steps = [
           {
             index: 0,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'title',
             statement: 'Title',
             statement_ar: '',
             label: "Add Title.",
@@ -422,7 +422,7 @@ property_steps = [
           {
             index: 0,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'property_detail_attributes.country_id',
             statement: 'Country',
             statement_ar: '',
             label: "",
@@ -434,7 +434,7 @@ property_steps = [
           {
             index: 1,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'property_detail_attributes.state',
             statement: 'State',
             statement_ar: '',
             label: "",
@@ -445,7 +445,7 @@ property_steps = [
           },{
             index: 2,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'property_detail_attributes.city',
             statement: 'City',
             statement_ar: '',
             label: "",
@@ -456,7 +456,7 @@ property_steps = [
           },{
             index: 3,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'property_detail_attributes.area',
             statement: 'Area',
             statement_ar: '',
             label: "",
@@ -467,7 +467,7 @@ property_steps = [
           },{
             index: 4,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'property_detail_attributes.building_name',
             statement: 'Building Name',
             statement_ar: '',
             label: "",
@@ -479,7 +479,7 @@ property_steps = [
           {
             index: 5,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'property_detail_attributes.street_address',
             statement: 'Street Address',
             statement_ar: '',
             label: "",
@@ -497,7 +497,7 @@ property_steps = [
           {
             index: 0,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'property_detail_attributes.size',
             statement: 'Size',
             statement_ar: '',
             label: "500 sqft",
@@ -515,7 +515,7 @@ property_steps = [
           {
             index: 0,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'property_detail_attributes.has_bedrooms',
             statement: 'Bedrooms',
             statement_ar: '',
             label: "",
@@ -527,7 +527,7 @@ property_steps = [
           {
             index: 1,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'property_detail_attributes.no_bedrooms',
             statement: 'No Bedrooms',
             statement_ar: '',
             label: "",
@@ -538,7 +538,7 @@ property_steps = [
           },{
             index: 2,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'property_detail_attributes.has_kitchen',
             statement: 'Kitchen',
             statement_ar: '',
             label: "",
@@ -549,7 +549,7 @@ property_steps = [
           },{
             index: 3,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'property_detail_attributes.no_kitchen',
             statement: 'No Kitchen',
             statement_ar: '',
             label: "",
@@ -560,7 +560,7 @@ property_steps = [
           },{
             index: 4,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'property_detail_attributes.has_washroom',
             statement: 'Washrooms',
             statement_ar: '',
             label: "",
@@ -572,7 +572,7 @@ property_steps = [
           {
             index: 5,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'property_detail_attributes.no_washrooms',
             statement: 'No Washrooms',
             statement_ar: '',
             label: "",
@@ -583,7 +583,7 @@ property_steps = [
           },{
             index: 4,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'property_detail_attributes.has_parking',
             statement: 'Parking',
             statement_ar: '',
             label: "",
@@ -595,7 +595,7 @@ property_steps = [
           {
             index: 5,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'property_detail_attributes.parking_capacity',
             statement: 'No Parking',
             statement_ar: '',
             label: "",
@@ -606,7 +606,7 @@ property_steps = [
           },{
             index: 4,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'property_detail_attributes.has_swimming_pool',
             statement: 'Swimming Pool',
             statement_ar: '',
             label: "",
@@ -618,18 +618,32 @@ property_steps = [
           {
             index: 5,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
-            statement: 'No Swimming Pools',
+            field_mapping: 'property_detail_attributes.swimming_pool_type',
+            statement: 'Swimming Pool Type',
             statement_ar: '',
             label: "",
             label_ar: '',
-            field_type: FIELD_TYPE[:number],
+            field_type: FIELD_TYPE[:dropdown],
             description: '',
             description_ar: ''
+            options_attributes: [
+              {
+                index: 0,
+                statement: 'Shared',
+                statement_ar: '',
+                is_range: false
+              },
+              {
+                index: 1,
+                statement: 'Private',
+                statement_ar: '',
+                is_range: false
+              }
+            ]
           },{
             index: 4,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'property_detail_attributes.is_rental',
             statement: 'Property on a rent?',
             statement_ar: '',
             label: "",
@@ -641,7 +655,7 @@ property_steps = [
           {
             index: 5,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'property_detail_attributes.rental_period',
             statement: 'Per-month',
             statement_ar: '',
             label: "",
@@ -663,7 +677,7 @@ property_steps = [
           {
             index: 5,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'property_detail_attributes.rental_amount',
             statement: 'rent',
             statement_ar: '',
             label: "",
@@ -680,7 +694,7 @@ property_steps = [
           {
             index: 0,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'description',
             statement: 'Property Description',
             statement_ar: '',
             label: "Brief Description of the property",
@@ -709,7 +723,7 @@ property_steps = [
           {
             index: 0,
             is_required: true,
-            field_mapping: 'funding_round_attributes.instrument_type',
+            field_mapping: 'features_attributes.title',
             statement: 'Title',
             statement_ar: '',
             label: '',
@@ -720,7 +734,7 @@ property_steps = [
           }, {
             index: 1,
             is_required: true,
-            field_mapping: 'funding_round_attributes.instrument_sub_type',
+            field_mapping: 'features_attributes.description',
             statement: 'Description',
             statement_ar: '',
             label: '',
@@ -808,7 +822,7 @@ property_steps = [
           {
             index: 0,
             is_required: true,
-            field_mapping: 'funding_round_attributes.valuation',
+            field_mapping: 'target',
             statement: 'Price',
             statement_ar: '',
             label: '$ 0.00',
@@ -834,6 +848,7 @@ property_steps = [
           {
             index: 0,
             is_required: true,
+            field_mapping: 'property_detail_attributes.dividend_yeild',
             statement: 'Expected Dividend Yeild',
             statement_ar: '',
             label: '',
@@ -843,6 +858,7 @@ property_steps = [
           }, {
             index: 1,
             is_required: true,
+            field_mapping: 'property_detail_attributes.yearly_appreciation',
             statement: 'Expected Annula Appreciation',
             statement_ar: '',
             label: '',
@@ -866,7 +882,7 @@ property_steps = [
           {
             index: 0,
             is_required: true,
-            field_mapping: 'terms_attributes.enabled',
+            field_mapping: 'agreed_with_kanz_terms',
             statement: 'Agree all terms',
             statement_ar: '',
             label: 'Description about terms',

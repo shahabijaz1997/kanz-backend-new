@@ -85,7 +85,7 @@ module Settings
 
     def file_url(field)
       attachment = deal.attachments&.find_by(configurable_type: 'FieldAttribute', configurable_id: field[:id])
-      attachment&.url
+      { id: attachment&.id, url: attachment&.url }
     end
   end
 end

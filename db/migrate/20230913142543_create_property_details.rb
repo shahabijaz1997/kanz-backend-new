@@ -27,7 +27,6 @@ class CreatePropertyDetails < ActiveRecord::Migration[7.0]
       t.float :yearly_appreciation
       t.jsonb :external_links, default: {}
       t.references :deal, index: true
-      t.references :field_attribute, index: true
       t.timestamps
     end
   end
