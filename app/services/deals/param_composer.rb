@@ -27,10 +27,11 @@ module Deals
 
     def deal_params
       params_hash = {}
+      dependent_ids = dependent_field_ids
 
       params[:fields].each do |_field|
         field = FieldAttribute.find_by(id: _field[:id])
-        next if dependent_field_ids.include?(_field[:id]) || field.blank?
+        next if dependent_ids.include?(_field[:id]) || field.blank?
 
         field_params = build_field_params(field, _field)
         if one_to_many_relation?(field_params)
