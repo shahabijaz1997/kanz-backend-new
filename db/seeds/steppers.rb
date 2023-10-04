@@ -625,7 +625,7 @@ property_steps = [
             label_ar: '',
             field_type: FIELD_TYPE[:dropdown],
             description: '',
-            description_ar: ''
+            description_ar: '',
             options_attributes: [
               {
                 index: 0,
