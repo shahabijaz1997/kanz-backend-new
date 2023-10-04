@@ -12,11 +12,9 @@ class Question < ApplicationRecord
     text_field: 6
   }
 
-  has_many :options, dependent: :destroy
+  has_many :options, as: :optionable, class_name: 'Option', dependent: :destroy
   has_many :users_responses, dependent: :destroy
   has_many :users, through: :users_responses
-  has_many :questions_sections, dependent: :destroy
-  has_many :sections, through: :questions_sections
 
   validates :statement, presence: true
   validates :question_type, inclusion: { in: question_types.keys }

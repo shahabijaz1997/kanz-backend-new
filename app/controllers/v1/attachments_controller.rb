@@ -72,7 +72,7 @@ module V1
     end
 
     def attachment_owner
-      return current_user if attachment_params.blank? || attachment_params[:parent_type].blank??
+      return current_user if attachment_params.blank? || attachment_params[:parent_type].blank?
 
       attachment_params[:parent_type].constantize.find_by(id: attachment_params[:parent_id])
     end

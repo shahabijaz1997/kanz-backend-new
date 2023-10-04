@@ -6,7 +6,7 @@ module V1
     before_action :find_deal, only: [:stepper]
     def attachments
       attachment_configs = current_user.user_role.attachment_configs.map do |config|
-        attachment = Attachment.find_by(attachment_config_id: config.id, parent: current_user)
+        attachment = Attachment.find_by(configurable_id: config.id, parent: current_user)
 
         AttachmentConfigSerializer.new(
           config

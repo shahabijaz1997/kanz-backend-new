@@ -3,8 +3,6 @@
 # Questions Modal
 class Section < ApplicationRecord
   belongs_to :stepper
-  has_many :questions_sections, dependent: :destroy
-  has_many :questions, through: :questions_sections, dependent: :destroy
 
   has_many :fields_sections, dependent: :destroy
   has_many :fields, through: :fields_sections, source: :field, dependent: :destroy

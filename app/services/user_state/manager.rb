@@ -27,7 +27,8 @@ module UserState
     # Will be updated based on configurations
     def attachments_completed?
       required_doc = user.user_role.attachment_configs.pluck(:id)
-      attached_doc = user.attachments.pluck(:attachment_config_id)
+      attached_doc = user.attachments.pluck(:configurable_id)
+
       (required_doc - attached_doc).length.zero?
     end
 
