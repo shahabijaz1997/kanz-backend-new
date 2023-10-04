@@ -12,7 +12,7 @@ module V1
 
     # POST /attachments
     def create
-      @attachment = current_user.attachments.new(attachment_params)
+      @attachment = attachment_owner.attachments.new(attachment_params)
       @attachment.file.attach(attachment_params[:file])
       if @attachment.save!
         success(
@@ -26,7 +26,7 @@ module V1
 
     # PATCH/PUT /attachments/1
     def update
-      if @attachment.parent_id == current_user.id && @attachment.update(attachment_params)
+      if @attachment.parent_id == attachment_owner.id && @attachment.update(attachment_params)
         success(I18n.t('attachments.update.success'))
       else
         failure(I18n.t('attachments.update.failure'))
@@ -55,17 +55,26 @@ module V1
     private
 
     def set_attachment
-      @attachment = current_user.attachments.find_by(id: params[:id])
+      
+      @attachment = attachment_owner.attachments.find_by(id: params[:id])
 
       failure(I18n.t('attachments.not_found')) if @attachment.blank?
     end
 
     def attachment_params
-      params.require(:attachment).permit(:name, :attachment_kind, :file, :configurable_id)
+      params.require(:attachment).permit(
+        :name, :attachment_kind, :file, :configurable_id, :configurable_type, :parent_type, :parent_id
+      )
     end
 
     def check_file_presence
       failure(I18n.t('errors.exceptions.file_missing')) if attachment_params[:file].blank?
+    end
+
+    def attachment_owner
+      return current_user if attachment_params.blank? || attachment_params[:parent_type].blank??
+
+      attachment_params[:parent_type].constantize.find_by(id: attachment_params[:parent_id])
     end
   end
 end
