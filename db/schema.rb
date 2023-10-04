@@ -14,20 +14,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_122719) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "active_admin_comments", force: :cascade do |t|
-    t.string "namespace"
-    t.text "body"
-    t.string "resource_type"
-    t.bigint "resource_id"
-    t.string "author_type"
-    t.bigint "author_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author"
-    t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
-    t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource"
-  end
-
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -68,11 +54,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_122719) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "admin_role_id"
     t.string "first_name"
     t.string "last_name"
+    t.bigint "admin_role_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "deactivated"
     t.index ["admin_role_id"], name: "index_admin_users_on_admin_role_id"
     t.index ["email"], name: "index_admin_users_on_email", unique: true
@@ -135,7 +121,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_122719) do
     t.string "name_ar"
   end
 
-  create_table "deals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "deals", force: :cascade do |t|
     t.decimal "target"
     t.integer "deal_type", default: 0
     t.integer "status", default: 0
@@ -146,10 +132,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_122719) do
     t.integer "success_benchmark"
     t.float "how_much_funded"
     t.boolean "agreed_with_kanz_terms", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.string "title"
     t.text "description"
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_deals_on_author_id"
   end
 
@@ -167,15 +154,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_122719) do
     t.index ["dependent_type", "dependent_id"], name: "index_dependency_trees_on_dependent"
   end
 
-  create_table "features", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "features", force: :cascade do |t|
     t.string "title"
     t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.uuid "deal_id"
+    t.bigint "deal_id"
     t.bigint "field_attribute_id"
     t.bigint "sibling_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["deal_id"], name: "index_features_on_deal_id"
+    t.index ["field_attribute_id"], name: "index_features_on_field_attribute_id"
   end
 
   create_table "field_attributes", force: :cascade do |t|
@@ -194,11 +182,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_122719) do
     t.jsonb "decription_link", default: {}
     t.string "permitted_types", array: true
     t.jsonb "size_constraints", default: {}
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.float "suggestions", array: true
+    t.float "suggestions", default: [], array: true
     t.string "field_mapping"
     t.bigint "dependent_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "fields_sections", force: :cascade do |t|
@@ -208,16 +196,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_122719) do
     t.index ["section_id"], name: "index_fields_sections_on_section_id"
   end
 
-  create_table "funding_rounds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "round", default: 0
-    t.integer "instrument_type", default: 0
-    t.integer "safe_type", default: 0
-    t.integer "valuation_phase", default: 0
+  create_table "funding_rounds", force: :cascade do |t|
+    t.bigint "round", default: 0
+    t.bigint "instrument_type", default: 0
+    t.bigint "safe_type", default: 0
+    t.bigint "equity_type", default: 0
+    t.bigint "valuation_phase", default: 0
     t.decimal "valuation"
+    t.bigint "deal_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "equity_type", default: 0
-    t.uuid "deal_id"
     t.index ["deal_id"], name: "index_funding_rounds_on_deal_id"
   end
 
@@ -241,9 +229,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_122719) do
     t.index ["country_id"], name: "index_investor_profiles_on_country_id"
     t.index ["investor_id"], name: "index_investor_profiles_on_investor_id"
     t.index ["residence_id"], name: "index_investor_profiles_on_residence_id"
-  end
-
-  create_table "notification_templates", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
   end
 
   create_table "options", force: :cascade do |t|
@@ -312,12 +297,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_122719) do
     t.float "dividend_yeild"
     t.float "yearly_appreciation"
     t.jsonb "external_links", default: {}
+    t.bigint "deal_id"
+    t.bigint "field_attribute_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "field_attribute_id"
-    t.uuid "deal_id"
     t.index ["country_id"], name: "index_property_details_on_country_id"
     t.index ["deal_id"], name: "index_property_details_on_deal_id"
+    t.index ["field_attribute_id"], name: "index_property_details_on_field_attribute_id"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -337,13 +323,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_122719) do
     t.string "category_ar"
     t.text "description_ar"
     t.integer "kind", default: 0
-    t.jsonb "suggestions", default: {}
-  end
-
-  create_table "questions_sections", id: false, force: :cascade do |t|
-    t.bigint "question_id", null: false
-    t.bigint "section_id", null: false
-    t.index ["question_id", "section_id"], name: "index_questions_sections_on_question_id_and_section_id"
   end
 
   create_table "realtor_profiles", force: :cascade do |t|
@@ -373,7 +352,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_122719) do
   end
 
   create_table "sections", force: :cascade do |t|
-    t.integer "index"
+    t.integer "index", default: 0
     t.string "title", limit: 50
     t.string "title_ar", limit: 50
     t.string "description"
@@ -381,11 +360,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_122719) do
     t.boolean "is_multiple"
     t.string "add_more_label", limit: 50
     t.string "add_more_label_ar", limit: 50
+    t.jsonb "description_link", default: {}
     t.bigint "stepper_id"
+    t.boolean "display_card", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.jsonb "description_link", default: {}
-    t.boolean "display_card", default: false
     t.index ["stepper_id"], name: "index_sections_on_stepper_id"
   end
 
@@ -435,15 +414,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_122719) do
 
   create_table "terms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.boolean "enabled"
+    t.jsonb "custom_input", default: {}
+    t.bigint "deal_id"
+    t.bigint "field_attribute_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "field_attribute_id"
-    t.jsonb "custom_input", default: {}
-    t.uuid "deal_id"
     t.index ["deal_id"], name: "index_terms_on_deal_id"
-  end
-
-  create_table "unique_selling_points", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.index ["field_attribute_id"], name: "index_terms_on_field_attribute_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -497,10 +474,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_122719) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_users", "admin_roles"
   add_foreign_key "deals", "users", column: "author_id"
-  add_foreign_key "features", "deals"
   add_foreign_key "fields_sections", "field_attributes", column: "field_id"
   add_foreign_key "fields_sections", "sections"
-  add_foreign_key "funding_rounds", "deals"
-  add_foreign_key "property_details", "deals"
-  add_foreign_key "terms", "deals"
 end

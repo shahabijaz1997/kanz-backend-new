@@ -17,6 +17,8 @@ class CreateFieldAttributes < ActiveRecord::Migration[7.0]
       t.string :permitted_types, array: true
       t.jsonb :size_constraints, default: {}
       t.float :suggestions, array: true, default: []
+      t.string :field_mapping
+      t.bigint :dependent_id
       t.timestamps
     end
   end
