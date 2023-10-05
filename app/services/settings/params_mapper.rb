@@ -53,8 +53,8 @@ module Settings
         instances.each do |instance|
           field[:value] = instance&.send(field[:field_mapping].split('.').last) 
           field[:index] = instance&.send(:index)
-          all_fields << field
         end
+        all_fields << field
       end
       all_fields
     end
