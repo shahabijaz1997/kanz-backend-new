@@ -21,10 +21,10 @@ module Settings
             fields = map_multiple_fields(section[:fields])
           else
             fields = section[:fields].each do |field|
-              if field[:id].in?(dependent_ids)
-                value = selected_value(dependent_field(field[:id], field[:field_mapping]))
+              value = if field[:id].in?(dependent_ids)
+                selected_value(dependent_field(field[:id], field[:field_mapping]))
               else
-                value = selected_value(field)
+                selected_value(field)
               end
               if field[:field_type].in? VALUE_FIELDS
                 field[:value] = value
@@ -56,7 +56,7 @@ module Settings
           all_fields << field
         end
       end
-      all_fields.flatten(1)
+      all_fields
     end
 
     def dependent_field_ids
