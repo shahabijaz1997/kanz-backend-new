@@ -55,8 +55,7 @@ module V1
     private
 
     def set_attachment
-      
-      @attachment = attachment_owner.attachments.find_by(id: params[:id])
+      @attachment = Attachment.find_by(id: params[:id])
 
       failure(I18n.t('attachments.not_found')) if @attachment.blank?
     end
