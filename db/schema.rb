@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_03_122719) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_05_105316) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -154,12 +154,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_122719) do
     t.index ["dependent_type", "dependent_id"], name: "index_dependency_trees_on_dependent"
   end
 
+  create_table "external_links", force: :cascade do |t|
+    t.string "url"
+    t.integer "index"
+    t.bigint "deal_id"
+    t.bigint "field_attribute_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deal_id"], name: "index_external_links_on_deal_id"
+    t.index ["field_attribute_id"], name: "index_external_links_on_field_attribute_id"
+  end
+
   create_table "features", force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.bigint "deal_id"
     t.bigint "field_attribute_id"
-    t.bigint "sibling_id"
+    t.integer "index"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["deal_id"], name: "index_features_on_deal_id"

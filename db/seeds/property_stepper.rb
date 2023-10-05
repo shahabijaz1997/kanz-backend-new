@@ -34,9 +34,41 @@ steps = [
             statement_ar: '',
             label: "",
             label_ar: '',
-            field_type: FIELD_TYPE[:text_field],
+            field_type: FIELD_TYPE[:dropdown],
             description: '',
-            description_ar: ''
+            description_ar: '',
+            options_attributes: [
+              {
+                index: 0,
+                statement: 'Bahrain',
+                statement_ar: "البحرين"
+              },
+              {
+                index: 1,
+                statement: 'Kuwait',
+                statement_ar: "الكويت"
+              },
+              {
+                index: 2,
+                statement: 'Qatar',
+                statement_ar: "دولة قطر"
+              },
+              {
+                index: 3,
+                statement: 'Oman',
+                statement_ar: "سلطنة عمان"
+              },
+              {
+                index: 4,
+                statement: 'Saudi Arabia',
+                statement_ar: "المملكة العربية السعودية"
+              },
+              {
+                index: 5,
+                statement: 'United Arab Emirate',
+                statement_ar: "الإمارات العربية المتحدة"
+              }
+            ]
           },
           {
             index: 1,
@@ -367,7 +399,6 @@ steps = [
           {
             index: 0,
             is_required: true,
-            field_mapping: 'target',
             statement: 'Property Images',
             statement_ar: '',
             label: 'Upload a image of your property',
@@ -375,13 +406,12 @@ steps = [
             description: '',
             description_ar: '',
             field_type: FIELD_TYPE[:file],
-            permitted_types: ['pdf'],
+            permitted_types: ['png','jpeg'],
             size_constraints: { unit: 'mb', limit: 10 }
           },
           {
             index: 0,
             is_required: true,
-            field_mapping: 'target',
             statement: 'Property Video',
             statement_ar: '',
             label: 'Upload a video of your property',
@@ -389,7 +419,7 @@ steps = [
             description: '',
             description_ar: '',
             field_type: FIELD_TYPE[:file],
-            permitted_types: ['pdf'],
+            permitted_types: ['video'],
             size_constraints: { unit: 'mb', limit: 10 }
           }
         ]
@@ -404,7 +434,7 @@ steps = [
           {
             index: 0,
             is_required: true,
-            field_mapping: 'funding_round_attributes.valuation',
+            field_mapping: 'external_links_attributes.url',
             statement: 'External Link',
             statement_ar: '',
             label: 'www.example.com',

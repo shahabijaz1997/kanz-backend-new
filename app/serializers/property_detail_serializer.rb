@@ -10,7 +10,7 @@ class PropertyDetailSerializer
              :external_links
 
   attribute :country_id do |pd|
-    pd.country&.name
+    option_value(pd.country_id)
   end
 
   attribute :swimming_pool_type do |pd|

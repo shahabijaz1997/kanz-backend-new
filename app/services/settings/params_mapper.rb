@@ -8,7 +8,7 @@ module Settings
     end
 
     def call
-      deal.startup? ? map_startup_values : map_property_values
+      map_startup_values
     end
 
     private
@@ -17,9 +17,8 @@ module Settings
       dependent_ids = dependent_field_ids
       steps = params.each do |step|
         sections = step[:en][:sections].each do |section|
-          puts section[:is_multiple]
           if section[:is_multiple]
-            puts section[:is_multiple]
+            fields = map_multiple_fields(section[:fields])
           else
             fields = section[:fields].each do |field|
               if field[:id].in?(dependent_ids)
@@ -36,12 +35,28 @@ module Settings
                 field[:options] = options
               end
             end
-            section[:fields] = fields
           end
+          section[:fields] = fields
         end
         step[:en][:sections] = sections
       end
       steps
+    end
+
+    def map_multiple_fields(fields)
+      all_fields = []
+      fields.each do |field|
+        attribute = field[:field_mapping].split('.').first
+
+        class_instance = class_name(attribute).constantize
+        instances = class_instance.where(deal_id: deal.id, field_attribute_id: field[:id])
+        instances.each do |instance|
+          field[:value] = instance&.send(field[:field_mapping].split('.').last) 
+          field[:index] = instance&.send(:index)
+          all_fields << field
+        end
+      end
+      all_fields.flatten(1)
     end
 
     def dependent_field_ids
