@@ -4,13 +4,5 @@
 class TermSerializer
   include JSONAPI::Serializer
 
-  attributes :id, :enabled, :value
-
-  attribute :en do |term|
-    { title: term.statement }
-  end
-
-  attribute :ar do |term|
-    { title: term.statement_ar }
-  end
+  attributes :id, :enabled, :custom_input
 end

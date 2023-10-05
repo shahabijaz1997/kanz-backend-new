@@ -6,8 +6,16 @@ module V1
     before_action :find_deal, only: [:show, :update]
     before_action :set_deal, only: [:create]
 
+    def index
+      deals = DealSerializer.new(current_user.deals).serializable_hash[:data].map do |d|
+        simplify_deal_attributes(d[:attributes])
+      end
+      success('success', deals)
+    end
+
     def show
-      DealSerializer.new(@deal).serializable_hash[:data][:attributes]
+      deal = DealSerializer.new(@deal).serializable_hash[:data][:attributes]
+      success('success', simplify_deal_attributes(deal))
     end
 
     def create
@@ -27,7 +35,7 @@ module V1
     private
 
     def find_deal
-      @deal = current_user.deals.find_by(params[:id])
+      @deal = current_user.deals.find_by(id: params[:id])
     end
 
     def deal_params
@@ -43,6 +51,12 @@ module V1
 
     def invalid_deal_type?
       deal_params[:deal_type].blank? || DEAL_TYPES[deal_params[:deal_type].to_sym].blank?
+    end
+
+    def simplify_deal_attributes(attributes)
+      attributes = attributes.merge(attributes[:details])
+      attributes.delete(:details)
+      attributes
     end
 
     # Use Authorization

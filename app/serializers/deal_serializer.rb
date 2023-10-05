@@ -4,17 +4,17 @@
 class DealSerializer
   include JSONAPI::Serializer
 
-  attributes :id, :target, :status, :start_at, :end_at, :submitted_at, :success_benchmark
+  attributes :id, :title, :description, :target, :status, :start_at, :end_at, :submitted_at, :success_benchmark
 
-  attribute :how_much_funded do |deal|
-    deal.acheivements
-  end
+  # attribute :how_much_funded do |deal|
+  #   deal.acheivements
+  # end
 
   attribute :details do |deal|
     if deal.startup?
-      FundingRoundSerializer.new(deal.detail).serializable_hash[:data]&.fetch(:attributes)
+      FundingRoundSerializer.new(deal.funding_round).serializable_hash[:data]&.fetch(:attributes)
     else
-      PropertyDetailSerializer.new(deal).serializable_hash[:data]&.fetch(:attributes)
+      PropertyDetailSerializer.new(deal.property_detail).serializable_hash[:data]&.fetch(:attributes)
     end
   end
 

@@ -8,14 +8,14 @@ class FeatureSerializer
 
   attribute :en do |feature|
     { 
-      title: feature.title
+      title: feature.title,
       description: feature.description
     }
   end
 
   attribute :ar do |feature|
     { 
-      title: feature.title_ar
+      title: feature.title_ar,
       description: feature.description_ar
     }
   end
