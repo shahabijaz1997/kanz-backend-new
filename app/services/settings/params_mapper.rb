@@ -1,14 +1,22 @@
 module Settings
   class ParamsMapper < ApplicationService
-    attr_reader :params, :deal
+    attr_reader :params, :deal, :steppers, :step_titles, :step_titles_ar
 
-    def initialize(params, deal)
-      @params = params
+    def initialize(deal, steppers)
       @deal = deal
+      @params = StepperSerializer.new(steppers).serializable_hash[:data].map { |d| d[:attributes] }
+      @step_titles = steppers.pluck(:title)
+      @step_titles_ar = steppers.pluck(:title_ar)
     end
 
     def call
+      update_steps_on_instrumentation
       map_startup_values
+
+      { 
+        step_titles: { en: step_titles, ar: step_titles_ar },
+        steps: map_startup_values
+      }
     end
 
     private
@@ -101,6 +109,17 @@ module Settings
     def file_url(field)
       attachment = deal.attachments&.find_by(configurable_type: 'FieldAttribute', configurable_id: field[:id])
       { id: attachment&.id, url: attachment&.url }
+    end
+
+    def update_steps_on_instrumentation
+      field = FieldAttribute.find_by(field_mapping: 'funding_round_attributes.instrument_type')
+      option = field&.options&.find_by(statement: 'SAFE Round')
+      if deal&.funding_round&.instrument_type == option&.id
+        index = params.find_index {|step| step[:en][:title] == 'valuation' }
+        @params = params.reject.with_index{|v, i| i == index }
+        @step_titles = step_titles.reject.with_index{|v, i| i == index }
+        @step_titles_ar = step_titles_ar.reject.with_index{|v, i| i == index }
+      end
     end
   end
 end

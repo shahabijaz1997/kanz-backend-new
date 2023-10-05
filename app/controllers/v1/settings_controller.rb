@@ -21,23 +21,12 @@ module V1
     end
 
     def stepper
-      steppers = Stepper.where(stepper_type: STEPPERS[params[:type].to_sym])
-      steps = StepperSerializer.new(steppers).serializable_hash[:data].map { |d| d[:attributes] }
-
-      steps = Settings::ParamsMapper.call(steps, @deal) if @deal.present?
-
-      success('Success', { step_titles: step_titles, steps: steps })
+      @steppers = Stepper.where(stepper_type: STEPPERS[params[:type].to_sym]).order(:index)
+      steps = Settings::ParamsMapper.call(@deal, @steppers) if @deal.present?
+      success('Success', steps)
     end
 
     private
-
-    def step_titles
-      deal_steps = Stepper.where(stepper_type: STEPPERS[params[:type].to_sym]).order(:index)
-      { 
-        en: deal_steps.pluck(:title),
-        ar: deal_steps.pluck(:title_ar)
-      }
-    end
 
     def find_deal
       @deal = current_user.deals.find_by(id: params[:id])

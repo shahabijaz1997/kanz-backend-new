@@ -52,7 +52,7 @@ module Deals
     end
 
     def one_to_many_relation?(field_params)
-      ["terms_attributes", "features_attributes"].include?(field_params.keys.first)
+      ["terms_attributes", "features_attributes", "external_links_attributes"].include?(field_params.keys.first)
     end
 
     def build_field_params(field, _field)
@@ -74,7 +74,7 @@ module Deals
       field_params = build_hash(mapping, value)
 
       mapping_arr = mapping.split('.')
-      if mapping_arr.first.in?(["terms_attributes", "features_attributes"])
+      if mapping_arr.first.in?(["terms_attributes", "features_attributes", "external_links_attributes"])
         mapping_arr.pop()
         mapping = mapping_arr.push('field_attribute_id').join('.')
 
