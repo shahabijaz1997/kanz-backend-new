@@ -405,10 +405,10 @@ FieldAttribute.where(statement: 'Minimum Investment Size').each do |f|
   f.update(statement: 'Minimum Check Size')
 end
 
-statements = ['Valuation Cap', 'Discount' , 'MFN','Minimum Check Size','Pro Rata','Additional Terms']
+statements = ['Valuation Cap', 'Discount' , 'MFN Only','Minimum Check Size','Pro Rata','Additional Terms']
 FieldAttribute.where(statement: statements).where.not(field_type: FIELD_TYPE[:switch]).each do |f|
   dependent_id = FieldAttribute.find_by(statement: f.statement, field_type: FIELD_TYPE[:switch])&.id
-  f.update(dependent_id: dependent_id)
+  f.update!(dependent_id: dependent_id)
 end
 
 Section.find_by(title: 'Terms').update(condition: 'safe',)
