@@ -10,12 +10,14 @@ module Settings
     end
 
     def call
-      update_steps_on_instrumentation
-      map_startup_values
+      if deal.present?
+        update_steps_on_instrumentation
+        @params = map_startup_values
+      end
 
       { 
         step_titles: { en: step_titles, ar: step_titles_ar },
-        steps: map_startup_values
+        steps: params
       }
     end
 
@@ -112,13 +114,39 @@ module Settings
     end
 
     def update_steps_on_instrumentation
-      field = FieldAttribute.find_by(field_mapping: 'funding_round_attributes.instrument_type')
-      option = field&.options&.find_by(statement: 'SAFE Round')
-      if deal&.funding_round&.instrument_type == option&.id
+      if instrument_type?('SAFE Round')
         index = params.find_index {|step| step[:en][:title] == 'valuation' }
-        @params = params.reject.with_index{|v, i| i == index }
-        @step_titles = step_titles.reject.with_index{|v, i| i == index }
-        @step_titles_ar = step_titles_ar.reject.with_index{|v, i| i == index }
+        remove_valuation_step(index)
+        update_step_titles(index)
+        update_terms_step('safe')
+      elsif instrument_type?('Equity')
+        update_terms_step('equity')
+      end
+    end
+
+    def instrument_type?(instrument_type)
+      field = FieldAttribute.find_by(field_mapping: 'funding_round_attributes.instrument_type')
+      option = field&.options&.find_by(statement: instrument_type)
+      deal&.funding_round&.instrument_type == option&.id
+    end
+
+    def update_step_titles(index)
+      @step_titles = step_titles.reject.with_index{|v, i| i == index }
+      @step_titles_ar = step_titles_ar.reject.with_index{|v, i| i == index }
+    end
+
+    def remove_valuation_step(index)
+      @params = params.reject.with_index{|v, i| i == index }
+    end
+
+    def update_terms_step(instrument_type) 
+      @params = params.map do |step|
+        temp = step
+        if step[:en][:title] == 'terms'
+          temp = temp[:en][:sections].reject {|section| section[:condition] != instrument_type }
+          step[:en][:sections] = temp
+        end
+        step
       end
     end
   end

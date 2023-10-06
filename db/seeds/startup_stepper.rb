@@ -276,6 +276,7 @@ steps = [
       {
         index: 0,
         title: 'Terms',
+        condition: 'instrument_type.safe',
         fields_attributes: [
           {
             index: 0,
@@ -329,7 +330,7 @@ steps = [
             index: 6,
             is_required: true,
             field_mapping: 'terms_attributes.enabled',
-            statement: 'Minimum Investment Size',
+            statement: 'Minimum Check Size',
             statement_ar: '',
             label: 'Description related investment',
             label_ar: '',
@@ -338,7 +339,7 @@ steps = [
             index: 7,
             is_required: false,
             field_mapping: 'terms_attributes.custom_input',
-            statement: 'Minimum Investment Size',
+            statement: 'Minimum Check Size',
             statement_ar: '',
             field_type: FIELD_TYPE[:number]
           },          {
@@ -400,9 +401,23 @@ steps.each do |step|
     Rails.logger.debug record.errors.full_messages
   end
 end
+FieldAttribute.where(statement: 'Minimum Investment Size').each do |f|
+  f.update(statement: 'Minimum Check Size')
+end
 
-statements = ['Valuation Cap', 'Discount' , 'MFN','Minimum Investment','Pro Rata','Additional Terms']
+statements = ['Valuation Cap', 'Discount' , 'MFN','Minimum Check Size','Pro Rata','Additional Terms']
 FieldAttribute.where(statement: statements).where.not(field_type: FIELD_TYPE[:switch]).each do |f|
   dependent_id = FieldAttribute.find_by(statement: f.statement, field_type: FIELD_TYPE[:switch])&.id
   f.update(dependent_id: dependent_id)
 end
+
+Section.find_by(title: 'Terms').update(condition: 'safe',)
+section = Section.create({
+  index: 0,
+  title: 'Terms',
+  condition: 'equity',
+  stepper_id: Stepper.find_by(title: 'terms')&.id
+})
+
+statements = ['Additional Terms', 'Minimum Check Size', 'Pro Rata']
+section.fields << FieldAttribute.where(statement: statements)

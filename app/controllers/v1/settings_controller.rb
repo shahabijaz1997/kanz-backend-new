@@ -22,7 +22,7 @@ module V1
 
     def stepper
       @steppers = Stepper.where(stepper_type: STEPPERS[params[:type].to_sym]).order(:index)
-      steps = Settings::ParamsMapper.call(@deal, @steppers) if @deal.present?
+      steps = Settings::ParamsMapper.call(@deal, @steppers)
       success('Success', steps)
     end
 
