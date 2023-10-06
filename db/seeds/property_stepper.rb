@@ -167,7 +167,7 @@ steps = [
             index: 1,
             is_required: true,
             field_mapping: 'property_detail_attributes.no_bedrooms',
-            statement: 'No Bedrooms',
+            statement: 'Bedrooms',
             statement_ar: '',
             label: "",
             label_ar: '',
@@ -189,7 +189,7 @@ steps = [
             index: 3,
             is_required: true,
             field_mapping: 'property_detail_attributes.no_kitchen',
-            statement: 'No Kitchen',
+            statement: 'Kitchen',
             statement_ar: '',
             label: "",
             label_ar: '',
@@ -212,7 +212,7 @@ steps = [
             index: 5,
             is_required: true,
             field_mapping: 'property_detail_attributes.no_washrooms',
-            statement: 'No Washrooms',
+            statement: 'Washrooms',
             statement_ar: '',
             label: "",
             label_ar: '',
@@ -235,7 +235,7 @@ steps = [
             index: 5,
             is_required: true,
             field_mapping: 'property_detail_attributes.parking_capacity',
-            statement: 'No Parking',
+            statement: 'Parking',
             statement_ar: '',
             label: "",
             label_ar: '',
@@ -258,7 +258,7 @@ steps = [
             index: 5,
             is_required: true,
             field_mapping: 'property_detail_attributes.swimming_pool_type',
-            statement: 'Swimming Pool Type',
+            statement: 'Swimming Pool',
             statement_ar: '',
             label: "",
             label_ar: '',
@@ -295,7 +295,7 @@ steps = [
             index: 5,
             is_required: true,
             field_mapping: 'property_detail_attributes.rental_period',
-            statement: 'Per-month',
+            statement: 'duration',
             statement_ar: '',
             label: "",
             label_ar: '',
@@ -552,4 +552,43 @@ steps.each do |step|
     puts record.errors.full_messages
     Rails.logger.debug record.errors.full_messages
   end
+end
+
+
+statements = [
+  {
+    old: 'No Bedrooms',
+    new: 'Bedrooms'
+  },{
+    old: 'No Kitchen',
+    new: 'Kitchen',
+  },{
+    old: 'No Washrooms',
+    new: 'Washrooms',
+  },{
+    old: 'No Parking',
+    new: 'Parking',
+  },{
+    old: 'Swimming Pool Type',
+    new: 'Swimming Pool',
+  },{
+    old: 'Per-month',
+    new: 'duration',
+  }
+]
+
+statements.each do |statement|
+  FieldAttribute.find_by(statement: statement[:old]).update!(statement: statement[:new])
+end
+
+statements = ['Swimming Pool', 'Parking','Washrooms', 'Kitchen','Bedrooms']
+FieldAttribute.where(statement: statements).where.not(field_type: FIELD_TYPE[:switch]).each do |f|
+  dependent_id = FieldAttribute.find_by(statement: f.statement, field_type: FIELD_TYPE[:switch])&.id
+  f.update!(dependent_id: dependent_id)
+end
+
+statements = ['duration', 'rent']
+FieldAttribute.where(statement: statements).where.not(field_type: FIELD_TYPE[:switch]).each do |f|
+  dependent_id = FieldAttribute.find_by(statement: 'Property on a rent?', field_type: FIELD_TYPE[:switch])&.id
+  f.update!(dependent_id: dependent_id)
 end
