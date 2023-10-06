@@ -522,6 +522,7 @@ steps = [
             field_mapping: 'agreed_with_kanz_terms',
             statement: 'Agree all terms',
             statement_ar: '',
+            description: "",
             label: 'Description about terms',
             label_ar: '',
             field_type: FIELD_TYPE[:checkbox]
