@@ -34,7 +34,7 @@ module Settings
             fields = map_multiple_fields(section[:fields])
           else
             fields = section[:fields].each do |field|
-              this_field = field[:id].in?(dependent_ids) ? dependent_field(field[:id], field[:field_mapping]) : field
+              this_field = field[:id].in?(dependent_ids) ? dependent_field(field) : field
               value = selected_value(this_field)
 
               if field[:field_type].in? OPTION_FIELDS
@@ -43,9 +43,9 @@ module Settings
                   value = option[:statement] if selected
                   option[:selected] = selected ? true : false
                 end
-                field[:value] = value
                 field[:options] = options
               end
+              field[:value] = value
             end
           end
           section[:fields] = fields
@@ -75,10 +75,10 @@ module Settings
       FieldAttribute.pluck(:dependent_id).compact.uniq
     end
 
-    def dependent_field(id, mapping)
-      field = FieldAttribute.find_by(dependent_id: id)
-      field[:field_mapping] = mapping
-      field
+    def dependent_field(field)
+      temp_field = FieldAttribute.find_by(dependent_id: field[:id])
+      temp_field[:field_mapping] = field[:field_mapping]
+      temp_field
     end
 
     def one_to_many_relation?(field_params)
