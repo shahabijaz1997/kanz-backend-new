@@ -30,7 +30,7 @@ module V1
     end
 
     def submit
-      if @deal.update(status: Deal.statuses[:submitted])
+      if @deal.update(status: Deal.statuses[:submitted], submitted_at: Time.zone.now)
         success(@deal)
       else
         failure(@deal.errors.full_messages.to_sentence)
