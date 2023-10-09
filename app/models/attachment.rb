@@ -2,7 +2,7 @@
 
 class Attachment < ApplicationRecord
   belongs_to :parent, polymorphic: true
-  belongs_to :attachment_config, optional: true
+  belongs_to :configurable, polymorphic: true, optional: true
 
   has_one_attached :file
 
@@ -13,7 +13,7 @@ class Attachment < ApplicationRecord
   end
 
   def self.upload_file(attachable, file, name = 'logo')
-    attachment = Attachment.find_or_initialize_by(name: name, parent: attachable)
+    attachment = Attachment.find_or_initialize_by(name:, parent: attachable)
     attachment.file.attach(file)
     attachment.save!
   end

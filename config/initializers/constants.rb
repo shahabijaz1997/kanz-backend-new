@@ -31,7 +31,9 @@ STATUSES = {
 QUESTION_KIND = {
   investment_philosophy: 0,
   individual_accredition: 1,
-  firm_accredition: 2
+  firm_accredition: 2,
+  startup_deal: 3,
+  property_deal: 4
 }.freeze
 
 ROUTES = {
@@ -81,3 +83,28 @@ MAX_STEPS = {
   syndicate_profile: 2,
   realtor_profile: 1
 }.freeze
+
+DEAL_TYPES = {
+  startup: 0,
+  property: 1
+}.freeze
+
+STEPPERS = {
+  startup_deal: 0,
+  property_deal: 1
+}.freeze
+
+FIELD_TYPE = {
+  multiple_choice: 0,
+  switch: 1,
+  text_box: 2,
+  checkbox: 3,
+  number: 4,
+  dropdown: 5,
+  text_field: 6,
+  file: 7,
+  url: 8
+}.freeze
+
+VALUE_FIELDS = ['switch', 'text_box', 'number', 'text_field', 'url', 'file'].freeze
+OPTION_FIELDS = ['multiple_choice', 'checkbox', 'dropdown'].freeze

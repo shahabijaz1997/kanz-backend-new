@@ -10,7 +10,9 @@ class AdminUser < ApplicationRecord
   validates :email, :first_name, :last_name, presence: true
   validates :email, uniqueness: true
 
-  scope :customer_users, -> { where(admin_role_id: AdminRole.where(title: ['Customer Support Rep', 'Compliance Officer']).pluck(:id)) }
+  scope :customer_users, lambda {
+                           where(admin_role_id: AdminRole.where(title: ['Customer Support Rep', 'Compliance Officer']).select(:id))
+                         }
   scope :all_role_users, -> { where.not(admin_role_id: nil) }
 
   def fullname

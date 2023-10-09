@@ -7,6 +7,10 @@ class QuestionSerializer
 
   attribute :en do |q|
     {
+      id: q.id,
+      index: q.index,
+      required: q.required,
+      question_type: q.question_type,
       category: q.category,
       title: q.title,
       statement: q.statement,
@@ -17,6 +21,10 @@ class QuestionSerializer
 
   attribute :ar do |q|
     {
+      id: q.id,
+      index: q.index,
+      required: q.required,
+      question_type: q.question_type,
       category: q.category_ar,
       title: q.title_ar,
       statement: q.statement_ar,

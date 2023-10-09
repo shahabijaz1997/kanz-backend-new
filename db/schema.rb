@@ -10,23 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_14_063848) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_09_064901) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "active_admin_comments", force: :cascade do |t|
-    t.string "namespace"
-    t.text "body"
-    t.string "resource_type"
-    t.bigint "resource_id"
-    t.string "author_type"
-    t.bigint "author_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author"
-    t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
-    t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource"
-  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -68,11 +54,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_14_063848) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "admin_role_id"
     t.string "first_name"
     t.string "last_name"
+    t.bigint "admin_role_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "deactivated"
     t.index ["admin_role_id"], name: "index_admin_users_on_admin_role_id"
     t.index ["email"], name: "index_admin_users_on_email", unique: true
@@ -100,7 +86,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_14_063848) do
     t.string "attachment_kind"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "attachment_config_id"
+    t.bigint "configurable_id"
+    t.string "configurable_type", default: "AttachmentConfig"
     t.index ["parent_type", "parent_id"], name: "index_attachments_on_parent"
   end
 
@@ -132,6 +119,106 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_14_063848) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name_ar"
+  end
+
+  create_table "deals", force: :cascade do |t|
+    t.decimal "target"
+    t.integer "deal_type", default: 0
+    t.integer "status", default: 0
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.datetime "submitted_at"
+    t.bigint "author_id", null: false
+    t.integer "success_benchmark"
+    t.float "how_much_funded"
+    t.boolean "agreed_with_kanz_terms", default: false
+    t.string "title"
+    t.text "description"
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.jsonb "current_state", default: {}
+    t.index ["author_id"], name: "index_deals_on_author_id"
+  end
+
+  create_table "dependency_trees", force: :cascade do |t|
+    t.integer "condition", default: 0
+    t.string "value"
+    t.string "dependable_type", null: false
+    t.bigint "dependable_id", null: false
+    t.string "dependent_type", null: false
+    t.bigint "dependent_id", null: false
+    t.integer "operation", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dependable_type", "dependable_id"], name: "index_dependency_trees_on_dependable"
+    t.index ["dependent_type", "dependent_id"], name: "index_dependency_trees_on_dependent"
+  end
+
+  create_table "external_links", force: :cascade do |t|
+    t.string "url"
+    t.integer "index"
+    t.bigint "deal_id"
+    t.bigint "field_attribute_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deal_id"], name: "index_external_links_on_deal_id"
+    t.index ["field_attribute_id"], name: "index_external_links_on_field_attribute_id"
+  end
+
+  create_table "features", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.bigint "deal_id"
+    t.bigint "field_attribute_id"
+    t.integer "index"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deal_id"], name: "index_features_on_deal_id"
+    t.index ["field_attribute_id"], name: "index_features_on_field_attribute_id"
+  end
+
+  create_table "field_attributes", force: :cascade do |t|
+    t.integer "index", default: 0
+    t.string "statement"
+    t.string "statement_ar"
+    t.string "label"
+    t.string "label_ar"
+    t.text "description"
+    t.text "description_ar"
+    t.boolean "is_required"
+    t.boolean "is_multiple"
+    t.string "add_more_label"
+    t.string "add_more_label_ar"
+    t.integer "field_type", default: 0
+    t.jsonb "decription_link", default: {}
+    t.string "permitted_types", array: true
+    t.jsonb "size_constraints", default: {}
+    t.float "suggestions", default: [], array: true
+    t.string "field_mapping"
+    t.bigint "dependent_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "fields_sections", force: :cascade do |t|
+    t.bigint "field_id", null: false
+    t.bigint "section_id"
+    t.index ["field_id"], name: "index_fields_sections_on_field_id"
+    t.index ["section_id"], name: "index_fields_sections_on_section_id"
+  end
+
+  create_table "funding_rounds", force: :cascade do |t|
+    t.bigint "round", default: 0
+    t.bigint "instrument_type", default: 0
+    t.bigint "safe_type", default: 0
+    t.bigint "equity_type", default: 0
+    t.bigint "valuation_phase", default: 0
+    t.decimal "valuation"
+    t.bigint "deal_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deal_id"], name: "index_funding_rounds_on_deal_id"
   end
 
   create_table "industries", force: :cascade do |t|
@@ -168,6 +255,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_14_063848) do
     t.bigint "question_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "label"
+    t.string "label_ar"
+    t.bigint "optionable_id"
+    t.string "optionable_type"
+    t.index ["optionable_type", "optionable_id"], name: "index_options_on_optionable_type_and_optionable_id"
     t.index ["question_id"], name: "index_options_on_question_id"
   end
 
@@ -189,6 +281,41 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_14_063848) do
     t.datetime "updated_at", null: false
     t.index ["profile_type", "profile_id"], name: "index_profiles_regions_on_profile"
     t.index ["region_id"], name: "index_profiles_regions_on_region_id"
+  end
+
+  create_table "property_details", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "country_id"
+    t.string "state"
+    t.string "city"
+    t.string "area"
+    t.string "location"
+    t.string "building_name"
+    t.string "street_address"
+    t.integer "size_unit", default: 0
+    t.float "size"
+    t.boolean "has_bedrooms"
+    t.integer "no_bedrooms"
+    t.boolean "has_kitchen"
+    t.integer "no_kitchen"
+    t.boolean "has_washroom"
+    t.integer "no_washrooms"
+    t.boolean "has_parking"
+    t.integer "parking_capacity"
+    t.boolean "has_swimming_pool"
+    t.integer "swimming_pool_type", default: 0
+    t.boolean "is_rental"
+    t.integer "rental_period", default: 0
+    t.decimal "rental_amount"
+    t.float "dividend_yeild"
+    t.float "yearly_appreciation"
+    t.jsonb "external_links", default: {}
+    t.bigint "deal_id"
+    t.bigint "field_attribute_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["country_id"], name: "index_property_details_on_country_id"
+    t.index ["deal_id"], name: "index_property_details_on_deal_id"
+    t.index ["field_attribute_id"], name: "index_property_details_on_field_attribute_id"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -236,6 +363,24 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_14_063848) do
     t.string "title_ar"
   end
 
+  create_table "sections", force: :cascade do |t|
+    t.integer "index", default: 0
+    t.string "title", limit: 50
+    t.string "title_ar", limit: 50
+    t.string "description"
+    t.string "description_ar"
+    t.boolean "is_multiple"
+    t.string "add_more_label", limit: 50
+    t.string "add_more_label_ar", limit: 50
+    t.jsonb "description_link", default: {}
+    t.bigint "stepper_id"
+    t.boolean "display_card", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "condition", default: ""
+    t.index ["stepper_id"], name: "index_sections_on_stepper_id"
+  end
+
   create_table "startup_profiles", force: :cascade do |t|
     t.string "company_name", null: false
     t.string "legal_name", null: false
@@ -256,6 +401,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_14_063848) do
     t.index ["startup_id"], name: "index_startup_profiles_on_startup_id"
   end
 
+  create_table "steppers", force: :cascade do |t|
+    t.integer "index"
+    t.integer "stepper_type", default: 0
+    t.string "title", limit: 100
+    t.string "title_ar", limit: 100
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "syndicate_profiles", force: :cascade do |t|
     t.string "name"
     t.string "tagline"
@@ -269,6 +423,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_14_063848) do
     t.integer "syndicate_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "terms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.boolean "enabled"
+    t.jsonb "custom_input", default: {}
+    t.bigint "deal_id"
+    t.bigint "field_attribute_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deal_id"], name: "index_terms_on_deal_id"
+    t.index ["field_attribute_id"], name: "index_terms_on_field_attribute_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -321,4 +486,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_14_063848) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_users", "admin_roles"
+  add_foreign_key "deals", "users", column: "author_id"
+  add_foreign_key "fields_sections", "field_attributes", column: "field_id"
+  add_foreign_key "fields_sections", "sections"
 end

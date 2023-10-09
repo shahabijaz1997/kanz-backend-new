@@ -6,7 +6,7 @@ module V1
     before_action :validate_persona
 
     def show
-      resp = InvestmentPhilosophy::QuestionRetriever.call(params[:step], current_user)
+      resp = Settings::QuestionRetriever.call(params[:step], current_user, 'investment_philosophy')
       return failure(resp.message, resp.code) unless resp.status
 
       success(resp.message, resp.data)

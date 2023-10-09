@@ -4,6 +4,7 @@ class SyndicateProfile < ApplicationRecord
   include ProfileState
 
   attr_accessor :industry_ids, :region_ids
+
   belongs_to :syndicate
   has_one :attachment, as: :parent, dependent: :destroy
   has_many :profiles_industries, as: :profile, dependent: :destroy
@@ -17,11 +18,11 @@ class SyndicateProfile < ApplicationRecord
 
   after_save :update_profile_industries, :update_profile_regions
 
-  def self.ransackable_attributes(auth_object = nil)
+  def self.ransackable_attributes(_auth_object = nil)
     %w[region_id industry_id]
   end
 
-  def self.ransackable_associations(auth_object = nil)
+  def self.ransackable_associations(_auth_object = nil)
     %w[industries regions]
   end
 
@@ -40,7 +41,7 @@ class SyndicateProfile < ApplicationRecord
 
     profiles_industries&.destroy_all
     industry_ids.each do |industry_id|
-      profiles_industries.create(industry_id: industry_id)
+      profiles_industries.create(industry_id:)
     end
   end
 
@@ -49,7 +50,7 @@ class SyndicateProfile < ApplicationRecord
 
     profiles_regions&.destroy_all
     region_ids.each do |region_id|
-      profiles_regions.create(region_id: region_id)
+      profiles_regions.create(region_id:)
     end
   end
 end

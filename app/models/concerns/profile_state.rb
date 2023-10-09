@@ -15,7 +15,7 @@ module ProfileState
       profile_states = user.profile_states
       profile_states[:profile_completed] = last_step?
       profile_states[:profile_current_step] = current_step
-      user.update(profile_states: profile_states)
+      user.update(profile_states:)
     end
 
     def current_step
