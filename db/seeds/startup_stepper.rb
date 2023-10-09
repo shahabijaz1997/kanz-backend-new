@@ -1,64 +1,7 @@
 steps = [
   {
-    title: 'stage',
-    index: 0,
-    stepper_type: STEPPERS[:startup_deal],
-    sections_attributes: [
-      {
-        index: 0,
-        title: 'Stage',
-        fields_attributes: [
-          {
-            index: 0,
-            is_required: true,
-            field_mapping: 'funding_round_attributes.round',
-            statement: 'What round is this?',
-            statement_ar: '',
-            label: "Chose a stage and we'll help you create round quickly.",
-            label_ar: '',
-            field_type: FIELD_TYPE[:multiple_choice],
-            description: '',
-            description_ar: '',
-            options_attributes: [
-              {
-                index: 0,
-                statement: 'Angel Round',
-                statement_ar: '',
-                is_range: false
-              },
-              {
-                index: 1,
-                statement: 'Pre-seed',
-                statement_ar: '',
-                is_range: false
-              },
-              {
-                index: 2,
-                statement: 'Seed',
-                statement_ar: '',
-                is_range: false
-              },
-              {
-                index: 3,
-                statement: 'Series A',
-                statement_ar: '',
-                is_range: false
-              },
-              {
-                index: 4,
-                statement: 'Other',
-                statement_ar: '',
-                is_range: false
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  {
     title: 'instrument',
-    index: 1,
+    index: 0,
     stepper_type: STEPPERS[:startup_deal],
     sections_attributes: [
       {
@@ -149,6 +92,63 @@ steps = [
                 statement_ar: '',
                 label: 'Description related common shares',
                 label_ar: '',
+                is_range: false
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    title: 'stage',
+    index: 1,
+    stepper_type: STEPPERS[:startup_deal],
+    sections_attributes: [
+      {
+        index: 0,
+        title: 'Stage',
+        fields_attributes: [
+          {
+            index: 0,
+            is_required: true,
+            field_mapping: 'funding_round_attributes.round',
+            statement: 'What round is this?',
+            statement_ar: '',
+            label: "Chose a stage and we'll help you create round quickly.",
+            label_ar: '',
+            field_type: FIELD_TYPE[:multiple_choice],
+            description: '',
+            description_ar: '',
+            options_attributes: [
+              {
+                index: 0,
+                statement: 'Angel Round',
+                statement_ar: '',
+                is_range: false
+              },
+              {
+                index: 1,
+                statement: 'Pre-seed',
+                statement_ar: '',
+                is_range: false
+              },
+              {
+                index: 2,
+                statement: 'Seed',
+                statement_ar: '',
+                is_range: false
+              },
+              {
+                index: 3,
+                statement: 'Series A',
+                statement_ar: '',
+                is_range: false
+              },
+              {
+                index: 4,
+                statement: 'Other',
+                statement_ar: '',
                 is_range: false
               }
             ]
