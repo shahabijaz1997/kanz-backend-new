@@ -555,33 +555,6 @@ steps.each do |step|
   end
 end
 
-
-statements = [
-  {
-    old: 'No Bedrooms',
-    new: 'Bedrooms'
-  },{
-    old: 'No Kitchen',
-    new: 'Kitchen',
-  },{
-    old: 'No Washrooms',
-    new: 'Washrooms',
-  },{
-    old: 'No Parking',
-    new: 'Parking',
-  },{
-    old: 'Swimming Pool Type',
-    new: 'Swimming Pool',
-  },{
-    old: 'Per-month',
-    new: 'duration',
-  }
-]
-
-statements.each do |statement|
-  FieldAttribute.find_by(statement: statement[:old]).update!(statement: statement[:new])
-end
-
 statements = ['Swimming Pool', 'Parking','Washrooms', 'Kitchen','Bedrooms']
 FieldAttribute.where(statement: statements).where.not(field_type: FIELD_TYPE[:switch]).each do |f|
   dependent_id = FieldAttribute.find_by(statement: f.statement, field_type: FIELD_TYPE[:switch])&.id
