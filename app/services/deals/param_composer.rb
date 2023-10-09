@@ -26,7 +26,8 @@ module Deals
     end
 
     def deal_params
-      params_hash = { step: params[:step] }
+      step = Stepper.find_by(id: params[:step])
+      params_hash = { step: step&.index || 0 }
       dependent_ids = dependent_field_ids
 
       params[:fields].each do |_field|

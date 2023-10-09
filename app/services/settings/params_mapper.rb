@@ -12,7 +12,8 @@ module Settings
     def call
       if deal.present?
         update_steps_on_instrumentation
-        @params = map_startup_values
+        @params = map_values
+        @params = update_for_review if review_step?
       end
 
       { 
@@ -24,7 +25,7 @@ module Settings
 
     private
 
-    def map_startup_values
+    def map_values
       dependent_ids = dependent_field_ids
       steps = params.each do |step|
         sections = step[:en][:sections].each do |section|
@@ -32,17 +33,16 @@ module Settings
             fields = map_multiple_fields(section[:fields])
           else
             fields = section[:fields].each do |field|
-              value = if field[:id].in?(dependent_ids)
-                selected_value(dependent_field(field[:id], field[:field_mapping]))
-              else
-                selected_value(field)
-              end
-              if field[:field_type].in? VALUE_FIELDS
-                field[:value] = value
-              elsif field[:field_type].in? OPTION_FIELDS
+              this_field = field[:id].in?(dependent_ids) ? dependent_field(field[:id], field[:field_mapping]) : field
+              value = selected_value(this_field)
+
+              if field[:field_type].in? OPTION_FIELDS
                 options = field[:options].each do |option|
-                  option[:selected] = (value.present? && option[:id] == value) ? true : false
+                  selected = value.present? && option[:id] == value
+                  value = option[:statement] if selected
+                  option[:selected] = selected ? true : false
                 end
+                field[:value] = value
                 field[:options] = options
               end
             end
@@ -149,6 +149,24 @@ module Settings
         end
         step
       end
+    end
+
+    def update_for_review
+      params.map do |step|
+        current_step = { id: step[:id], index: step[:index], title: step[:en][:title], fields: [] }
+        step[:en][:sections].each do |section|
+          current_step[:fields] << section[:fields].map do |field|
+            { statement: field[:statement], value: field[:value] }
+          end
+        end
+        current_step
+      end
+    end
+
+    def review_step?
+      step_index = deal.current_state['current_step'].to_i + 1
+      step = Stepper.find_by(title: 'review')
+      step.index == step_index
     end
   end
 end
