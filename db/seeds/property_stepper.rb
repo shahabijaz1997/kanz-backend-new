@@ -220,7 +220,7 @@ steps = [
             description: '',
             description_ar: ''
           },{
-            index: 4,
+            index: 6,
             is_required: true,
             field_mapping: 'property_detail_attributes.has_parking',
             statement: 'Parking',
@@ -232,7 +232,7 @@ steps = [
             description_ar: ''
           },
           {
-            index: 5,
+            index: 7,
             is_required: true,
             field_mapping: 'property_detail_attributes.parking_capacity',
             statement: 'Parking',
@@ -243,7 +243,7 @@ steps = [
             description: '',
             description_ar: ''
           },{
-            index: 4,
+            index: 8,
             is_required: true,
             field_mapping: 'property_detail_attributes.has_swimming_pool',
             statement: 'Swimming Pool',
@@ -255,7 +255,7 @@ steps = [
             description_ar: ''
           },
           {
-            index: 5,
+            index: 9,
             is_required: true,
             field_mapping: 'property_detail_attributes.swimming_pool_type',
             statement: 'Swimming Pool',
@@ -280,7 +280,7 @@ steps = [
               }
             ]
           },{
-            index: 4,
+            index: 10,
             is_required: true,
             field_mapping: 'property_detail_attributes.is_rental',
             statement: 'Property on a rent?',
@@ -292,7 +292,7 @@ steps = [
             description_ar: ''
           },
           {
-            index: 5,
+            index: 11,
             is_required: true,
             field_mapping: 'property_detail_attributes.rental_period',
             statement: 'duration',
@@ -314,7 +314,7 @@ steps = [
             ]
           },
           {
-            index: 5,
+            index: 12,
             is_required: true,
             field_mapping: 'property_detail_attributes.rental_amount',
             statement: 'rent',
@@ -326,8 +326,8 @@ steps = [
             description_ar: ''
           }
         ]
-      },      {
-        index: 4,
+      },{
+        index: 13,
         title: 'Property Description',
         fields_attributes: [
           {

@@ -276,7 +276,7 @@ steps = [
       {
         index: 0,
         title: 'Terms',
-        condition: 'instrument_type.safe',
+        condition: 'safe',
         fields_attributes: [
           {
             index: 0,
@@ -411,7 +411,6 @@ FieldAttribute.where(statement: statements).where.not(field_type: FIELD_TYPE[:sw
   f.update!(dependent_id: dependent_id)
 end
 
-Section.find_by(title: 'Terms').update(condition: 'safe',)
 section = Section.create({
   index: 0,
   title: 'Terms',

@@ -17,7 +17,8 @@ module Settings
 
       { 
         step_titles: { en: step_titles, ar: step_titles_ar },
-        steps: params
+        steps: params,
+        current_state: @deal&.current_state || {}
       }
     end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_06_081119) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_09_064901) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -137,6 +137,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_06_081119) do
     t.uuid "uuid", default: -> { "gen_random_uuid()" }
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "current_state", default: {}
     t.index ["author_id"], name: "index_deals_on_author_id"
   end
 

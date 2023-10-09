@@ -3,7 +3,7 @@
 # Startups apis
 module V1
   class DealsController < ApiController
-    before_action :find_deal, only: [:show, :update]
+    before_action :find_deal, only: [:show, :submit]
     before_action :set_deal, only: [:create]
 
     def index
@@ -29,7 +29,12 @@ module V1
       end
     end
 
-    def update
+    def submit
+      if @deal.update(status: Deal.statuses[:submitted])
+        success(@deal)
+      else
+        failure(@deal.errors.full_messages.to_sentence)
+      end
     end
 
     private

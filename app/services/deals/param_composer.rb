@@ -26,7 +26,7 @@ module Deals
     end
 
     def deal_params
-      params_hash = {}
+      params_hash = { step: params[:step] }
       dependent_ids = dependent_field_ids
 
       params[:fields].each do |_field|

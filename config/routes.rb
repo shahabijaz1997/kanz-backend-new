@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     resources :users, only: %i[show update]
     resources :industries, only: %i[index]
     resources :deals
+    post 'deals/:id/submit' => 'deals#submit'
     get 'settings/attachments' => 'settings#attachments'
     get 'settings/stepper' => 'settings#stepper'
     get 'regions' => 'industries#regions'

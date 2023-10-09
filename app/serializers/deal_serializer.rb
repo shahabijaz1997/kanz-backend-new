@@ -6,10 +6,6 @@ class DealSerializer
 
   attributes :id, :title, :description, :target, :status, :start_at, :end_at, :submitted_at, :success_benchmark
 
-  # attribute :how_much_funded do |deal|
-  #   deal.acheivements
-  # end
-
   attribute :details do |deal|
     if deal.startup?
       FundingRoundSerializer.new(deal.funding_round).serializable_hash[:data]&.fetch(:attributes)
