@@ -3,7 +3,7 @@
 # Startups apis
 module V1
   class DealsController < ApiController
-    before_action :find_deal, only: [:show, :submit]
+    before_action :find_deal, only: [:show, :review, :submit]
     before_action :set_deal, only: [:create]
 
     def index
@@ -27,6 +27,12 @@ module V1
       else
         failure(@deal.errors.full_messages.to_sentence)
       end
+    end
+
+    def review
+      @steppers = Stepper.where(stepper_type: STEPPERS[params[:type].to_sym]).order(:index)
+      steps = Settings::ParamsMapper.call(@deal, @steppers, true)
+      success('Success', steps)
     end
 
     def submit

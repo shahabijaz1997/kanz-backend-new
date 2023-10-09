@@ -1,22 +1,23 @@
 module Settings
   class ParamsMapper < ApplicationService
-    attr_reader :params, :deal, :steppers, :step_titles, :step_titles_ar
+    attr_reader :params, :deal, :review, :step_titles, :step_titles_ar
 
-    def initialize(deal, steppers)
+    def initialize(deal, steppers, review = false)
       @deal = deal
       @params = StepperSerializer.new(steppers).serializable_hash[:data].map { |d| d[:attributes] }
       @step_titles = steppers.pluck(:title)
       @step_titles_ar = steppers.pluck(:title_ar)
+      @review = review
     end
 
     def call
       if deal.present?
         update_steps_on_instrumentation
         @params = map_values
-        @params = update_for_review if review_step?
+        @params = update_for_review if review
       end
 
-      { 
+      {
         step_titles: { en: step_titles, ar: step_titles_ar },
         steps: params,
         current_state: @deal&.current_state || {}
@@ -161,12 +162,6 @@ module Settings
         end
         current_step
       end
-    end
-
-    def review_step?
-      step_index = deal.current_state['current_step'].to_i + 1
-      step = Stepper.find_by(title: 'review')
-      step.index == step_index
     end
   end
 end

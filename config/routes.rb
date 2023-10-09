@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     resources :industries, only: %i[index]
     resources :deals
     post 'deals/:id/submit' => 'deals#submit'
+    get 'deals/:id/review' => 'deals#review'
     get 'settings/attachments' => 'settings#attachments'
     get 'settings/stepper' => 'settings#stepper'
     get 'regions' => 'industries#regions'
