@@ -141,7 +141,8 @@ steps = [
             statement_ar: '',
             label: "500 sqft",
             label_ar: '',
-            field_type: FIELD_TYPE[:text_field],
+            field_type: FIELD_TYPE[:number],
+            input_type: INPUT_TYPES[:sqft],
             description: '',
             description_ar: ''
           }
@@ -172,6 +173,7 @@ steps = [
             label: "",
             label_ar: '',
             field_type: FIELD_TYPE[:number],
+            input_type: INPUT_TYPES[:numeric],
             description: '',
             description_ar: ''
           },{
@@ -194,6 +196,7 @@ steps = [
             label: "",
             label_ar: '',
             field_type: FIELD_TYPE[:number],
+            input_type: INPUT_TYPES[:numeric],
             description: '',
             description_ar: ''
           },{
@@ -217,6 +220,7 @@ steps = [
             label: "",
             label_ar: '',
             field_type: FIELD_TYPE[:number],
+            input_type: INPUT_TYPES[:numeric],
             description: '',
             description_ar: ''
           },{
@@ -240,6 +244,7 @@ steps = [
             label: "",
             label_ar: '',
             field_type: FIELD_TYPE[:number],
+            input_type: INPUT_TYPES[:numeric],
             description: '',
             description_ar: ''
           },{
@@ -322,6 +327,7 @@ steps = [
             label: "",
             label_ar: '',
             field_type: FIELD_TYPE[:number],
+            input_type: INPUT_TYPES[:currency],
             description: '',
             description_ar: ''
           }
@@ -465,6 +471,7 @@ steps = [
             label: '$ 0.00',
             label_ar: '',
             field_type: FIELD_TYPE[:number],
+            input_type: INPUT_TYPES[:currency],
             description: '',
             description_ar: '',
             suggestions: [500000, 1000000, 2000000, 3000000]
@@ -491,8 +498,9 @@ steps = [
             label: '',
             label_ar: '',
             field_type: FIELD_TYPE[:number],
-            suggestions: ['%2.5', '%5.5', '%8.5', '%10']
-          }, {
+            input_type: INPUT_TYPES[:percent],
+            suggestions: [2.5, 5.5, 8.5, 10]
+          },{
             index: 1,
             is_required: true,
             field_mapping: 'property_detail_attributes.yearly_appreciation',
@@ -501,7 +509,8 @@ steps = [
             label: '',
             label_ar: '',
             field_type: FIELD_TYPE[:number],
-            suggestions: ['%2.5', '%5.5', '%8.5', '%10']
+            input_type: INPUT_TYPES[:percent],
+            suggestions: [2.5, 5.5, 8.5, 10]
           }
         ]
       }
@@ -569,3 +578,25 @@ end
 
 field = FieldAttribute.find_by(field_mapping: 'features_attributes.description')
 FieldAttribute.find_by(field_mapping: 'features_attributes.title').update(dependent_id: field.id)
+
+field_mappings = ['property_detail_attributes.no_bedrooms', 'property_detail_attributes.no_kitchen', 'property_detail_attributes.parking_capacity', 'property_detail_attributes.no_washrooms']
+field_mappings.each do |mapping|
+  FieldAttribute.find_by(field_mapping: mapping).update(input_type: INPUT_TYPES[:numeric])
+end
+
+field_mappings = ['property_detail_attributes.rental_amount', 'target']
+field_mappings.each do |mapping|
+  FieldAttribute.find_by(field_mapping: mapping).update(input_type: INPUT_TYPES[:currency])
+end
+
+field_mappings = ['property_detail_attributes.yearly_appreciation', 'property_detail_attributes.dividend_yeild']
+field_mappings.each do |mapping|
+  FieldAttribute.find_by(field_mapping: mapping).update(input_type: INPUT_TYPES[:percent])
+end
+
+field_mappings = ['property_detail_attributes.size']
+field_mappings.each do |mapping|
+  FieldAttribute.find_by(field_mapping: mapping).update(input_type: INPUT_TYPES[:sqft])
+end
+
+FieldAttribute.find_by(field_mapping: 'property_detail_attributes.size').update(field_type: FIELD_TYPE[:number])
