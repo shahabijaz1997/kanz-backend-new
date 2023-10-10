@@ -319,14 +319,7 @@ steps = [
             label: 'Description related MFN',
             label_ar: '',
             field_type: FIELD_TYPE[:switch]
-          }, {
-            index: 5,
-            is_required: false,
-            field_mapping: 'terms_attributes.custom_input',
-            statement: 'MFN Only',
-            statement_ar: '',
-            field_type: FIELD_TYPE[:number]
-          }, {
+          },{
             index: 6,
             is_required: true,
             field_mapping: 'terms_attributes.enabled',
@@ -351,14 +344,7 @@ steps = [
             label: 'Description related Pro Rata',
             label_ar: '',
             field_type: FIELD_TYPE[:switch]
-          }, {
-            index: 9,
-            is_required: false,
-            field_mapping: 'terms_attributes.custom_input',
-            statement: 'Pro Rata',
-            statement_ar: '',
-            field_type: FIELD_TYPE[:text_field]
-          },          {
+          },{
             index: 10,
             is_required: true,
             field_mapping: 'terms_attributes.enabled',
@@ -405,7 +391,7 @@ FieldAttribute.where(statement: 'Minimum Investment Size').each do |f|
   f.update(statement: 'Minimum Check Size')
 end
 
-statements = ['Valuation Cap', 'Discount' , 'MFN Only','Minimum Check Size','Pro Rata','Additional Terms']
+statements = ['Valuation Cap', 'Discount' ,'Minimum Check Size','Additional Terms']
 FieldAttribute.where(statement: statements).where.not(field_type: FIELD_TYPE[:switch]).each do |f|
   dependent_id = FieldAttribute.find_by(statement: f.statement, field_type: FIELD_TYPE[:switch])&.id
   f.update!(dependent_id: dependent_id)

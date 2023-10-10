@@ -1,6 +1,7 @@
 module Deals
   class ParamComposer < ApplicationService
     attr_reader :params, :deal
+    DEAL_ASSOCIATIONS = ['terms_attributes', 'features_attributes', 'external_links_attributes']
 
     def initialize(params, deal)
       @params = params
@@ -53,7 +54,7 @@ module Deals
     end
 
     def one_to_many_relation?(field_params)
-      ["terms_attributes", "features_attributes", "external_links_attributes"].include?(field_params.keys.first)
+      DEAL_ASSOCIATIONS.include?(field_params.keys.first)
     end
 
     def build_field_params(field, _field)
@@ -67,15 +68,24 @@ module Deals
 
     def build_dependent_hash(field)
       field_params = params[:fields].detect {|f| f[:id] == field.id }
-      value = field_params.present? ? { value: field_params[:value] } : {}
-      build_hash(field.field_mapping, value)
+      value = field_params.present? ? field_params[:value] : ''
+      hash = build_hash(field.field_mapping, value)
+      if field_params[:index].present?
+        mapping = field.field_mapping.split('.')
+        mapping.pop
+        mapping << 'index'
+        index_param = build_hash(mapping.join('.'), field_params[:index])
+        hash.deep_merge(index_param)
+      else
+        hash
+      end
     end
 
     def build_nested_hash(mapping, value, id)
       field_params = build_hash(mapping, value)
 
       mapping_arr = mapping.split('.')
-      if mapping_arr.first.in?(["terms_attributes", "features_attributes", "external_links_attributes"])
+      if mapping_arr.first.in?(DEAL_ASSOCIATIONS)
         mapping_arr.pop()
         mapping = mapping_arr.push('field_attribute_id').join('.')
 
