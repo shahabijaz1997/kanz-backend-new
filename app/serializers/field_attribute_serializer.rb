@@ -18,7 +18,7 @@ class FieldAttributeSerializer
       size_constraints: q.size_constraints,
       field_mapping: q.field_mapping,
       dependent_id: q.dependent_id,
-      input_type: q.input_type,
+      input_type: ((q.field_type == 'number') ? q.input_type : ''),
       options: OptionSerializer.new(q.options).serializable_hash[:data].map { |d| d[:attributes][:en] }
     }
   end
@@ -37,7 +37,7 @@ class FieldAttributeSerializer
       size_constraints: q.size_constraints,
       field_mapping: q.field_mapping,
       dependent_id: q.dependent_id,
-      input_type: q.input_type,
+      input_type: ((q.field_type == 'number') ? q.input_type : ''),
       options: OptionSerializer.new(q.options).serializable_hash[:data].map { |d| d[:attributes][:ar] }
     }
   end

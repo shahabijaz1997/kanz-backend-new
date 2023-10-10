@@ -417,3 +417,12 @@ statements = ['Valuation Cap', 'Discount' , 'MFN Only','Minimum Check Size','Pro
 FieldAttribute.where(statement: statements).each do |f|
   f.update(is_required: false)
 end
+
+field_mappings = ['funding_round_attributes.valuation', 'target']
+field_mappings.each do |mapping|
+  FieldAttribute.find_by(field_mapping: mapping).update(input_type: INPUT_TYPES[:currency])
+end
+
+FieldAttribute.find_by(field_mapping: 'terms_attributes.custom_input', statement: 'Valuation Cap').update(input_type: INPUT_TYPES[:currency])
+FieldAttribute.find_by(field_mapping: 'terms_attributes.custom_input', statement: 'Minimum Check Size').update(input_type: INPUT_TYPES[:currency])
+FieldAttribute.find_by(field_mapping: 'terms_attributes.custom_input', statement: 'Discount').update(input_type: INPUT_TYPES[:percent])
