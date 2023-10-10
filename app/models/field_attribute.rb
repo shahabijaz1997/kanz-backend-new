@@ -2,6 +2,7 @@
 
 class FieldAttribute < ApplicationRecord
   enum field_type: FIELD_TYPE
+  enum input_type: INPUT_TYPES
   has_many :options, as: :optionable, class_name: 'Option', dependent: :destroy
   has_many :fields_sections, dependent: :delete_all
   has_many :sections, through: :fields_sections

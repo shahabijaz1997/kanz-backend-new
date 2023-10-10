@@ -108,3 +108,9 @@ FIELD_TYPE = {
 
 VALUE_FIELDS = ['switch', 'text_box', 'number', 'text_field', 'url', 'file'].freeze
 OPTION_FIELDS = ['multiple_choice', 'checkbox', 'dropdown'].freeze
+INPUT_TYPES = {
+  currency: 0,
+  percent: 1,
+  sqft: 2,
+  number: 4
+}.freeze

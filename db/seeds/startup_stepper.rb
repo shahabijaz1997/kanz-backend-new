@@ -175,6 +175,7 @@ steps = [
             label: '',
             label_ar: '',
             field_type: FIELD_TYPE[:number],
+            input_type: INPUT_TYPES[:currency],
             description: '',
             description_ar: '',
             suggestions: [500_000, 1_000_000, 2_000_000, 3_000_000]
@@ -201,6 +202,7 @@ steps = [
             label: '',
             label_ar: '',
             field_type: FIELD_TYPE[:number],
+            input_type: INPUT_TYPES[:currency],
             description: '',
             description_ar: '',
           }, {
@@ -293,7 +295,8 @@ steps = [
             field_mapping: 'terms_attributes.custom_input',
             statement: 'Valuation Cap',
             statement_ar: '',
-            field_type: FIELD_TYPE[:number]
+            field_type: FIELD_TYPE[:number],
+            input_type: INPUT_TYPES[:currency]
           }, {
             index: 2,
             is_required: false,
@@ -309,7 +312,8 @@ steps = [
             field_mapping: 'terms_attributes.custom_input',
             statement: 'Discount',
             statement_ar: '',
-            field_type: FIELD_TYPE[:number]
+            field_type: FIELD_TYPE[:number],
+            input_type: INPUT_TYPES[:percent]
           }, {
             index: 4,
             is_required: false,
@@ -334,7 +338,8 @@ steps = [
             field_mapping: 'terms_attributes.custom_input',
             statement: 'Minimum Check Size',
             statement_ar: '',
-            field_type: FIELD_TYPE[:number]
+            field_type: FIELD_TYPE[:number],
+            input_type: INPUT_TYPES[:currency]
           },          {
             index: 8,
             is_required: false,

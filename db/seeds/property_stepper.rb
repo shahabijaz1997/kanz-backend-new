@@ -172,6 +172,7 @@ steps = [
             label: "",
             label_ar: '',
             field_type: FIELD_TYPE[:number],
+            input_type: INPUT_TYPES[:number],
             description: '',
             description_ar: ''
           },{
@@ -194,6 +195,7 @@ steps = [
             label: "",
             label_ar: '',
             field_type: FIELD_TYPE[:number],
+            input_type: INPUT_TYPES[:number],
             description: '',
             description_ar: ''
           },{
@@ -217,6 +219,7 @@ steps = [
             label: "",
             label_ar: '',
             field_type: FIELD_TYPE[:number],
+            input_type: INPUT_TYPES[:number],
             description: '',
             description_ar: ''
           },{
@@ -240,6 +243,7 @@ steps = [
             label: "",
             label_ar: '',
             field_type: FIELD_TYPE[:number],
+            input_type: INPUT_TYPES[:number],
             description: '',
             description_ar: ''
           },{
@@ -322,6 +326,7 @@ steps = [
             label: "",
             label_ar: '',
             field_type: FIELD_TYPE[:number],
+            input_type: INPUT_TYPES[:currency],
             description: '',
             description_ar: ''
           }
@@ -465,6 +470,7 @@ steps = [
             label: '$ 0.00',
             label_ar: '',
             field_type: FIELD_TYPE[:number],
+            input_type: INPUT_TYPES[:currency],
             description: '',
             description_ar: '',
             suggestions: [500000, 1000000, 2000000, 3000000]
@@ -491,8 +497,9 @@ steps = [
             label: '',
             label_ar: '',
             field_type: FIELD_TYPE[:number],
-            suggestions: ['%2.5', '%5.5', '%8.5', '%10']
-          }, {
+            input_type: INPUT_TYPES[:percent],
+            suggestions: [2.5, 5.5, 8.5, 10]
+          },{
             index: 1,
             is_required: true,
             field_mapping: 'property_detail_attributes.yearly_appreciation',
@@ -501,7 +508,8 @@ steps = [
             label: '',
             label_ar: '',
             field_type: FIELD_TYPE[:number],
-            suggestions: ['%2.5', '%5.5', '%8.5', '%10']
+            input_type: INPUT_TYPES[:percent],
+            suggestions: [2.5, 5.5, 8.5, 10]
           }
         ]
       }
