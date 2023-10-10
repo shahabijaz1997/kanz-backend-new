@@ -112,5 +112,5 @@ INPUT_TYPES = {
   currency: 0,
   percent: 1,
   sqft: 2,
-  number: 4
+  numeric: 4
 }.freeze
