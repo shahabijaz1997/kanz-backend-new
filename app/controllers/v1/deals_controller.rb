@@ -7,7 +7,7 @@ module V1
     before_action :set_deal, only: [:create]
 
     def index
-      deals = DealSerializer.new(current_user.deals).serializable_hash[:data].map do |d|
+      deals = DealSerializer.new(current_user.deals.order(created_at: :desc)).serializable_hash[:data].map do |d|
         simplify_deal_attributes(d[:attributes])
       end
       success('success', deals)
@@ -69,11 +69,5 @@ module V1
       attributes.delete(:details)
       attributes
     end
-
-    # Use Authorization
-    # def verify_user_eligibility
-    #   current_user.startup?
-    #   current_user.realtor?
-    # end
   end
 end
