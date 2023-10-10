@@ -117,10 +117,9 @@ module Settings
 
     def update_steps_on_instrumentation
       if instrument_type?('SAFE Round')
-        index = params.find_index {|step| step[:en][:title] == 'valuation' }
-        remove_valuation_step(index)
-        update_step_titles(index)
         update_terms_step('safe')
+        remove_step('valuation')
+        remove_step('stage')
       elsif instrument_type?('Equity')
         update_terms_step('equity')
       end
@@ -132,13 +131,15 @@ module Settings
       deal&.funding_round&.instrument_type == option&.id
     end
 
+    def remove_step(step_title)
+      index = params.find_index {|step| step[:en][:title] == step_title }
+      @params = params.reject.with_index{|v, i| i == index }
+      update_step_titles(index)
+    end
+
     def update_step_titles(index)
       @step_titles = step_titles.reject.with_index{|v, i| i == index }
       @step_titles_ar = step_titles_ar.reject.with_index{|v, i| i == index }
-    end
-
-    def remove_valuation_step(index)
-      @params = params.reject.with_index{|v, i| i == index }
     end
 
     def update_terms_step(instrument_type) 

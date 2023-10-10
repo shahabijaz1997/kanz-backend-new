@@ -566,3 +566,6 @@ FieldAttribute.where(statement: statements).where.not(field_type: FIELD_TYPE[:sw
   dependent_id = FieldAttribute.find_by(statement: 'Property on a rent?', field_type: FIELD_TYPE[:switch])&.id
   f.update!(dependent_id: dependent_id)
 end
+
+field = FieldAttribute.find_by(field_mapping: 'features_attributes.description')
+FieldAttribute.find_by(field_mapping: 'features_attributes.title').update(dependent_id: field.id)
