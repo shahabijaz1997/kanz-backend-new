@@ -280,7 +280,7 @@ steps = [
         fields_attributes: [
           {
             index: 0,
-            is_required: true,
+            is_required: false,
             field_mapping: 'terms_attributes.enabled',
             statement: 'Valuation Cap',
             statement_ar: '',
@@ -296,7 +296,7 @@ steps = [
             field_type: FIELD_TYPE[:number]
           }, {
             index: 2,
-            is_required: true,
+            is_required: false,
             field_mapping: 'terms_attributes.enabled',
             statement: 'Discount',
             statement_ar: '',
@@ -312,7 +312,7 @@ steps = [
             field_type: FIELD_TYPE[:number]
           }, {
             index: 4,
-            is_required: true,
+            is_required: false,
             field_mapping: 'terms_attributes.enabled',
             statement: 'MFN Only',
             statement_ar: '',
@@ -321,7 +321,7 @@ steps = [
             field_type: FIELD_TYPE[:switch]
           },{
             index: 6,
-            is_required: true,
+            is_required: false,
             field_mapping: 'terms_attributes.enabled',
             statement: 'Minimum Check Size',
             statement_ar: '',
@@ -337,7 +337,7 @@ steps = [
             field_type: FIELD_TYPE[:number]
           },          {
             index: 8,
-            is_required: true,
+            is_required: false,
             field_mapping: 'terms_attributes.enabled',
             statement: 'Pro Rata',
             statement_ar: '',
@@ -346,7 +346,7 @@ steps = [
             field_type: FIELD_TYPE[:switch]
           },{
             index: 10,
-            is_required: true,
+            is_required: false,
             field_mapping: 'terms_attributes.enabled',
             statement: 'Additional Terms',
             statement_ar: '',
@@ -406,3 +406,9 @@ section = Section.create({
 
 statements = ['Additional Terms', 'Minimum Check Size', 'Pro Rata']
 section.fields << FieldAttribute.where(statement: statements)
+
+
+statements = ['Valuation Cap', 'Discount' , 'MFN Only','Minimum Check Size','Pro Rata','Additional Terms']
+FieldAttribute.where(statement: statements).each do |f|
+  f.update(is_required: false)
+end
