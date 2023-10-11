@@ -70,7 +70,7 @@ module Deals
       field_params = params[:fields].detect {|f| f[:id] == field.id }
       value = field_params.present? ? field_params[:value] : ''
       hash = build_hash(field.field_mapping, value)
-      if field_params[:index].present?
+      if field_params.present? && field_params[:index].present?
         mapping = field.field_mapping.split('.')
         mapping.pop
         mapping << 'index'
