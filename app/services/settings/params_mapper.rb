@@ -158,8 +158,12 @@ module Settings
       params.map do |step|
         current_step = { id: step[:id], index: step[:index], title: step[:en][:title], fields: [] }
         step[:en][:sections].each do |section|
-          current_step[:fields] << section[:fields].map do |field|
-            { statement: field[:statement], value: field[:value] }
+          section[:fields].map do |field|
+            if section[:is_multiple]
+              { statement: field[:statement], value: field[:value], index: field[:index] }
+            else
+              { statement: field[:statement], value: field[:value] }
+            end
           end
         end
         current_step[:fields] = current_step[:fields].flatten(1)
