@@ -162,7 +162,7 @@ module Settings
             { statement: field[:statement], value: field[:value] }
           end
         end
-        current_step
+        current_step[:fields] = current_step[:fields].flatten(1)
       end
     end
   end
