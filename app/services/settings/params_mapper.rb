@@ -163,6 +163,7 @@ module Settings
           end
         end
         current_step[:fields] = current_step[:fields].flatten(1)
+        current_step
       end
     end
   end
