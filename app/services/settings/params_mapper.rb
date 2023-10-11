@@ -158,7 +158,7 @@ module Settings
       params.map do |step|
         current_step = { id: step[:id], index: step[:index], title: step[:en][:title], fields: [] }
         step[:en][:sections].each do |section|
-          section[:fields].map do |field|
+          current_step[:fields] << section[:fields].map do |field|
             if section[:is_multiple]
               { statement: field[:statement], value: field[:value], index: field[:index] }
             else
