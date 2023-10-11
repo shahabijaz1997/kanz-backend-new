@@ -19,7 +19,7 @@ class DealSerializer
   end
   
   attribute :terms do |deal|
-    TermSerializer.new(deal.terms).serializable_hash[:data].map { |d| d&.fetch(:attributes) }
+    deal.startup? ? TermSerializer.new(deal.terms).serializable_hash[:data].map { |d| d&.fetch(:attributes) } : []
   end
 
   attribute :external_links do |deal|

@@ -4,5 +4,5 @@
 class FeatureSerializer
   include JSONAPI::Serializer
 
-  attributes :id, :title, :description
+  attributes :id, :title, :description, :index
 end
