@@ -58,16 +58,18 @@ module Settings
     def map_multiple_fields(fields)
       all_fields = []
       fields.each do |field|
+        ff = []
         attribute = field[:field_mapping].split('.').first
         class_instance = class_name(attribute).constantize
         instances = class_instance.where(deal_id: deal.id)
         instances.each do |instance|
           field[:value] = instance&.send(field[:field_mapping].split('.').last) 
           field[:index] = instance&.send(:index)
-          all_fields << field
+          ff << field
         end
+        all_fields << (ff.present? ? ff : field)
       end
-      all_fields
+      all_fields.flatten(1)
     end
 
     def dependent_field_ids
