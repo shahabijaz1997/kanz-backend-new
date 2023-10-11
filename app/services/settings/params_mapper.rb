@@ -31,7 +31,7 @@ module Settings
       steps = params.each do |step|
         sections = step[:en][:sections].each do |section|
           if section[:is_multiple]
-            fields = map_multiple_fields(section[:fields])
+            fields = map_multiple_fields(section[:fields]) 
           else
             fields = section[:fields].each do |field|
               this_field = field[:id].in?(dependent_ids) ? dependent_field(field) : field
@@ -59,14 +59,13 @@ module Settings
       all_fields = []
       fields.each do |field|
         attribute = field[:field_mapping].split('.').first
-
         class_instance = class_name(attribute).constantize
-        instances = class_instance.where(deal_id: deal.id, field_attribute_id: field[:id])
+        instances = class_instance.where(deal_id: deal.id)
         instances.each do |instance|
           field[:value] = instance&.send(field[:field_mapping].split('.').last) 
           field[:index] = instance&.send(:index)
+          all_fields << field
         end
-        all_fields << field
       end
       all_fields
     end

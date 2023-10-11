@@ -504,7 +504,7 @@ steps = [
             index: 1,
             is_required: true,
             field_mapping: 'property_detail_attributes.yearly_appreciation',
-            statement: 'Expected Annula Appreciation',
+            statement: 'Expected Annaul Appreciation',
             statement_ar: '',
             label: '',
             label_ar: '',
@@ -576,8 +576,9 @@ FieldAttribute.where(statement: statements).where.not(field_type: FIELD_TYPE[:sw
   f.update!(dependent_id: dependent_id)
 end
 
-field = FieldAttribute.find_by(field_mapping: 'features_attributes.description')
-FieldAttribute.find_by(field_mapping: 'features_attributes.title').update(dependent_id: field.id)
+field = FieldAttribute.find_by(field_mapping: 'features_attributes.title')
+FieldAttribute.find_by(field_mapping: 'features_attributes.description').update(dependent_id: field.id)
+field.update(dependent_id: field.id)
 
 field_mappings = ['property_detail_attributes.no_bedrooms', 'property_detail_attributes.no_kitchen', 'property_detail_attributes.parking_capacity', 'property_detail_attributes.no_washrooms']
 field_mappings.each do |mapping|
