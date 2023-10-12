@@ -61,24 +61,25 @@ module Deals
       field_params = build_nested_hash(field.field_mapping, _field[:value], _field[:id])
       object_params = existing_object(field.field_mapping, _field[:id])
       field_params = field_params.deep_merge(object_params)
-
-      dependent_field = field.dependent_field
-      dependent_field.present? ? field_params.deep_merge(build_dependent_hash(dependent_field)) : field_params
+      field_params = field_params.deep_merge(build_dependent_param(field))
+      field_params.deep_merge(build_index_param(field, _field))
     end
 
-    def build_dependent_hash(field)
+    def build_dependent_param(field)
+      field = field.dependent_field
+      return {} if field.blank?
+
       field_params = params[:fields].detect {|f| f[:id] == field.id }
       value = field_params.present? ? field_params[:value] : ''
-      hash = build_hash(field.field_mapping, value)
-      if field_params.present? && field_params[:index].present?
-        mapping = field.field_mapping.split('.')
-        mapping.pop
-        mapping << 'index'
-        index_param = build_hash(mapping.join('.'), field_params[:index])
-        hash.deep_merge(index_param)
-      else
-        hash
-      end
+      build_hash(field.field_mapping, value)
+    end
+
+    def build_index_param(field, field_params)
+      return {} unless field_params[:index].present?
+      mapping = field.field_mapping.split('.')
+      mapping.pop
+      mapping << 'index'
+      build_hash(mapping.join('.'), field_params[:index])
     end
 
     def build_nested_hash(mapping, value, id)

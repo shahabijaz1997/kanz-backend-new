@@ -58,16 +58,13 @@ module Settings
     def map_multiple_fields(fields)
       all_fields = []
       fields.each do |field|
-        ff = []
-        attribute = field[:field_mapping].split('.').first
-        class_instance = class_name(attribute).constantize
-        instances = class_instance.where(deal_id: deal.id)
-        instances.each do |instance|
-          field[:value] = instance&.send(field[:field_mapping].split('.').last) 
-          field[:index] = instance&.send(:index)
-          ff << field
+        field_mapping = field[:field_mapping].split('.')
+
+        temp_fields = class_name(field_mapping.first).constantize.where(deal_id: deal.id).map do |instance|
+          field.merge({ value: instance.send(field_mapping.last), index: instance.index })
         end
-        all_fields << (ff.present? ? ff : field)
+
+        all_fields << (temp_fields.present? ? temp_fields : field)
       end
       all_fields.flatten(1)
     end
