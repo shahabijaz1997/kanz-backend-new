@@ -65,6 +65,8 @@ module V1
     end
 
     def simplify_deal_attributes(attributes)
+      return attributes if attributes[:details].blank?
+
       attributes = attributes.merge(attributes[:details])
       attributes.delete(:details)
       attributes
