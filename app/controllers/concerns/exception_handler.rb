@@ -29,6 +29,7 @@ module ExceptionHandler
     end
 
     rescue_from StandardError do |e|
+      Rails.logger.error ([e.message]+e.backtrace).join($/)
       render json: { message: e.message }, status: :unprocessable_entity
     end
   end
