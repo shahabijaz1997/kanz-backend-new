@@ -154,7 +154,7 @@ steps = [
         fields_attributes: [
           {
             index: 0,
-            is_required: true,
+            is_required: false,
             field_mapping: 'property_detail_attributes.has_bedrooms',
             statement: 'Bedrooms',
             statement_ar: '',
@@ -166,7 +166,7 @@ steps = [
           },
           {
             index: 1,
-            is_required: true,
+            is_required: false,
             field_mapping: 'property_detail_attributes.no_bedrooms',
             statement: 'Bedrooms',
             statement_ar: '',
@@ -178,7 +178,7 @@ steps = [
             description_ar: ''
           },{
             index: 2,
-            is_required: true,
+            is_required: false,
             field_mapping: 'property_detail_attributes.has_kitchen',
             statement: 'Kitchen',
             statement_ar: '',
@@ -189,7 +189,7 @@ steps = [
             description_ar: ''
           },{
             index: 3,
-            is_required: true,
+            is_required: false,
             field_mapping: 'property_detail_attributes.no_kitchen',
             statement: 'Kitchen',
             statement_ar: '',
@@ -201,7 +201,7 @@ steps = [
             description_ar: ''
           },{
             index: 4,
-            is_required: true,
+            is_required: false,
             field_mapping: 'property_detail_attributes.has_washroom',
             statement: 'Washrooms',
             statement_ar: '',
@@ -213,7 +213,7 @@ steps = [
           },
           {
             index: 5,
-            is_required: true,
+            is_required: false,
             field_mapping: 'property_detail_attributes.no_washrooms',
             statement: 'Washrooms',
             statement_ar: '',
@@ -225,7 +225,7 @@ steps = [
             description_ar: ''
           },{
             index: 6,
-            is_required: true,
+            is_required: false,
             field_mapping: 'property_detail_attributes.has_parking',
             statement: 'Parking',
             statement_ar: '',
@@ -237,7 +237,7 @@ steps = [
           },
           {
             index: 7,
-            is_required: true,
+            is_required: false,
             field_mapping: 'property_detail_attributes.parking_capacity',
             statement: 'Parking',
             statement_ar: '',
@@ -249,7 +249,7 @@ steps = [
             description_ar: ''
           },{
             index: 8,
-            is_required: true,
+            is_required: false,
             field_mapping: 'property_detail_attributes.has_swimming_pool',
             statement: 'Swimming Pool',
             statement_ar: '',
@@ -261,7 +261,7 @@ steps = [
           },
           {
             index: 9,
-            is_required: true,
+            is_required: false,
             field_mapping: 'property_detail_attributes.swimming_pool_type',
             statement: 'Swimming Pool',
             statement_ar: '',
@@ -286,7 +286,7 @@ steps = [
             ]
           },{
             index: 10,
-            is_required: true,
+            is_required: false,
             field_mapping: 'property_detail_attributes.is_rental',
             statement: 'Property on a rent?',
             statement_ar: '',
@@ -298,7 +298,7 @@ steps = [
           },
           {
             index: 11,
-            is_required: true,
+            is_required: false,
             field_mapping: 'property_detail_attributes.rental_period',
             statement: 'duration',
             statement_ar: '',
@@ -320,7 +320,7 @@ steps = [
           },
           {
             index: 12,
-            is_required: true,
+            is_required: false,
             field_mapping: 'property_detail_attributes.rental_amount',
             statement: 'rent',
             statement_ar: '',
@@ -338,7 +338,7 @@ steps = [
         fields_attributes: [
           {
             index: 0,
-            is_required: true,
+            is_required: false,
             field_mapping: 'description',
             statement: 'Property Description',
             statement_ar: '',
@@ -367,7 +367,7 @@ steps = [
         fields_attributes: [
           {
             index: 0,
-            is_required: true,
+            is_required: false,
             field_mapping: 'features_attributes.title',
             statement: 'Title',
             statement_ar: '',
@@ -378,7 +378,7 @@ steps = [
             description_ar: ''
           }, {
             index: 1,
-            is_required: true,
+            is_required: false,
             field_mapping: 'features_attributes.description',
             statement: 'Description',
             statement_ar: '',
@@ -439,7 +439,7 @@ steps = [
         fields_attributes: [
           {
             index: 0,
-            is_required: true,
+            is_required: false,
             field_mapping: 'external_links_attributes.url',
             statement: 'External Link',
             statement_ar: '',
@@ -601,3 +601,37 @@ field_mappings.each do |mapping|
 end
 
 FieldAttribute.find_by(field_mapping: 'property_detail_attributes.size').update(field_type: FIELD_TYPE[:number])
+
+attachments = [
+  { statement: "Property Title", label: "A legal document establishing property ownership.", description: "To verify ownership and ensure no disputes.", is_required: true },
+  { statement: "Property Appraisal Report", label: "Professional Valuation of  the property.", description: "To assess the property's market  value.", is_required: true },
+  { statement: "Current Lease Agreements",  label: "Copies of any active lease  agreements.", description: "To assess current revenue  streams.", is_required: false },
+  { statement: "Local Area Report", label: "Analysis of the local area  and market trends.", description: "To provide contextual background.", is_required: false },
+  { statement: "Maintenance and Upkeep", label: "Documented history of  maintenance.", description: "To understand the property's condition and future costs.", is_required: false },
+  { statement: "Financial Projections", label: "Forward-looking financial estimates.", description: "To assess economic viability.", is_required: true },
+  { statement: "Independent Property Report", label: "A third-party report detailing property condition.", description: "To provide an unbiased evaluation of the property's condition.", is_required: false },
+  { statement: "Term Sheet", label: "Basic terms and conditions  for investment.", description: "To clarify terms and expectations.", is_required: false },
+  { statement: "Independent Area Report", label: "Comprehensive analysis of  property's location.", description: "To provide contextual information.", is_required: false },
+  { statement: "Lead Syndicate Profile", label: "Information about the lead  syndicate.", description: "To establish credibility.", is_required: false },
+  { statement: "5-Year Proforma", label: "Financial statement projecting metrics for the  next 5 years.", description: "To provide a long-term view.", is_required: false }
+]
+
+stepper = Stepper.find_by(title: 'Attachments', stepper_type: STEPPERS[:property_deal])
+section = stepper.sections.find_by(title: 'Add Attachments')
+fids = section.fields_sections.pluck(:field_id)
+section.fields_sections.delete_all
+FieldAttribute.where(id: fids).delete_all
+
+attachments.each_with_index do |attachment, index|
+  field = FieldAttribute.create(
+    index: index,
+    is_required: false,
+    statement: attachment[:statement],
+    label: attachment[:label],
+    description: attachment[:description],
+    field_type: FIELD_TYPE[:file],
+    permitted_types: ['pdf'],
+    size_constraints: { unit: 'mb', limit: 10 }
+  )
+  section.fields << field
+end

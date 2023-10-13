@@ -114,6 +114,8 @@ module Settings
     end
 
     def update_steps_on_instrumentation
+      return if deal.property?
+
       if instrument_type?('SAFE')
         update_terms_step('safe')
         remove_step('valuation')
