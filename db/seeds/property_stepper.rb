@@ -1,6 +1,6 @@
 steps = [
   {
-    title: 'Details',
+    title: 'Property Details',
     index: 0,
     stepper_type: STEPPERS[:property_deal],
     sections_attributes: [
