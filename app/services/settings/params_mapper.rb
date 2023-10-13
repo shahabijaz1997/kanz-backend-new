@@ -123,6 +123,7 @@ module Settings
       elsif instrument_type?('Equity Financing')
         update_terms_step('equity')
       end
+
     end
 
     def instrument_type?(instrument_type)
