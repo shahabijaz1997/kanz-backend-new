@@ -26,7 +26,7 @@ class Deal < ApplicationRecord
     current_state['current_step'] = step
     current_state['submitted'] = submitted?
     current_state['steps'] ||= []
-    current_state['steps'] = current_state['steps'] | [step].compact
+    current_state['steps'] = (current_state['steps'] | [step].compact)
 
     self.update_column(:current_state, current_state)
   end

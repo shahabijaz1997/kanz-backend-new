@@ -114,7 +114,7 @@ module Settings
     end
 
     def update_steps_on_instrumentation
-      if instrument_type?('SAFE Round')
+      if instrument_type?('SAFE')
         update_terms_step('safe')
         remove_step('valuation')
         remove_step('stage')
