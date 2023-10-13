@@ -9,6 +9,7 @@ class OptionSerializer
       id: option.id,
       index: option.index,
       statement: option.statement,
+      label: option.label,
       selected: false
     }
   end
@@ -18,6 +19,7 @@ class OptionSerializer
       id: option.id,
       index: option.index,
       statement: option.statement_ar,
+      label: option.label_ar,
       selected: false
     }
   end
