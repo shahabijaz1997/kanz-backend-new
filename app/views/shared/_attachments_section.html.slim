@@ -2,7 +2,7 @@
   - if resource.attachments.present?
     - resource.attachments.each do |attachment|
       li.list-group-item
-        span.col-3.title = attachment.attachment_config&.name
+        span.col-3.title = attachment&.name
         div.card.attachment
           - if attachment.attachment_kind == 'pdf'
             object data=attachment.file.url width=250
