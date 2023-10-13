@@ -120,7 +120,7 @@ module Settings
         update_terms_step('safe')
         remove_step('valuation')
         remove_step('stage')
-      elsif instrument_type?('Equity')
+      elsif instrument_type?('Equity Financing')
         update_terms_step('equity')
       end
     end
