@@ -37,6 +37,7 @@ module V1
 
     def submit
       if @deal.update(status: Deal.statuses[:submitted], submitted_at: Time.zone.now)
+        DealsMailer::submission(@deal, current_user).deliver_now
         success(@deal)
       else
         failure(@deal.errors.full_messages.to_sentence)
