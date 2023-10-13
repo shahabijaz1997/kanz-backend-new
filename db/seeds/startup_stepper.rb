@@ -113,9 +113,9 @@ steps = [
             index: 0,
             is_required: true,
             field_mapping: 'funding_round_attributes.round',
-            statement: 'What round is this?',
+            statement: 'What is your funding stage?'
             statement_ar: '',
-            label: "Chose a stage and we'll help you create round quickly.",
+            label: 'This will help you meet your next milestone',
             label_ar: '',
             field_type: FIELD_TYPE[:multiple_choice],
             description: '',
@@ -123,24 +123,24 @@ steps = [
             options_attributes: [
               {
                 index: 0,
-                statement: 'Angel Round',
-                statement_ar: '',
-                is_range: false
-              },
-              {
-                index: 1,
                 statement: 'Pre-seed',
                 statement_ar: '',
                 is_range: false
               },
               {
-                index: 2,
-                statement: 'Seed',
+                index: 1,
+                statement: 'Angel',
                 statement_ar: '',
                 is_range: false
               },
               {
                 index: 3,
+                statement: 'Seed',
+                statement_ar: '',
+                is_range: false
+              },
+              {
+                index: 2,
                 statement: 'Series A',
                 statement_ar: '',
                 is_range: false
@@ -243,30 +243,7 @@ steps = [
       {
         index: 0,
         title: 'Add Attachments',
-        description: 'Upload the necessary documents',
-        fields_attributes: [
-          {
-            index: 0,
-            is_required: true,
-            statement: 'Pitch Deck',
-            statement_ar: '',
-            label: 'Upload PDF of your pitch deck',
-            label_ar: '',
-            field_type: FIELD_TYPE[:file],
-            permitted_types: ['pdf'],
-            size_constraints: { unit: 'mb', limit: 10 }
-          }, {
-            index: 1,
-            is_required: true,
-            statement: 'Documents',
-            statement_ar: '',
-            label: 'Upload PDF of your documents',
-            label_ar: '',
-            field_type: FIELD_TYPE[:file],
-            permitted_types: ['pdf'],
-            size_constraints: { unit: 'mb', limit: 10 }
-          }
-        ]
+        description: 'Upload the necessary documents'
       }
     ]
   },
@@ -426,3 +403,87 @@ end
 FieldAttribute.find_by(field_mapping: 'terms_attributes.custom_input', statement: 'Valuation Cap').update(input_type: INPUT_TYPES[:currency])
 FieldAttribute.find_by(field_mapping: 'terms_attributes.custom_input', statement: 'Minimum Check Size').update(input_type: INPUT_TYPES[:currency])
 FieldAttribute.find_by(field_mapping: 'terms_attributes.custom_input', statement: 'Discount').update(input_type: INPUT_TYPES[:percent])
+
+
+attachments = [
+  { statement: "Business Plan", label: "A comprehensive document outlining the business strategy, market analysis, and financial projections.", description: "To provide an in-depth understanding of the business  model and its growth prospects.", is_required: true },
+  { statement: "Financial Statements", label: "Historical financial records  for the past three years.", description: "To offer insight into the startup's  financial health.", is_required: true },
+  { statement: "SWOT Analysis", label: "Analysis of Strengths, Weaknesses, Opportunities, and Threats.", description: "To offer a balanced perspective  of risks and potential.", is_required: false },
+  { statement: "Market Research Report", label: "Detailed analysis of target  market", description: "To validate the market opportunity.", is_required: false },
+  { statement: "Founders' CVs", label: "Resumes of each founder.", description: "To showcase the founders' skills  and experience.", is_required: false },
+  { statement: "Corporate Structure Diagram", label: "Visual representation of  organizational structure", description: "To clarify organizational setup  and key personnel.", is_required: false },
+  { statement: "Legal Entity Documents", label: "Documents like Certificate  of Incorporation, etc.", description: "To confirm legal status and compliance.", is_required: false },
+  { statement: "IP Rights Documentation", label: "Documents supporting any  intellectual property rights.", description: "To verify proprietary assets.", is_required: false },
+  { statement: "Initial Valuation Report ", label: "Preliminary estimate of the  startup's value.", description: "To facilitate negotiation and  decision-making.", is_required: false },
+  { statement: "Cap Table", label: "A table showing the ownership structure of the  company, including shares held by each stakeholder.", description: "To understand the ownership  distribution and stakeholder  equity.", is_required: false },
+  { statement: "Investment Memo", label: "A detailed memorandum  outlining the investment  opportunity, terms, and  conditions.", description: "To provide prospective investors  with necessary information for  decision-making.", is_required: false },
+  { statement: "Investor Presentation or  Pitch Deck", label: "A slide presentation summarizing the business  and investment opportunity.", description: "To present to potential investors  in meetings or pitches.", is_required: false },
+  { statement: "Lead Syndicate Profile &  Credentials", label: "Detailed information about  the lead syndicate, their  track record, and qualifications.", description: "To establish credibility and  attract potential co-investors.", is_required: false },
+  { statement: "Term Sheet", label: "A preliminary agreement  outlining the terms of the  investment.", description: "To serve as a basis for final  negotiations and legal agreements.", is_required: false },
+  { statement: "Projections", label: "Forecasted revenue, expenses, and other financial metrics for future years.", description: "To provide a financial outlook and support valuation discussions.", is_required: false },
+  { statement: "Due Diligence Report", label: "A report summarizing the findings of due diligence investigations, including legal, financial, and operational aspects.", description: "To inform all parties of potential risks and validate the information provided", is_required: false }
+]
+
+stepper = Stepper.find_by(title: 'attachments', stepper_type: STEPPERS[:startup_deal])
+section = stepper.sections.find_by(title: 'Add Attachments')
+fids = section.fields_sections.pluck(:field_id)
+section.fields_sections.delete_all
+FieldAttribute.where(id: fids).delete_all
+
+attachments.each_with_index do |attachment, index|
+  field = FieldAttribute.create(
+    index: index,
+    is_required: attachment[:is_required],
+    statement: attachment[:statement],
+    label: attachment[:label],
+    description: attachment[:description],
+    field_type: FIELD_TYPE[:file],
+    permitted_types: ['pdf','png'],
+    size_constraints: { unit: 'mb', limit: 10 }
+  )
+  section.fields << field
+end
+
+
+# Changes in text
+
+field = FieldAttribute.find_by(statement: 'What round is this?')
+field.update(statement: 'What is your funding stage?', label: 'This will help you meet your next milestone')
+
+Option.find_by(statement: 'Pre-seed').update(index: 0)
+Option.find_by(statement: 'Angel Round').update(statement: 'Seed / Angel', index: 1)
+Option.find_by(statement: 'Seed').update(statement: 'Series B', index: 3)
+Option.find_by(statement: 'Other').update(statement: 'Series C', index: 4)
+options = [{ index: 5, statement: 'Series D', statement_ar: '', is_range: false }, { index: 6, statement: 'Mezzanine & bridge', statement_ar: '', is_range: false }]
+options.each do |option|
+  field.options.create(option)
+end
+
+# Step
+
+field = FieldAttribute.find_by(statement: 'Istrument Type')
+field.update(statement: 'Select an instrument to raise funds')
+Option.find_by(statement: 'SAFE Round').update(statement: 'SAFE', label: 'Commit to future equity for investors')
+Option.find_by(statement: 'Equity').update(statement: 'Equity Financing', label: 'Sell shares in exchange for capital')
+
+field = FieldAttribute.find_by(statement: 'SAFE Type')
+field.options.find_by(statement: 'Post-Money').update(statement: 'Valuation Cap, No Discount', label: 'Provide a maximum valuation')
+field.options.find_by(statement: 'Pre-Money').update(statement: 'Discount, No Valuation Cap', label: 'Offer a discounted price per share')
+field.options.create(statement: 'No Valuation Cap, No Discount', label: 'Offer investor same terms as subsequent investors, sans a cap or discount', is_range: false, index: 2)
+
+Option.find_by(statement: 'Preferred').update(label: 'Pay fixed dividends regularly')
+Option.find_by(statement: 'Common').update(label: 'Give shares of ownership and voting rights')
+
+# Step
+
+field = FieldAttribute.find_by(statement: 'Deal Target')
+field.update(statement: 'How much do you need to raise?')
+
+# step
+FieldAttribute.find_by(statement: 'Valuation').update(statement: 'Estimated Value')
+field = FieldAttribute.find_by(statement: 'Type')
+field.options.find_by(statement: 'Post-Money').update(statement: 'Post-Money Valuation')
+field.options.find_by(statement: 'Pre-Money').update(statement: 'Pre-Money Valuation')
+
+# step
+
