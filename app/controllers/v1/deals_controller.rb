@@ -51,7 +51,7 @@ module V1
     end
 
     def deal_params
-      params.require(:deal).permit(:id, :deal_type, :step, fields: %i[id value index])
+      params.require(:deal).permit(:id, :deal_type, :step, fields: %i[id value index deleted])
     end
 
     def set_deal

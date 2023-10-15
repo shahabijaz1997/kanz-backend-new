@@ -46,6 +46,11 @@ module Deals
         end
       end
 
+      return params_hash if deal&.startup?
+
+      deal.features.delete_all if step.title == 'Unique Selling Points'
+      deal.external_links.delete_all if step.title == 'Attachments'
+
       params_hash
     end
 
@@ -58,18 +63,24 @@ module Deals
     end
 
     def build_field_params(field, _field)
+      return {} if _field[:deleted] == true
+
       field_params = build_nested_hash(field.field_mapping, _field[:value], _field[:id])
-      object_params = existing_object(field.field_mapping, _field[:id])
+      object_params = existing_object(field.field_mapping, _field)
       field_params = field_params.deep_merge(object_params)
-      field_params = field_params.deep_merge(build_dependent_param(field))
+      field_params = field_params.deep_merge(build_dependent_param(field.dependent_field, _field[:index]))
       field_params.deep_merge(build_index_param(field, _field))
     end
 
-    def build_dependent_param(field)
-      field = field.dependent_field
+    def build_dependent_param(field, index)
       return {} if field.blank?
 
-      field_params = params[:fields].detect {|f| f[:id] == field.id }
+      field_params = if index.present?
+        params[:fields].detect {|f| f[:id] == field.id && f[:index] == index.to_i }
+      else
+        params[:fields].detect {|f| f[:id] == field.id }
+      end
+
       value = field_params.present? ? field_params[:value] : ''
       build_hash(field.field_mapping, value)
     end
@@ -84,7 +95,6 @@ module Deals
 
     def build_nested_hash(mapping, value, id)
       field_params = build_hash(mapping, value)
-
       mapping_arr = mapping.split('.')
       if mapping_arr.first.in?(DEAL_ASSOCIATIONS)
         mapping_arr.pop()
@@ -99,21 +109,20 @@ module Deals
       mapping.split('.').reverse.inject(value) { |v, k| { k => v } }
     end
 
-    def existing_object(mapping, id = 0)
+    def existing_object(mapping, field_param)
       key = mapping.split('.').first
       return {} unless deal.persisted?
 
       class_name = class_name(key)
       return {} if class_name.blank?
+      return {} if class_name.in?(['Feature', 'ExternalLink'])
 
-      hash = {}
-      instance = if class_name.in?(['Feature', 'Term']) 
-        class_name.constantize.find_by(deal_id: deal.id, field_attribute_id: id)
+      instance = if class_name.in?(['Term'])
+        class_name.constantize.find_by(deal_id: deal.id, field_attribute_id: field_param[:id])
       else
         class_name.constantize.find_by(deal_id: deal.id)
       end
-      hash[key] = { 'id' => instance.id } if instance.present?
-      hash
+      instance.blank? ? {} : { key => { 'id' => instance.id } }
     end
 
     def class_name(key)
