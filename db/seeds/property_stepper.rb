@@ -580,28 +580,6 @@ field = FieldAttribute.find_by(field_mapping: 'features_attributes.title')
 FieldAttribute.find_by(field_mapping: 'features_attributes.description').update(dependent_id: field.id)
 field.update(dependent_id: field.id)
 
-field_mappings = ['property_detail_attributes.no_bedrooms', 'property_detail_attributes.no_kitchen', 'property_detail_attributes.parking_capacity', 'property_detail_attributes.no_washrooms']
-field_mappings.each do |mapping|
-  FieldAttribute.find_by(field_mapping: mapping).update(input_type: INPUT_TYPES[:numeric])
-end
-
-field_mappings = ['property_detail_attributes.rental_amount', 'target']
-field_mappings.each do |mapping|
-  FieldAttribute.find_by(field_mapping: mapping).update(input_type: INPUT_TYPES[:currency])
-end
-
-field_mappings = ['property_detail_attributes.yearly_appreciation', 'property_detail_attributes.dividend_yeild']
-field_mappings.each do |mapping|
-  FieldAttribute.find_by(field_mapping: mapping).update(input_type: INPUT_TYPES[:percent])
-end
-
-field_mappings = ['property_detail_attributes.size']
-field_mappings.each do |mapping|
-  FieldAttribute.find_by(field_mapping: mapping).update(input_type: INPUT_TYPES[:sqft])
-end
-
-FieldAttribute.find_by(field_mapping: 'property_detail_attributes.size').update(field_type: FIELD_TYPE[:number])
-
 attachments = [
   { statement: "Property Title", label: "A legal document establishing property ownership.", description: "To verify ownership and ensure no disputes.", is_required: true },
   { statement: "Property Appraisal Report", label: "Professional Valuation of  the property.", description: "To assess the property's market  value.", is_required: true },
@@ -619,8 +597,8 @@ attachments = [
 stepper = Stepper.find_by(title: 'Attachments', stepper_type: STEPPERS[:property_deal])
 section = stepper.sections.find_by(title: 'Add Attachments')
 fids = section.fields_sections.pluck(:field_id)
-section.fields_sections.delete_all
-FieldAttribute.where(id: fids).delete_all
+section.fields_sections&.delete_all
+FieldAttribute.where(id: fids)&.delete_all
 
 attachments.each_with_index do |attachment, index|
   field = FieldAttribute.create(
