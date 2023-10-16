@@ -12,7 +12,7 @@ steps = [
             index: 0,
             is_required: true,
             field_mapping: 'funding_round_attributes.instrument_type',
-            statement: 'Istrument Type',
+            statement: 'Select an instrument to raise funds',
             statement_ar: '',
             label: '',
             label_ar: '',
@@ -22,17 +22,17 @@ steps = [
             options_attributes: [
               {
                 index: 0,
-                statement: 'SAFE Round',
+                statement: 'SAFE',
                 statement_ar: '',
-                label: 'Description related SAFE',
+                label: 'Commit to future equity for investors',
                 label_ar: '',
                 is_range: false
               },
               {
                 index: 1,
-                statement: 'Equity',
-                statement_ar: 'Description related equity',
-                label: '',
+                statement: 'Equity Financing',
+                statement_ar: '',
+                label: 'Sell shares in exchange for capital',
                 label_ar: '',
                 is_range: false
               }
@@ -50,19 +50,25 @@ steps = [
             description_ar: '',
             options_attributes: [
               {
-                index: 1,
-                statement: 'Post-Money',
+                index: 0,
+                statement: 'Discount, No Valuation Cap',
                 statement_ar: '',
-                label: 'Description related post-money SAFE',
+                label: 'Offer a discounted price per share',
                 label_ar: '',
                 is_range: false
               },
               {
-                index: 0,
-                statement: 'Pre-Money',
+                index: 1,
+                statement: 'Valuation Cap, No Discount',
                 statement_ar: '',
-                label: 'Description related pre-money SAFE',
+                label: 'Provide a maximum valuation',
                 label_ar: '',
+                is_range: false
+              },
+              {
+                index: 2,
+                statement: 'No Valuation Cap, No Discount',
+                label: 'Offer investor same terms as subsequent investors, sans a cap or discount',
                 is_range: false
               }
             ]
@@ -82,7 +88,7 @@ steps = [
                 index: 0,
                 statement: 'Preferred',
                 statement_ar: '',
-                label: 'Description related preferred shares',
+                label: 'Pay fixed dividends regularly',
                 label_ar: '',
                 is_range: false
               },
@@ -90,7 +96,7 @@ steps = [
                 index: 1,
                 statement: 'Common',
                 statement_ar: '',
-                label: 'Description related common shares',
+                label: 'Give shares of ownership and voting rights',
                 label_ar: '',
                 is_range: false
               }
@@ -129,13 +135,7 @@ steps = [
               },
               {
                 index: 1,
-                statement: 'Angel',
-                statement_ar: '',
-                is_range: false
-              },
-              {
-                index: 3,
-                statement: 'Seed',
+                statement: 'Seed / Angel',
                 statement_ar: '',
                 is_range: false
               },
@@ -146,8 +146,26 @@ steps = [
                 is_range: false
               },
               {
+                index: 3,
+                statement: 'Series B',
+                statement_ar: '',
+                is_range: false
+              },
+              {
                 index: 4,
-                statement: 'Other',
+                statement: 'Series C',
+                statement_ar: '',
+                is_range: false
+              },
+              {
+                index: 5,
+                statement: 'Series D',
+                statement_ar: '',
+                is_range: false
+              },
+              {
+                index: 6,
+                statement: 'Mezzanine & bridge',
                 statement_ar: '',
                 is_range: false
               }
@@ -170,7 +188,7 @@ steps = [
             index: 0,
             is_required: true,
             field_mapping: 'target',
-            statement: 'Deal Target',
+            statement: 'How much do you need to raise?',
             statement_ar: '',
             label: '',
             label_ar: '',
@@ -197,7 +215,7 @@ steps = [
             index: 0,
             is_required: true,
             field_mapping: 'funding_round_attributes.valuation',
-            statement: 'Valuation',
+            statement: 'Estimated Value',
             statement_ar: '',
             label: '',
             label_ar: '',
@@ -219,13 +237,13 @@ steps = [
             options_attributes: [
               {
                 index: 0,
-                statement: 'Pre-Money',
+                statement: 'Pre-Money Valuation',
                 statement_ar: '',
                 is_range: false
               },
               {
                 index: 1,
-                statement: 'Post-Money',
+                statement: 'Post-Money Valuation',
                 statement_ar: '',
                 is_range: false
               }
@@ -369,9 +387,6 @@ steps.each do |step|
     Rails.logger.debug record.errors.full_messages
   end
 end
-FieldAttribute.where(statement: 'Minimum Investment Size').each do |f|
-  f.update(statement: 'Minimum Check Size')
-end
 
 statements = ['Valuation Cap', 'Discount' ,'Minimum Check Size','Additional Terms']
 FieldAttribute.where(statement: statements).where.not(field_type: FIELD_TYPE[:switch]).each do |f|
@@ -388,22 +403,6 @@ section = Section.create({
 
 statements = ['Additional Terms', 'Minimum Check Size', 'Pro Rata']
 section.fields << FieldAttribute.where(statement: statements)
-
-
-statements = ['Valuation Cap', 'Discount' , 'MFN Only','Minimum Check Size','Pro Rata','Additional Terms']
-FieldAttribute.where(statement: statements).each do |f|
-  f.update(is_required: false)
-end
-
-field_mappings = ['funding_round_attributes.valuation', 'target']
-field_mappings.each do |mapping|
-  FieldAttribute.find_by(field_mapping: mapping).update(input_type: INPUT_TYPES[:currency])
-end
-
-FieldAttribute.find_by(field_mapping: 'terms_attributes.custom_input', statement: 'Valuation Cap').update(input_type: INPUT_TYPES[:currency])
-FieldAttribute.find_by(field_mapping: 'terms_attributes.custom_input', statement: 'Minimum Check Size').update(input_type: INPUT_TYPES[:currency])
-FieldAttribute.find_by(field_mapping: 'terms_attributes.custom_input', statement: 'Discount').update(input_type: INPUT_TYPES[:percent])
-
 
 attachments = [
   { statement: "Business Plan", label: "A comprehensive document outlining the business strategy, market analysis, and financial projections.", description: "To provide an in-depth understanding of the business  model and its growth prospects.", is_required: true },
@@ -427,8 +426,8 @@ attachments = [
 stepper = Stepper.find_by(title: 'attachments', stepper_type: STEPPERS[:startup_deal])
 section = stepper.sections.find_by(title: 'Add Attachments')
 fids = section.fields_sections.pluck(:field_id)
-section.fields_sections.delete_all
-FieldAttribute.where(id: fids).delete_all
+section.fields_sections&.delete_all
+FieldAttribute.where(id: fids)&.delete_all
 
 attachments.each_with_index do |attachment, index|
   field = FieldAttribute.create(
@@ -443,47 +442,3 @@ attachments.each_with_index do |attachment, index|
   )
   section.fields << field
 end
-
-
-# Changes in text
-
-field = FieldAttribute.find_by(statement: 'What round is this?')
-field.update(statement: 'What is your funding stage?', label: 'This will help you meet your next milestone')
-
-Option.find_by(statement: 'Pre-seed').update(index: 0)
-Option.find_by(statement: 'Angel Round').update(statement: 'Seed / Angel', index: 1)
-Option.find_by(statement: 'Seed').update(statement: 'Series B', index: 3)
-Option.find_by(statement: 'Other').update(statement: 'Series C', index: 4)
-options = [{ index: 5, statement: 'Series D', statement_ar: '', is_range: false }, { index: 6, statement: 'Mezzanine & bridge', statement_ar: '', is_range: false }]
-options.each do |option|
-  field.options.create(option)
-end
-
-# Step
-
-field = FieldAttribute.find_by(statement: 'Istrument Type')
-field.update(statement: 'Select an instrument to raise funds')
-Option.find_by(statement: 'SAFE Round').update(statement: 'SAFE', label: 'Commit to future equity for investors')
-Option.find_by(statement: 'Equity').update(statement: 'Equity Financing', label: 'Sell shares in exchange for capital')
-
-field = FieldAttribute.find_by(statement: 'SAFE Type')
-field.options.find_by(statement: 'Post-Money').update(statement: 'Valuation Cap, No Discount', label: 'Provide a maximum valuation')
-field.options.find_by(statement: 'Pre-Money').update(statement: 'Discount, No Valuation Cap', label: 'Offer a discounted price per share')
-field.options.create(statement: 'No Valuation Cap, No Discount', label: 'Offer investor same terms as subsequent investors, sans a cap or discount', is_range: false, index: 2)
-
-Option.find_by(statement: 'Preferred').update(label: 'Pay fixed dividends regularly')
-Option.find_by(statement: 'Common').update(label: 'Give shares of ownership and voting rights')
-
-# Step
-
-field = FieldAttribute.find_by(statement: 'Deal Target')
-field.update(statement: 'How much do you need to raise?')
-
-# step
-FieldAttribute.find_by(statement: 'Valuation').update(statement: 'Estimated Value')
-field = FieldAttribute.find_by(statement: 'Type')
-field.options.find_by(statement: 'Post-Money').update(statement: 'Post-Money Valuation')
-field.options.find_by(statement: 'Pre-Money').update(statement: 'Pre-Money Valuation')
-
-# step
-
