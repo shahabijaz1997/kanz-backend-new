@@ -113,7 +113,7 @@ steps = [
             index: 0,
             is_required: true,
             field_mapping: 'funding_round_attributes.round',
-            statement: 'What is your funding stage?'
+            statement: 'What is your funding stage?',
             statement_ar: '',
             label: 'This will help you meet your next milestone',
             label_ar: '',
