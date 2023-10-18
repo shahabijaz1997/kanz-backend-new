@@ -176,8 +176,44 @@ steps = [
     ]
   },
   {
-    title: 'round size',
+    title: 'Title',
     index: 2,
+    stepper_type: STEPPERS[:startup_deal],
+    sections_attributes: [
+      {
+        index: 0,
+        title: 'Describe your deal',
+        fields_attributes: [
+          {
+            index: 0,
+            is_required: true,
+            field_mapping: 'title',
+            statement: 'Title',
+            statement_ar: '',
+            label: "Add Title.",
+            label_ar: '',
+            field_type: FIELD_TYPE[:text_field],
+            description: '',
+            description_ar: ''
+          },{
+            index: 1,
+            is_required: false,
+            field_mapping: 'description',
+            statement: 'Startup description',
+            statement_ar: '',
+            label: "Brief Description of the property",
+            label_ar: '',
+            field_type: FIELD_TYPE[:text_box],
+            description: '',
+            description_ar: ''
+          }
+        ]
+      }
+    ]
+  },
+  {
+    title: 'round size',
+    index: 3,
     stepper_type: STEPPERS[:startup_deal],
     sections_attributes: [
       {
@@ -204,7 +240,7 @@ steps = [
   },
   {
     title: 'valuation',
-    index: 3,
+    index: 4,
     stepper_type: STEPPERS[:startup_deal],
     sections_attributes: [
       {
@@ -255,7 +291,7 @@ steps = [
   },
   {
     title: 'attachments',
-    index: 4,
+    index: 5,
     stepper_type: STEPPERS[:startup_deal],
     sections_attributes: [
       {
@@ -266,8 +302,44 @@ steps = [
     ]
   },
   {
+    title: 'Deal Timeline',
+    index: 6,
+    stepper_type: STEPPERS[:startup_deal],
+    sections_attributes: [
+      {
+        index: 0,
+        title: 'Select date',
+        fields_attributes: [
+          {
+            index: 0,
+            is_required: true,
+            field_mapping: 'start_at',
+            statement: 'start date',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:date],
+            description: '',
+            description_ar: ''
+          },{
+            index: 1,
+            is_required: false,
+            field_mapping: 'end_at',
+            statement: 'end date',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:date],
+            description: '',
+            description_ar: ''
+          }
+        ]
+      }
+    ]
+  },
+  {
     title: 'terms',
-    index: 5,
+    index: 7,
     stepper_type: STEPPERS[:startup_deal],
     sections_attributes: [
       {
@@ -367,7 +439,7 @@ steps = [
   },
   {
     title: 'review',
-    index: 6,
+    index: 8,
     stepper_type: STEPPERS[:startup_deal],
     sections_attributes: [
       {
