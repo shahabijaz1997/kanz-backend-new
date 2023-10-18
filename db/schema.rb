@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_18_064434) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_18_075402) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -54,11 +54,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_18_064434) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "admin_role_id"
     t.string "first_name"
     t.string "last_name"
+    t.bigint "admin_role_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "deactivated"
     t.index ["admin_role_id"], name: "index_admin_users_on_admin_role_id"
     t.index ["email"], name: "index_admin_users_on_email", unique: true
@@ -307,18 +307,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_18_064434) do
     t.boolean "has_parking"
     t.integer "parking_capacity"
     t.boolean "has_swimming_pool"
-    t.integer "swimming_pool_type", default: 0
+    t.bigint "swimming_pool_id", default: 0
     t.boolean "is_rental"
-    t.integer "rental_period", default: 0
+    t.bigint "rental_period_id", default: 0
     t.decimal "rental_amount"
     t.float "dividend_yeild"
     t.float "yearly_appreciation"
     t.jsonb "external_links", default: {}
     t.bigint "deal_id"
+    t.bigint "field_attribute_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_property_details_on_country_id"
     t.index ["deal_id"], name: "index_property_details_on_deal_id"
+    t.index ["field_attribute_id"], name: "index_property_details_on_field_attribute_id"
   end
 
   create_table "questions", force: :cascade do |t|

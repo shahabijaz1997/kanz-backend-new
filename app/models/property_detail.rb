@@ -7,12 +7,12 @@ class PropertyDetail < ApplicationRecord
     %w[size rental_amount is_rental]
   end
 
-  belongs_to :swimming_pool_type, class_name: 'Option', foreign_key: 'swimming_pool_type'
-  belongs_to :rental_period, class_name: 'Option', foreign_key: 'rental_period'
-  belongs_to :country, class_name: 'Option', foreign_key: 'country_id'
+  belongs_to :swimming_pool, class_name: 'Option'
+  belongs_to :rental_period, class_name: 'Option'
+  belongs_to :country, class_name: 'Option'
 
-  def swimming_pool
-    swimming_pool_type&.statement
+  def swimming_pool_type
+    swimming_pool&.statement
   end
 
   def rental_duration

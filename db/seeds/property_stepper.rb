@@ -262,7 +262,7 @@ steps = [
           {
             index: 9,
             is_required: false,
-            field_mapping: 'property_detail_attributes.swimming_pool_type',
+            field_mapping: 'property_detail_attributes.swimming_pool_id',
             statement: 'Swimming Pool',
             statement_ar: '',
             label: "",
@@ -299,7 +299,7 @@ steps = [
           {
             index: 11,
             is_required: false,
-            field_mapping: 'property_detail_attributes.rental_period',
+            field_mapping: 'property_detail_attributes.rental_period_id',
             statement: 'duration',
             statement_ar: '',
             label: "",
