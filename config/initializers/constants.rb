@@ -119,10 +119,11 @@ FIELD_TYPE = {
   dropdown: 5,
   text_field: 6,
   file: 7,
-  url: 8
+  url: 8,
+  date: 9
 }.freeze
 
-VALUE_FIELDS = ['switch', 'text_box', 'number', 'text_field', 'url', 'file'].freeze
+VALUE_FIELDS = ['switch', 'text_box', 'number', 'text_field', 'url', 'file', 'date'].freeze
 OPTION_FIELDS = ['multiple_choice', 'checkbox', 'dropdown'].freeze
 INPUT_TYPES = {
   currency: 0,

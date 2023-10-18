@@ -1,8 +1,8 @@
-field = FieldAttribute.find_by(field_mapping: "funding_round_attributes.instrument_type")
+field = FieldAttribute.find_by(field_mapping: "funding_round_attributes.instrument_type_id")
 value = field.options.find_by(statement: 'SAFE').id
 value2 = field.options.find_by(statement: 'Equity Financing').id
-dependent_field = FieldAttribute.find_by(field_mapping: 'funding_round_attributes.safe_type')
-dependent_field2 = FieldAttribute.find_by(field_mapping: 'funding_round_attributes.equity_type')
+dependent_field = FieldAttribute.find_by(field_mapping: 'funding_round_attributes.safe_type_id')
+dependent_field2 = FieldAttribute.find_by(field_mapping: 'funding_round_attributes.equity_type_id')
 dependent_step = Stepper.find_by(title: 'valuation', stepper_type: STEPPERS[:startup_deal])
 
 dependencies = [
