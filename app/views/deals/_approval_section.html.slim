@@ -4,12 +4,17 @@
       li.list-group-item
         span.col-3.title Comment
         span.col.value
-          = form.text_area :audit_comment, rows: 3, class: "form-control", placeholder: 'Application Feedback', required: true
+          = form.text_area :audit_comment, rows: 3, class: "form-control", placeholder: 'Deal Feedback', required: true
       li.list-group-item
-        span.col-3.title Select model
-        span.col.value
-          div.checkboxes
-            = form.collection_radio_buttons :model, [['Syndicate Model', :syndicate], ['Classic Model', :classic, {:checked => true}]], :second, :first
+        - if current_admin_user.customer_support_rep? && resource.submitted?
+          span.col-3.title Select model
+          span.col.value
+            div.checkboxes
+              = form.collection_radio_buttons :model, [['Syndicate Model', :syndicate], ['Classic Model', :classic, {:checked => true}]], :second, :first
+        - else
+          span.col-3.title Model Selected
+          span.col.value = @deal.model.titleize
+
       li.list-group-item
         span.col-3.title Action
         span.col.value
@@ -18,7 +23,7 @@
       li.list-group-item
         span.col-3.title Documents
         span.col.value
-          input type="file" id="myFile" name="filename" multiple="multiple"
+          = form.file_field :attachments, include_hidden: false, multiple: true
       li.list-group-item
         span.col-3.title
         span.col.value

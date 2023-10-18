@@ -23,7 +23,7 @@ div.w-75
       = render 'shared/section_list_item', title: 'Profile Link', value: @syndicate.profile.profile_link
       = render 'shared/section_list_item', title: 'Excepted Dealflow', value: @syndicate.profile.dealflow
 
-  = render 'shared/attachments_section', resource: @syndicate
+  = render 'shared/attachments_section', attachments: @syndicate.attachments
 
   = render 'shared/approval_section', resource: @syndicate
   = render 'shared/history_section', resource: @syndicate

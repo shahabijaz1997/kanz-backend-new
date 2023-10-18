@@ -35,4 +35,12 @@ module ApprovalHelper
       "#{user.name} (#{user.realtor? ? 'Property Owner' : 'Startup'})"
     end
   end
+
+  def customer_support_rep_attachments(resource)
+    resource.attachments.where(uploaded_by: AdminUser.customer_support_rep)
+  end
+  
+  def compliance_officer_attachments(resource)
+    resource.attachments.where(uploaded_by: AdminUser.compliance_officer)
+  end
 end

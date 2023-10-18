@@ -60,11 +60,22 @@
       }
 
       .attachment {
+        display: flex;
+        justify-content: center;
+
         img {
           max-width: 250px;
           max-height: 250px;
           object-fit: contain;
         }
+      }
+
+      .attachments {
+        display: flex;
+        justify-content: start;
+        flex-wrap: wrap;
+        gap: 15px;
+        padding: 20px 0;
       }
 
       .attached_logo {

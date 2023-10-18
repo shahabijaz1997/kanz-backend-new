@@ -14,6 +14,7 @@ class DealsController < ApplicationController
   def update
     respond_to do |format|
       if @deal.update(update_status_params)
+        upload_attachments
         format.html { redirect_to @deal, notice: 'Successfully updated.' }
       else
         format.html { render :show, status: :unprocessable_entity }
@@ -23,11 +24,21 @@ class DealsController < ApplicationController
 
   private
 
+  def upload_attachments
+    attachment_attributes&.each do |attachment|
+      @deal.attachments.create(attachment_kind: attachment.content_type, file: attachment, uploaded_by: current_user)
+    end
+  end
+
   def set_deal
     @deal = policy_scope(Deal).find(params[:id])
   end
 
   def update_status_params
     params.require(:deal).permit(:audit_comment, :model, :status)
+  end
+
+  def attachment_attributes
+    params.require(:deal).permit(attachments: [])[:attachments]
   end
 end

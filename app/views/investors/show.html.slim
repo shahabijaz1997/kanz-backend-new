@@ -16,6 +16,6 @@ div.w-75
 
 
   = render 'investment_philosophies', resource: @investor
-  = render 'shared/attachments_section', resource: @investor
+  = render 'shared/attachments_section', attachments: @investor.attachments
   = render 'shared/approval_section', resource: @investor
   = render 'shared/history_section', resource: @investor
