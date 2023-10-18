@@ -117,5 +117,11 @@ Stepper.create(  {
   ]
 })
 
-FieldAttribute.find_by(field_mapping: 'property_detail_attributes.swimming_pool_type').update(field_mapping: 'property_detail_attributes.swimming_pool_id')
-FieldAttribute.find_by(field_mapping: 'property_detail_attributes.rental_period').update(field_mapping: 'property_detail_attributes.rental_period_id')
+FieldAttribute.find_by(field_mapping: 'property_detail_attributes.swimming_pool_type')&.update(field_mapping: 'property_detail_attributes.swimming_pool_id')
+FieldAttribute.find_by(field_mapping: 'property_detail_attributes.rental_period')&.update(field_mapping: 'property_detail_attributes.rental_period_id')
+
+FieldAttribute.find_by(field_mapping: 'funding_round_attributes.valuation_phase')&.update(field_mapping: 'funding_round_attributes.valuation_phase_id')
+FieldAttribute.find_by(field_mapping: 'funding_round_attributes.round')&.update(field_mapping: 'funding_round_attributes.round_id')
+FieldAttribute.find_by(field_mapping: 'funding_round_attributes.equity_type')&.update(field_mapping: 'funding_round_attributes.equity_type_id')
+FieldAttribute.find_by(field_mapping: 'funding_round_attributes.safe_type')&.update(field_mapping: 'funding_round_attributes.safe_type_id')
+FieldAttribute.find_by(field_mapping: 'funding_round_attributes.instrument_type')&.update(field_mapping: 'funding_round_attributes.instrument_type_id')

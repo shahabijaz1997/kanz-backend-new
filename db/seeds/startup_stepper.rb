@@ -11,7 +11,7 @@ steps = [
           {
             index: 0,
             is_required: true,
-            field_mapping: 'funding_round_attributes.instrument_type',
+            field_mapping: 'funding_round_attributes.instrument_type_id',
             statement: 'Select an instrument to raise funds',
             statement_ar: '',
             label: '',
@@ -40,7 +40,7 @@ steps = [
           }, {
             index: 1,
             is_required: true,
-            field_mapping: 'funding_round_attributes.safe_type',
+            field_mapping: 'funding_round_attributes.safe_type_id',
             statement: 'SAFE Type',
             statement_ar: '',
             label: '',
@@ -75,7 +75,7 @@ steps = [
           }, {
             index: 1,
             is_required: true,
-            field_mapping: 'funding_round_attributes.equity_type',
+            field_mapping: 'funding_round_attributes.equity_type_id',
             statement: 'Equity Type',
             statement_ar: '',
             label: '',
@@ -118,7 +118,7 @@ steps = [
           {
             index: 0,
             is_required: true,
-            field_mapping: 'funding_round_attributes.round',
+            field_mapping: 'funding_round_attributes.round_id',
             statement: 'What is your funding stage?',
             statement_ar: '',
             label: 'This will help you meet your next milestone',
@@ -262,7 +262,7 @@ steps = [
           }, {
             index: 1,
             is_required: true,
-            field_mapping: 'funding_round_attributes.valuation_phase',
+            field_mapping: 'funding_round_attributes.valuation_phase_id',
             statement: 'Type',
             statement_ar: '',
             label: '',

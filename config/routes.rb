@@ -37,7 +37,11 @@ Rails.application.routes.draw do
     resources :countries, only: %i[index]
     resources :users, only: %i[show update]
     resources :industries, only: %i[index]
-    resources :deals
+    resources :deals do
+      member do
+        get :overview
+      end
+    end
     post 'deals/:id/submit' => 'deals#submit'
     get 'deals/:id/review' => 'deals#review'
     get 'settings/attachments' => 'settings#attachments'

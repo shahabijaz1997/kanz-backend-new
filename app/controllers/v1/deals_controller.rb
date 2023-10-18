@@ -3,8 +3,8 @@
 # Startups apis
 module V1
   class DealsController < ApiController
-    before_action :find_deal, only: [:show, :review, :submit]
-    before_action :set_deal, only: [:create]
+    before_action :find_deal, only: %i[show review submit overview]
+    before_action :set_deal, only: %i[create]
 
     def index
       deals = DealSerializer.new(current_user.deals.order(created_at: :desc)).serializable_hash[:data].map do |d|
@@ -42,6 +42,10 @@ module V1
       else
         failure(@deal.errors.full_messages.to_sentence)
       end
+    end
+
+    def overview
+      success('Success', Deals::Overview.call(@deal))
     end
 
     private
