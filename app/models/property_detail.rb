@@ -3,12 +3,8 @@
 class PropertyDetail < ApplicationRecord
   belongs_to :deal
 
-  def self.ransackable_attributes(_auth_object = nil)
-    %w[size rental_amount is_rental]
-  end
-
-  belongs_to :swimming_pool, class_name: 'Option'
-  belongs_to :rental_period, class_name: 'Option'
+  belongs_to :swimming_pool, class_name: 'Option', optional: true
+  belongs_to :rental_period, class_name: 'Option', optional: true
   belongs_to :country, class_name: 'Option'
 
   def swimming_pool_type
@@ -21,5 +17,13 @@ class PropertyDetail < ApplicationRecord
 
   def country_name
     country&.statement
+  end
+
+  def location_detail
+    [street_address, building_name, area, city, state, country_name].join(', ')
+  end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[size rental_amount is_rental]
   end
 end
