@@ -116,3 +116,6 @@ Stepper.create(  {
     }
   ]
 })
+
+FieldAttribute.find_by(field_mapping: 'property_detail_attributes.swimming_pool_type').update(field_mapping: 'property_detail_attributes.swimming_pool_id')
+FieldAttribute.find_by(field_mapping: 'property_detail_attributes.rental_period').update(field_mapping: 'property_detail_attributes.rental_period_id')

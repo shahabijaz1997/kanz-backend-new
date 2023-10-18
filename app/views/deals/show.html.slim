@@ -1,0 +1,8 @@
+= link_to '< Back', :back, class: 'mb-2'
+= render 'shared/page_title', title: "#{@deal.startup? ? 'Startup' : 'Property'} Deal"
+
+div.w-75
+  = render "#{@deal.deal_type}"
+  = render 'shared/attachments_section', resource: @deal
+  = render 'approval_section', resource: @deal
+  = render 'shared/history_section', resource: @deal

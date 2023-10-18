@@ -59,7 +59,12 @@ Rails.application.routes.draw do
   resources :realtors, only: %i[index show update]
   resources :startups, only: %i[index show update]
   resources :syndicates, only: %i[index show update]
-  resources :stepper, only: %i[index new create edit update]
+  resources :deals, only: %i[update] do
+    collection do
+      resources :start_up, only: %i[index show], controller: 'deals', type: 'start_up'
+      resources :property, only: %i[index show], controller: 'deals', type: 'property'
+    end
+  end
   resources :profile, only: %i[index] do
     collection do
       get :edit
