@@ -1,4 +1,4 @@
-= render 'shared/section_card', section_title: 'Application Approval', editable: false do
+= render 'shared/section_card', section_title: 'Deal Approval', editable: false do
   - if user_can_approve(resource)
     = form_for resource, method: :put do |form|
       li.list-group-item
@@ -6,10 +6,19 @@
         span.col.value
           = form.text_area :audit_comment, rows: 3, class: "form-control", placeholder: 'Application Feedback', required: true
       li.list-group-item
+        span.col-3.title Select model
+        span.col.value
+          div.checkboxes
+            = form.collection_radio_buttons :model, [['Syndicate Model', :syndicate], ['Classic Model', :classic, {:checked => true}]], :second, :first
+      li.list-group-item
         span.col-3.title Action
         span.col.value
           div.checkboxes
             = form.collection_radio_buttons :status, approval_options(resource), :second, :first
+      li.list-group-item
+        span.col-3.title Documents
+        span.col.value
+          input type="file" id="myFile" name="filename" multiple="multiple"
       li.list-group-item
         span.col-3.title
         span.col.value

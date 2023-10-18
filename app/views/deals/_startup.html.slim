@@ -1,0 +1,17 @@
+= render 'shared/section_card', section_title: 'Investor detail', editable: false do
+  = render 'shared/section_list_item', title: 'Stage', value: option_value(@deal.funding_round.round)
+  = render 'shared/section_list_item', title: 'Instrument Type', value: option_value(@deal.funding_round.instrument_type)
+  = render 'shared/section_list_item', title: 'Equity Type', value: option_value(@deal.funding_round.equity_type)
+  = render 'shared/section_list_item', title: 'Deal Target', value: "$#{@deal.target}"
+  = render 'shared/section_list_item', title: 'Valuation', value: "$#{@deal.funding_round.valuation}"
+  = render 'shared/section_list_item', title: 'Valuation Phase', value: option_value(@deal.funding_round.valuation_phase)
+  li.list-group-item
+    span.col-3.title Status
+    span.col = render 'shared/user_status', status: @deal.status
+
+= render 'shared/section_card', section_title: 'Deal Description', editable: false do
+  = render 'shared/section_list_item', title: 'Description', value: @deal.description
+
+= render 'shared/section_card', section_title: 'Investor Terms', editable: false do
+  - @deal.terms.each do |term|
+    = render 'shared/section_list_item', title: option_value(term.field_attribute_id), value: term.custom_input

@@ -8,6 +8,6 @@ class Startup < User
   end
 
   def self.ransackable_associations(_auth_object = nil)
-    ['profile']
+    %w[profile]
   end
 end

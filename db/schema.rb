@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_10_122218) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_18_064434) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -54,11 +54,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_10_122218) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.string "first_name"
-    t.string "last_name"
-    t.bigint "admin_role_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "admin_role_id"
+    t.string "first_name"
+    t.string "last_name"
     t.boolean "deactivated"
     t.index ["admin_role_id"], name: "index_admin_users_on_admin_role_id"
     t.index ["email"], name: "index_admin_users_on_email", unique: true
@@ -88,7 +88,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_10_122218) do
     t.datetime "updated_at", null: false
     t.bigint "configurable_id"
     t.string "configurable_type", default: "AttachmentConfig"
+    t.string "uploaded_by_type"
+    t.bigint "uploaded_by_id"
     t.index ["parent_type", "parent_id"], name: "index_attachments_on_parent"
+    t.index ["uploaded_by_type", "uploaded_by_id"], name: "index_attachments_on_uploaded_by"
   end
 
   create_table "audits", force: :cascade do |t|
@@ -138,6 +141,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_10_122218) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "current_state", default: {}
+    t.integer "model", default: 0
     t.index ["author_id"], name: "index_deals_on_author_id"
   end
 
@@ -311,12 +315,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_10_122218) do
     t.float "yearly_appreciation"
     t.jsonb "external_links", default: {}
     t.bigint "deal_id"
-    t.bigint "field_attribute_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_property_details_on_country_id"
     t.index ["deal_id"], name: "index_property_details_on_deal_id"
-    t.index ["field_attribute_id"], name: "index_property_details_on_field_attribute_id"
   end
 
   create_table "questions", force: :cascade do |t|

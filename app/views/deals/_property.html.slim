@@ -1,0 +1,36 @@
+= render 'shared/section_card', section_title: 'Property detail', editable: false do
+  = render 'shared/section_list_item', title: 'Title', value: @deal.title
+  = render 'shared/section_list_item', title: 'Size', value: "#{@deal.property_detail.size} sqft" if @deal.property_detail.present?
+  = render 'shared/section_list_item', title: 'Selling Price', value: ("$#{@deal.target}" if @deal.target.present?)
+  = render 'shared/section_list_item', title: 'Expected Dividend Yield', value: ("#{@deal.property_detail.dividend_yeild}%" if @deal.property_detail.dividend_yeild.present?)
+  = render 'shared/section_list_item', title: 'Expected Annual Appreciation', value: ("#{@deal.property_detail.yearly_appreciation}%" if @deal.property_detail.yearly_appreciation.present?)
+  = render 'shared/section_list_item', title: 'Rent', value: "$#{@deal.property_detail.rental_amount}"
+  li.list-group-item
+    span.col-3.title Status
+    span.col = render 'shared/user_status', status: @deal.status
+
+= render 'shared/section_card', section_title: 'Features', editable: false do
+  = render 'shared/section_list_item', title: 'Beds', value: @deal.property_detail.no_bedrooms
+  = render 'shared/section_list_item', title: 'Kitchens', value: @deal.property_detail.no_kitchen
+  = render 'shared/section_list_item', title: 'Washrooms', value: @deal.property_detail.no_washrooms
+  = render 'shared/section_list_item', title: 'Parking Space', value: @deal.property_detail.parking_capacity
+  = render 'shared/section_list_item', title: 'Swimming Pool', value: option_value(@deal.property_detail.swimming_pool_type)
+
+= render 'shared/section_card', section_title: 'External Links', editable: false do
+  - if @deal.external_links.present?
+    - @deal.external_links.each_with_index do |link, index|
+      = render 'shared/section_list_item', title: "Link #{index + 1}", value: link.url
+  - else
+    li.list-group-item
+      span.title Step unfinished
+
+= render 'shared/section_card', section_title: 'Deal Description', editable: false do
+  = render 'shared/section_list_item', title: 'Description', value: @deal.description
+
+= render 'shared/section_card', section_title: 'Unique Selling Point', editable: false do
+  - if @deal.features.present?
+    - @deal.features.each do |feature|
+      = render 'shared/section_list_item', title: feature.title, value: feature.description
+  - else
+    li.list-group-item
+      span.title Step unfinished

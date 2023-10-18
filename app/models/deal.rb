@@ -17,9 +17,12 @@ class Deal < ApplicationRecord
   accepts_nested_attributes_for :property_detail
 
   enum deal_type: DEAL_TYPES
-  enum status: { draft: 0, submitted: 1 }
+  enum status: { draft: 0, submitted: 1, reopened: 2, verified: 3, rejected: 4, approved: 5 }
+  enum model: { classic: 0, sydicate: 1 }
 
   after_save :update_current_state
+
+  audited only: :status, on: %i[update]
 
   def update_current_state
     current_state['current_step'] = step
@@ -28,5 +31,13 @@ class Deal < ApplicationRecord
     current_state['steps'] = (current_state['steps'] | [step].compact)
 
     self.update_column(:current_state, current_state)
+  end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[title status target]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[user property_detail funding_round]
   end
 end

@@ -49,14 +49,15 @@ ROUTES = {
       name: "Investors",
       path: "investors",
       icon: "fa fa-money-bill-trend-up",
-      sub_routes: [{
-        name: "Individuals",
-        path: "individuals"
-      },
-      {
-        name: "Firms",
-        path: "firms"
-      }
+      sub_routes: [
+        {
+          name: "Individuals",
+          path: "individuals"
+        },
+        {
+          name: "Firms",
+          path: "firms"
+        }
       ]
     },
     {
@@ -73,6 +74,21 @@ ROUTES = {
       name: "Syndicates",
       path: "syndicates",
       icon: "fa fa-sitemap"
+    },
+    {
+      name: "Deals",
+      path: "deals",
+      icon: "fa fa-briefcase",
+      sub_routes: [
+        {
+          name: "Startup",
+          path: "start_up"
+        },
+        {
+          name: "Property",
+          path: "property"
+        }
+      ]
     }
   ]
 }.freeze

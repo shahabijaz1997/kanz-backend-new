@@ -3,6 +3,7 @@
 class Attachment < ApplicationRecord
   belongs_to :parent, polymorphic: true
   belongs_to :configurable, polymorphic: true, optional: true
+  belongs_to :uploaded_by, polymorphic: true, optional: true
 
   has_one_attached :file
 
