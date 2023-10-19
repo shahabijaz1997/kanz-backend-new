@@ -13,7 +13,7 @@ class DealsController < ApplicationController
 
   def update
     respond_to do |format|
-      if @deal.update(update_status_params)
+      if user_can_approve(@deal) && @deal.update(update_status_params)
         upload_attachments
         format.html { redirect_to @deal, notice: 'Successfully updated.' }
       else

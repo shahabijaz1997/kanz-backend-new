@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   include PunditHelper
   include ActiveStorage::SetCurrent
   include Pagy::Backend
+  include ApprovalHelper
 
   protect_from_forgery with: :null_session
   before_action :authenticate_admin_user!
