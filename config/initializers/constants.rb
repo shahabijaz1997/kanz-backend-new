@@ -131,3 +131,6 @@ INPUT_TYPES = {
   sqft: 2,
   numeric: 4
 }.freeze
+
+STAGES = ['Pre-seed', 'Seed / Angel', 'Series A', 'Series B', 'Series C', 'Series D', 'Mezzanine & bridge']
+INSTRUMENT_TYPES = ['SAFE', 'Equity Financing']

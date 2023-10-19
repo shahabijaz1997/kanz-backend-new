@@ -3,10 +3,6 @@
 class FundingRound < ApplicationRecord
   belongs_to :deal
 
-  def self.ransackable_attributes(_auth_object = nil)
-    %w[instrument_type round]
-  end
-
   belongs_to :round, class_name: 'Option', optional: true
   belongs_to :instrument_type, class_name: 'Option', optional: true
   belongs_to :safe_type, class_name: 'Option', optional: true
@@ -31,5 +27,13 @@ class FundingRound < ApplicationRecord
 
   def valuation_type
     valuation_phase&.statement
+  end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[instrument_type_id round_id]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[instrument_type round]
   end
 end
