@@ -131,3 +131,5 @@ INPUT_TYPES = {
   sqft: 2,
   numeric: 4
 }.freeze
+
+DEAL_STEPPER_DATE_FIELDS = ['start_at', 'end_at'].freeze

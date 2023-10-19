@@ -45,6 +45,7 @@ module Settings
                 end
                 field[:options] = options
               end
+              value = parsed_date(value) if is_date_value?(field[:field_mapping])
               field[:value] = value
             end
           end
@@ -53,6 +54,16 @@ module Settings
         step[:en][:sections] = sections
       end
       steps
+    end
+
+    def is_date_value?(mapping)
+      mapping.in? DEAL_STEPPER_DATE_FIELDS
+    end
+
+    def parsed_date(value)
+      return value if value.blank?
+
+      Date.parse(value.to_s).strftime('%d/%m/%Y')
     end
 
     def map_multiple_fields(fields)
@@ -160,15 +171,23 @@ module Settings
         step[:en][:sections].each do |section|
           current_step[:fields] << section[:fields].map do |field|
             if section[:is_multiple]
-              { statement: field[:statement], value: field[:value], index: field[:index] }
+              { statement: field[:statement], value: field[:value], index: field[:index], unit: unit(field[:input_type]) }
             else
-              { statement: field[:statement], value: field[:value] }
+              { statement: field[:statement], value: field[:value], unit: unit(field[:input_type]) }
             end
           end
         end
         current_step[:fields] = current_step[:fields].flatten(1)
         current_step
       end
+    end
+
+    def unit(input_type = nil)
+      return '' if input_type.blank? || input_type == 'number'
+
+      return '$' if input_type == 'currency'
+      return '%' if input_type == 'percent'
+      return 'sqft' if input_type == 'sqft'
     end
   end
 end
