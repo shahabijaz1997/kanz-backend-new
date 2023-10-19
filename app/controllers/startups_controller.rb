@@ -14,7 +14,7 @@ class StartupsController < ApplicationController
 
   def update
     respond_to do |format|
-      if @startup.update(update_status_params)
+      if user_can_approve(@startup) && @startup.update(update_status_params)
         format.html { redirect_to @startup, notice: 'Successfully updated.' }
       else
         format.html { render :show, status: :unprocessable_entity }
