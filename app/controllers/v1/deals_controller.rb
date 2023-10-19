@@ -7,7 +7,13 @@ module V1
     before_action :set_deal, only: %i[create]
 
     def index
-      deals = DealSerializer.new(current_user.deals.order(created_at: :desc)).serializable_hash[:data].map do |d|
+      deals = if current_user.syndicate?
+        Deal.syndicate_deals.latest_first
+      else
+        current_user.deals.latest_first
+      end
+
+      deals = DealSerializer.new(deals).serializable_hash[:data].map do |d|
         simplify_deal_attributes(d[:attributes])
       end
       success('success', deals)
