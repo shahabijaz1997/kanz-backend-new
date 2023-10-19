@@ -30,9 +30,10 @@ class Deal < ApplicationRecord
   scope :latest_first, -> { order(created_at: :desc) }
 
   def update_current_state
-    current_state['current_step'] = step
+    current_state['current_step'] = submitted? ? 0 : step
     current_state['submitted'] = submitted?
     current_state['steps'] ||= []
+    current_state['steps'] = [] if submitted?
     current_state['steps'] = (current_state['steps'] | [step].compact)
 
     self.update_column(:current_state, current_state)

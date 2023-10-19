@@ -57,7 +57,7 @@ module V1
     end
 
     def submit
-      if @deal.update(status: Deal.statuses[:submitted], submitted_at: Time.zone.now)
+      if @deal.update(status: Deal.statuses[:submitted], submitted_at: Time.zone.now, current_state: {})
         DealsMailer::submission(@deal, current_user).deliver_now
         success(@deal)
       else
