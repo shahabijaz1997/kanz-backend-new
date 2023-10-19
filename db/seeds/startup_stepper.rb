@@ -1,19 +1,21 @@
 steps = [
   {
     title: 'instrument',
+    title_ar: 'أداة',
     index: 0,
     stepper_type: STEPPERS[:startup_deal],
     sections_attributes: [
       {
         index: 0,
         title: 'Instrument Type',
+        title_ar: 'نوع الصك',
         fields_attributes: [
           {
             index: 0,
             is_required: true,
             field_mapping: 'funding_round_attributes.instrument_type_id',
             statement: 'Select an instrument to raise funds',
-            statement_ar: '',
+            statement_ar: 'حدد أداة لجمع الأموال',
             label: '',
             label_ar: '',
             field_type: FIELD_TYPE[:multiple_choice],
@@ -23,17 +25,17 @@ steps = [
               {
                 index: 0,
                 statement: 'SAFE',
-                statement_ar: '',
+                statement_ar: 'آمن',
                 label: 'Commit to future equity for investors',
-                label_ar: '',
+                label_ar: 'الالتزام بالأسهم المستقبلية للمستثمرين',
                 is_range: false
               },
               {
                 index: 1,
                 statement: 'Equity Financing',
-                statement_ar: '',
+                statement_ar: 'تمويل أسهم رأس المال',
                 label: 'Sell shares in exchange for capital',
-                label_ar: '',
+                label_ar: 'بيع الأسهم مقابل رأس المال',
                 is_range: false
               }
             ]
@@ -42,7 +44,7 @@ steps = [
             is_required: true,
             field_mapping: 'funding_round_attributes.safe_type_id',
             statement: 'SAFE Type',
-            statement_ar: '',
+            statement_ar: 'نوع آمن',
             label: '',
             label_ar: '',
             field_type: FIELD_TYPE[:multiple_choice],
@@ -52,23 +54,25 @@ steps = [
               {
                 index: 0,
                 statement: 'Discount, No Valuation Cap',
-                statement_ar: '',
+                statement_ar: 'الخصم، لا سقف للتقييم',
                 label: 'Offer a discounted price per share',
-                label_ar: '',
+                label_ar: 'تقديم سعر مخفض للسهم الواحد',
                 is_range: false
               },
               {
                 index: 1,
                 statement: 'Valuation Cap, No Discount',
-                statement_ar: '',
+                statement_ar: 'سقف التقييم، لا يوجد خصم',
                 label: 'Provide a maximum valuation',
-                label_ar: '',
+                label_ar: 'تقديم الحد الأقصى للتقييم',
                 is_range: false
               },
               {
                 index: 2,
                 statement: 'No Valuation Cap, No Discount',
+                statement_ar: 'لا سقف للتقييم، لا خصم',
                 label: 'Offer investor same terms as subsequent investors, sans a cap or discount',
+                label_ar: 'تقديم نفس الشروط للمستثمرين مثل المستثمرين اللاحقين، بدون سقف أو خصم',
                 is_range: false
               }
             ]
@@ -77,7 +81,7 @@ steps = [
             is_required: true,
             field_mapping: 'funding_round_attributes.equity_type_id',
             statement: 'Equity Type',
-            statement_ar: '',
+            statement_ar: 'نوع الأسهم',
             label: '',
             label_ar: '',
             field_type: FIELD_TYPE[:multiple_choice],
@@ -87,17 +91,17 @@ steps = [
               {
                 index: 0,
                 statement: 'Preferred',
-                statement_ar: '',
+                statement_ar: 'يفضل',
                 label: 'Pay fixed dividends regularly',
-                label_ar: '',
+                label_ar: 'دفع أرباح ثابتة بانتظام',
                 is_range: false
               },
               {
                 index: 1,
                 statement: 'Common',
-                statement_ar: '',
+                statement_ar: 'شائع',
                 label: 'Give shares of ownership and voting rights',
-                label_ar: '',
+                label_ar: 'إعطاء أسهم الملكية وحقوق التصويت',
                 is_range: false
               }
             ]
@@ -108,21 +112,23 @@ steps = [
   },
   {
     title: 'stage',
+    title_ar: 'منصة',
     index: 1,
     stepper_type: STEPPERS[:startup_deal],
     sections_attributes: [
       {
         index: 0,
         title: 'Stage',
+        title_ar: 'منصة',
         fields_attributes: [
           {
             index: 0,
             is_required: true,
             field_mapping: 'funding_round_attributes.round_id',
             statement: 'What is your funding stage?',
-            statement_ar: '',
+            statement_ar: 'ما هي مرحلة التمويل الخاصة بك؟',
             label: 'This will help you meet your next milestone',
-            label_ar: '',
+            label_ar: 'سيساعدك هذا على تحقيق إنجازك التالي',
             field_type: FIELD_TYPE[:multiple_choice],
             description: '',
             description_ar: '',
@@ -130,43 +136,43 @@ steps = [
               {
                 index: 0,
                 statement: 'Pre-seed',
-                statement_ar: '',
+                statement_ar: 'ما قبل البذور',
                 is_range: false
               },
               {
                 index: 1,
                 statement: 'Seed / Angel',
-                statement_ar: '',
+                statement_ar: 'بذرة / ملاك',
                 is_range: false
               },
               {
                 index: 2,
                 statement: 'Series A',
-                statement_ar: '',
+                statement_ar: 'السلسلة أ',
                 is_range: false
               },
               {
                 index: 3,
                 statement: 'Series B',
-                statement_ar: '',
+                statement_ar: 'السلسلة ب',
                 is_range: false
               },
               {
                 index: 4,
                 statement: 'Series C',
-                statement_ar: '',
+                statement_ar: 'السلسلة ج',
                 is_range: false
               },
               {
                 index: 5,
                 statement: 'Series D',
-                statement_ar: '',
+                statement_ar: 'السلسلة د',
                 is_range: false
               },
               {
                 index: 6,
                 statement: 'Mezzanine & bridge',
-                statement_ar: '',
+                statement_ar: 'الميزانين والجسر',
                 is_range: false
               }
             ]
@@ -177,6 +183,7 @@ steps = [
   },
   {
     title: 'Title',
+    title_ar: 'عنوان',
     index: 2,
     stepper_type: STEPPERS[:startup_deal],
     sections_attributes: [
@@ -213,6 +220,7 @@ steps = [
   },
   {
     title: 'round size',
+    title_ar: 'حجم دائري',
     index: 3,
     stepper_type: STEPPERS[:startup_deal],
     sections_attributes: [
@@ -240,6 +248,7 @@ steps = [
   },
   {
     title: 'valuation',
+    title_ar: 'تقييم',
     index: 4,
     stepper_type: STEPPERS[:startup_deal],
     sections_attributes: [
@@ -291,6 +300,7 @@ steps = [
   },
   {
     title: 'attachments',
+    title_ar: 'المرفقات',
     index: 5,
     stepper_type: STEPPERS[:startup_deal],
     sections_attributes: [
@@ -303,6 +313,7 @@ steps = [
   },
   {
     title: 'Deal Timeline',
+    title_ar: 'الجدول الزمني للصفقة',
     index: 6,
     stepper_type: STEPPERS[:startup_deal],
     sections_attributes: [
@@ -340,6 +351,7 @@ steps = [
   {
     title: 'terms',
     index: 7,
+    title_ar: 'شروط',
     stepper_type: STEPPERS[:startup_deal],
     sections_attributes: [
       {
@@ -439,6 +451,7 @@ steps = [
   },
   {
     title: 'review',
+    title_ar: 'مراجعة',
     index: 8,
     stepper_type: STEPPERS[:startup_deal],
     sections_attributes: [
@@ -449,6 +462,38 @@ steps = [
     ]
   }
 ]
+
+Stepper.find_by(title: 'review').update(title_ar: 'مراجعة')
+Stepper.find_by(title: 'terms').update(title_ar: 'شروط')
+Stepper.find_by(title: 'attachments').update(title_ar: 'المرفقات')
+Stepper.find_by(title: 'valuation').update(title_ar: 'تقييم')
+Stepper.find_by(title: 'stage').update(title_ar: 'منصة')
+Stepper.find_by(title: 'instrument').update(title_ar: 'أداة')
+Stepper.find_by(title: 'Deal Timeline').update(title_ar: 'الجدول الزمني للصفقة')
+Stepper.find_by(title: 'Title').update(title_ar: 'عنوان')
+
+Section.find_by(title: 'Instrument Type').update(title_ar: 'نوع الصك')
+Section.find_by(title: 'Stage').update(title_ar: 'منصة')
+
+FieldAttribute.find_by(field_mapping: 'funding_round_attributes.safe_type').update(statement_ar: 'نوع آمن')
+FieldAttribute.find_by(field_mapping: 'funding_round_attributes.equity_type').update(statement_ar: 'نوع الأسهم')
+FieldAttribute.find_by(field_mapping: 'funding_round_attributes.instrument_type').update(statement_ar: 'حدد أداة لجمع الأموال')
+FieldAttribute.find_by(statement: 'What is your funding stage?').update(statement_ar: 'ما هي مرحلة التمويل الخاصة بك؟', label_ar: 'سيساعدك هذا على تحقيق إنجازك التالي')
+
+Option.find_by(statement: 'Mezzanine & bridge').update(statement_ar: 'الميزانين والجسر')
+Option.find_by(statement: 'Pre-seed').update(statement_ar: 'ما قبل البذور')
+Option.find_by(statement: 'Seed / Angel').update(statement_ar: 'بذرة / ملاك')
+Option.find_by(statement: 'Series A').update(statement_ar: 'السلسلة أ')
+Option.find_by(statement: 'Series B').update(statement_ar: 'السلسلة ب')
+Option.find_by(statement: 'Series C').update(statement_ar: 'السلسلة ج')
+Option.find_by(statement: 'Series D').update(statement_ar: 'السلسلة د')
+Option.find_by(statement: 'No Valuation Cap, No Discount').update(statement_ar: 'لا سقف للتقييم، لا خصم', label_ar: 'تقديم نفس الشروط للمستثمرين مثل المستثمرين اللاحقين، بدون سقف أو خصم')
+Option.find_by(statement: 'Valuation Cap, No Discount').update(statement_ar: 'سقف التقييم، لا يوجد خصم', label_ar: 'تقديم الحد الأقصى للتقييم')
+Option.find_by(statement: 'Discount, No Valuation Cap').update(statement_ar: 'الخصم، لا سقف للتقييم', label_ar: 'تقديم سعر مخفض للسهم الواحد')
+Option.find_by(statement: 'SAFE').update(statement_ar: 'آمن', label_ar: 'الالتزام بالأسهم المستقبلية للمستثمرين')
+Option.find_by(statement: 'Equity Financing').update(statement_ar: 'تمويل أسهم رأس المال', label_ar: 'بيع الأسهم مقابل رأس المال')
+Option.find_by(statement: 'No Valuation Cap, No Discount').update(statement_ar: 'يفضل', label_ar: 'دفع أرباح ثابتة بانتظام')
+Option.find_by(statement: 'No Valuation Cap, No Discount').update(statement_ar: 'شائع', label_ar: 'إعطاء أسهم الملكية وحقوق التصويت')
 
 steps.each do |step|
   record = Stepper.find_or_initialize_by(stepper_type: step[:stepper_type], title: step[:title])

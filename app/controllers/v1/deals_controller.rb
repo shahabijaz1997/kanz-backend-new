@@ -3,7 +3,7 @@
 # Startups apis
 module V1
   class DealsController < ApiController
-    before_action :find_deal, only: %i[show review submit overview]
+    before_action :find_deal, only: %i[show review submit overview documents comments activities]
     before_action :set_deal, only: %i[create]
 
     def index
@@ -33,6 +33,21 @@ module V1
       @steppers = Stepper.where(stepper_type: STEPPERS[params[:type].to_sym]).order(:index)
       steps = Settings::ParamsMapper.call(@deal, @steppers, true)
       success('Success', steps)
+    end
+
+    def documents
+      docs = AttachmentSerializer.new(@deal.attachments).serializable_hash[:data].map { |d| d[:attributes] }
+      success('Success', docs)
+    end
+
+    def comments
+      # comments = @deal.comments
+      # success('Success', comments)
+    end
+
+    def activities
+      # activities = @deal.activities
+      # success('Success', activities)
     end
 
     def submit

@@ -40,6 +40,9 @@ Rails.application.routes.draw do
     resources :deals do
       member do
         get :overview
+        get :documents
+        get :comments
+        get :activities
       end
     end
     post 'deals/:id/submit' => 'deals#submit'
