@@ -15,7 +15,7 @@ class SyndicatesController < ApplicationController
 
   def update
     respond_to do |format|
-      if @syndicate.update(update_status_params)
+      if user_can_approve(@syndicate) && @syndicate.update(update_status_params)
         format.html { redirect_to @syndicate, notice: 'Successfully updated.' }
       else
         format.html { render :show, status: :unprocessable_entity }
