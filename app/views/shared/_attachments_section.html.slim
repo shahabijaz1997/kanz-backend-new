@@ -1,6 +1,6 @@
 = render 'shared/section_card', section_title: 'Attachments', editable: false do
-  - if resource.attachments.present?
-    - resource.attachments.each do |attachment|
+  - if attachments.present?
+    - attachments.each do |attachment|
       li.list-group-item
         span.col-3.title = attachment&.name
         div.card.attachment

@@ -1,5 +1,5 @@
 = render 'shared/section_card', section_title: 'Application Approval', editable: false do
-  - if user_can_approve(resource.status)
+  - if user_can_approve(resource)
     = form_for resource, method: :put do |form|
       li.list-group-item
         span.col-3.title Comment
@@ -9,10 +9,7 @@
         span.col-3.title Action
         span.col.value
           div.checkboxes
-            - if current_admin_user.customer_support_rep? && resource.status.eql?('submitted')
-              = form.collection_radio_buttons :status, [['Request Change', :reopened], ['Verify', :verified, {:checked => true}]], :second, :first
-            - elsif current_admin_user.compliance_officer? && resource.status.eql?('verified')
-              = form.collection_radio_buttons :status, [['Reject', :rejected], ['Approve', :approved, {:checked => true}]], :second, :first
+            = form.collection_radio_buttons :status, approval_options(resource), :second, :first
       li.list-group-item
         span.col-3.title
         span.col.value

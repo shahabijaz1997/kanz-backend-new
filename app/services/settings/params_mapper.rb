@@ -127,7 +127,7 @@ module Settings
     end
 
     def instrument_type?(instrument_type)
-      field = FieldAttribute.find_by(field_mapping: 'funding_round_attributes.instrument_type')
+      field = FieldAttribute.find_by(field_mapping: 'funding_round_attributes.instrument_type_id')
       option = field&.options&.find_by(statement: instrument_type)
       deal&.funding_round&.instrument_type == option&.id
     end

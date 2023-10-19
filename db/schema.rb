@@ -10,9 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_10_122218) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_18_095248) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_admin_comments", force: :cascade do |t|
+    t.string "namespace"
+    t.text "body"
+    t.string "resource_type"
+    t.bigint "resource_id"
+    t.string "author_type"
+    t.bigint "author_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author"
+    t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
+    t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource"
+  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -54,11 +68,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_10_122218) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.string "first_name"
-    t.string "last_name"
-    t.bigint "admin_role_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "admin_role_id"
+    t.string "first_name"
+    t.string "last_name"
     t.boolean "deactivated"
     t.index ["admin_role_id"], name: "index_admin_users_on_admin_role_id"
     t.index ["email"], name: "index_admin_users_on_email", unique: true
@@ -88,7 +102,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_10_122218) do
     t.datetime "updated_at", null: false
     t.bigint "configurable_id"
     t.string "configurable_type", default: "AttachmentConfig"
+    t.string "uploaded_by_type"
+    t.bigint "uploaded_by_id"
     t.index ["parent_type", "parent_id"], name: "index_attachments_on_parent"
+    t.index ["uploaded_by_type", "uploaded_by_id"], name: "index_attachments_on_uploaded_by"
   end
 
   create_table "audits", force: :cascade do |t|
@@ -138,6 +155,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_10_122218) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "current_state", default: {}
+    t.integer "model", default: 0
     t.index ["author_id"], name: "index_deals_on_author_id"
   end
 
@@ -210,11 +228,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_10_122218) do
   end
 
   create_table "funding_rounds", force: :cascade do |t|
-    t.bigint "round", default: 0
-    t.bigint "instrument_type", default: 0
-    t.bigint "safe_type", default: 0
-    t.bigint "equity_type", default: 0
-    t.bigint "valuation_phase", default: 0
+    t.bigint "round_id", default: 0
+    t.bigint "instrument_type_id", default: 0
+    t.bigint "safe_type_id", default: 0
+    t.bigint "equity_type_id", default: 0
+    t.bigint "valuation_phase_id", default: 0
     t.decimal "valuation"
     t.bigint "deal_id"
     t.datetime "created_at", null: false
@@ -303,20 +321,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_10_122218) do
     t.boolean "has_parking"
     t.integer "parking_capacity"
     t.boolean "has_swimming_pool"
-    t.integer "swimming_pool_type", default: 0
+    t.bigint "swimming_pool_id", default: 0
     t.boolean "is_rental"
-    t.integer "rental_period", default: 0
+    t.bigint "rental_period_id", default: 0
     t.decimal "rental_amount"
     t.float "dividend_yeild"
     t.float "yearly_appreciation"
     t.jsonb "external_links", default: {}
     t.bigint "deal_id"
-    t.bigint "field_attribute_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_property_details_on_country_id"
     t.index ["deal_id"], name: "index_property_details_on_deal_id"
-    t.index ["field_attribute_id"], name: "index_property_details_on_field_attribute_id"
   end
 
   create_table "questions", force: :cascade do |t|

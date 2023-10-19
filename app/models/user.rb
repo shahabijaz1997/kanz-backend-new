@@ -123,4 +123,12 @@ class User < ApplicationRecord
 
     errors.add(:base, I18n.t('errors.email_taken'))
   end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[email name]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[profile]
+  end
 end

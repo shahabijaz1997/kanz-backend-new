@@ -37,7 +37,11 @@ Rails.application.routes.draw do
     resources :countries, only: %i[index]
     resources :users, only: %i[show update]
     resources :industries, only: %i[index]
-    resources :deals
+    resources :deals do
+      member do
+        get :overview
+      end
+    end
     post 'deals/:id/submit' => 'deals#submit'
     get 'deals/:id/review' => 'deals#review'
     get 'settings/attachments' => 'settings#attachments'
@@ -59,7 +63,12 @@ Rails.application.routes.draw do
   resources :realtors, only: %i[index show update]
   resources :startups, only: %i[index show update]
   resources :syndicates, only: %i[index show update]
-  resources :stepper, only: %i[index new create edit update]
+  resources :deals, only: %i[update] do
+    collection do
+      resources :start_up, only: %i[index show], controller: 'deals', type: 'start_up'
+      resources :property, only: %i[index show], controller: 'deals', type: 'property'
+    end
+  end
   resources :profile, only: %i[index] do
     collection do
       get :edit

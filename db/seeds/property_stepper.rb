@@ -262,7 +262,7 @@ steps = [
           {
             index: 9,
             is_required: false,
-            field_mapping: 'property_detail_attributes.swimming_pool_type',
+            field_mapping: 'property_detail_attributes.swimming_pool_id',
             statement: 'Swimming Pool',
             statement_ar: '',
             label: "",
@@ -299,7 +299,7 @@ steps = [
           {
             index: 11,
             is_required: false,
-            field_mapping: 'property_detail_attributes.rental_period',
+            field_mapping: 'property_detail_attributes.rental_period_id',
             statement: 'duration',
             statement_ar: '',
             label: "",
@@ -517,8 +517,44 @@ steps = [
     ]
   },
   {
-    title: 'terms',
+    title: 'Deal Timeline',
     index: 5,
+    stepper_type: STEPPERS[:property_deal],
+    sections_attributes: [
+      {
+        index: 0,
+        title: 'Select date',
+        fields_attributes: [
+          {
+            index: 0,
+            is_required: true,
+            field_mapping: 'start_at',
+            statement: 'start date',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:date],
+            description: '',
+            description_ar: ''
+          },{
+            index: 1,
+            is_required: false,
+            field_mapping: 'end_at',
+            statement: 'end date',
+            statement_ar: '',
+            label: "",
+            label_ar: '',
+            field_type: FIELD_TYPE[:date],
+            description: '',
+            description_ar: ''
+          }
+        ]
+      }
+    ]
+  },
+  {
+    title: 'terms',
+    index: 6,
     stepper_type: STEPPERS[:property_deal],
     sections_attributes: [
       {
