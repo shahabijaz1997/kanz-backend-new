@@ -475,9 +475,9 @@ Stepper.find_by(title: 'Title').update(title_ar: 'عنوان')
 Section.find_by(title: 'Instrument Type').update(title_ar: 'نوع الصك')
 Section.find_by(title: 'Stage').update(title_ar: 'منصة')
 
-FieldAttribute.find_by(field_mapping: 'funding_round_attributes.safe_type').update(statement_ar: 'نوع آمن')
-FieldAttribute.find_by(field_mapping: 'funding_round_attributes.equity_type').update(statement_ar: 'نوع الأسهم')
-FieldAttribute.find_by(field_mapping: 'funding_round_attributes.instrument_type').update(statement_ar: 'حدد أداة لجمع الأموال')
+FieldAttribute.find_by(field_mapping: 'funding_round_attributes.safe_type_id').update(statement_ar: 'نوع آمن')
+FieldAttribute.find_by(field_mapping: 'funding_round_attributes.equity_type_id').update(statement_ar: 'نوع الأسهم')
+FieldAttribute.find_by(field_mapping: 'funding_round_attributes.instrument_type_id').update(statement_ar: 'حدد أداة لجمع الأموال')
 FieldAttribute.find_by(statement: 'What is your funding stage?').update(statement_ar: 'ما هي مرحلة التمويل الخاصة بك؟', label_ar: 'سيساعدك هذا على تحقيق إنجازك التالي')
 
 Option.find_by(statement: 'Mezzanine & bridge').update(statement_ar: 'الميزانين والجسر')

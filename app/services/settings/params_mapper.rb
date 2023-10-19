@@ -140,7 +140,7 @@ module Settings
     def instrument_type?(instrument_type)
       field = FieldAttribute.find_by(field_mapping: 'funding_round_attributes.instrument_type_id')
       option = field&.options&.find_by(statement: instrument_type)
-      deal&.funding_round&.instrument_type == option&.id
+      deal&.funding_round&.instrument_type_id == option&.id
     end
 
     def remove_step(step_title)
