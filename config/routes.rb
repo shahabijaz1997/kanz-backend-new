@@ -44,6 +44,7 @@ Rails.application.routes.draw do
         get :comments
         get :activities
       end
+      resources :invites
     end
     post 'deals/:id/submit' => 'deals#submit'
     get 'deals/:id/review' => 'deals#review'

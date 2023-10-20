@@ -10,23 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_18_095248) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_20_063658) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "active_admin_comments", force: :cascade do |t|
-    t.string "namespace"
-    t.text "body"
-    t.string "resource_type"
-    t.bigint "resource_id"
-    t.string "author_type"
-    t.bigint "author_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author"
-    t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
-    t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource"
-  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -68,11 +54,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_18_095248) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "admin_role_id"
     t.string "first_name"
     t.string "last_name"
+    t.bigint "admin_role_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "deactivated"
     t.index ["admin_role_id"], name: "index_admin_users_on_admin_role_id"
     t.index ["email"], name: "index_admin_users_on_email", unique: true
@@ -262,6 +248,21 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_18_095248) do
     t.index ["residence_id"], name: "index_investor_profiles_on_residence_id"
   end
 
+  create_table "invites", force: :cascade do |t|
+    t.bigint "user_id"
+    t.datetime "expire_at"
+    t.bigint "invitee_id", null: false
+    t.string "eventable_type"
+    t.bigint "eventable_id"
+    t.string "message"
+    t.integer "status", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["eventable_type", "eventable_id"], name: "index_invites_on_eventable"
+    t.index ["invitee_id"], name: "index_invites_on_invitee_id"
+    t.index ["user_id"], name: "index_invites_on_user_id"
+  end
+
   create_table "options", force: :cascade do |t|
     t.string "statement"
     t.string "statement_ar"
@@ -329,10 +330,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_18_095248) do
     t.float "yearly_appreciation"
     t.jsonb "external_links", default: {}
     t.bigint "deal_id"
+    t.bigint "field_attribute_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_property_details_on_country_id"
     t.index ["deal_id"], name: "index_property_details_on_deal_id"
+    t.index ["field_attribute_id"], name: "index_property_details_on_field_attribute_id"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -506,4 +509,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_18_095248) do
   add_foreign_key "deals", "users", column: "author_id"
   add_foreign_key "fields_sections", "field_attributes", column: "field_id"
   add_foreign_key "fields_sections", "sections"
+  add_foreign_key "invites", "users", column: "invitee_id"
 end
