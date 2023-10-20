@@ -1,4 +1,4 @@
-= link_to '< Back', :back, class: 'mb-2'
+= link_to '< Back', @investor.individual_investor? ? individuals_path : firms_path, class: 'mb-2'
 = render 'shared/page_title', title: "Investor Details"
 
 div.w-75

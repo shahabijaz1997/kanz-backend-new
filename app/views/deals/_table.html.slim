@@ -23,8 +23,8 @@ div.table
             - if startup
               span.col = deal.user.profile.company_name
               span.col = deal.user.email
-              span.col = option_value(deal.funding_round.round)
-              span.col = option_value(deal.funding_round.instrument_type)
+              span.col = deal.funding_round.stage
+              span.col = deal.funding_round.instrument
               span.col = deal.user.name
             - else
               span.col = deal.title
