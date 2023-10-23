@@ -3,7 +3,8 @@
 # Investor persona
 module V1
   class InvitesController < ApiController
-    before_action :set_deal, only: %i[create]
+    before_action :set_deal, only: %i[create update]
+    before_action :find_invite, only: %i[update]
 
     # GET
     # /1.0/deals/:deal_id/invites
@@ -27,14 +28,32 @@ module V1
       end
     end
 
+    #POST /1.0/invites/:id
+    def update
+      if @invite.update(invite_update_params)
+        success('success', @invite)
+      else
+        failure(@invite.errors.full_messages.to_sentence)
+      end
+    end
+    # Only pending status can be changed
+
     private
 
     def invite_params
-      params.require(:invite).permit(%i[message invitee_id] )
+      params.require(:invite).permit(%i[message invitee_id])
+    end
+
+    def invite_update_params
+      params.require(:invite).permit(%i[status])
     end
 
     def set_deal
       @deal = Deal.find_by(id: params[:deal_id])
+    end
+
+    def find_invite
+      @invite = Invite.find_by(id: params[:id])
     end
 
     def invites
