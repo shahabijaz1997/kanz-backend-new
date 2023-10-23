@@ -23,6 +23,7 @@
 = render 'shared/section_card', section_title: 'Investor Terms', editable: false do
   - if @deal.terms.present?
     - @deal.terms.each do |term|
-      = render 'shared/section_list_item', title: option_value(term.field_attribute_id), value: term.custom_input.presence
+      - if term.enabled?
+        = render 'shared/section_list_item', title: term.field_attribute&.statement, value: term.value
   - else
     div.not_found Step unfinished
