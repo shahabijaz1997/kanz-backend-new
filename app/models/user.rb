@@ -3,6 +3,8 @@
 # User Modal
 class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
+  include UserOnboarding
+
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :trackable, :lockable,
          :jwt_authenticatable, jwt_revocation_strategy: self
@@ -23,6 +25,7 @@ class User < ApplicationRecord
   before_validation :update_role, on: :create
   after_create :update_profile_state
   after_save :update_profile_state, if: :profile_reopened?
+  after_update :inform_applicant, if: :saved_change_to_status?
 
   audited only: :status, on: %i[update]
 
