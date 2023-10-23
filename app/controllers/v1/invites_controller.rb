@@ -3,12 +3,17 @@
 # Investor persona
 module V1
   class InvitesController < ApiController
-    before_action :set_deal, only: %i[create]
-    def index
+    before_action :set_deal, only: %i[create index]
 
+    #GET /1.0/deals/:deal_id/invites
+    def index
+      success(
+        'success',
+        InviteSerializer.new(@deal.invites).serializable_hash[:data].map { |d| d[:attributes] }
+      )
     end
 
-    # /1.0/deals/:deal_id/invites
+    #POST /1.0/deals/:deal_id/invites
     def create
       invite = current_user.invites.new(invite_params.merge(eventable_id: @deal.id, eventable_type: 'Deal'))
 
