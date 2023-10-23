@@ -121,7 +121,7 @@ module Settings
 
     def file_url(field)
       attachment = deal.attachments&.find_by(configurable_type: 'FieldAttribute', configurable_id: field[:id])
-      { id: attachment&.id, url: attachment&.url }
+      { id: attachment&.id, url: attachment&.url, kind: attachment&.attachment_kind }
     end
 
     def update_steps_on_instrumentation
