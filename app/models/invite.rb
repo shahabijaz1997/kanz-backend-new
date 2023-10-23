@@ -5,6 +5,8 @@ class Invite < ApplicationRecord
   belongs_to :user
   belongs_to :invitee, class_name: 'User'
 
+  validates_uniqueness_of :invitee_id, scope: %i[eventable_type eventable_id]
+
   enum status: { pending: 0, ignored: 1, accepted: 2, expired: 3 }
 
   before_update :validate_status_change

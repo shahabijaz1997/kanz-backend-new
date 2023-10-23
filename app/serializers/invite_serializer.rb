@@ -20,7 +20,7 @@ class InviteSerializer
       id: deal.id,
       title: deal.title,
       target: deal.target,
-      end_at: Date.parse(deal.end_at.to_s).strftime('%d/%m/%Y')
+      end_at: deal.end_at.present? ? Date.parse(deal.end_at.to_s).strftime('%d/%m/%Y') : ''
     }
   end
 
