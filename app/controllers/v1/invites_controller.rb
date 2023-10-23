@@ -57,8 +57,10 @@ module V1
     end
 
     def invites
-      Invite.where('deal_id= ? OR invitee_id= ? OR user_id= ?',
-                   params[:deal_id], params[:invitee_id], params[:user_id])
+      Invite.where(eventable_type: 'Deal').where(
+        'eventable_id= ? OR invitee_id= ? OR user_id= ?',
+        params[:deal_id], params[:invitee_id], params[:user_id]
+      )
     end
   end
 end
