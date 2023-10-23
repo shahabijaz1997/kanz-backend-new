@@ -33,6 +33,8 @@ module V1
     end
 
     def verify_deal_status
+      return true if @deal.blank?
+
      failure("Can't update #{@deal.status} deals") unless (@deal.draft? || @deal.reopened?)
     end
   end
