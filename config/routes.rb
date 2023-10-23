@@ -44,6 +44,7 @@ Rails.application.routes.draw do
         get :comments
         get :activities
       end
+      resources :invites
     end
     post 'deals/:id/submit' => 'deals#submit'
     get 'deals/:id/review' => 'deals#review'
@@ -51,6 +52,13 @@ Rails.application.routes.draw do
     get 'settings/stepper' => 'settings#stepper'
     get 'regions' => 'industries#regions'
     post 'attachments/submit', to: 'attachments#submit'
+
+    resources :users do
+      resources :invites, only: %i[index]
+    end
+    resources :invitees, model_name: 'User' do
+      resources :invites, only: %i[index]
+    end
   end
 
   # Admin routes

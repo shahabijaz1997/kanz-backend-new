@@ -10,6 +10,7 @@ class Deal < ApplicationRecord
   has_one :property_detail
   has_many :attachments, as: :parent, dependent: :destroy
   has_many :external_links, dependent: :destroy
+  has_many :invites, as: :eventable, dependent: :destroy
 
   accepts_nested_attributes_for :features, :external_links, allow_destroy: true
   accepts_nested_attributes_for :terms
