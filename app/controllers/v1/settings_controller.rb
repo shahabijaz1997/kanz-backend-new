@@ -3,7 +3,7 @@
 # Startups apis
 module V1
   class SettingsController < ApiController
-    before_action :find_deal, only: [:stepper]
+    before_action :find_deal, :verify_deal_status, only: [:stepper]
     def attachments
       attachment_configs = current_user.user_role.attachment_configs.map do |config|
         attachment = Attachment.find_by(configurable_id: config.id, parent: current_user)
@@ -30,6 +30,10 @@ module V1
 
     def find_deal
       @deal = current_user.deals.find_by(id: params[:id])
+    end
+
+    def verify_deal_status
+     failure("Can't update #{@deal.status} deals") unless (@deal.draft? || @deal.reopened?)
     end
   end
 end

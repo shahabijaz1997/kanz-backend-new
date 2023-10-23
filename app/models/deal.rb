@@ -21,6 +21,7 @@ class Deal < ApplicationRecord
   enum model: { classic: 0, syndicate: 1 }
 
   after_save :update_current_state
+  before_update :validate_status_change
 
   audited only: :status, on: %i[update]
 
@@ -49,5 +50,17 @@ class Deal < ApplicationRecord
 
   def self.ransackable_associations(_auth_object = nil)
     %w[user property_detail funding_round]
+  end
+
+  def validate_status_change
+    if status == 'submitted' && !(status_was.in? %w[draft reopened])
+      errors[:base] << 'Only draft or reopened deals can be submitted'
+    elsif status == 'verified' && status_was != 'submitted'
+      errors[:base] << 'Only submitted deals can be verified'
+    elsif status == 'reopened' && !(status_was.in? %w[verified submitted])
+      errors[:base] << 'Only submitted or verified deals can be reopened'
+    elsif status == 'approved' && status_was != 'verified'
+      errors[:base] << 'Only verified deals can be approved'
+    end
   end
 end
