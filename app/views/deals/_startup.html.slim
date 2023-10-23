@@ -20,7 +20,7 @@
   - else
     div.not_found Step unfinished
 
-= render 'shared/section_card', section_title: 'Investor Terms', editable: false do
+= render 'shared/section_card', section_title: 'Terms', editable: false do
   - if @deal.terms.present?
     - @deal.terms.each do |term|
       - if term.enabled?

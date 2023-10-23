@@ -10,6 +10,14 @@ class DealsMailer < ApplicationMailer
     mail
   end
 
+  def status_changed(deal)
+    @deal = deal
+    @user = @deal.user
+    mail.subject = 'Deal Update'
+    mail.to = @user.email
+    mail
+  end
+
   private
 
   def csm_email_list

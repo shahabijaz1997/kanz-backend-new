@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class DealsController < ApplicationController
+  include Informer
+
   before_action :set_deal, only: %i[show update]
   before_action :authorize_role!
 
@@ -14,6 +16,7 @@ class DealsController < ApplicationController
   def update
     respond_to do |format|
       if user_can_approve(@deal) && @deal.update(update_status_params)
+        inform_deal_creator
         upload_attachments
         format.html { redirect_to @deal, notice: 'Successfully updated.' }
       else
