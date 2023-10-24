@@ -27,6 +27,8 @@ class User < ApplicationRecord
   after_save :update_profile_state, if: :profile_reopened?
   after_update :inform_applicant, if: :saved_change_to_status?
 
+  scope :approved, -> { where(status: User::statuses[:approved]) }
+
   audited only: :status, on: %i[update]
 
   # Devise override the confirmation token
