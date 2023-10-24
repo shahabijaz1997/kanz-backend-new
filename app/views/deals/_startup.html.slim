@@ -23,7 +23,6 @@
 = render 'shared/section_card', section_title: 'Terms', editable: false do
   - if @deal.terms.present?
     - @deal.terms.each do |term|
-      - if term.enabled?
-        = render 'shared/section_list_item', title: term.field_attribute&.statement, value: term.value
+      = render 'shared/section_list_item', title: term.field_attribute&.statement, value: term.value
   - else
     div.not_found Step unfinished
