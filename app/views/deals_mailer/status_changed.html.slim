@@ -1,10 +1,10 @@
 html
   head
     css:
-      body {
+      .body {
         font-family: arial, sans-serif;
         background-color: #EAEFF2;
-
+        text-align: center
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -50,16 +50,17 @@ html
         margin-top: 20px;
       }
 
-  body style="text-align: center"
-    div.content
-      div.greetings
-        div
-          span Hi
-          span.bold = " #{@user.name},"
-        span = I18n.t("mailer.deal.#{@deal.status}")
-      div.details
-        = render 'layouts/svgs/email_icon'
-        - if @deal.reopened?
-          p = @deal.audits.last.comment
-        p.action-detail = I18n.t("mailer.deal.access")
-        a.button href="#{ENV.fetch('FRONTEND_URL')}/view-deal/#{@deal.id}" target="_blank" View Deal
+  body
+    div.body
+      div.content
+        div.greetings
+          div
+            span Hi
+            span.bold = " #{@user.name},"
+          span = I18n.t("mailer.deal.#{@deal.status}")
+        div.details
+          = render 'layouts/svgs/email_icon'
+          - if @deal.reopened?
+            p = @deal.audits.last.comment
+          p.action-detail = I18n.t("mailer.deal.access")
+          a.button href="#{ENV.fetch('FRONTEND_URL')}/view-deal/#{@deal.id}" target="_blank" View Deal

@@ -1,7 +1,7 @@
 html
   head
     css:
-      body {
+      .body {
         font-family: arial, sans-serif;
         background-color: #EAEFF2;
 
@@ -50,16 +50,17 @@ html
         margin-top: 20px;
       }
 
-  body style="text-align: center"
-    div.content
-      div.greetings
-        div
-          span Hi
-          span.bold = " #{@user.name},"
-        span = I18n.t("mailer.onboarding.#{@user.status}")
-      div.details
-        = render 'layouts/svgs/email_icon'
-        - if @user.reopened? || @user.rejected?
-          p = @user.audits.last.comment
-        p.action-detail = I18n.t("mailer.onboarding.access")
-        a.button href=ENV.fetch('FRONTEND_URL') target="_blank" Visit Kanz
+  body
+    div.body
+      div.content
+        div.greetings
+          div
+            span Hi
+            span.bold = " #{@user.name},"
+          span = I18n.t("mailer.onboarding.#{@user.status}")
+        div.details
+          = render 'layouts/svgs/email_icon'
+          - if @user.reopened? || @user.rejected?
+            p = @user.audits.last.comment
+          p.action-detail = I18n.t("mailer.onboarding.access")
+          a.button href=ENV.fetch('FRONTEND_URL') target="_blank" Visit Kanz
