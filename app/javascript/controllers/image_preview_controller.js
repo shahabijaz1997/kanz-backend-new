@@ -26,7 +26,7 @@ export default class extends Controller {
 
     this.inputTarget.files = dataTransfer.files
   
-    Dom.remove(event.target.parentNode.parentNode.parentNode)
+    Dom.remove(event.currentTarget.parentNode.parentNode)
   }
 
   addPreview(file) {

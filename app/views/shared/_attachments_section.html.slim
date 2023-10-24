@@ -4,7 +4,7 @@
       li.list-group-item
         span.col-3.title = attachment&.name
         div.card.attachment
-          - if attachment.attachment_kind == 'pdf'
+          - if ['pdf', 'application/pdf'].include?(attachment.attachment_kind)
             object data=attachment.file.url width=250
           - else
             = image_tag(attachment.file.url)
