@@ -11,6 +11,8 @@ class Invite < ApplicationRecord
 
   before_update :validate_status_change
 
+  private
+
   def set_defaults
     self.expire_at = Time.zone.now + 7.days
   end

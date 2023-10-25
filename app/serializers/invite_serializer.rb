@@ -21,7 +21,9 @@ class InviteSerializer
       title: deal.title,
       target: deal.target,
       type: deal.deal_type,
-      end_at: deal.end_at.present? ? Date.parse(deal.end_at.to_s).strftime('%d/%m/%Y') : ''
+      end_at: (deal.end_at.present? ? Date.parse(deal.end_at.to_s).strftime('%d/%m/%Y') : ''),
+      comment: deal.syndicate_comment(invite.invitee_id)&.message,
+      docs: AttachmentSerializer.new(deal.syndicate_docs(invite.invitee_id)).serializable_hash[:data].map {|d| d[:attributes]}
     }
   end
 
