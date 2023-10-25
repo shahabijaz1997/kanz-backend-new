@@ -19,6 +19,7 @@ class User < ApplicationRecord
   has_many :deals, class_name: 'Deal', foreign_key: 'author_id'
   belongs_to :user_role, class_name: 'Role', foreign_key: :role_id
   has_many :invites, dependent: :destroy
+  has_many :comments, class_name: 'Comment', foreign_key: 'author_id'
 
   delegate :title, :title_ar, to: :user_role, prefix: :role
 
