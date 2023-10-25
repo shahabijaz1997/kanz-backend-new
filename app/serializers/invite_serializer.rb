@@ -4,7 +4,7 @@
 class InviteSerializer
   include JSONAPI::Serializer
 
-  attributes :message, :status
+  attributes :id, :message, :status
 
   attribute :invited_by do |invite|
     invite.user.name
