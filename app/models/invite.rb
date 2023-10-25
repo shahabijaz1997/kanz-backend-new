@@ -15,6 +15,12 @@ class Invite < ApplicationRecord
 
   private
 
+  def expired?
+    expire_at < Time.zone.now
+  end
+
+  private
+
   def set_defaults
     self.expire_at = Time.zone.now + 7.days
   end

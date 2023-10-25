@@ -66,7 +66,13 @@ module V1
     end
 
     def overview
-      success('Success', Deals::Overview.call(@deal))
+      @deal ||= Invite.where(eventable_id: params[:id], eventable_type: 'Deal', invitee: current_user)&.first&.eventable
+
+      if @deal.present?
+        success('Success', Deals::Overview.call(@deal, current_user))
+      else
+        failure('Deal not found', 404)
+      end
     end
 
     private
