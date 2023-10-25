@@ -11,6 +11,7 @@ class Deal < ApplicationRecord
   has_many :attachments, as: :parent, dependent: :destroy
   has_many :external_links, dependent: :destroy
   has_many :invites, as: :eventable, dependent: :destroy
+  has_many :comments
 
   accepts_nested_attributes_for :features, :external_links, allow_destroy: true
   accepts_nested_attributes_for :terms
@@ -63,5 +64,15 @@ class Deal < ApplicationRecord
     elsif status == 'approved' && status_was != 'verified'
       errors[:base] << 'Only verified deals can be approved'
     end
+  end
+
+  def syndicate_comment(author_id)
+    comments.find_by(author_id: author_id, thread_id: nil)
+  end
+
+  def syndicate_docs(syndicate_id)
+    return [] if Syndicate.exists?(id: syndicate_id)
+
+    attachments.where(uploaded_by: syndicate_id)
   end
 end

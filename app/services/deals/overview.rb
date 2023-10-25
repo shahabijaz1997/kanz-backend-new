@@ -1,15 +1,20 @@
 module Deals
   class Overview < ApplicationService
-    attr_reader :deal
-    def initialize(deal)
+    attr_reader :deal, :user
+    def initialize(deal, user)
       @deal = deal
+      @user = user
     end
 
     def call
-      deal_params
+      user.syndicate? ? syndicate_deal_params : deal_params
     end
 
     private
+
+    def syndicate_deal_params
+      deal_params.merge(docs).merge(comments).merge(invite)
+    end
 
     def deal_params
       params = {
@@ -37,7 +42,7 @@ module Deals
         instrument_type: round.instrument,
         equity_type: round.equity_kind,
         safe_type: round.safe_kind,
-        valuation: round.valuation_type,
+        valuation_type: round.valuation_type,
         valuation: round.valuation,
       }
     end
@@ -63,6 +68,33 @@ module Deals
       params[:features][:rental_period] = property_detail.rental_duration if property_detail.is_rental
 
       params
+    end
+
+    def docs
+      docs = deal.attachments.where(uploaded_by: deal.user)
+      return {} if docs.blank?
+
+      { docs: AttachmentSerializer.new(docs).serializable_hash[:data].map {|d| d[:attributes]} }
+    end
+
+    def comments
+      comments = deal.comments.where('author_id=? OR recipient_id=?', user.id, user.id)
+      return {} if comments.blank?
+
+      { comments: CommentSerializer.new(comments).serializable_hash[:data].map {|d| d[:attributes]} }
+    end
+
+    def invite
+      invite = deal.invites.find_by(invitee_id: user.id)
+      return {} if invite.blank?
+
+      {
+        invite: {
+          id: invite.id,
+          status: (invite.expired? ? 'expired' : invite.status),
+          invited_by: invite.user.name
+        }
+      }
     end
 
     def total_raised

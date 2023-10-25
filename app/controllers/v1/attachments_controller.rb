@@ -12,7 +12,7 @@ module V1
 
     # POST /attachments
     def create
-      @attachment = attachment_owner.attachments.new(attachment_params)
+      @attachment = attachment_owner.attachments.new(attachment_params.merge(upload_by: current_user))
       @attachment.file.attach(attachment_params[:file])
       if @attachment.save!
         success(
