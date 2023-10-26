@@ -22,25 +22,23 @@ module V1
     # /1.0/deals/:deal_id/comments
     def create
       comment = current_user.comments.build(comment_params.merge(deal_id: @deal.id, recipient_id: recipient_id))
-      StartupProfile.transaction do
-        update_deal
-        update_inivte
-        upload_attachments
-        comment.save!
-      end
-      success('success', comment)
+      comment.save ? success('success', comment) : failure(comment.errors.full_messages.to_sentence)
     end
 
     private
 
     def comment_params
-      params.require(:comment).permit(:message, :thread_id, :invite_id, attachments: %i[file attachment_kind])
+      params.require(:comment).permit(:message, :thread_id)
     end
 
     def find_deal
       @deal = Deal.find_by(id: params[:deal_id])
 
       return failure('Deal not found') if @deal.blank?
+    end
+
+    def find_inivte
+      @invite = @deal.invites.find_by(invitee: current_user)
     end
 
     def find_deal_comment
@@ -54,25 +52,6 @@ module V1
         Comment.find_by(id: comment_params[:thread_id])&.id
       else
         @deal.author_id
-      end
-    end
-
-    def update_inivte
-      return true if comment_params[:invite_id].present?
-
-      invite = @deal.invites.find_by(id: comment_params[:invite_id])
-      invite.update!(status: Invite::statuses[:interested])
-    end
-
-    def update_deal
-      @deal.update!(status: Deal::statuses[:reopened])
-    end
-
-    def upload_attachments
-      return true if comment_params[:attachments].blank?
-
-      comment_params[:attachments].each do |attachment|
-        @deal.attachments.create!(attachment.merge(uploaded_by: current_user))
       end
     end
   end
