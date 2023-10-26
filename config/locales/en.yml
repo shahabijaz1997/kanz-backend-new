@@ -40,7 +40,7 @@ en:
       auth_token_expired: 'Session expired!'
       not_found: 'Record not found.'
       existing_record: 'Record already exists.'
-      paramete_missing: 'Unprocessable Entity, missing parameter.'
+      parameter_missing: 'Unprocessable Entity, missing parameter.'
       unauthorized: 'You are not authorized to perform this action.'
       unprocessable: 'Invalid Request!'
       file_missing: 'Please upload a file.'

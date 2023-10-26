@@ -43,6 +43,7 @@ Rails.application.routes.draw do
         get :documents
         get :comments
         get :activities
+        post :sign_off
       end
       resources :invites
       resources :comments

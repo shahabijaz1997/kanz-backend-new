@@ -3,8 +3,9 @@
 # Startups apis
 module V1
   class DealsController < ApiController
-    before_action :find_deal, only: %i[show review submit overview documents comments activities]
+    before_action :find_deal, only: %i[show review submit overview documents comments activities sign_off]
     before_action :set_deal, only: %i[create]
+    before_action :set_invite, only: %i[sign_off]
 
     def index
       deals = if current_user.syndicate?
@@ -47,8 +48,10 @@ module V1
     end
 
     def comments
-      # comments = @deal.comments
-      # success('Success', comments)
+      success(
+        'Success',
+        CommentSerializer.new(@deal.comments).serializable_hash[:data].map{|d| d[:attributes]}
+      )
     end
 
     def activities
@@ -75,18 +78,31 @@ module V1
       end
     end
 
+    def sign_off
+      Deal.transaction do
+        @invite.update!(status: Invite::statuses[:approved])
+        @deal.update!(syndicate: @invite.invitee, status: Deal::statuses[:live])
+      end
+      success('Success', @deal)
+    end
+
     private
 
     def find_deal
       @deal = current_user.deals.find_by(id: params[:id])
+      failure('Unable to find deal', 404) if  @deal.blank?
     end
 
     def deal_params
       params.require(:deal).permit(:id, :deal_type, :step, fields: %i[id value index deleted])
     end
 
+    def deal_approval_params
+      params.require(:deal).permit(%i[invite_id])
+    end
+
     def set_deal
-      return failure(I18n.t('errors.exceptions.paramete_missing')) if deal_params[:id].blank? && invalid_deal_type?
+      return failure(I18n.t('errors.exceptions.parameter_missing')) if deal_params[:id].blank? && invalid_deal_type?
 
       @deal = current_user.deals.find_by(id: deal_params[:id])
       @deal = @deal || current_user.deals.new(deal_type: deal_params[:deal_type])
@@ -102,6 +118,11 @@ module V1
       attributes = attributes.merge(attributes[:details])
       attributes.delete(:details)
       attributes
+    end
+
+    def set_invite
+      @invite = @deal.invites.find_by(id: deal_approval_params[:invite_id], status: Invite::statuses[:accepted])
+      failure("Invite can't be updated") if @invite.blank?
     end
   end
 end

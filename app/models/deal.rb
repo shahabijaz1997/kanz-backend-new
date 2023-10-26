@@ -12,6 +12,7 @@ class Deal < ApplicationRecord
   has_many :external_links, dependent: :destroy
   has_many :invites, as: :eventable, dependent: :destroy
   has_many :comments
+  belongs_to :syndicate, class_name: 'Syndicate', optional: true
 
   accepts_nested_attributes_for :features, :external_links, allow_destroy: true
   accepts_nested_attributes_for :terms
@@ -19,11 +20,12 @@ class Deal < ApplicationRecord
   accepts_nested_attributes_for :property_detail
 
   enum deal_type: DEAL_TYPES
-  enum status: { draft: 0, submitted: 1, reopened: 2, verified: 3, rejected: 4, approved: 5 }
+  enum status: { draft: 0, submitted: 1, reopened: 2, verified: 3, rejected: 4, approved: 5, live: 6 }
   enum model: { classic: 0, syndicate: 1 }
 
   after_save :update_current_state
   before_update :validate_status_change
+  after_update :notify_deal_approval
 
   audited only: :status, on: %i[update]
 
@@ -63,6 +65,8 @@ class Deal < ApplicationRecord
       errors[:base] << 'Only submitted or verified deals can be reopened'
     elsif status == 'approved' && status_was != 'verified'
       errors[:base] << 'Only verified deals can be approved'
+    elsif status == 'live' && status_was != 'approved'
+      errors[:base] << 'Only verified deals can be approved'
     end
   end
 
@@ -78,5 +82,11 @@ class Deal < ApplicationRecord
     return [] if Syndicate.exists?(id: syndicate_id)
 
     attachments.where(uploaded_by: syndicate_id)
+  end
+
+  def notify_deal_approval
+    return if status != 'live'
+
+    DealsMailer.deal_signed_of(self).deliver_now
   end
 end

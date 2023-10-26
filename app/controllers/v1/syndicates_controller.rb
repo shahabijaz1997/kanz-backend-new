@@ -18,6 +18,7 @@ module V1
       syndicate_data = SyndicateSerializer.new(@syndicate).serializable_hash[:data][:attributes]
       syndicate_data[:comments] = syndicate_comments
       syndicate_data[:attachments] = syndicate_docs
+      syndicate_data[:deal] = deal_details
       success(I18n.t('syndicate.get.success.show'), syndicate_data)
     end
 
@@ -83,6 +84,13 @@ module V1
       return [] if docs.blank?
 
       AttachmentSerializer.new(docs).serializable_hash[:data].map {|d| d[:attributes]}
+    end
+
+    def deal_details
+      {
+        title: @deal.title,
+        status: @deal.status
+      }
     end
   end
 end
