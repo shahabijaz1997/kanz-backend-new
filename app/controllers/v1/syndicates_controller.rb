@@ -63,7 +63,7 @@ module V1
 
       @deal = Deal.find_by(id: params[:deal_id])
       failure('Deal not found', 404) if @deal.blank?
-      @invite = @deal.invites.find_by(invitee: current_user)
+      @invite = @deal.invites.find_by(invitee: params[:id])
       failure('No invitation found', 404) if @invite.blank?
     end
 
