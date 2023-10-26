@@ -2,6 +2,7 @@
 
 class Syndicate < User
   has_one :profile, class_name: 'SyndicateProfile', dependent: :destroy
+  has_many :deals
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[email name status]

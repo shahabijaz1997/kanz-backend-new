@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_24_082721) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_26_102222) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -157,7 +157,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_24_082721) do
     t.datetime "updated_at", null: false
     t.jsonb "current_state", default: {}
     t.integer "model", default: 0
+    t.bigint "syndicate_id"
     t.index ["author_id"], name: "index_deals_on_author_id"
+    t.index ["syndicate_id"], name: "index_deals_on_syndicate_id"
   end
 
   create_table "dependency_trees", force: :cascade do |t|

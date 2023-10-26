@@ -18,6 +18,15 @@ class DealsMailer < ApplicationMailer
     mail
   end
 
+  def deal_signed_of(deal)
+    @deal = deal
+    @user = @deal.user
+    @syndicate = @deal.syndicate
+    mail.subject = 'Wooho! Deal is Live now'
+    mail.to = [@user.email, @syndicate.email]
+    mail
+  end
+
   private
 
   def csm_email_list
