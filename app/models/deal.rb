@@ -70,6 +70,10 @@ class Deal < ApplicationRecord
     comments.find_by(author_id: author_id, thread_id: nil)
   end
 
+  def syndicate_and_creator_discussion(author_id)
+    comments.where('author_id= ? OR author_id= ?', author_id, author_id).order(:created_at)
+  end
+
   def syndicate_docs(syndicate_id)
     return [] if Syndicate.exists?(id: syndicate_id)
 

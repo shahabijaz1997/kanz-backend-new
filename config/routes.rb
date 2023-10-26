@@ -46,6 +46,7 @@ Rails.application.routes.draw do
       end
       resources :invites
       resources :comments
+      resources :syndicates, only: %i[show]
     end
     post 'deals/:id/submit' => 'deals#submit'
     get 'deals/:id/review' => 'deals#review'

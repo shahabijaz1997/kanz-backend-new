@@ -5,6 +5,7 @@ module V1
   class SyndicatesController < ApiController
     before_action :check_file_presence, only: %i[create]
     before_action :find_syndicate, only: %i[show]
+    before_action :validate_deal_association, only: %i[show]
 
     def index
       success(
@@ -14,10 +15,10 @@ module V1
     end
 
     def show
-      success(
-        I18n.t('syndicate.get.success.show'),
-        SyndicateSerializer.new(@syndicate).serializable_hash[:data][:attributes]
-      )
+      syndicate_data = SyndicateSerializer.new(@syndicate).serializable_hash[:data][:attributes]
+      syndicate_data[:comments] = syndicate_comments
+      syndicate_data[:attachments] = syndicate_docs
+      success(I18n.t('syndicate.get.success.show'), syndicate_data)
     end
 
     def create
@@ -54,6 +55,34 @@ module V1
 
     def find_syndicate
       @syndicate = Syndicate.find_by(id: params[:id])
+      failure('No syndicate found', 404) if @syndicate.blank?
+    end
+
+    def validate_deal_association
+      return if params[:deal_id].blank?
+
+      @deal = Deal.find_by(id: params[:deal_id])
+      failure('Deal not found', 404) if @deal.blank?
+      @invite = @deal.invites.find_by(invitee: current_user)
+      failure('No invitation found', 404) if @invite.blank?
+    end
+
+    def syndicate_comments
+      return if @invite.blank?
+
+      comments = @deal.syndicate_and_creator_discussion(@syndicate.id)
+      return [] if comments.blank?
+
+      CommentSerializer.new(comments).serializable_hash[:data].map{|d| d[:attributes]}
+    end
+
+    def syndicate_docs
+      return if @invite.blank?
+
+      docs = @deal.attachments.where(uploaded_by: @deal.user)
+      return [] if docs.blank?
+
+      AttachmentSerializer.new(docs).serializable_hash[:data].map {|d| d[:attributes]}
     end
   end
 end
