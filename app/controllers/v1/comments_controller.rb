@@ -48,8 +48,8 @@ module V1
     end
 
     def recipient_id
-      if comment_params[:thread_id].present?
-        Comment.find_by(id: comment_params[:thread_id])&.id
+      if @deal.user == current_user
+        Comment.find_by(id: comment_params[:thread_id])&.author_id
       else
         @deal.author_id
       end
