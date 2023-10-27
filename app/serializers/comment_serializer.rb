@@ -4,7 +4,7 @@
 class CommentSerializer
   include JSONAPI::Serializer
 
-  attributes :id, :message, :deal_id, :thread_id, :state
+  attributes :id, :message, :deal_id, :thread_id, :author_id, :state
 
   attribute :author_name do |comment|
     comment.author.name
