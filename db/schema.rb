@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_26_102222) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_27_074659) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -207,8 +207,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_26_102222) do
     t.string "label_ar"
     t.text "description"
     t.text "description_ar"
-    t.boolean "is_required"
-    t.boolean "is_multiple"
+    t.boolean "is_required", default: false
+    t.boolean "is_multiple", default: false
     t.string "add_more_label"
     t.string "add_more_label_ar"
     t.integer "field_type", default: 0
@@ -251,7 +251,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_26_102222) do
   end
 
   create_table "investor_profiles", force: :cascade do |t|
-    t.boolean "accepted_investment_criteria"
+    t.boolean "accepted_investment_criteria", default: false
     t.bigint "country_id"
     t.bigint "investor_id"
     t.datetime "created_at", null: false
@@ -286,7 +286,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_26_102222) do
     t.integer "index", default: 1
     t.string "unit", default: "Million"
     t.string "currency", default: "USD"
-    t.boolean "is_range"
+    t.boolean "is_range", default: false
     t.float "lower_limit"
     t.float "uper_limit"
     t.bigint "question_id"
@@ -330,17 +330,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_26_102222) do
     t.string "street_address"
     t.integer "size_unit", default: 0
     t.float "size"
-    t.boolean "has_bedrooms"
+    t.boolean "has_bedrooms", default: false
     t.integer "no_bedrooms"
-    t.boolean "has_kitchen"
+    t.boolean "has_kitchen", default: false
     t.integer "no_kitchen"
-    t.boolean "has_washroom"
+    t.boolean "has_washroom", default: false
     t.integer "no_washrooms"
-    t.boolean "has_parking"
+    t.boolean "has_parking", default: false
     t.integer "parking_capacity"
-    t.boolean "has_swimming_pool"
+    t.boolean "has_swimming_pool", default: false
     t.bigint "swimming_pool_id", default: 0
-    t.boolean "is_rental"
+    t.boolean "is_rental", default: false
     t.bigint "rental_period_id", default: 0
     t.decimal "rental_amount"
     t.float "dividend_yeild"
@@ -406,7 +406,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_26_102222) do
     t.string "title_ar", limit: 50
     t.string "description"
     t.string "description_ar"
-    t.boolean "is_multiple"
+    t.boolean "is_multiple", default: false
     t.string "add_more_label", limit: 50
     t.string "add_more_label_ar", limit: 50
     t.jsonb "description_link", default: {}
@@ -463,7 +463,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_26_102222) do
   end
 
   create_table "terms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.boolean "enabled"
+    t.boolean "enabled", default: false
     t.jsonb "custom_input", default: {}
     t.bigint "deal_id"
     t.bigint "field_attribute_id"
