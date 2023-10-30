@@ -23,7 +23,25 @@ class Deal < ApplicationRecord
   enum status: { draft: 0, submitted: 1, reopened: 2, verified: 3, rejected: 4, approved: 5, live: 6 }
   enum model: { classic: 0, syndicate: 1 }
 
-  # validate :start_date_and_end_date
+  validate :start_and_end_date_presence, :start_date_in_future, :start_date_and_end_date
+
+  def start_date_in_future
+    return if start_at.blank?
+    return if start_at > Time.zone.now
+    errors.add(:base, 'Start date should be in future')
+  end
+
+  def start_date_and_end_date
+    return if start_at.blank? || end_at.blank?
+    return if start_at < end_at
+    errors.add(:base, 'End date should be after start date')
+  end
+
+  def start_and_end_date_presence
+    return if draft?
+    return if start_at.present? && end_at.present?
+    errors.add(:base, 'Start date and end date should be present')
+  end
 
   after_save :update_current_state
   before_update :validate_status_change
