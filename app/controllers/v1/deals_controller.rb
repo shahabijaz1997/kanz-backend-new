@@ -3,7 +3,7 @@
 # Startups apis
 module V1
   class DealsController < ApiController
-    before_action :find_deal, only: %i[show review submit overview documents comments activities sign_off]
+    before_action :find_deal, only: %i[show review submit documents comments activities sign_off]
     before_action :set_deal, only: %i[create]
     before_action :set_invite, only: %i[sign_off]
 
