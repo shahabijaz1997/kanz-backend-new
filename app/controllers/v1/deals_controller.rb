@@ -69,6 +69,7 @@ module V1
     end
 
     def overview
+      @deal = current_user.deals.find_by(id: params[:id])
       @deal ||= Invite.where(eventable_id: params[:id], eventable_type: 'Deal', invitee: current_user)&.first&.eventable
 
       if @deal.present?
