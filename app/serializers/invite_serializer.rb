@@ -6,6 +6,10 @@ class InviteSerializer
 
   attributes :id, :message, :status
 
+  attribute :sent_at do |invite|
+    DateTime.parse(invite.created_at.to_s).strftime('%d/%m/%Y %I:%M:%S %p')
+  end
+
   attribute :invited_by do |invite|
     invite.user.name
   end
