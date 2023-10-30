@@ -20,6 +20,7 @@ module V1
       syndicate_data[:attachments] = syndicate_docs
       syndicate_data[:deal] = deal_details
       syndicate_data[:thread_id] = @deal.syndicate_comment(@syndicate.id).id
+      syndicate_data[:invite_id] = @deal.invites.find_by(id: params[:id])&.id
       success(I18n.t('syndicate.get.success.show'), syndicate_data)
     end
 
