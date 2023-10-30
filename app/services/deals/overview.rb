@@ -18,6 +18,7 @@ module Deals
 
     def deal_params
       params = {
+        id: deal.id,
         raised: total_raised,
         committed: total_committed,
         investors: total_investors,
