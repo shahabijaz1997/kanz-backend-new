@@ -1,0 +1,32 @@
+div.filters.bg-light.border.rounded
+  span.title Filters
+  = search_form_for @filtered_deals, url: search_path, class: 'form' do |form|
+    - if startup
+      div.search_field
+        = form.label :funding_round_round_statement_eq, 'Stage'
+        = form.select :funding_round_round_statement_eq, STAGES, { include_blank: true }, { class: 'form-control' }
+      
+      div.search_field
+        = form.label :funding_round_instrument_type_statement_eq, 'Instrument Type'
+        = form.select :funding_round_instrument_type_statement_eq, INSTRUMENT_TYPES, { include_blank: true }, { class: 'form-control' }
+
+    - else
+      div.search_field
+        = form.label :property_detail_size_eq, 'Size (sqft)'
+        = form.number_field :property_detail_size_eq, class: 'form-control'
+
+      div.search_field
+        = form.label :target_eq, 'Selling price'
+        = form.number_field :target_eq, class: 'form-control'
+      
+      div.search_field
+        = form.label :property_detail_is_rental_eq, 'Rent'
+        = form.select :property_detail_is_rental_eq, [['Rented', true], ['Not Rented', false]], { include_blank: true }, { class: 'form-control' }
+
+    div.search_field
+      = form.label :status_eq, 'Status'
+      = form.select :status_eq, translate_enum(Deal.statuses), { include_blank: true }, { class: 'form-control' }
+
+    div.submit
+      = form.submit 'Search', class: 'btn btn-primary'
+      = link_to "Clear", request.path, class:"btn btn-secondary"

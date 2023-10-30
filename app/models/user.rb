@@ -3,6 +3,8 @@
 # User Modal
 class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
+  include UserOnboarding
+
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :trackable, :lockable,
          :jwt_authenticatable, jwt_revocation_strategy: self
@@ -14,13 +16,19 @@ class User < ApplicationRecord
   validate :check_email_uniqueness
 
   has_many :attachments, as: :parent, dependent: :destroy
+  has_many :deals, class_name: 'Deal', foreign_key: 'author_id'
   belongs_to :user_role, class_name: 'Role', foreign_key: :role_id
+  has_many :invites, dependent: :destroy
+  has_many :comments, class_name: 'Comment', foreign_key: 'author_id'
 
   delegate :title, :title_ar, to: :user_role, prefix: :role
 
   before_validation :update_role, on: :create
   after_create :update_profile_state
   after_save :update_profile_state, if: :profile_reopened?
+  after_update :inform_applicant, if: :saved_change_to_status?
+
+  scope :approved, -> { where(status: User::statuses[:approved]) }
 
   audited only: :status, on: %i[update]
 
@@ -75,17 +83,17 @@ class User < ApplicationRecord
   end
 
   def update_profile_state
-    investor_type = (profile_reopened? && investor?) ? user_role&.title : ''
+    investor_type = profile_reopened? && investor? ? user_role&.title : ''
     self.profile_states = {
       investor_type: investor_type || '',
-      account_confirmed: self.confirmed?,
+      account_confirmed: confirmed?,
       profile_current_step: 1,
       profile_completed: false,
       questionnaire_steps_completed: 0,
       questionnaire_completed: false,
       attachments_completed: false
     }
-    self.save
+    save
   end
 
   private
@@ -112,14 +120,22 @@ class User < ApplicationRecord
   end
 
   def password_strength
-    unless PASSWORD_REGEX.match(password)
-      errors.add(:base, I18n.t('errors.weak_password'))
-    end
+    return if PASSWORD_REGEX.match(password)
+
+    errors.add(:base, I18n.t('errors.weak_password'))
   end
 
   def check_email_uniqueness
-    if new_record? && User.exists?(email: email)
-      errors.add(:base, I18n.t('errors.email_taken'))
-    end
+    return unless new_record? && User.exists?(email:)
+
+    errors.add(:base, I18n.t('errors.email_taken'))
+  end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[email name]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[profile]
   end
 end

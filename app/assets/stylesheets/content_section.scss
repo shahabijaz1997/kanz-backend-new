@@ -32,6 +32,70 @@
           border: var(--bs-border-width) solid #8aafba !important;
           box-shadow: 0 0 0 0.25rem rgba(21, 94, 117, 0.25) !important;
         }
+
+        .previews {
+          .preview {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 15px;
+            background-color: rgb(241, 241, 241);
+            border-radius: 10px;
+            margin-top: 10px;
+            max-width: 400px;
+
+            .details {
+              max-width: 200px;
+              
+              .title {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+            }
+
+            .actions {
+              display: flex;
+              gap: 10px;
+              height: fit-content;
+
+              a, button {
+                border: unset;
+                border-radius: 10px;
+                background-color: white;
+                height: fit-content;
+                padding: unset;
+                padding: 2px 8px;
+                color: rgba(0, 0, 0, 0.60);
+                font-size: 14px;
+              }
+
+              .preview-button {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+              }
+
+              .remove {
+                border-radius: 50%;
+              }
+            }
+          }
+        }
+
+        .upload {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          color: $primary;
+          font-size: 16px;
+          cursor: pointer;
+          margin: 10px 0;
+        }
+
+        input[type="file"] {
+          display: none;
+        }
       }
 
       input, select {
@@ -43,6 +107,10 @@
           margin: 0 20px 0 5px;
           font-size: 16px;
           cursor: pointer;
+        }
+
+        input[type=radio] {
+          accent-color: $primary !important;
         }
       }
 
@@ -56,11 +124,22 @@
       }
 
       .attachment {
+        display: flex;
+        justify-content: center;
+
         img {
           max-width: 250px;
           max-height: 250px;
           object-fit: contain;
         }
+      }
+
+      .attachments {
+        display: flex;
+        justify-content: start;
+        flex-wrap: wrap;
+        gap: 15px;
+        padding: 20px 0;
       }
 
       .attached_logo {

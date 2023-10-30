@@ -4,12 +4,15 @@
 class Question < ApplicationRecord
   enum question_type: {
     multiple_choice: 0,
-    true_false: 1,
+    switch: 1,
     text: 2,
-    checkbox: 3
+    checkbox: 3,
+    number: 4,
+    dropdown: 5,
+    text_field: 6
   }
 
-  has_many :options, dependent: :destroy
+  has_many :options, as: :optionable, class_name: 'Option', dependent: :destroy
   has_many :users_responses, dependent: :destroy
   has_many :users, through: :users_responses
 

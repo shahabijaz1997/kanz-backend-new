@@ -37,7 +37,7 @@ ar:
       auth_token_expired: 'انتهت صلاحية الجلسة!'
       not_found: 'لم يتم العثور على السجل.'
       existing_record: 'السجل موجود بالفعل.'
-      paramete_missing: 'كيان غير قابل للمعالجة، معلمة مفقودة.'
+      parameter_missing: 'كيان غير قابل للمعالجة، معلمة مفقودة.'
       unauthorized: 'غير مصرح لك بأداء هذا الإجراء.'
       unprocessable: 'طلب غير صالح!'
   general:

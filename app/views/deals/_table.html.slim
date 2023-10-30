@@ -1,0 +1,40 @@
+div.table
+  div.header
+    - if startup
+      div.col = sort_link(@filtered_deals, :user_profile_company_name, "Company Name")
+      div.col = sort_link(@filtered_deals, :user_email)
+      div.col = sort_link(@filtered_deals, :funding_round_round_statement, "Stage")
+      div.col = sort_link(@filtered_deals, :funding_round_instrument_type_statement, "Instrument Type")
+      div.col = sort_link(@filtered_deals, :user_name, "Creator Name")
+    - else
+      div.col = sort_link(@filtered_deals, :title)
+      div.col = sort_link(@filtered_deals, :user_email)
+      div.col = sort_link(@filtered_deals, :target, "Selling Price")
+      div.col = sort_link(@filtered_deals, :property_detail_size, "Size (sqft)")
+      div.col = sort_link(@filtered_deals, :property_detail_is_rental, "Rent")
+    div.col = sort_link(@filtered_deals, :status)
+    div.col
+      span Actions
+  div.content
+    - if deals.present?
+      - deals.each do |deal|
+        div.card.position-relative.shadow-sm
+          div.card-body.d-flex
+            - if startup
+              span.col = deal.user.profile.company_name
+              span.col = deal.user.email
+              span.col = deal.funding_round.stage
+              span.col = deal.funding_round.instrument
+              span.col = deal.user.name
+            - else
+              span.col = deal.title
+              span.col = deal.user.email
+              span.col = "$#{deal.target}" if deal.target
+              span.col = deal.property_detail.size
+              span.col = deal.property_detail.is_rental ? 'Rented' :  'Not Rented'
+            span.col = render 'shared/user_status', status: deal.status
+            span.col = link_to "View", startup ? start_up_path(deal) : property_path(deal), class: 'stretched-link'            
+      - if @pagy.pages > 1
+        == pagy_nav(@pagy)
+    - else
+      div.not_found No Deal Found

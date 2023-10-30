@@ -6,3 +6,22 @@
   background-color: unset !important;
   cursor: default !important;
 }
+
+.history {
+  display: flex;
+  border-radius: 15px;
+  padding: 10px 5px !important;
+
+  span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 15px;
+    padding: 10px !important;
+    max-width: 400px;
+
+    a {
+      width: 35px;
+    }
+  }
+}

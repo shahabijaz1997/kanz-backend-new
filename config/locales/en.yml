@@ -40,7 +40,7 @@ en:
       auth_token_expired: 'Session expired!'
       not_found: 'Record not found.'
       existing_record: 'Record already exists.'
-      paramete_missing: 'Unprocessable Entity, missing parameter.'
+      parameter_missing: 'Unprocessable Entity, missing parameter.'
       unauthorized: 'You are not authorized to perform this action.'
       unprocessable: 'Invalid Request!'
       file_missing: 'Please upload a file.'
@@ -54,3 +54,16 @@ en:
     access_token_failure: 'Failed to fetch access token, try again or contact the customer support'
     profile_failure: 'Failed to fetch profile information, try again or contact the customer support'
     invalid: 'Invalid email or password.'
+  mailer:
+    deal:
+      verified: Your deal has been verified by Customer Support Representative. Approval is now pending from Compliance Office.
+      approved:  The deal you submitted has been approved.
+      reopened:  The deal you submitted has some requested changes.
+      access: You can access the deal using the link below.
+    onboarding:
+      submitted: Your application has been submitted.
+      verified: Your application has been verified by Customer Support Representative. Approval is now pending from Compliance Office.
+      approved:  Your application has been approved.
+      reopened:  Your application has some requested changes.
+      rejected: You application has been rejected.
+      access: You can access Kanz using the link below.

@@ -13,8 +13,8 @@
       div.content
         - resource.audits.reverse.each do |history|
             div.card.shadow-sm
-              div.card-body.d-flex.no-hover
-                span.col-2 = render 'shared/user_status', status: STATUSES.key(history.audited_changes['status'].try(:last))
+              div.no-hover.history
+                span.col-2.px-0 = render 'shared/user_status', status: STATUSES.key(history.audited_changes['status'].try(:last))
                 span.col-3 data-toggle='tooltip' title="#{history.user.present? ? user_info(history.user) : 'NA'}"
                   = history.user.present? ? user_info(history.user) : 'NA'
                 span.col-4 data-toggle='tooltip' title=history.comment

@@ -1,0 +1,16 @@
+- if attachments.present?
+  = render 'shared/section_card', section_title: title, editable: false do
+    li.list-group-item
+      div.attachments
+        - attachments.each do |attachment|
+          div.card.attachment
+            - if ['pdf', 'application/pdf'].include?(attachment.attachment_kind)
+              object data=attachment.file.url width=250
+            - else
+              = image_tag(attachment.file.url)
+            div.card-img-overlay
+              a.btn.btn-outline-light href=attachment.file.url target="_blank"
+                i.bi.bi-arrows-angle-expand
+              = link_to rails_blob_path(attachment.file, disposition: 'attachment'), class: 'ms-3 btn btn-outline-light' do
+                i.bi.bi-cloud-arrow-down
+

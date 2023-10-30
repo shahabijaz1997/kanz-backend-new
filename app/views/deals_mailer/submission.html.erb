@@ -1,0 +1,33 @@
+<html>
+  <head></head>
+  <body style="text-align: center">
+    <h2>New Deal Submission</h2>
+    <br>
+    <p>A new <%= @deal[:deal_type] %> deal is submitted.</p>
+    <p> Deal Id: <%= @deal[:id] %> </p>
+    <% if @deal[:title] %>
+      <p> Deal Title: <%= @deal[:title] %> </p>
+    <% end %>
+
+    <% if @deal[:details][:round] %> 
+      <p> Round: <%= @deal[:details][:round] %> </p>
+    <% end %>
+
+    <% if @deal[:details][:instrument_type] %> 
+      <p> Instrument Type: <%= @deal[:details][:instrument_type] %> </p>
+    <% end %>
+
+    <% if @deal[:details][:safe_type] %> 
+      <p> Safe Type: <%= @deal[:details][:safe_type] %> </p>
+    <% end %>
+
+    <% if @deal[:details][:equity_type] %> 
+      <p> Equity Type: <%= @deal[:details][:equity_type] %> </p>
+    <% end %>
+
+    <% if @deal[:target] %> 
+      <p> Target: <%= @deal[:target] %> </p>
+    <% end %>
+  </body>
+</html>
+

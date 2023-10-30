@@ -12,7 +12,7 @@ div.w-75
     = render 'shared/section_list_item', title: 'Residence', value: @realtor.profile&.residence&.name
     = render 'shared/section_list_item', title: 'No. of Properties', value: @realtor.profile&.no_of_properties
 
-  = render 'shared/attachments_section', resource: @realtor
+  = render 'shared/attachments_section', attachments: @realtor.attachments
 
   = render 'shared/approval_section', resource: @realtor
   = render 'shared/history_section', resource: @realtor

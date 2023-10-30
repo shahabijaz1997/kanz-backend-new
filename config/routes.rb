@@ -37,9 +37,31 @@ Rails.application.routes.draw do
     resources :countries, only: %i[index]
     resources :users, only: %i[show update]
     resources :industries, only: %i[index]
+    resources :deals do
+      member do
+        get :overview
+        get :documents
+        get :comments
+        get :activities
+        post :sign_off
+      end
+      resources :invites
+      resources :comments
+      resources :syndicates, only: %i[show]
+    end
+    post 'deals/:id/submit' => 'deals#submit'
+    get 'deals/:id/review' => 'deals#review'
     get 'settings/attachments' => 'settings#attachments'
+    get 'settings/stepper' => 'settings#stepper'
     get 'regions' => 'industries#regions'
     post 'attachments/submit', to: 'attachments#submit'
+
+    resources :users do
+      resources :invites, only: %i[index]
+    end
+    resources :invitees, model_name: 'User' do
+      resources :invites, only: %i[index]
+    end
   end
 
   # Admin routes
@@ -55,6 +77,12 @@ Rails.application.routes.draw do
   resources :realtors, only: %i[index show update]
   resources :startups, only: %i[index show update]
   resources :syndicates, only: %i[index show update]
+  resources :deals, only: %i[update] do
+    collection do
+      resources :start_up, only: %i[index show], controller: 'deals', type: 'start_up'
+      resources :property, only: %i[index show], controller: 'deals', type: 'property'
+    end
+  end
   resources :profile, only: %i[index] do
     collection do
       get :edit

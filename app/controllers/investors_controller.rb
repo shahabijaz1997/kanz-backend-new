@@ -15,7 +15,7 @@ class InvestorsController < ApplicationController
 
   def update
     respond_to do |format|
-      if @investor.update(update_status_params)
+      if user_can_approve(@investor) && @investor.update(update_status_params)
         format.html { redirect_to @investor, notice: 'Successfully updated.' }
       else
         format.html { render :show, status: :unprocessable_entity }

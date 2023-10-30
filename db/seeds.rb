@@ -8,7 +8,11 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-Dir[Rails.root.join('db', 'seeds', '*.rb')].each do |seed|
-  Rails.logger.debug { "seeding - #{seed}. loading seeds, for real!" }
-  load seed
+# file_names = ['admin_roles', 'countries', 'industries', 'regions', 'role_vise_attachments',
+#               'startup_stepper', 'property_stepper', 'dependency_tree']
+
+file_names = ['stepper_updates']
+
+file_names.each do |file_name|
+  load Rails.root.join('db', 'seeds', "#{file_name}.rb")
 end

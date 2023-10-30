@@ -12,6 +12,6 @@ class UsersResponse < ApplicationRecord
     profile_states = user.profile_states
     profile_states[:questionnaire_steps_completed] = question.step
     profile_states[:questionnaire_completed] = question.step == 5
-    user.update(profile_states: profile_states)
+    user.update(profile_states:)
   end
 end

@@ -17,7 +17,7 @@ module ExceptionHandler
     end
 
     rescue_from ActionController::ParameterMissing do |_e|
-      render json: { message: I18n.t('errors.exceptions.paramete_missing') }, status: :unprocessable_entity
+      render json: { message: I18n.t('errors.exceptions.parameter_missing') }, status: :unprocessable_entity
     end
 
     rescue_from Pundit::NotAuthorizedError do |_e|
@@ -29,6 +29,7 @@ module ExceptionHandler
     end
 
     rescue_from StandardError do |e|
+      Rails.logger.error ([e.message]+e.backtrace).join($/)
       render json: { message: e.message }, status: :unprocessable_entity
     end
   end

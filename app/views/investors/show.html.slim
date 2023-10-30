@@ -1,4 +1,4 @@
-= link_to '< Back', :back, class: 'mb-2'
+= link_to '< Back', @investor.individual_investor? ? individuals_path : firms_path, class: 'mb-2'
 = render 'shared/page_title', title: "Investor Details"
 
 div.w-75
@@ -16,6 +16,6 @@ div.w-75
 
 
   = render 'investment_philosophies', resource: @investor
-  = render 'shared/attachments_section', resource: @investor
+  = render 'shared/attachments_section', attachments: @investor.attachments
   = render 'shared/approval_section', resource: @investor
   = render 'shared/history_section', resource: @investor

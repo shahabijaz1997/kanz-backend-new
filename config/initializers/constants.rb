@@ -31,7 +31,9 @@ STATUSES = {
 QUESTION_KIND = {
   investment_philosophy: 0,
   individual_accredition: 1,
-  firm_accredition: 2
+  firm_accredition: 2,
+  startup_deal: 3,
+  property_deal: 4
 }.freeze
 
 ROUTES = {
@@ -47,14 +49,15 @@ ROUTES = {
       name: "Investors",
       path: "investors",
       icon: "fa fa-money-bill-trend-up",
-      sub_routes: [{
-        name: "Individuals",
-        path: "individuals"
-      },
-      {
-        name: "Firms",
-        path: "firms"
-      }
+      sub_routes: [
+        {
+          name: "Individuals",
+          path: "individuals"
+        },
+        {
+          name: "Firms",
+          path: "firms"
+        }
       ]
     },
     {
@@ -71,6 +74,21 @@ ROUTES = {
       name: "Syndicates",
       path: "syndicates",
       icon: "fa fa-sitemap"
+    },
+    {
+      name: "Deals",
+      path: "deals",
+      icon: "fa fa-briefcase",
+      sub_routes: [
+        {
+          name: "Startup",
+          path: "start_up"
+        },
+        {
+          name: "Property",
+          path: "property"
+        }
+      ]
     }
   ]
 }.freeze
@@ -81,3 +99,40 @@ MAX_STEPS = {
   syndicate_profile: 2,
   realtor_profile: 1
 }.freeze
+
+DEAL_TYPES = {
+  startup: 0,
+  property: 1
+}.freeze
+
+STEPPERS = {
+  startup_deal: 0,
+  property_deal: 1
+}.freeze
+
+FIELD_TYPE = {
+  multiple_choice: 0,
+  switch: 1,
+  text_box: 2,
+  checkbox: 3,
+  number: 4,
+  dropdown: 5,
+  text_field: 6,
+  file: 7,
+  url: 8,
+  date: 9
+}.freeze
+
+VALUE_FIELDS = ['switch', 'text_box', 'number', 'text_field', 'url', 'file', 'date'].freeze
+OPTION_FIELDS = ['multiple_choice', 'checkbox', 'dropdown'].freeze
+INPUT_TYPES = {
+  currency: 0,
+  percent: 1,
+  sqft: 2,
+  numeric: 4
+}.freeze
+
+DEAL_STEPPER_DATE_FIELDS = ['start_at', 'end_at'].freeze
+
+STAGES = ['Pre-seed', 'Seed / Angel', 'Series A', 'Series B', 'Series C', 'Series D', 'Mezzanine & bridge']
+INSTRUMENT_TYPES = ['SAFE', 'Equity Financing']
