@@ -61,11 +61,17 @@ module Deals
         location: property_detail.location_detail
       }
 
+      params[:features][:has_bedrooms] = property_detail.has_bedrooms
       params[:features][:bedrooms] = property_detail.no_bedrooms if property_detail.has_bedrooms
+      params[:features][:has_kitchen] = property_detail.has_kitchen
       params[:features][:kitchen] = property_detail.no_kitchen if property_detail.has_kitchen
+      params[:features][:has_washroom] = property_detail.has_washroom
       params[:features][:washrooms] = property_detail.no_washrooms if property_detail.has_washroom
+      params[:features][:has_parking] = property_detail.has_parking
       params[:features][:parking_space] = property_detail.parking_capacity if property_detail.has_parking
+      params[:features][:has_swimming_pool] = property_detail.has_swimming_pool
       params[:features][:swimming_pool] = property_detail.swimming_pool_type if property_detail.has_swimming_pool
+      params[:features][:is_rental] = property_detail.is_rental
       params[:features][:rental_amount] = property_detail.rental_amount if property_detail.is_rental
       params[:features][:rental_period] = property_detail.rental_duration if property_detail.is_rental
 
