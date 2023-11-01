@@ -60,7 +60,7 @@ module Deals
         features: property_features(property_detail),
         location: property_detail.location_detail,
         unique_selling_points: property_usps,
-        external_links: external_links
+        external_links: external_links,
         terms: terms
       }
     end
