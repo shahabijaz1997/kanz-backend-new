@@ -82,7 +82,7 @@ module V1
     def syndicate_docs
       return if @invite.blank?
 
-      docs = @deal.attachments.where(uploaded_by: @deal.user)
+      docs = @deal.attachments.where(uploaded_by: @syndicate)
       return [] if docs.blank?
 
       AttachmentSerializer.new(docs).serializable_hash[:data].map {|d| d[:attributes]}

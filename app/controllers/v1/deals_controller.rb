@@ -55,8 +55,7 @@ module V1
     end
 
     def activities
-      # activities = @deal.activities
-      # success('Success', activities)
+      # success('Success', @deal.activities)
     end
 
     def submit
