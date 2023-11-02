@@ -13,6 +13,8 @@ class Invite < ApplicationRecord
   after_create :send_invite_email
   after_update :send_status_update_email
 
+  scope :latest_first, -> { order(created_at: :desc) }
+
   def expired?
     expire_at < Time.zone.now
   end

@@ -61,7 +61,7 @@ module V1
       Invite.where(eventable_type: 'Deal').where(
         'eventable_id= ? OR invitee_id= ? OR user_id= ?',
         params[:deal_id], params[:invitee_id], params[:user_id]
-      )
+      ).latest_first
     end
 
     def validate_invite_status
