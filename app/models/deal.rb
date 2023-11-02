@@ -99,7 +99,7 @@ class Deal < ApplicationRecord
   end
 
   def syndicate_docs(syndicate_id)
-    return [] if Syndicate.exists?(id: syndicate_id)
+    return [] unless Syndicate.exists?(id: syndicate_id)
 
     attachments.where(uploaded_by_id: syndicate_id)
   end
