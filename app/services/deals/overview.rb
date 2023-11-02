@@ -58,7 +58,7 @@ module Deals
         expected_annual_return: property_detail.yearly_appreciation,
         size: property_detail.size,
         features: property_features(property_detail),
-        location: property_detail.location_detail,
+        address: address(property_detail),
         unique_selling_points: property_usps,
         external_links: external_links,
         terms: terms
@@ -82,6 +82,17 @@ module Deals
       feature[:rental_period] = features.rental_duration if features.is_rental
 
       feature
+    end
+
+    def address(property_detail)
+      {
+        street_address: property_detail.street_address,
+        building_name: property_detail.building_name,
+        area: property_detail.area,
+        city: property_detail.city,
+        state: property_detail.state,
+        country_name: property_detail.country_name
+      }
     end
 
     def property_usps
