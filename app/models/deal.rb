@@ -65,7 +65,7 @@ class Deal < ApplicationRecord
   end
 
   def attachments_by_creator
-    attachments.where(uploaded_by: nil)
+    attachments.where(uploaded_by: user)
   end
 
   def self.ransackable_attributes(_auth_object = nil)
