@@ -44,6 +44,7 @@ Rails.application.routes.draw do
         get :comments
         get :activities
         post :sign_off
+        get :unique_selling_points
       end
       resources :invites
       resources :comments

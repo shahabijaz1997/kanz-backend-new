@@ -23,7 +23,7 @@ class Deal < ApplicationRecord
   enum status: { draft: 0, submitted: 1, reopened: 2, verified: 3, rejected: 4, approved: 5, live: 6 }
   enum model: { classic: 0, syndicate: 1 }
 
-  validate :start_and_end_date_presence, :start_date_in_future, :start_date_and_end_date
+  validate :start_and_end_date_presence, :start_date_and_end_date
 
   def start_date_in_future
     return if start_at.blank?

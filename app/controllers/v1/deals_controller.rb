@@ -6,6 +6,7 @@ module V1
     before_action :find_deal, only: %i[show review submit documents comments activities sign_off]
     before_action :set_deal, only: %i[create]
     before_action :set_invite, only: %i[sign_off]
+    before_action :set_features, only: %i[unique_selling_points]
 
     def index
       deals = if current_user.syndicate?
@@ -78,6 +79,16 @@ module V1
       end
     end
 
+    def unique_selling_points
+      features = @features.map do |usp|
+        {
+          title: usp.title,
+          description: usp.description
+        }
+      end
+      success('success', features)
+    end
+
     def sign_off
       Deal.transaction do
         @invite.update!(status: Invite::statuses[:approved])
@@ -90,7 +101,14 @@ module V1
 
     def find_deal
       @deal = current_user.deals.find_by(id: params[:id])
-      failure('Unable to find deal', 404) if  @deal.blank?
+      failure('Unable to find deal', 404) if @deal.blank?
+    end
+
+    def set_features
+      deal = Deal.find_by(id: params[:id])
+      failure('Unable to find deal', 404) if deal.blank?
+      failure("Startup deals don't have usps") unless deal.property?
+      @features = deal.features
     end
 
     def deal_params
