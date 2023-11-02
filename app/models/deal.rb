@@ -101,7 +101,7 @@ class Deal < ApplicationRecord
   def syndicate_docs(syndicate_id)
     return [] if Syndicate.exists?(id: syndicate_id)
 
-    attachments.where(uploaded_by: syndicate_id)
+    attachments.where(uploaded_by_id: syndicate_id)
   end
 
   def notify_deal_approval
