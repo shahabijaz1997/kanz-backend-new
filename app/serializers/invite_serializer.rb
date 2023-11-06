@@ -22,6 +22,7 @@ class InviteSerializer
     deal = invite.eventable
     {
       id: deal.id,
+      token: deal.uuid,
       title: deal.title,
       target: deal.target,
       type: deal.deal_type,
