@@ -8,7 +8,8 @@ module V1
     before_action :validate_deal_association, only: %i[show]
 
     def index
-      deal_invitees_ids = @deal.invites.pluck(:invitee_id)
+      deal = Deal.find_by(id: params[:deal_id])
+      deal_invitees_ids = deal.invites.pluck(:invitee_id)
       success(
         I18n.t('syndicate.get.success.show'),
         SyndicateSerializer.new(
