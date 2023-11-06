@@ -68,17 +68,6 @@ module V1
       end
     end
 
-    def overview
-      @deal = current_user.deals.find_by(id: params[:id])
-      @deal ||= Invite.where(eventable_id: params[:id], eventable_type: 'Deal', invitee: current_user)&.first&.eventable
-
-      if @deal.present?
-        success('Success', Deals::Overview.call(@deal, current_user))
-      else
-        failure('Deal not found', 404)
-      end
-    end
-
     def unique_selling_points
       features = @features.map do |usp|
         {
