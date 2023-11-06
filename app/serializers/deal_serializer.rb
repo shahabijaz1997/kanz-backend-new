@@ -4,7 +4,7 @@
 class DealSerializer
   include JSONAPI::Serializer
 
-  attributes :id, :deal_type, :title, :description, :target, :status, :start_at, :end_at, :submitted_at, :success_benchmark, :current_state, :uuid
+  attributes :id, :deal_type, :title, :description, :target, :status, :start_at, :end_at, :submitted_at, :success_benchmark, :current_state, :token
 
   attribute :details do |deal|
     if deal.startup?

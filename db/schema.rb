@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_27_074659) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_06_104655) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -152,7 +152,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_27_074659) do
     t.boolean "agreed_with_kanz_terms", default: false
     t.string "title"
     t.text "description"
-    t.uuid "uuid", default: -> { "gen_random_uuid()" }
+    t.uuid "token", default: -> { "gen_random_uuid()" }
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "current_state", default: {}
