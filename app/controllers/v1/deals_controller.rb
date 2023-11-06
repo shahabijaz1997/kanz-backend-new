@@ -3,8 +3,9 @@
 # Startups apis
 module V1
   class DealsController < ApiController
-    before_action :find_deal, only: %i[show review submit documents comments activities sign_off]
+    before_action :find_deal, only: %i[review submit documents comments activities sign_off]
     before_action :set_deal, only: %i[create]
+    before_action :get_deal, only: %i[show]
     before_action :set_invite, only: %i[sign_off]
     before_action :set_features, only: %i[unique_selling_points]
 
@@ -22,8 +23,7 @@ module V1
     end
 
     def show
-      deal = DealSerializer.new(@deal).serializable_hash[:data][:attributes]
-      success('success', simplify_deal_attributes(deal))
+      success('Success', Deals::Overview.call(@deal, current_user))
     end
 
     def create
@@ -124,6 +124,19 @@ module V1
 
       @deal = current_user.deals.find_by(id: deal_params[:id])
       @deal = @deal || current_user.deals.new(deal_type: deal_params[:deal_type])
+    end
+
+    def get_deal
+      @deal = if current_user.creator?
+        current_user.deals.find_by(id: params[:id])
+      else
+        Invite.where(
+          eventable_id: Deal.find_by(token: params[:token])&.id,
+          eventable_type: 'Deal',
+          invitee: current_user
+        )&.first&.eventable
+      end
+      failure('Deal not found', 404) if @deal.blank?
     end
 
     def invalid_deal_type?

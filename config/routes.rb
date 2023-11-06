@@ -50,6 +50,7 @@ Rails.application.routes.draw do
       resources :comments
       resources :syndicates, only: %i[show index]
     end
+    resources :deals, param: :token, only: %i[show]
     post 'deals/:id/submit' => 'deals#submit'
     get 'deals/:id/review' => 'deals#review'
     get 'settings/attachments' => 'settings#attachments'

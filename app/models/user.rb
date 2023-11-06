@@ -58,6 +58,10 @@ class User < ApplicationRecord
     type == 'Realtor'
   end
 
+  def creator?
+    startup? || realtor?
+  end
+
   def arabic?
     language == 'ar'
   end

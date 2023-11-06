@@ -28,7 +28,7 @@ module Deals
         description: deal.description,
         status: deal.status,
         start_at: deal.start_at,
-        end_at: deal.end_at,
+        end_at: deal.end_at
       }
 
       additional_params = deal.startup? ? startup_params : property_params
@@ -125,7 +125,10 @@ module Deals
       comments = deal.comments.where('author_id=? OR recipient_id=?', user.id, user.id)
       return {} if comments.blank?
 
-      { comments: CommentSerializer.new(comments).serializable_hash[:data].map {|d| d[:attributes]} }
+      {
+        comments: CommentSerializer.new(comments).serializable_hash[:data].map {|d| d[:attributes]},
+        thread_id: deal.syndicate_comment(user.id)&.id
+      }
     end
 
     def invite
