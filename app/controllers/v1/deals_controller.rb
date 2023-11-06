@@ -128,7 +128,7 @@ module V1
 
     def get_deal
       @deal = if current_user.creator?
-        current_user.deals.find_by(id: params[:id])
+        current_user.deals.find_by(token: params[:token])
       else
         Invite.where(
           eventable_id: Deal.find_by(token: params[:token])&.id,

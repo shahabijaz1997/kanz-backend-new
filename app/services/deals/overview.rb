@@ -28,7 +28,8 @@ module Deals
         description: deal.description,
         status: deal.status,
         start_at: deal.start_at,
-        end_at: deal.end_at
+        end_at: deal.end_at,
+        token: deal.token
       }
 
       additional_params = deal.startup? ? startup_params : property_params
