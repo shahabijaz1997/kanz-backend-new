@@ -37,7 +37,7 @@ Rails.application.routes.draw do
     resources :countries, only: %i[index]
     resources :users, only: %i[show update]
     resources :industries, only: %i[index]
-    resources :deals do
+    resources :deals, except: %i[show] do
       member do
         get :overview
         get :documents
