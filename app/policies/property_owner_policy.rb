@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RealtorPolicy < ApplicationPolicy
+class PropertyOwnerPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       scope.all

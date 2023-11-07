@@ -1,6 +1,6 @@
 div.filters.bg-light.border.rounded.shadow-sm
   span.title Filters
-  = search_form_for @filtered_realtors, class: 'form' do |form|
+  = search_form_for @filtered_property_owners, class: 'form' do |form|
     div.search_field
       = form.label :name_cont, 'Name'
       = form.search_field :name_cont, class: 'form-control'
