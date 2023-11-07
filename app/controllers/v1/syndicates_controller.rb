@@ -4,8 +4,7 @@
 module V1
   class SyndicatesController < ApiController
     before_action :check_file_presence, only: %i[create]
-    before_action :find_syndicate, only: %i[show]
-    before_action :validate_deal_association, only: %i[show]
+    before_action :find_syndicate, :validate_deal_association, only: %i[show]
 
     def index
       deal = Deal.find_by(id: params[:deal_id])
@@ -20,12 +19,7 @@ module V1
 
     def show
       syndicate_data = SyndicateSerializer.new(@syndicate).serializable_hash[:data][:attributes]
-      syndicate_data[:comments] = syndicate_comments
-      syndicate_data[:attachments] = syndicate_docs
-      syndicate_data[:deal] = deal_details
-      syndicate_data[:thread_id] = @deal.syndicate_comment(@syndicate.id)&.id
-      syndicate_data[:invite_id] = @deal.invites.find_by(invitee_id: params[:id])&.id
-      syndicate_data[:status] = @deal.invites.find_by(invitee_id: params[:id])&.status
+      syndicate_data = additional_attributes(data) if params[:deal_id].present?
       success(I18n.t('syndicate.get.success.show'), syndicate_data)
     end
 
@@ -91,6 +85,17 @@ module V1
       return [] if docs.blank?
 
       AttachmentSerializer.new(docs).serializable_hash[:data].map {|d| d[:attributes]}
+    end
+
+    def additional_attributes(data)
+      data[:comments] = syndicate_comments
+      data[:attachments] = syndicate_docs
+      data[:deal] = deal_details
+      data[:thread_id] = @deal.syndicate_comment(@syndicate.id)&.id
+      data[:invite_id] = @deal.invites.find_by(invitee_id: params[:id])&.id
+      data[:status] = @deal.invites.find_by(invitee_id: params[:id])&.status
+
+      data
     end
 
     def deal_details
