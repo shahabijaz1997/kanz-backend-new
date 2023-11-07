@@ -35,7 +35,7 @@ module ProfileState
 
     # Name of blonging persone, e.g investor, startup...
     def association_name
-      self.class.name.underscore.split('_').first
+      self.class.name.underscore.gsub('_profile', '')
     end
   end
 

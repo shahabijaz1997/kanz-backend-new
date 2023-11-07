@@ -61,6 +61,7 @@ Rails.application.routes.draw do
     resources :users do
       resources :invites, only: %i[index]
     end
+    get :check_session, to: 'users#check_session'
     resources :invitees, model_name: 'User' do
       resources :invites, only: %i[index]
     end
