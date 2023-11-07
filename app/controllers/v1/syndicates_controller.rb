@@ -19,7 +19,7 @@ module V1
 
     def show
       syndicate_data = SyndicateSerializer.new(@syndicate).serializable_hash[:data][:attributes]
-      syndicate_data = additional_attributes(data) if params[:deal_id].present?
+      syndicate_data = additional_attributes(syndicate_data) if params[:deal_id].present?
       success(I18n.t('syndicate.get.success.show'), syndicate_data)
     end
 
