@@ -25,6 +25,46 @@ class Deal < ApplicationRecord
 
   validate :start_and_end_date_presence, :start_date_and_end_date
 
+  after_save :update_current_state
+  before_update :validate_status_change
+  after_update :notify_deal_approval
+
+  audited only: :status, on: %i[update]
+
+  scope :approved, -> { where(status: Deal::statuses[:approved]) }
+  scope :syndicate_model, -> { where(model: Deal::models[:syndicate]) }
+  scope :syndicate_deals, -> { approved.syndicate_model }
+  scope :latest_first, -> { order(created_at: :desc) }
+  scope :by_status, -> (status) { where(status: status) }
+
+  def attachments_by_creator
+    attachments.where(uploaded_by: user)
+  end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[title status target]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[user property_detail funding_round]
+  end
+
+  def syndicate_comment(author_id)
+    comments.find_by(author_id: author_id, thread_id: nil)
+  end
+
+  def syndicate_and_creator_discussion(author_id)
+    comments.where('author_id= ? OR recipient_id= ?', author_id, author_id).order(:created_at)
+  end
+
+  def syndicate_docs(syndicate_id)
+    return [] unless Syndicate.exists?(id: syndicate_id)
+
+    attachments.where(uploaded_by_id: syndicate_id)
+  end
+
+  private
+
   def start_date_in_future
     return if start_at.blank?
     return if start_at > Time.zone.now
@@ -43,17 +83,6 @@ class Deal < ApplicationRecord
     errors.add(:base, 'Start date and end date should be present')
   end
 
-  after_save :update_current_state
-  before_update :validate_status_change
-  after_update :notify_deal_approval
-
-  audited only: :status, on: %i[update]
-
-  scope :approved, -> { where(status: Deal::statuses[:approved]) }
-  scope :syndicate_model, -> { where(model: Deal::models[:syndicate]) }
-  scope :syndicate_deals, -> { approved.syndicate_model }
-  scope :latest_first, -> { order(created_at: :desc) }
-
   def update_current_state
     current_state['current_step'] = submitted? ? 0 : step
     current_state['submitted'] = submitted?
@@ -63,19 +92,7 @@ class Deal < ApplicationRecord
 
     self.update_column(:current_state, current_state)
   end
-
-  def attachments_by_creator
-    attachments.where(uploaded_by: user)
-  end
-
-  def self.ransackable_attributes(_auth_object = nil)
-    %w[title status target]
-  end
-
-  def self.ransackable_associations(_auth_object = nil)
-    %w[user property_detail funding_round]
-  end
-
+  
   def validate_status_change
     if status == 'submitted' && !(status_was.in? %w[draft reopened])
       errors[:base] << 'Only draft or reopened deals can be submitted'
@@ -88,20 +105,6 @@ class Deal < ApplicationRecord
     elsif status == 'live' && status_was != 'approved'
       errors[:base] << 'Only verified deals can be approved'
     end
-  end
-
-  def syndicate_comment(author_id)
-    comments.find_by(author_id: author_id, thread_id: nil)
-  end
-
-  def syndicate_and_creator_discussion(author_id)
-    comments.where('author_id= ? OR recipient_id= ?', author_id, author_id).order(:created_at)
-  end
-
-  def syndicate_docs(syndicate_id)
-    return [] unless Syndicate.exists?(id: syndicate_id)
-
-    attachments.where(uploaded_by_id: syndicate_id)
   end
 
   def notify_deal_approval
