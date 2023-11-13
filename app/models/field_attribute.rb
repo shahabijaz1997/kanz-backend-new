@@ -9,6 +9,7 @@ class FieldAttribute < ApplicationRecord
   has_many :dependencies, as: :dependable, class_name: 'DependencyTree', dependent: :destroy
   has_many :dependents, as: :dependent, class_name: 'DependencyTree', dependent: :destroy
   has_many :attachment, as: :configurable, dependent: :destroy
+  has_many :terms, dependent: :destroy
 
   accepts_nested_attributes_for :options
 

@@ -119,11 +119,12 @@ module V1
       @deal = if current_user.creator?
         current_user.deals.find_by(token: params[:token])
       else
-        Invite.where(
-          eventable_id: Deal.find_by(token: params[:token])&.id,
-          eventable_type: 'Deal',
-          invitee: current_user
-        )&.first&.eventable
+        # Invite.where(
+        #   eventable_id: Deal.find_by(token: params[:token])&.id,
+        #   eventable_type: 'Deal',
+        #   invitee: current_user
+        # )&.first&.eventable
+        Deal.find_by(token: params[:token])
       end
       failure('Deal not found', 404) if @deal.blank?
     end
