@@ -56,7 +56,7 @@ module Deals
       return {} if property_detail.blank?
 
       {
-        expected_dividend_yield: property_detail.dividend_yeild,
+        expected_dividend_yield: property_detail.dividend_yield,
         expected_annual_return: property_detail.yearly_appreciation,
         size: property_detail.size,
         features: property_features(property_detail),
