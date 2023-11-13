@@ -47,6 +47,7 @@ module Deals
         safe_type: round.safe_kind,
         valuation_type: round.valuation_type,
         valuation: round.valuation,
+        terms: deal_terms
       }
     end
 
@@ -143,6 +144,11 @@ module Deals
           invited_by: invite.user.name
         }
       }
+    end
+
+    def deal_terms
+      terms = FieldAttribute.joins(:terms).where("terms.deal_id = #{deal.id}").pluck(:statement, :enabled, :custom_input)
+      terms.map{ |term| { term: term[0], is_enabled: term[1], value: term[2] }}
     end
 
     def total_raised
