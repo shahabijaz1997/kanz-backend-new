@@ -19,8 +19,9 @@ class Invite < ApplicationRecord
     expire_at < Time.zone.now
   end
 
-  def self.mark_as_commented(deal_id, invitee_id)
-    invite = find_by!(eventable_type: 'Deal', eventable_id: deal_id, invitee_id: invitee_id)
+  def self.mark_as_commented(deal_id, comment_creator_id, comment_recipient_id)
+    invite = find_by(eventable_type: 'Deal', eventable_id: deal_id, invitee_id: comment_creator_id)
+    invite ||= create!(eventable_type: 'Deal', eventable_id: deal_id, user_id: comment_creator_id, invitee_id: comment_recipient_id)
     invite.update!(status: statuses[:interested])
   end
 
