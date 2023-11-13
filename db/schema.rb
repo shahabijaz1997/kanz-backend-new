@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_06_104655) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_13_061348) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -343,7 +343,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_06_104655) do
     t.boolean "is_rental", default: false
     t.bigint "rental_period_id", default: 0
     t.decimal "rental_amount"
-    t.float "dividend_yeild"
+    t.float "dividend_yield"
     t.float "yearly_appreciation"
     t.jsonb "external_links", default: {}
     t.bigint "deal_id"
