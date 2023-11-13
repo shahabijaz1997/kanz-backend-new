@@ -21,6 +21,6 @@ class Comment < ApplicationRecord
   def update_inivte
     return if !author.syndicate? || thread_id.present?
 
-    Invite.mark_as_commented(deal_id, author_id)
+    Invite.mark_as_commented(deal_id, author_id, recipient_id)
   end
 end
