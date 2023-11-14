@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Fast json serializer
-class PropertOwnerSerializer
+class PropertyOwnerSerializer
   include JSONAPI::Serializer
 
   attributes :id, :name, :email, :type, :status, :language, :profile_states

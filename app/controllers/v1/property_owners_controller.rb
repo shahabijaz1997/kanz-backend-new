@@ -6,7 +6,7 @@ module V1
     before_action :validate_property_owner
 
     def show
-      property_owner_attributes = PropertOwnerSerializer.new(@property_owner).serializable_hash[:data][:attributes]
+      property_owner_attributes = PropertyOwnerSerializer.new(@property_owner).serializable_hash[:data][:attributes]
       success(I18n.t('property_owner.get.success.show'), property_owner_attributes)
     end
 
