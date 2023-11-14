@@ -54,12 +54,12 @@ class User < ApplicationRecord
     type == 'Startup'
   end
 
-  def realtor?
-    type == 'Realtor'
+  def property_owner?
+    type == 'PropertyOwner'
   end
 
   def creator?
-    startup? || realtor?
+    startup? || property_owner?
   end
 
   def arabic?

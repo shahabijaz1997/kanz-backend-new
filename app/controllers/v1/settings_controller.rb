@@ -17,7 +17,7 @@ module V1
         })
       end
 
-      success(I18n.t('realtor.get.success.show'), attachment_configs)
+      success(I18n.t('property_owner.get.success.show'), attachment_configs)
     end
 
     def stepper

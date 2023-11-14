@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class RealtorProfile < ApplicationRecord
+class PropertyOwnerProfile < ApplicationRecord
   include ProfileState
 
-  belongs_to :realtor
+  belongs_to :property_owner
   belongs_to :nationality, class_name: 'Country'
   belongs_to :residence, class_name: 'Country'
 

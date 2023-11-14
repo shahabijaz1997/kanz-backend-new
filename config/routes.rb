@@ -32,7 +32,7 @@ Rails.application.routes.draw do
     resources :investment_philosophies, param: :step, only: %i[show create]
     resources :syndicates
     resources :startups
-    resources :realtors
+    resources :property_owners
     resources :attachments, except: :index
     resources :countries, only: %i[index]
     resources :users, only: %i[show update]
@@ -61,6 +61,7 @@ Rails.application.routes.draw do
     resources :users do
       resources :invites, only: %i[index]
     end
+    get :check_session, to: 'users#check_session'
     resources :invitees, model_name: 'User' do
       resources :invites, only: %i[index]
     end
@@ -76,7 +77,7 @@ Rails.application.routes.draw do
       resources :firms, only: %i[index show], controller: 'investors', type: 'firms'
     end
   end
-  resources :realtors, only: %i[index show update]
+  resources :property_owners, only: %i[index show update]
   resources :startups, only: %i[index show update]
   resources :syndicates, only: %i[index show update]
   resources :deals, only: %i[update] do
