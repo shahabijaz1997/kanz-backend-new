@@ -14,6 +14,10 @@ class Invite < ApplicationRecord
   after_update :send_status_update_email
 
   scope :latest_first, -> { order(created_at: :desc) }
+  scope :active, -> { where.not(status: Invite::statuses[:expired]) }
+  scope :pending, -> { where(status: Invite::statuses[:pending]) }
+  scope :interested, -> { where(status: %i[interested accepted approved]) }
+  scope :by_status, -> (status) { where(status: status) }
 
   def expired?
     expire_at < Time.zone.now

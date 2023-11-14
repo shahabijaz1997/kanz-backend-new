@@ -13,18 +13,14 @@ module V1
       deals = if current_user.syndicate?
         Deal.syndicate_deals.latest_first
       else
-        if params[:status].present?
-          status = params[:status].in?(Deal::statuses.keys) ? params[:status] : ''
-          current_user.deals.by_status(status).latest_first
-        else
-          current_user.deals.latest_first
-        end
+        status = params[:status].in?(Deal::statuses.keys) ? params[:status] : Deal::statuses.keys
+        current_user.deals.by_status(status).latest_first
       end
 
-      deals = DealSerializer.new(deals).serializable_hash[:data].map do |d|
-        simplify_deal_attributes(d[:attributes])
-      end
-      success('success', deals)
+      success(
+        'success',
+        DealSerializer.new(deals).serializable_hash[:data].map { |d| simplify_deal_attributes(d[:attributes]) }
+      )
     end
 
     def show

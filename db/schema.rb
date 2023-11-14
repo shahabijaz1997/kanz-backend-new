@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_13_061348) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_14_071805) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -302,7 +302,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_13_061348) do
     t.boolean "is_range", default: false
     t.float "lower_limit"
     t.float "uper_limit"
-    t.bigint "question_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "label"
@@ -310,7 +309,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_13_061348) do
     t.bigint "optionable_id"
     t.string "optionable_type"
     t.index ["optionable_type", "optionable_id"], name: "index_options_on_optionable_type_and_optionable_id"
-    t.index ["question_id"], name: "index_options_on_question_id"
   end
 
   create_table "profiles_industries", force: :cascade do |t|
