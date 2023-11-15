@@ -31,7 +31,9 @@ Rails.application.routes.draw do
       collection do
         get :all
       end
+      resources :syndicate_members, only: %i[index create destroy]
     end
+    resources :syndicate_members, only: %i[index create destroy]
     resources :startups
     resources :realtors
     resources :investors, only: %i[index show] do

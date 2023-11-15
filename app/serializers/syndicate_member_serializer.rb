@@ -15,7 +15,7 @@ class SyndicateMemberSerializer
   end
 
   attribute :member_type do |syndicate_member|
-    syndicate_member.member&.id
+    syndicate_member.member&.type
   end
 
   attribute :member_id do |syndicate_member|
