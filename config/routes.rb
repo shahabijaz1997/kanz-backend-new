@@ -26,13 +26,18 @@ Rails.application.routes.draw do
   end
 
   namespace :v1, path: '/1.0', defaults: { format: :json } do
-    post 'investor/type', to: 'investors#set_role'
-    post 'investor/accreditation', to: 'investors#accreditation'
-    get 'investor', to: 'investors#show'
     resources :investment_philosophies, param: :step, only: %i[show create]
-    resources :syndicates
+    resources :syndicates do
+      collection do
+        get :all
+      end
+    end
     resources :startups
     resources :realtors
+    resources :investors, only: %i[index show] do
+      post :accreditation
+      post :type, to: :set_role
+    end
     resources :attachments, except: :index
     resources :countries, only: %i[index]
     resources :users, only: %i[show update]
@@ -45,6 +50,9 @@ Rails.application.routes.draw do
         get :activities
         post :sign_off
         get :unique_selling_points
+      end
+      collection do
+        get :live
       end
       resources :invites
       resources :comments
@@ -78,7 +86,9 @@ Rails.application.routes.draw do
   end
   resources :realtors, only: %i[index show update]
   resources :startups, only: %i[index show update]
-  resources :syndicates, only: %i[index show update]
+  resources :syndicates, only: %i[index show update] do
+    resources :syndicate_groups, only: %i[index create destroy]
+  end
   resources :deals, only: %i[update] do
     collection do
       resources :start_up, only: %i[index show], controller: 'deals', type: 'start_up'

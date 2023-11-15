@@ -36,6 +36,7 @@ class Deal < ApplicationRecord
   scope :syndicate_deals, -> { approved.syndicate_model }
   scope :latest_first, -> { order(created_at: :desc) }
   scope :by_status, -> (status) { where(status: status) }
+  scope :by_type, -> (type) { where(deal_type: type) }
 
   def attachments_by_creator
     attachments.where(uploaded_by: user)

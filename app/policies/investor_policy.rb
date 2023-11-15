@@ -8,14 +8,14 @@ class InvestorPolicy < ApplicationPolicy
   end
 
   def index?
-    user_context.customer_support_rep? || user_context.compliance_officer?
+    user_context.customer_support_rep? || user_context.compliance_officer? || user_context.syndicate? || user_context.creator?
   end
 
   def show?
-    index?
+    user_context.customer_support_rep? || user_context.compliance_officer?
   end
 
   def update?
-    index?
+    user_context.customer_support_rep? || user_context.compliance_officer?
   end
 end

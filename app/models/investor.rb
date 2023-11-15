@@ -5,6 +5,7 @@ class Investor < User
                                      inverse_of: :user
   has_many :questions, through: :users_responses
   has_one :profile, class_name: 'InvestorProfile', dependent: :destroy
+  has_many :syndicate_members, as: :member, dependent: :destroy
 
   scope :individuals, -> { where(user_role: Role.find_by(title: 'Individual Investor')) }
   scope :firms, -> { where(user_role: Role.find_by(title: 'Investment Firm')) }

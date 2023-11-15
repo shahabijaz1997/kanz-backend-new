@@ -19,7 +19,17 @@ module V1
 
       success(
         'success',
-        DealSerializer.new(deals).serializable_hash[:data].map { |d| simplify_deal_attributes(d[:attributes]) }
+        DealSerializer.new(deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) }
+      )
+    end
+
+    def live
+      status = params[:status].in?(Deal::statuses.keys) ? params[:status] : Deal::statuses.keys
+      types = params[:type].in?(Deal::deal_types.keys) ? params[:type] : Deal::deal_types.keys
+      deals = current_user.deals.by_status(status).by_type(types).latest_first
+      success(
+        'success',
+        DealSerializer.new(deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) }
       )
     end
 
@@ -134,7 +144,7 @@ module V1
       deal_params[:deal_type].blank? || DEAL_TYPES[deal_params[:deal_type].to_sym].blank?
     end
 
-    def simplify_deal_attributes(attributes)
+    def simplify_attributes(attributes)
       return attributes if attributes[:details].blank?
 
       attributes = attributes.merge(attributes[:details])

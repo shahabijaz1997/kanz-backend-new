@@ -9,9 +9,7 @@ class InvestorSerializer
 
   attribute :profile do |investor|
     profile = investor.profile || InvestorProfile.new(investor: investor)
-    InvestorProfileSerializer.new(
-      profile
-    ).serializable_hash[:data]&.fetch(:attributes)
+    InvestorProfileSerializer.new(profile).serializable_hash[:data]&.fetch(:attributes)
   end
 
   attribute :role do |user|
@@ -29,5 +27,13 @@ class InvestorSerializer
     else
       0
     end
+  end
+
+  attribute :invested_amount do |investor|
+    investor.invested_amount
+  end
+
+  attribute :no_investments do |investor|
+    investor.no_investments
   end
 end

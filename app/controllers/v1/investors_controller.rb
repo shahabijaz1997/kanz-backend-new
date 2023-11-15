@@ -5,6 +5,13 @@ module V1
   class InvestorsController < ApiController
     before_action :validate_persona
 
+    def index
+      investors = InvestorSerializer.new(Investor.approved).serializable_hash[:data].map do |d|
+        d[:attributes].select { |key,_| %i[id name invested_amount no_investments].include? key }
+      end
+      success('sucess', investors)
+    end
+
     def show
       investor_attributes = InvestorSerializer.new(@investor).serializable_hash[:data][:attributes]
       success(I18n.t('investor.get.success.show'), investor_attributes)
