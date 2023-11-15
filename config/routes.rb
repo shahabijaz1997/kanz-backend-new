@@ -35,11 +35,11 @@ Rails.application.routes.draw do
     end
     resources :syndicate_members, only: %i[index create destroy]
     resources :startups
-    resources :realtors
     resources :investors, only: %i[index show] do
       post :accreditation
       post :type, to: :set_role
     end
+    resources :property_owners
     resources :attachments, except: :index
     resources :countries, only: %i[index]
     resources :users, only: %i[show update]
@@ -71,6 +71,7 @@ Rails.application.routes.draw do
     resources :users do
       resources :invites, only: %i[index]
     end
+    get :check_session, to: 'users#check_session'
     resources :invitees, model_name: 'User' do
       resources :invites, only: %i[index]
     end
@@ -86,7 +87,7 @@ Rails.application.routes.draw do
       resources :firms, only: %i[index show], controller: 'investors', type: 'firms'
     end
   end
-  resources :realtors, only: %i[index show update]
+  resources :property_owners, only: %i[index show update]
   resources :startups, only: %i[index show update]
   resources :syndicates, only: %i[index show update] do
     resources :syndicate_groups, only: %i[index create destroy]

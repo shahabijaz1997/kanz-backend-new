@@ -2,7 +2,7 @@
 
 PASSWORD_REGEX = /\A(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^[:alnum:]])/x
 
-PERSONAS = %w[Investor Syndicate Realtor Startup].freeze
+PERSONAS = %w[Investor Syndicate PropertyOwner Startup].freeze
 
 ADMIN_ROLES = {
   'Admin': 'admin',
@@ -15,7 +15,7 @@ ROLES = {
   'Individual Investor' => 0,
   'Investment Firm' => 1,
   'Syndicate' => 2,
-  'Realtor' => 3,
+  'PropertyOwner' => 3,
   'Startup' => 4
 }.freeze
 
@@ -61,8 +61,8 @@ ROUTES = {
       ]
     },
     {
-      name: "Realtors",
-      path: "realtors",
+      name: "Property Owners",
+      path: "property_owners",
       icon: "fa fa-city"
     },
     {
@@ -97,7 +97,7 @@ MAX_STEPS = {
   investor_profile: 1,
   startup_profile: 2,
   syndicate_profile: 2,
-  realtor_profile: 1
+  property_owner_profile: 1
 }.freeze
 
 DEAL_TYPES = {

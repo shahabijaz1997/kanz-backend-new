@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class Realtor < User
-  has_one :profile, class_name: 'RealtorProfile', dependent: :destroy
+class PropertyOwner < User
+  has_one :profile, class_name: 'PropertyOwnerProfile', dependent: :destroy
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[email name status]
