@@ -20,7 +20,7 @@ class Deal < ApplicationRecord
   accepts_nested_attributes_for :property_detail
 
   enum deal_type: DEAL_TYPES
-  enum status: { draft: 0, submitted: 1, reopened: 2, verified: 3, rejected: 4, approved: 5, live: 6 }
+  enum status: { draft: 0, submitted: 1, reopened: 2, verified: 3, rejected: 4, approved: 5, live: 6, closed: 7 }
   enum model: { classic: 0, syndicate: 1 }
 
   validate :start_and_end_date_presence, :start_date_and_end_date
@@ -37,6 +37,7 @@ class Deal < ApplicationRecord
   scope :latest_first, -> { order(created_at: :desc) }
   scope :by_status, -> (status) { where(status: status) }
   scope :by_type, -> (type) { where(deal_type: type) }
+  scope :live_or_closed, -> { where(status: [Deal::statuses[:closed], Deal::statuses[:live]]) }
 
   def attachments_by_creator
     attachments.where(uploaded_by: user)
@@ -62,6 +63,11 @@ class Deal < ApplicationRecord
     return [] unless Syndicate.exists?(id: syndicate_id)
 
     attachments.where(uploaded_by_id: syndicate_id)
+  end
+
+  def raised
+    # implementation pending, if deal is live or closed then check for 
+    0.00
   end
 
   private

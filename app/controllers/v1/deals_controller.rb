@@ -24,9 +24,8 @@ module V1
     end
 
     def live
-      status = params[:status].in?(Deal::statuses.keys) ? params[:status] : Deal::statuses.keys
       types = params[:type].in?(Deal::deal_types.keys) ? params[:type] : Deal::deal_types.keys
-      deals = current_user.deals.by_status(status).by_type(types).latest_first
+      deals = current_user.deals.live_or_closed.by_type(types).latest_first
       success(
         'success',
         DealSerializer.new(deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) }
