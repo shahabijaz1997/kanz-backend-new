@@ -1,5 +1,5 @@
 ar:
-  realtor:
+  property_owner:
     get:
       success:
         show: 'تم استرداد البيانات بنجاح.'

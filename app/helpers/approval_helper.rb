@@ -32,7 +32,7 @@ module ApprovalHelper
     if user.is_a?(AdminUser)
       "#{user.fullname} (#{user.admin_role.title})"
     else
-      "#{user.name} (#{user.realtor? ? 'Property Owner' : 'Startup'})"
+      "#{user.name} (#{user.type.titleize})"
     end
   end
 
