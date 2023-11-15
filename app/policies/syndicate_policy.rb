@@ -18,4 +18,8 @@ class SyndicatePolicy < ApplicationPolicy
   def update?
     index?
   end
+
+  def all?
+    user_context.investor?
+  end
 end

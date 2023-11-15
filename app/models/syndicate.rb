@@ -3,6 +3,7 @@
 class Syndicate < User
   has_one :profile, class_name: 'SyndicateProfile', dependent: :destroy
   has_many :deals
+  has_many :syndicate_members
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[email name status]
@@ -10,5 +11,13 @@ class Syndicate < User
 
   def self.ransackable_associations(_auth_object = nil)
     ['profile']
+  end
+
+  def total_deals
+    deals.count
+  end
+
+  def no_active_deals
+    deals.live.count
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_14_071805) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_14_094508) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -454,6 +454,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_14_071805) do
     t.string "title_ar", limit: 100
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "syndicate_members", force: :cascade do |t|
+    t.bigint "syndicate_id"
+    t.string "member_type", null: false
+    t.bigint "member_id", null: false
+    t.integer "connection", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["syndicate_id"], name: "index_syndicate_members_on_syndicate_id"
   end
 
   create_table "syndicate_profiles", force: :cascade do |t|

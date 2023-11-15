@@ -100,6 +100,16 @@ class User < ApplicationRecord
     save
   end
 
+  def no_investments
+    # need implementation
+    0
+  end
+
+  def invested_amount
+    # need implementation
+    0.00
+  end
+
   private
 
   def profile_reopened?
