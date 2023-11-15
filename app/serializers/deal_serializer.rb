@@ -25,4 +25,8 @@ class DealSerializer
   attribute :external_links do |deal|
     ExternalLinkSerializer.new(deal.external_links).serializable_hash[:data].map { |d| d&.fetch(:attributes) }
   end
+
+  attribute :raised do |deal|
+    deal.raised
+  end
 end
