@@ -5,7 +5,7 @@ module V1
   class SyndicatesController < ApiController
     before_action :check_file_presence, only: %i[create]
     before_action :find_syndicate, :validate_deal_association, only: %i[show]
-    before_action :authorize_role!, only: %i[all]
+    before_action :authorize_role!, :extract_synidcates, only: %i[all]
 
     def index
       deal = Deal.find_by(id: params[:deal_id])
@@ -22,9 +22,10 @@ module V1
       success(
         I18n.t('syndicate.get.success.show'),
         SyndicateSerializer.new(
-          Syndicate.approved, { params: { investor: true }}
-          ).serializable_hash[:data].map{ |sy| sy[:attributes] }
-        )
+          @syndicates,
+          { params: { investor: true }}
+        ).serializable_hash[:data].map{ |sy| sy[:attributes] }
+      )
     end
 
     def show
@@ -113,6 +114,14 @@ module V1
         title: @deal.title,
         status: @deal.status
       }
+    end
+
+    def extract_synidcates
+      @syndicates = Syndicate.approved
+      if params[:followed].present?
+        syndicate_ids = current_user.syndicate_memberships.pluck(:syndicate_id)
+        @syndicates = Syndicate.approved.where(id: syndicate_ids)
+      end
     end
   end
 end
