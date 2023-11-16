@@ -7,9 +7,12 @@ module V1
     before_action :find_syndicate_member, only: %i[destroy]
 
     def index
+      connection = params[:connection].in?(SyndicateMember::connections.keys) ? params[:connection] : SyndicateMember::connections.keys
       success(
         'success',
-        SyndicateMemberSerializer.new(current_user.syndicate_members).serializable_hash[:data].map {|d| d[:attributes]}
+        SyndicateMemberSerializer.new(
+          current_user.syndicate_members.filter_by_connection(connection)
+        ).serializable_hash[:data].map {|d| d[:attributes]}
       )
     end
 
