@@ -2,6 +2,7 @@
 
 class SyndicateMember < ApplicationRecord
   belongs_to :syndicate
+  belongs_to :member, class_name: 'User'
 
   enum connection: { added: 0, follower: 1 }
 
