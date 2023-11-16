@@ -119,7 +119,7 @@ module V1
     def extract_synidcates
       @syndicates = Syndicate.approved
       if params[:followed].present?
-        syndicate_ids = current_user.syndicate_memberships.pluck(:syndicate_id)
+        syndicate_ids = current_user.syndicate_members.pluck(:syndicate_id)
         @syndicates = Syndicate.approved.where(id: syndicate_ids)
       end
     end
