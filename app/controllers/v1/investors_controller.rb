@@ -3,7 +3,7 @@
 # Investor persona
 module V1
   class InvestorsController < ApiController
-    before_action :validate_persona
+    before_action :validate_persona, except: %i[index]
 
     def index
       investors = InvestorSerializer.new(Investor.approved).serializable_hash[:data].map do |d|
