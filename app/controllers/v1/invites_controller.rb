@@ -3,7 +3,7 @@
 # Investor persona
 module V1
   class InvitesController < ApiController
-    before_action :set_deal, only: %i[create update]
+    before_action :set_deal, except: %i[index]
     before_action :find_invite, :validate_invite_status, only: %i[update]
 
     # GET
@@ -19,7 +19,8 @@ module V1
 
     #POST /1.0/deals/:deal_id/invites
     def create
-      invite = current_user.invites.new(invite_params.merge(eventable_id: @deal.id, eventable_type: 'Deal'))
+      invite = current_user.invites.new(invite_params)
+      invite.eventable = @deal
 
       if invite.save
         success('success', invite)
@@ -37,6 +38,15 @@ module V1
       success('success', @invite)
     end
 
+    def syndicate_group
+      eventable = { eventable_id: @deal.id, eventable_type: 'Deal' }
+      Invite.transaction do
+        members_params = current_user.syndicate_members.pluck(:id).map {|id| { invitee_id: id }.merge(eventable)}
+        current_user.invites.create!(members_params)
+      end
+      success('successfuly sent an invite to all group members')
+    end
+
     private
 
     def invite_params
@@ -49,6 +59,7 @@ module V1
 
     def set_deal
       @deal = Deal.find_by(id: params[:deal_id])
+      failure('Unable to find deal', 404) if @deal.blank?
     end
 
     # current user can update the invites he received

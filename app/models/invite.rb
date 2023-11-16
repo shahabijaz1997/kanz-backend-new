@@ -7,10 +7,11 @@ class Invite < ApplicationRecord
 
   validates_uniqueness_of :invitee_id, scope: %i[eventable_type eventable_id]
 
-  enum status: { pending: 0, interested: 1, accepted: 2, approved: 3, expired: 4 }
+  enum status: { pending: 0, interested: 1, accepted: 2, approved: 3, expired: 4, invested: 5 }
 
   before_update :validate_status_change
-  after_create :send_invite_email
+  # after_create :send_invite_email
+  after_commit :send_invite_email, on: :create
   after_update :send_status_update_email
 
   scope :latest_first, -> { order(created_at: :desc) }
@@ -46,7 +47,7 @@ class Invite < ApplicationRecord
   end
 
   def send_status_update_email
-    return if status == 'approved'
+    return if status == 'approved' || status == 'invested'
 
     InvitesMailer.invite_update(self).deliver_now
   end

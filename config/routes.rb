@@ -56,7 +56,11 @@ Rails.application.routes.draw do
       collection do
         get :live
       end
-      resources :invites
+      resources :invites do
+        collection do
+          post :syndicate_group
+        end
+      end
       resources :comments
       resources :syndicates, only: %i[show index]
     end
