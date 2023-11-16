@@ -4,7 +4,7 @@
   { title: 'Individual Investor', title_ar: 'فرد' },
   { title: 'Investment Firm', title_ar: 'شركة' },
   { title: 'Syndicate', title_ar: 'نقابة' },
-  { title: 'Propert Owner', title_ar: 'سمسار عقارات' },
+  { title: 'Property Owner', title_ar: 'سمسار عقارات' },
   { title: 'Startup', title_ar: 'بدء' }
 ].each do |role|
   record = Role.find_or_initialize_by(title: role[:title])

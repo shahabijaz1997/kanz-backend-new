@@ -6,8 +6,8 @@
   = render 'shared/section_list_item', title: 'Expected Dividend Yield', value: ("#{@deal.property_detail.dividend_yield}%" if @deal.property_detail.dividend_yield.present?)
   = render 'shared/section_list_item', title: 'Expected Annual Appreciation', value: ("#{@deal.property_detail.yearly_appreciation}%" if @deal.property_detail.yearly_appreciation.present?)
   = render 'shared/section_list_item', title: 'Rent', value: (@deal.property_detail.rental_amount.present? ? "$#{@deal.property_detail.rental_amount} (#{@deal.property_detail.rental_duration})" : "Not Rented")
-  = render 'shared/section_list_item', title: 'Start Date', value: DatesHelper.standard_format(@deal.start_at)
-  = render 'shared/section_list_item', title: 'End Date', value: DatesHelper.standard_format(@deal.end_at)
+  = render 'shared/section_list_item', title: 'Start Date', value: DatesHelper.date_only(@deal.start_at)
+  = render 'shared/section_list_item', title: 'End Date', value: DatesHelper.date_only(@deal.end_at)
   li.list-group-item
     span.col-3.title Status
     span.col = render 'shared/user_status', status: @deal.status
