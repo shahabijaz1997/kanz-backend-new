@@ -32,8 +32,10 @@ class Deal < ApplicationRecord
   audited only: :status, on: %i[update]
 
   scope :approved, -> { where(status: Deal::statuses[:approved]) }
+  scope :live, -> { where(status: Deal::statuses[:live]) }
+  scope :approved_or_live, -> { where(status: [Deal::statuses[:approved], Deal::statuses[:live]]) }
   scope :syndicate_model, -> { where(model: Deal::models[:syndicate]) }
-  scope :syndicate_deals, -> { approved.syndicate_model }
+  scope :syndicate_deals, -> { approved_or_live.syndicate_model }
   scope :latest_first, -> { order(created_at: :desc) }
   scope :by_status, -> (status) { where(status: status) }
   scope :by_type, -> (type) { where(deal_type: type) }
