@@ -111,6 +111,7 @@ module V1
 
     def deal_details
       {
+        id: @deal.id,
         title: @deal.title,
         status: @deal.status
       }
