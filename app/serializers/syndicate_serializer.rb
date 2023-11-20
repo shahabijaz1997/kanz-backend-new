@@ -45,7 +45,7 @@ class SyndicateSerializer
   attribute :syndicate_list, if: Proc.new { |record, params| params && params[:investor_list_view] } do |syndicate|
     {
       id: syndicate.id,
-      logo: syndicate.profile&.attachment&.url
+      logo: syndicate.profile&.attachment&.url,
       name: syndicate.name,
       created_at: DateTime.parse(syndicate.created_at.to_s).strftime('%d/%m/%Y'),
       total_deals: syndicate.total_deals,
@@ -57,7 +57,7 @@ class SyndicateSerializer
   attribute :detail, if: Proc.new { |record, params| params && params[:investor_detail_view] } do |syndicate|
     {
       id: syndicate.id,
-      logo: syndicate.profile&.attachment&.url
+      logo: syndicate.profile&.attachment&.url,
       name: syndicate.name,
       created_at: DateTime.parse(syndicate.created_at.to_s).strftime('%d/%m/%Y'),
       total_deals: syndicate.total_deals,
