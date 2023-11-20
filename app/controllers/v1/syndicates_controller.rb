@@ -37,7 +37,7 @@ module V1
           }
         }
       ).serializable_hash[:data][:attributes]
-      syndicate_data[:following] = following?(@syndicate.id) if current_user.investor?
+      syndicate_data[:following] = current_user.following?(@syndicate.id) if current_user.investor?
       syndicate_data = additional_attributes(syndicate_data) if params[:deal_id].present?
       success(I18n.t('syndicate.get.success.show'), syndicate_data)
     end
