@@ -6,10 +6,12 @@ module V1
     before_action :validate_persona, except: %i[index]
 
     def index
-      investors = InvestorSerializer.new(Investor.approved).serializable_hash[:data].map do |d|
-        d[:attributes].select { |key,_| %i[id name invested_amount no_investments].include? key }
-      end
-      success('sucess', investors)
+      member_ids = syndicate_member_filter? ? SyndicateMember.by_syndicate(current_user.id).pluck(:member_id) : []
+      investors = InvestorSerializer.new(
+        Investor.approved.where.not(id: member_ids)).serializable_hash[:data].map do |d|
+          d[:attributes].select { |key,_| %i[id name invested_amount no_investments].include? key }
+        end
+      success('success', investors)
     end
 
     def show
@@ -66,6 +68,10 @@ module V1
       profile_states = @investor.profile_states
       profile_states[:investor_type] = @investor.role_title
       @investor.update(profile_states: profile_states)
+    end
+
+    def syndicate_member_filter?
+      params[:filter].present? && params[:filter] == 'not_a_member'
     end
   end
 end
