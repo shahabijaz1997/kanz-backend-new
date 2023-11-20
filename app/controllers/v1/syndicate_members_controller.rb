@@ -30,7 +30,7 @@ module V1
     private
 
     def membership_params
-      params.require(:syndicate_member).permit(:member_id, :member_type, :connection)
+      params.require(:syndicate_member).permit(:member_id, :connection)
     end
 
     def find_syndicate
