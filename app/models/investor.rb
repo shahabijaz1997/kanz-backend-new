@@ -25,4 +25,8 @@ class Investor < User
   def self.ransackable_associations(_auth_object = nil)
     ['profile']
   end
+
+  def following?(syndicate_id)
+    syndicate_members.exists?(syndicate_id: syndicate_id)
+  end
 end

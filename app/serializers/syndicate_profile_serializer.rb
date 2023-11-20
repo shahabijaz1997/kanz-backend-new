@@ -18,4 +18,12 @@ class SyndicateProfileSerializer
   attribute :industry_ids do |profile|
     profile.industries&.pluck(:id)
   end
+
+  attribute :regions do |profile|
+    profile.regions&.pluck(:name)
+  end
+
+  attribute :industries do |profile|
+    profile.industries&.pluck(:name)
+  end
 end

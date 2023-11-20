@@ -21,15 +21,23 @@ module V1
     def all
       success(
         I18n.t('syndicate.get.success.show'),
-        SyndicateSerializer.new(
-          @syndicates,
-          { params: { investor: true }}
-        ).serializable_hash[:data].map{ |sy| sy[:attributes] }
+        SyndicateSerializer.new(@syndicates, { params: { investor_list_view: current_user.investor? }}).
+          serializable_hash[:data].map do |sy|
+            sy.present? ? (sy[:attributes].present? ? sy[:attributes][:syndicate_list] : sy[:attributes]) : []
+          end
       )
     end
 
     def show
-      syndicate_data = SyndicateSerializer.new(@syndicate).serializable_hash[:data][:attributes]
+      syndicate_data = SyndicateSerializer.new(
+        @syndicate,
+        {
+          params: {
+            investor_detail_view: current_user.investor?
+          }
+        }
+      ).serializable_hash[:data][:attributes]
+      syndicate_data[:following] = following?(@syndicate.id) if current_user.investor?
       syndicate_data = additional_attributes(syndicate_data) if params[:deal_id].present?
       success(I18n.t('syndicate.get.success.show'), syndicate_data)
     end
