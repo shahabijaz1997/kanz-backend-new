@@ -4,41 +4,41 @@
 class SyndicateSerializer
   include JSONAPI::Serializer
 
-  attribute :id, if: Proc.new { |record, params| params.blank? }  do |syndicate|
+  attribute :id, if: Proc.new { |record, params| params.blank? || !params[:investor] } do |syndicate|
     syndicate.id
   end
 
-  attribute :name, if: Proc.new { |record, params| params.blank? }  do |syndicate|
+  attribute :name, if: Proc.new { |record, params| params.blank? || !params[:investor] }  do |syndicate|
     syndicate.name
   end
 
-  attribute :email, if: Proc.new { |record, params| params.blank? }  do |syndicate|
+  attribute :email, if: Proc.new { |record, params| params.blank? || !params[:investor] }  do |syndicate|
     syndicate.email
   end
 
-  attribute :type, if: Proc.new { |record, params| params.blank? }  do |syndicate|
+  attribute :type, if: Proc.new { |record, params| params.blank? || !params[:investor] }  do |syndicate|
     syndicate.type
   end
 
-  attribute :status, if: Proc.new { |record, params| params.blank? }  do |syndicate|
+  attribute :status, if: Proc.new { |record, params| params.blank? || !params[:investor] }  do |syndicate|
     syndicate.status
   end
 
-  attribute :language, if: Proc.new { |record, params| params.blank? }  do |syndicate|
+  attribute :language, if: Proc.new { |record, params| params.blank? || !params[:investor] }  do |syndicate|
     syndicate.language
   end
 
-  attribute :profile_states, if: Proc.new { |record, params| params.blank? }  do |syndicate|
+  attribute :profile_states, if: Proc.new { |record, params| params.blank? || !params[:investor] }  do |syndicate|
     syndicate.profile_states
   end
 
-  attribute :profile, if: Proc.new { |record, params| params.blank? } do |syndicate|
+  attribute :profile, if: Proc.new { |record, params| params.blank? || !params[:investor] } do |syndicate|
     SyndicateProfileSerializer.new(
       syndicate.profile
     ).serializable_hash[:data]&.fetch(:attributes)
   end
 
-  attribute :role, if: Proc.new { |record, params| params.blank? } do |user|
+  attribute :role, if: Proc.new { |record, params| params.blank? || !params[:investor] } do |user|
     user.role_title
   end
 
