@@ -2,14 +2,13 @@
 
 module V1
   class InvestmentsController < ApiController
-    before_action :find_deal, :set_investments, only: %i[index]
-    before_action :find_deal, only: %i[create]
+    before_action :find_deal, only: %i[create index]
     before_action :find_investment, only: %i[show]
 
     def index
       success(
         'success',
-        InvestmentSerializer.new(@investments).serializable_hash[:data].map{|d| d[:attributes] }
+        InvestmentSerializer.new(@deal.investments).serializable_hash[:data].map{|d| d[:attributes] }
       )
     end
 
@@ -41,10 +40,6 @@ module V1
       @deal = Deal.find_by(id: params[:deal_id])
 
       failure('Deal not found', 401) if @deal.blank?
-    end
-
-    def set_investments
-      @investments = @deal.present? ? @deal.investments : current_user.investments
     end
 
     def find_investment
