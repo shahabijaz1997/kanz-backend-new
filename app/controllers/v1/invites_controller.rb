@@ -13,7 +13,10 @@ module V1
     def index
       success(
         'success',
-        InviteSerializer.new(invites).serializable_hash[:data].map { |d| d[:attributes] }
+        InviteSerializer.new(
+          invites,
+          { params: { syndicate: current_user.syndicate? }}
+        ).serializable_hash[:data].map { |d| d[:attributes] }
       )
     end
 
