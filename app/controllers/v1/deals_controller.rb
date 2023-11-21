@@ -66,7 +66,8 @@ module V1
     end
 
     def activities
-      # success('Success', @deal.activities)
+      # Only for Syndicates and Deal Creators
+      success('Success', @deal.investments)
     end
 
     def submit
