@@ -13,6 +13,7 @@ class Deal < ApplicationRecord
   has_many :invites, as: :eventable, dependent: :destroy
   has_many :comments
   belongs_to :syndicate, class_name: 'Syndicate', optional: true
+  has_many :investments
 
   accepts_nested_attributes_for :features, :external_links, allow_destroy: true
   accepts_nested_attributes_for :terms
