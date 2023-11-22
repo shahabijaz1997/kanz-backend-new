@@ -14,7 +14,7 @@ module V1
       success(
         'success',
         InviteSerializer.new(
-          invites.syndication
+          invites
         ).serializable_hash[:data].map { |d| d[:attributes] }
       )
     end
