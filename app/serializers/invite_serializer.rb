@@ -14,8 +14,8 @@ class InviteSerializer
     invite.user.name
   end
 
-  attribute :syndicate_logo, if: Proc.new { |record, params| params && params[:syndicate] == 'true' } do |invite|
-    invite.user&.profile&.attachment&.url
+  attribute :syndicate_logo do |invite|
+    invite.user.syndicate? ? invite.user&.profile&.attachment&.url : ''
   end
 
   attribute :invite_expiry do |invite|
