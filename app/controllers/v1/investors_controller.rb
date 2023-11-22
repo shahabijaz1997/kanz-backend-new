@@ -19,7 +19,7 @@ module V1
       success(I18n.t('investor.get.success.show'), investor_attributes)
     end
 
-    def set_role
+    def investor_type
       UsersResponse.transaction do
         if @investor.role_id != role.id
           @investor.update!(role_id: role.id)
