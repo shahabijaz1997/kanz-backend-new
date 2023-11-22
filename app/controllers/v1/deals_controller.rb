@@ -67,7 +67,10 @@ module V1
 
     def activities
       # Only for Syndicates and Deal Creators
-      success('Success', @deal.investments)
+      success(
+        'Success',
+        DealActivitySerializer.new(@deal.activities).serializable_hash[:data].map{|d| d[:attributes]}
+      )
     end
 
     def submit

@@ -43,6 +43,4 @@ class InviteSerializer
       type: invite.invitee.syndicate? ? 'syndicate' : 'investor'
     }
   end
-
-  # attribute , if: Proc.new { |record, params| params && params[:raising] }
 end

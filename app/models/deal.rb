@@ -73,6 +73,10 @@ class Deal < ApplicationRecord
     0.00
   end
 
+  def activities
+    invites.investment
+  end
+
   private
 
   def start_date_in_future
