@@ -14,14 +14,15 @@ module V1
       success(
         'success',
         InviteSerializer.new(
-          invites
+          invites.syndication
         ).serializable_hash[:data].map { |d| d[:attributes] }
       )
     end
 
     #POST /1.0/deals/:deal_id/invites
     def create
-      invite = current_user.invites.new(invite_params)
+      purpose = current_user.syndicate? ? Invite::purposes[:investment] : Invite::purposes[:syndication]
+      invite = current_user.invites.new(invite_params.merge(purpose: purpose))
       invite.eventable = @deal
 
       if invite.save
@@ -43,8 +44,12 @@ module V1
     def syndicate_group
       eventable = { eventable_id: @deal.id, eventable_type: 'Deal' }
       Invite.transaction do
-        members_params = current_user.syndicate_members.pluck(:id).map {|id| { invitee_id: id }.merge(eventable)}
-        current_user.invites.create!(members_params)
+        current_user.syndicate_members.each do |member|
+          next if Invite.exists?(invite_id: member.id, eventable_id: @deal.id, eventable_type: 'Deal')
+          current_user.invites.create!({ 
+            invitee_id: id, purpose: Invite::purposes[:investment]
+          }.merge(eventable))
+        end
       end
       success('successfuly sent an invite to all group members')
     end

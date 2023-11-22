@@ -14,11 +14,11 @@ class InvestmentSerializer
     investment.user.name
   end
 
-  # attribute :investor_id do |investment|
-  #   investment.user.id
-  # end
+  attribute :investor_id do |investment|
+    investment.user.id
+  end
 
-  # attribute :deal_id do |investment|
-  #   investment.deal.id
-  # end
+  attribute :deal_id do |investment|
+    investment.deal.id
+  end
 end
