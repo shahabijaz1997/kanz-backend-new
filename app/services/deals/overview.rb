@@ -7,13 +7,19 @@ module Deals
     end
 
     def call
-      user.syndicate? ? syndicate_deal_params : deal_params
+      return syndicate_deal_params if user.syndicate?
+      return investor_deal_params if user.investor?
+      deal_params
     end
 
     private
 
     def syndicate_deal_params
       deal_params.merge(docs).merge(comments).merge(invite)
+    end
+
+    def investor_deal_params
+      deal_params.merge(docs)
     end
 
     def deal_params
