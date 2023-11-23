@@ -4,7 +4,7 @@
 class DealSerializer
   include JSONAPI::Serializer
 
-  attributes :id, :deal_type, :title, :description, :target, :status, :start_at, :end_at, :submitted_at, :success_benchmark, :current_state
+  attributes :id, :deal_type, :title, :description, :target, :status, :start_at, :end_at, :submitted_at, :success_benchmark, :current_state, :token
 
   attribute :details do |deal|
     if deal.startup?
@@ -24,5 +24,9 @@ class DealSerializer
 
   attribute :external_links do |deal|
     ExternalLinkSerializer.new(deal.external_links).serializable_hash[:data].map { |d| d&.fetch(:attributes) }
+  end
+
+  attribute :raised do |deal|
+    deal.raised
   end
 end

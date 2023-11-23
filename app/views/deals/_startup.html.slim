@@ -9,6 +9,8 @@
   = render 'shared/section_list_item', title: 'Deal Target', value: ("$#{@deal.target}" if @deal.target.present?)
   = render 'shared/section_list_item', title: 'Valuation', value: ("$#{@deal.funding_round.valuation}" if @deal.funding_round.valuation.present?)
   = render 'shared/section_list_item', title: 'Valuation Phase', value: @deal.funding_round.valuation_type
+  = render 'shared/section_list_item', title: 'Start Date', value: DatesHelper.date_only(@deal.start_at)
+  = render 'shared/section_list_item', title: 'End Date', value: DatesHelper.date_only(@deal.end_at)
   li.list-group-item
     span.col-3.title Status
     span.col = render 'shared/user_status', status: @deal.status

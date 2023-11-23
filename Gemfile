@@ -91,6 +91,7 @@ group :development, :test do
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
   gem "ruby-lsp", require: false
+  gem 'rails-erd', '~> 1.5', '>= 1.5.2'
 end
 
 group :development do

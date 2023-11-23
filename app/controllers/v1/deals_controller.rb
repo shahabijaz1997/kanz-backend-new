@@ -3,26 +3,42 @@
 # Startups apis
 module V1
   class DealsController < ApiController
-    before_action :find_deal, only: %i[show review submit documents comments activities sign_off]
+    before_action :find_deal, only: %i[review submit documents comments activities sign_off]
     before_action :set_deal, only: %i[create]
+    before_action :get_deal, only: %i[show]
     before_action :set_invite, only: %i[sign_off]
+    before_action :set_features, only: %i[unique_selling_points]
+    skip_before_action :authenticate_user!, only: %i[show]
 
     def index
       deals = if current_user.syndicate?
         Deal.syndicate_deals.latest_first
       else
-        current_user.deals.latest_first
+        status = params[:status].in?(Deal::statuses.keys) ? params[:status] : Deal::statuses.keys
+        current_user.deals.by_status(status).latest_first
       end
 
-      deals = DealSerializer.new(deals).serializable_hash[:data].map do |d|
-        simplify_deal_attributes(d[:attributes])
-      end
-      success('success', deals)
+      success(
+        'success',
+        DealSerializer.new(deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) }
+      )
+    end
+
+    def live
+      types = params[:type].in?(Deal::deal_types.keys) ? params[:type] : Deal::deal_types.keys
+      deals = current_user.deals.live_or_closed.by_type(types).latest_first
+      success(
+        'success',
+        DealSerializer.new(deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) }
+      )
     end
 
     def show
-      deal = DealSerializer.new(@deal).serializable_hash[:data][:attributes]
-      success('success', simplify_deal_attributes(deal))
+      if current_user
+        success('Success', Deals::Overview.call(@deal, current_user))
+      else
+        success('Success', Deals::PublicDetails.call(@deal))
+      end
     end
 
     def create
@@ -55,8 +71,11 @@ module V1
     end
 
     def activities
-      # activities = @deal.activities
-      # success('Success', activities)
+      # Only for Syndicates and Deal Creators
+      success(
+        'Success',
+        DealActivitySerializer.new(@deal.activities).serializable_hash[:data].map{|d| d[:attributes]}
+      )
     end
 
     def submit
@@ -68,15 +87,14 @@ module V1
       end
     end
 
-    def overview
-      @deal = current_user.deals.find_by(id: params[:id])
-      @deal ||= Invite.where(eventable_id: params[:id], eventable_type: 'Deal', invitee: current_user)&.first&.eventable
-
-      if @deal.present?
-        success('Success', Deals::Overview.call(@deal, current_user))
-      else
-        failure('Deal not found', 404)
+    def unique_selling_points
+      features = @features.map do |usp|
+        {
+          title: usp.title,
+          description: usp.description
+        }
       end
+      success('success', features)
     end
 
     def sign_off
@@ -91,7 +109,14 @@ module V1
 
     def find_deal
       @deal = current_user.deals.find_by(id: params[:id])
-      failure('Unable to find deal', 404) if  @deal.blank?
+      failure('Unable to find deal', 404) if @deal.blank?
+    end
+
+    def set_features
+      deal = Deal.find_by(id: params[:id])
+      failure('Unable to find deal', 404) if deal.blank?
+      failure("Startup deals don't have usps") unless deal.property?
+      @features = deal.features
     end
 
     def deal_params
@@ -109,11 +134,16 @@ module V1
       @deal = @deal || current_user.deals.new(deal_type: deal_params[:deal_type])
     end
 
+    def get_deal
+      @deal = Deal.find_by(token: params[:token])
+      failure('Deal not found', 404) if @deal.blank?
+    end
+
     def invalid_deal_type?
       deal_params[:deal_type].blank? || DEAL_TYPES[deal_params[:deal_type].to_sym].blank?
     end
 
-    def simplify_deal_attributes(attributes)
+    def simplify_attributes(attributes)
       return attributes if attributes[:details].blank?
 
       attributes = attributes.merge(attributes[:details])

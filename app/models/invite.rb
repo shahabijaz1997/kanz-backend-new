@@ -7,18 +7,27 @@ class Invite < ApplicationRecord
 
   validates_uniqueness_of :invitee_id, scope: %i[eventable_type eventable_id]
 
-  enum status: { pending: 0, interested: 1, accepted: 2, approved: 3, expired: 4 }
+  enum status: { pending: 0, interested: 1, accepted: 2, approved: 3, expired: 4, invested: 5 }
+  enum purpose: { syndication: 0, investment: 1 }
 
   before_update :validate_status_change
-  after_create :send_invite_email
+  # after_create :send_invite_email
+  after_commit :send_invite_email, on: :create
   after_update :send_status_update_email
+
+  scope :latest_first, -> { order(created_at: :desc) }
+  scope :active, -> { where.not(status: Invite::statuses[:expired]) }
+  scope :pending, -> { where(status: Invite::statuses[:pending]) }
+  scope :interested, -> { where(status: %i[interested accepted approved]) }
+  scope :by_status, -> (status) { where(status: status) }
 
   def expired?
     expire_at < Time.zone.now
   end
 
-  def self.mark_as_commented(deal_id, invitee_id)
-    invite = find_by!(eventable_type: 'Deal', eventable_id: deal_id, invitee_id: invitee_id)
+  def self.mark_as_commented(deal_id, comment_creator_id, comment_recipient_id)
+    invite = find_by(eventable_type: 'Deal', eventable_id: deal_id, invitee_id: comment_creator_id)
+    invite ||= create!(eventable_type: 'Deal', eventable_id: deal_id, user_id: comment_creator_id, invitee_id: comment_recipient_id)
     invite.update!(status: statuses[:interested])
   end
 
@@ -39,7 +48,7 @@ class Invite < ApplicationRecord
   end
 
   def send_status_update_email
-    return if status == 'approved'
+    return if status == 'approved' || status == 'invested'
 
     InvitesMailer.invite_update(self).deliver_now
   end

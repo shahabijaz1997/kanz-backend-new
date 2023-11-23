@@ -4,22 +4,44 @@
 module V1
   class SyndicatesController < ApiController
     before_action :check_file_presence, only: %i[create]
-    before_action :find_syndicate, only: %i[show]
-    before_action :validate_deal_association, only: %i[show]
+    before_action :find_syndicate, :validate_deal_association, only: %i[show]
+    before_action :authorize_role!, :extract_synidcates, only: %i[all]
 
     def index
+      deal = Deal.find_by(id: params[:deal_id])
+      deal_invitees_ids = deal.invites.pluck(:invitee_id)
       success(
         I18n.t('syndicate.get.success.show'),
-        SyndicateSerializer.new(Syndicate.approved.all).serializable_hash[:data].map{ |sy| sy[:attributes] }
+        SyndicateSerializer.new(
+          Syndicate.approved.where.not(id: deal_invitees_ids), { params: { investor: false }}
+        ).serializable_hash[:data].map{ |sy| sy[:attributes] }
+      )
+    end
+
+    def all
+      success(
+        I18n.t('syndicate.get.success.show'),
+        SyndicateSerializer.new(@syndicates, { params: { investor_list_view: current_user.investor? }}).
+          serializable_hash[:data].map do |sy|
+            sy.present? ? (sy[:attributes].present? ? sy[:attributes][:syndicate_list] : sy[:attributes]) : []
+          end
       )
     end
 
     def show
-      syndicate_data = SyndicateSerializer.new(@syndicate).serializable_hash[:data][:attributes]
-      syndicate_data[:comments] = syndicate_comments
-      syndicate_data[:attachments] = syndicate_docs
-      syndicate_data[:deal] = deal_details
-      syndicate_data[:thread_id] = @deal.syndicate_comment(@syndicate.id).id
+      syndicate_data = SyndicateSerializer.new(
+        @syndicate,
+        {
+          params: {
+            investor_detail_view: current_user.investor?
+          }
+        }
+      ).serializable_hash[:data][:attributes]
+      if current_user.investor?
+        syndicate_data = syndicate_data[:detail]
+        syndicate_data[:following] = current_user.following?(@syndicate.id)
+      end
+      syndicate_data = additional_attributes(syndicate_data) if params[:deal_id].present?
       success(I18n.t('syndicate.get.success.show'), syndicate_data)
     end
 
@@ -81,17 +103,37 @@ module V1
     def syndicate_docs
       return if @invite.blank?
 
-      docs = @deal.attachments.where(uploaded_by: @deal.user)
+      docs = @deal.attachments.where(uploaded_by: @syndicate)
       return [] if docs.blank?
 
       AttachmentSerializer.new(docs).serializable_hash[:data].map {|d| d[:attributes]}
     end
 
+    def additional_attributes(data)
+      data[:comments] = syndicate_comments
+      data[:attachments] = syndicate_docs
+      data[:deal] = deal_details
+      data[:thread_id] = @deal.syndicate_comment(@syndicate.id)&.id
+      data[:invite_id] = @deal.invites.find_by(invitee_id: params[:id])&.id
+      data[:status] = @deal.invites.find_by(invitee_id: params[:id])&.status
+
+      data
+    end
+
     def deal_details
       {
+        id: @deal.id,
         title: @deal.title,
         status: @deal.status
       }
+    end
+
+    def extract_synidcates
+      @syndicates = Syndicate.approved
+      if params[:followed].present?
+        syndicate_ids = current_user.syndicate_members.pluck(:syndicate_id)
+        @syndicates = Syndicate.approved.where(id: syndicate_ids)
+      end
     end
   end
 end

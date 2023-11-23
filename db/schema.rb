@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_27_074659) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_22_074042) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -152,7 +152,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_27_074659) do
     t.boolean "agreed_with_kanz_terms", default: false
     t.string "title"
     t.text "description"
-    t.uuid "uuid", default: -> { "gen_random_uuid()" }
+    t.uuid "token", default: -> { "gen_random_uuid()" }
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "current_state", default: {}
@@ -250,6 +250,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_27_074659) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "investments", force: :cascade do |t|
+    t.decimal "amount", null: false
+    t.bigint "deal_id", null: false
+    t.bigint "user_id", null: false
+    t.integer "status", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deal_id"], name: "index_investments_on_deal_id"
+    t.index ["user_id"], name: "index_investments_on_user_id"
+  end
+
   create_table "investor_profiles", force: :cascade do |t|
     t.boolean "accepted_investment_criteria", default: false
     t.bigint "country_id"
@@ -275,6 +286,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_27_074659) do
     t.integer "status", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "purpose", default: 0
     t.index ["eventable_type", "eventable_id"], name: "index_invites_on_eventable"
     t.index ["invitee_id"], name: "index_invites_on_invitee_id"
     t.index ["user_id"], name: "index_invites_on_user_id"
@@ -289,7 +301,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_27_074659) do
     t.boolean "is_range", default: false
     t.float "lower_limit"
     t.float "uper_limit"
-    t.bigint "question_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "label"
@@ -297,7 +308,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_27_074659) do
     t.bigint "optionable_id"
     t.string "optionable_type"
     t.index ["optionable_type", "optionable_id"], name: "index_options_on_optionable_type_and_optionable_id"
-    t.index ["question_id"], name: "index_options_on_question_id"
   end
 
   create_table "profiles_industries", force: :cascade do |t|
@@ -343,7 +353,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_27_074659) do
     t.boolean "is_rental", default: false
     t.bigint "rental_period_id", default: 0
     t.decimal "rental_amount"
-    t.float "dividend_yeild"
+    t.float "dividend_yield"
     t.float "yearly_appreciation"
     t.jsonb "external_links", default: {}
     t.bigint "deal_id"
@@ -353,6 +363,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_27_074659) do
     t.index ["country_id"], name: "index_property_details_on_country_id"
     t.index ["deal_id"], name: "index_property_details_on_deal_id"
     t.index ["field_attribute_id"], name: "index_property_details_on_field_attribute_id"
+  end
+
+  create_table "property_owner_profiles", force: :cascade do |t|
+    t.integer "no_of_properties"
+    t.bigint "nationality_id"
+    t.bigint "residence_id"
+    t.bigint "property_owner_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["nationality_id"], name: "index_property_owner_profiles_on_nationality_id"
+    t.index ["property_owner_id"], name: "index_property_owner_profiles_on_property_owner_id"
+    t.index ["residence_id"], name: "index_property_owner_profiles_on_residence_id"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -372,18 +394,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_27_074659) do
     t.string "category_ar"
     t.text "description_ar"
     t.integer "kind", default: 0
-  end
-
-  create_table "realtor_profiles", force: :cascade do |t|
-    t.integer "no_of_properties"
-    t.bigint "nationality_id"
-    t.bigint "residence_id"
-    t.bigint "realtor_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["nationality_id"], name: "index_realtor_profiles_on_nationality_id"
-    t.index ["realtor_id"], name: "index_realtor_profiles_on_realtor_id"
-    t.index ["residence_id"], name: "index_realtor_profiles_on_residence_id"
   end
 
   create_table "regions", force: :cascade do |t|
@@ -445,6 +455,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_27_074659) do
     t.string "title_ar", limit: 100
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "syndicate_members", force: :cascade do |t|
+    t.bigint "syndicate_id"
+    t.bigint "member_id", null: false
+    t.integer "connection", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["syndicate_id"], name: "index_syndicate_members_on_syndicate_id"
   end
 
   create_table "syndicate_profiles", force: :cascade do |t|

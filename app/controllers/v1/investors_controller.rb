@@ -3,14 +3,23 @@
 # Investor persona
 module V1
   class InvestorsController < ApiController
-    before_action :validate_persona
+    before_action :validate_persona, except: %i[index]
+
+    def index
+      member_ids = syndicate_member_filter? ? SyndicateMember.by_syndicate(current_user.id).pluck(:member_id) : []
+      investors = InvestorSerializer.new(
+        Investor.approved.where.not(id: member_ids)).serializable_hash[:data].map do |d|
+          d[:attributes].select { |key,_| %i[id name invested_amount no_investments].include? key }
+        end
+      success('success', investors)
+    end
 
     def show
       investor_attributes = InvestorSerializer.new(@investor).serializable_hash[:data][:attributes]
       success(I18n.t('investor.get.success.show'), investor_attributes)
     end
 
-    def set_role
+    def investor_type
       UsersResponse.transaction do
         if @investor.role_id != role.id
           @investor.update!(role_id: role.id)
@@ -59,6 +68,10 @@ module V1
       profile_states = @investor.profile_states
       profile_states[:investor_type] = @investor.role_title
       @investor.update(profile_states: profile_states)
+    end
+
+    def syndicate_member_filter?
+      params[:filter].present? && params[:filter] == 'not_a_member'
     end
   end
 end

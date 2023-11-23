@@ -14,6 +14,10 @@ class InviteSerializer
     invite.user.name
   end
 
+  attribute :syndicate_logo do |invite|
+    invite.user.syndicate? ? invite.user&.profile&.attachment&.url : ''
+  end
+
   attribute :invite_expiry do |invite|
     Date.parse(invite.expire_at.to_s).strftime('%d/%m/%Y')
   end
@@ -22,6 +26,7 @@ class InviteSerializer
     deal = invite.eventable
     {
       id: deal.id,
+      token: deal.token,
       title: deal.title,
       target: deal.target,
       type: deal.deal_type,

@@ -3,7 +3,7 @@
 # Investor persona
 module V1
   class InvitesController < ApiController
-    before_action :set_deal, only: %i[create update]
+    before_action :set_deal, except: %i[index]
     before_action :find_invite, :validate_invite_status, only: %i[update]
 
     # GET
@@ -13,13 +13,17 @@ module V1
     def index
       success(
         'success',
-        InviteSerializer.new(invites).serializable_hash[:data].map { |d| d[:attributes] }
+        InviteSerializer.new(
+          invites.syndication
+        ).serializable_hash[:data].map { |d| d[:attributes] }
       )
     end
 
     #POST /1.0/deals/:deal_id/invites
     def create
-      invite = current_user.invites.new(invite_params.merge(eventable_id: @deal.id, eventable_type: 'Deal'))
+      purpose = current_user.syndicate? ? Invite::purposes[:investment] : Invite::purposes[:syndication]
+      invite = current_user.invites.new(invite_params.merge(purpose: purpose))
+      invite.eventable = @deal
 
       if invite.save
         success('success', invite)
@@ -37,6 +41,19 @@ module V1
       success('success', @invite)
     end
 
+    def syndicate_group
+      eventable = { eventable_id: @deal.id, eventable_type: 'Deal' }
+      Invite.transaction do
+        current_user.syndicate_members.each do |member|
+          next if Invite.exists?(invite_id: member.id, eventable_id: @deal.id, eventable_type: 'Deal')
+          current_user.invites.create!({ 
+            invitee_id: id, purpose: Invite::purposes[:investment]
+          }.merge(eventable))
+        end
+      end
+      success('successfuly sent an invite to all group members')
+    end
+
     private
 
     def invite_params
@@ -49,6 +66,7 @@ module V1
 
     def set_deal
       @deal = Deal.find_by(id: params[:deal_id])
+      failure('Unable to find deal', 404) if @deal.blank?
     end
 
     # current user can update the invites he received
@@ -58,10 +76,11 @@ module V1
     end
 
     def invites
-      Invite.where(eventable_type: 'Deal').where(
+      status = params[:status].in?(Invite::statuses.keys) ? params[:status] : Invite::statuses.keys
+      invites = Invite.where(eventable_type: 'Deal').where(
         'eventable_id= ? OR invitee_id= ? OR user_id= ?',
         params[:deal_id], params[:invitee_id], params[:user_id]
-      )
+      ).active.by_status(status).latest_first
     end
 
     def validate_invite_status

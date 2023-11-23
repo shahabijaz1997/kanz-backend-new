@@ -20,6 +20,7 @@ class User < ApplicationRecord
   belongs_to :user_role, class_name: 'Role', foreign_key: :role_id
   has_many :invites, dependent: :destroy
   has_many :comments, class_name: 'Comment', foreign_key: 'author_id'
+  has_many :investments
 
   delegate :title, :title_ar, to: :user_role, prefix: :role
 
@@ -54,8 +55,12 @@ class User < ApplicationRecord
     type == 'Startup'
   end
 
-  def realtor?
-    type == 'Realtor'
+  def property_owner?
+    type == 'PropertyOwner'
+  end
+
+  def creator?
+    startup? || property_owner?
   end
 
   def arabic?
@@ -94,6 +99,16 @@ class User < ApplicationRecord
       attachments_completed: false
     }
     save
+  end
+
+  def no_investments
+    # need implementation
+    0
+  end
+
+  def invested_amount
+    # need implementation
+    0.00
   end
 
   private

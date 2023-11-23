@@ -5,6 +5,7 @@ class Investor < User
                                      inverse_of: :user
   has_many :questions, through: :users_responses
   has_one :profile, class_name: 'InvestorProfile', dependent: :destroy
+  has_many :syndicate_members, class_name: 'SyndicateMember', foreign_key: :member_id, dependent: :destroy
 
   scope :individuals, -> { where(user_role: Role.find_by(title: 'Individual Investor')) }
   scope :firms, -> { where(user_role: Role.find_by(title: 'Investment Firm')) }
@@ -23,5 +24,9 @@ class Investor < User
 
   def self.ransackable_associations(_auth_object = nil)
     ['profile']
+  end
+
+  def following?(syndicate_id)
+    syndicate_members.exists?(syndicate_id: syndicate_id)
   end
 end

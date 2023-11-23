@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Fast json serializer
-class RealtorProfileSerializer
+class PropertyOwnerProfileSerializer
   include JSONAPI::Serializer
 
   attributes :no_of_properties

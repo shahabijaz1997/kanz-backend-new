@@ -26,29 +26,46 @@ Rails.application.routes.draw do
   end
 
   namespace :v1, path: '/1.0', defaults: { format: :json } do
-    post 'investor/type', to: 'investors#set_role'
-    post 'investor/accreditation', to: 'investors#accreditation'
-    get 'investor', to: 'investors#show'
     resources :investment_philosophies, param: :step, only: %i[show create]
-    resources :syndicates
+    resources :syndicates do
+      collection do
+        get :all
+      end
+      resources :syndicate_members, only: %i[index create destroy]
+    end
+    resources :syndicate_members, only: %i[index create destroy]
     resources :startups
-    resources :realtors
+    resources :investors, only: %i[index show] do
+      post :accreditation
+      post :investor_type
+    end
+    resources :property_owners
     resources :attachments, except: :index
     resources :countries, only: %i[index]
     resources :users, only: %i[show update]
     resources :industries, only: %i[index]
-    resources :deals do
+    resources :deals, except: %i[show] do
       member do
         get :overview
         get :documents
         get :comments
         get :activities
         post :sign_off
+        get :unique_selling_points
       end
-      resources :invites
+      collection do
+        get :live
+      end
+      resources :invites do
+        collection do
+          post :syndicate_group
+        end
+      end
       resources :comments
-      resources :syndicates, only: %i[show]
+      resources :syndicates, only: %i[show index]
+      resources :investments, only: %i[index create]
     end
+    resources :deals, param: :token, only: %i[show]
     post 'deals/:id/submit' => 'deals#submit'
     get 'deals/:id/review' => 'deals#review'
     get 'settings/attachments' => 'settings#attachments'
@@ -58,7 +75,9 @@ Rails.application.routes.draw do
 
     resources :users do
       resources :invites, only: %i[index]
+      resources :investments, only: %i[index show revert]
     end
+    get :check_session, to: 'users#check_session'
     resources :invitees, model_name: 'User' do
       resources :invites, only: %i[index]
     end
@@ -74,9 +93,11 @@ Rails.application.routes.draw do
       resources :firms, only: %i[index show], controller: 'investors', type: 'firms'
     end
   end
-  resources :realtors, only: %i[index show update]
+  resources :property_owners, only: %i[index show update]
   resources :startups, only: %i[index show update]
-  resources :syndicates, only: %i[index show update]
+  resources :syndicates, only: %i[index show update] do
+    resources :syndicate_groups, only: %i[index create destroy]
+  end
   resources :deals, only: %i[update] do
     collection do
       resources :start_up, only: %i[index show], controller: 'deals', type: 'start_up'
