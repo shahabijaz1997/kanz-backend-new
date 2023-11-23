@@ -8,6 +8,7 @@ module V1
     before_action :get_deal, only: %i[show]
     before_action :set_invite, only: %i[sign_off]
     before_action :set_features, only: %i[unique_selling_points]
+    skip_before_action :authenticate_user!, only: %i[show]
 
     def index
       deals = if current_user.syndicate?
@@ -33,7 +34,11 @@ module V1
     end
 
     def show
-      success('Success', Deals::Overview.call(@deal, current_user))
+      if current_user
+        success('Success', Deals::Overview.call(@deal, current_user))
+      else
+        success('Success', Deals::PublicDetails.call(@deal))
+      end
     end
 
     def create
@@ -130,16 +135,7 @@ module V1
     end
 
     def get_deal
-      @deal = if current_user.creator?
-        current_user.deals.find_by(token: params[:token])
-      else
-        # Invite.where(
-        #   eventable_id: Deal.find_by(token: params[:token])&.id,
-        #   eventable_type: 'Deal',
-        #   invitee: current_user
-        # )&.first&.eventable
-        Deal.find_by(token: params[:token])
-      end
+      @deal = Deal.find_by(token: params[:token])
       failure('Deal not found', 404) if @deal.blank?
     end
 
