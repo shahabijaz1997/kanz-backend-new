@@ -3,7 +3,7 @@
 # Startups apis
 module V1
   class DealsController < ApiController
-    before_action :find_deal, only: %i[review submit documents comments activities sign_off]
+    before_action :find_deal, only: %i[review submit documents comments sign_off]
     before_action :set_deal, only: %i[create]
     before_action :get_deal, only: %i[show]
     before_action :set_invite, only: %i[sign_off]
@@ -72,9 +72,11 @@ module V1
 
     def activities
       # Only for Syndicates and Deal Creators
+      deal = Deal.find_by(id: params[:id])
+      return failure('Unable to find deal', 404) if deal.blank?
       success(
         'Success',
-        DealActivitySerializer.new(@deal.activities).serializable_hash[:data].map{|d| d[:attributes]}
+        DealActivitySerializer.new(deal.activities).serializable_hash[:data].map{|d| d[:attributes]}
       )
     end
 
