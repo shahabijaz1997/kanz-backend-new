@@ -26,8 +26,12 @@ class Invite < ApplicationRecord
   end
 
   def self.mark_as_commented(deal_id, comment_creator_id, comment_recipient_id)
-    invite = find_by(eventable_type: 'Deal', eventable_id: deal_id, invitee_id: comment_creator_id)
-    invite ||= create!(eventable_type: 'Deal', eventable_id: deal_id, user_id: comment_creator_id, invitee_id: comment_recipient_id)
+    invite = find_or_create_by(
+      user_id: comment_recipient_id,
+      eventable_type: 'Deal',
+      eventable_id: deal_id,
+      invitee_id: comment_creator_id
+    )
     invite.update!(status: statuses[:interested])
   end
 

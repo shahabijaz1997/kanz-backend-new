@@ -43,6 +43,19 @@ module V1
       end
     end
 
+    def deals
+      success(
+        'success',
+        DealSerializer.new(Deal.live_or_closed.latest_first).serializable_hash[:data].map do |d|
+          if d[:attributes][:details].present?
+            d[:attributes].merge!(d[:attributes][:details])
+            d[:attributes].delete(:details)   
+          end
+          d[:attributes]
+        end
+      )
+    end
+
     private
 
     def validate_persona

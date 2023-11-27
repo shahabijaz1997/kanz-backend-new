@@ -38,6 +38,9 @@ Rails.application.routes.draw do
     resources :investors, only: %i[index show] do
       post :accreditation
       post :investor_type
+      collection do
+        get :deals
+      end
     end
     resources :property_owners
     resources :attachments, except: :index

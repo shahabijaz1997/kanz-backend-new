@@ -29,4 +29,17 @@ class DealSerializer
   attribute :raised do |deal|
     deal.raised
   end
+
+  attribute :syndicate do |deal|
+    syndicate = deal.syndicate
+    if syndicate.present?
+      {
+        id: syndicate&.id,
+        name: syndicate.name,
+        logo: syndicate.profile&.attachment&.url
+      }
+    else
+      {}
+    end
+  end
 end
