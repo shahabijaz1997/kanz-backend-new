@@ -70,8 +70,8 @@ module V1
       )
     end
 
+    # Only for Syndicates and Deal Creators
     def activities
-      # Only for Syndicates and Deal Creators
       deal = Deal.find_by(id: params[:id])
       return failure('Unable to find deal', 404) if deal.blank?
       success(

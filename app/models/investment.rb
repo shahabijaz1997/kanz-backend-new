@@ -7,6 +7,8 @@ class Investment < ApplicationRecord
 
   before_save :check_account_balance
 
+  scope :latest_first, -> { order(created_at: :desc) }
+
   private
 
   def check_account_balance

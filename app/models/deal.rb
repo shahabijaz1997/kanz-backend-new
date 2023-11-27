@@ -76,7 +76,7 @@ class Deal < ApplicationRecord
   end
 
   def activities
-    invites.investment
+    invites.investment.where.not(invitee_id: investments.pluck(:user_id)).latest_first + investments.latest_first
   end
 
   private
