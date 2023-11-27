@@ -101,6 +101,10 @@ class User < ApplicationRecord
     save
   end
 
+  def investments_in_deal(deal_id)
+    investments.where(deal_id: deal_id).pluck(:amount).reduce(:+)
+  end
+
   def no_investments
     # need implementation
     0

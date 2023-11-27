@@ -54,8 +54,9 @@ module V1
         DealSerializer.new(deals).serializable_hash[:data].map do |d|
           if d[:attributes][:details].present?
             d[:attributes].merge!(d[:attributes][:details])
-            d[:attributes].delete(:details)   
+            d[:attributes].delete(:details)
           end
+          d[:attributes][:invested_amount] = current_user.investments_in_deal(d[:attributes][:id])
           d[:attributes]
         end
       )
