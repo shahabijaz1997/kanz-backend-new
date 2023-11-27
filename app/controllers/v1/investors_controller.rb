@@ -8,11 +8,11 @@ module V1
 
     def index
       member_ids = syndicate_member_filter? ? SyndicateMember.by_syndicate(current_user.id).pluck(:member_id) : []
-      invitees_ids = @deal.invites.pluck(:invitee_id)
+      invitees_ids = @deal.invites.pluck(:invitee_id) if @deal.present?
       investors = InvestorSerializer.new(
         Investor.approved.where.not(id: member_ids)).serializable_hash[:data].map do |d|
           d[:attributes].select { |key,_| %i[id name invested_amount no_investments].include? key }
-          d[:attributes][:already_invited] = d[:attributes][:id].in? invitees_ids
+          d[:attributes][:already_invited] = d[:attributes][:id].in? invitees_ids if @deal.present?
           d[:attributes]
         end
       success('success', investors)
@@ -97,6 +97,8 @@ module V1
     end
 
     def find_deal
+      return if params[:deal_id].blank?
+
       @deal = Deal.live.find_by(id: params[:deal_id])
       failure('Deal not found') if @deal.blank?
     end
