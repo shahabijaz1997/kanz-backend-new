@@ -42,6 +42,7 @@ class Deal < ApplicationRecord
   scope :by_type, -> (type) { where(deal_type: type) }
   scope :live_or_closed, -> { where(status: [Deal::statuses[:closed], Deal::statuses[:live]]) }
   scope :investor_deals, -> { live_or_closed.syndicate_model }
+  scope :user_invested, -> (user_id) { joins(:investments).where(investments: {user_id: user_id}) }
 
   def attachments_by_creator
     attachments.where(uploaded_by: user)

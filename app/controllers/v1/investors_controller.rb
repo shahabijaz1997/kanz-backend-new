@@ -44,9 +44,14 @@ module V1
     end
 
     def deals
+      deals = Deal.live_or_closed.latest_first
+      if params[:invested].present?
+        deals = deals.user_invested(current_user.id)
+      end
+
       success(
         'success',
-        DealSerializer.new(Deal.live_or_closed.latest_first).serializable_hash[:data].map do |d|
+        DealSerializer.new(deals).serializable_hash[:data].map do |d|
           if d[:attributes][:details].present?
             d[:attributes].merge!(d[:attributes][:details])
             d[:attributes].delete(:details)   
