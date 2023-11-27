@@ -4,7 +4,15 @@
 class DealSerializer
   include JSONAPI::Serializer
 
-  attributes :id, :deal_type, :title, :description, :target, :status, :start_at, :end_at, :submitted_at, :success_benchmark, :current_state, :token
+  attributes :id, :deal_type, :title, :description, :target, :status, :submitted_at, :success_benchmark, :current_state, :token
+
+  attribute :start_at do |deal|
+    deal.start_at.present? ? Date.parse(deal.start_at.to_s).strftime('%d/%m/%Y') : ''
+  end
+
+  attribute :end_at do |deal|
+    deal.end_at.present? ? Date.parse(deal.end_at.to_s).strftime('%d/%m/%Y') : ''
+  end
 
   attribute :details do |deal|
     if deal.startup?

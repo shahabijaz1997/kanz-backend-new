@@ -44,10 +44,9 @@ module V1
     end
 
     def deals
-      deals = Deal.live_or_closed.latest_first
-      if params[:invested].present?
-        deals = deals.user_invested(current_user.id)
-      end
+      params[:deal_type] ||= [Deal::deal_types[:startup], Deal::deal_types[:property]]
+      deals = Deal.live_or_closed.where(deal_type: params[:deal_type]).latest_first
+      deals = deals.user_invested(current_user.id)if params[:invested].present?
 
       success(
         'success',
