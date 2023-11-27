@@ -4,12 +4,16 @@
 module V1
   class InvestorsController < ApiController
     before_action :validate_persona, except: %i[index]
+    before_action :find_deal, only: %i[index]
 
     def index
       member_ids = syndicate_member_filter? ? SyndicateMember.by_syndicate(current_user.id).pluck(:member_id) : []
+      invitees_ids = @deal.invites.pluck(:invitee_id)
       investors = InvestorSerializer.new(
         Investor.approved.where.not(id: member_ids)).serializable_hash[:data].map do |d|
           d[:attributes].select { |key,_| %i[id name invested_amount no_investments].include? key }
+          d[:attributes][:already_invited] = d[:attributes][:id].in? invitees_ids
+          d[:attributes]
         end
       success('success', investors)
     end
@@ -90,6 +94,11 @@ module V1
 
     def syndicate_member_filter?
       params[:filter].present? && params[:filter] == 'not_a_member'
+    end
+
+    def find_deal
+      @deal = Deal.live.find_by(id: params[:deal_id])
+      failure('Deal not found') if @deal.blank?
     end
   end
 end
