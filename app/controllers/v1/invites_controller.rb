@@ -41,6 +41,14 @@ module V1
       success('success', @invite)
     end
 
+    def request_syndication
+      Invite.transaction do
+        invite = Invite.create(user: @deal.user, invitee: current_user, eventable: @deal)
+        upload_attachments
+        invite.update!(status: invite_update_params[:status])
+      end
+    end
+
     def syndicate_group
       eventable = { eventable_id: @deal.id, eventable_type: 'Deal' }
       Invite.transaction do

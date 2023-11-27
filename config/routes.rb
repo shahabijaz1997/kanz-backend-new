@@ -62,6 +62,7 @@ Rails.application.routes.draw do
       resources :invites do
         collection do
           post :syndicate_group
+          post :request_syndication
         end
       end
       resources :comments
