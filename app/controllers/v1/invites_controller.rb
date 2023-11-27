@@ -43,10 +43,11 @@ module V1
 
     def request_syndication
       Invite.transaction do
-        invite = Invite.create(user: @deal.user, invitee: current_user, eventable: @deal)
+        @invite = Invite.create(user: @deal.user, invitee: current_user, eventable: @deal)
         upload_attachments
-        invite.update!(status: invite_update_params[:status])
+        @invite.update!(status: invite_update_params[:status])
       end
+      success('success', @invite)
     end
 
     def syndicate_group
@@ -54,7 +55,7 @@ module V1
       Invite.transaction do
         current_user.syndicate_members.each do |member|
           next if Invite.exists?(invite_id: member.id, eventable_id: @deal.id, eventable_type: 'Deal')
-          current_user.invites.create!({ 
+          current_user.invites.create!({
             invitee_id: id, purpose: Invite::purposes[:investment]
           }.merge(eventable))
         end
