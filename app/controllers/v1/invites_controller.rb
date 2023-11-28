@@ -11,12 +11,9 @@ module V1
     # /1.0/users/:user_id/invites
     # /1.0/invitees/:invitee_id/invites
     def index
-      success(
-        'success',
-        InviteSerializer.new(
-          invites.syndication
-        ).serializable_hash[:data].map { |d| d[:attributes] }
-      )
+      invites_data = InviteSerializer.new(invites.syndication).serializable_hash[:data].map { |d| d[:attributes] }
+      invites_data = { filters: filters_by_status, invites: invites_data } if params[:invitee_id]
+      success('success', invites_data)
     end
 
     #POST /1.0/deals/:deal_id/invites
@@ -54,7 +51,7 @@ module V1
       eventable = { eventable_id: @deal.id, eventable_type: 'Deal' }
       Invite.transaction do
         current_user.syndicate_members.each do |member|
-          next if Invite.exists?(invite_id: member.id, eventable_id: @deal.id, eventable_type: 'Deal')
+          next if Invite.exists?(invitee_id: member.id, eventable_id: @deal.id, eventable_type: 'Deal')
           current_user.invites.create!({
             invitee_id: id, purpose: Invite::purposes[:investment]
           }.merge(eventable))
@@ -105,6 +102,16 @@ module V1
       invite_update_params[:deal_attachments].values.each do |attachment_params|
         @deal.attachments.create!(attachment_params.merge(uploaded_by: current_user))
       end
+    end
+
+    def filters_by_status
+      {
+        all: invites.count,
+        pending: invites.pending.count,
+        interested: invites.interested.count,
+        accepted: invites.accepted.count,
+        approved: invites.approved.count
+      }
     end
   end
 end

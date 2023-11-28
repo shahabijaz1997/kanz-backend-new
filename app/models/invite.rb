@@ -18,7 +18,7 @@ class Invite < ApplicationRecord
   scope :latest_first, -> { order(created_at: :desc) }
   scope :active, -> { where.not(status: Invite::statuses[:expired]) }
   scope :pending, -> { where(status: Invite::statuses[:pending]) }
-  scope :interested, -> { where(status: %i[interested accepted approved]) }
+  scope :interested_invites, -> { where(status: %i[interested accepted approved]) }
   scope :by_status, -> (status) { where(status: status) }
 
   def expired?
