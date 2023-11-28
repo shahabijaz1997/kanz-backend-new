@@ -158,19 +158,15 @@ module Deals
     end
 
     def total_raised
-      # how_much_funded
-      # Implement to calculate total raised from invoices
-      0
+      deal.raised
     end
 
     def total_committed
-      # Implement to calculate total committed from comitments, Need to decide 
-      0
+      deal.raised
     end
 
     def total_investors
-      # investors.count
-      0
+      deal.investors_count
     end
   end
 end

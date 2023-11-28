@@ -74,6 +74,10 @@ class Deal < ApplicationRecord
     investments.sum(:amount)
   end
 
+  def investors_count
+    investments.pluck(:user_id).uniq.count
+  end
+
   def minimum_check_size
     terms.minimum_check_size.first&.custom_input.to_f
   end
