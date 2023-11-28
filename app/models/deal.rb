@@ -71,8 +71,7 @@ class Deal < ApplicationRecord
   end
 
   def raised
-    # implementation pending, if deal is live or closed then check for 
-    0.00
+    investments.sum(:amount)
   end
 
   def minimum_check_size
