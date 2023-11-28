@@ -68,6 +68,7 @@ Rails.application.routes.draw do
       resources :comments
       resources :syndicates, only: %i[show index]
       resources :investments, only: %i[index create]
+      resources :investors, only: %i[index]
     end
     resources :deals, param: :token, only: %i[show]
     post 'deals/:id/submit' => 'deals#submit'
