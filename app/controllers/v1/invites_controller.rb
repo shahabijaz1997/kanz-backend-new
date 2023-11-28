@@ -5,6 +5,7 @@ module V1
   class InvitesController < ApiController
     before_action :set_deal, except: %i[index]
     before_action :find_invite, :validate_invite_status, only: %i[update]
+    before_action :invites, only: %i[index]
 
     # GET
     # /1.0/deals/:deal_id/invites
