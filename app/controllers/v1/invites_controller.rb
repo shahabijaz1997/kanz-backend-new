@@ -11,8 +11,8 @@ module V1
     # /1.0/users/:user_id/invites
     # /1.0/invitees/:invitee_id/invites
     def index
-      invites_data = InviteSerializer.new(invites.syndication).serializable_hash[:data].map { |d| d[:attributes] }
-      invites_data = { states: states_by_status, invites: invites_data } if params[:invitee_id]
+      invites_data = InviteSerializer.new(@invites).serializable_hash[:data].map { |d| d[:attributes] }
+      invites_data = { states: @states, invites: invites_data } if params[:invitee_id]
       success('success', invites_data)
     end
 
@@ -83,10 +83,12 @@ module V1
 
     def invites
       status = params[:status].in?(Invite::statuses.keys) ? params[:status] : Invite::statuses.keys
-      invites = Invite.where(eventable_type: 'Deal').where(
+      @invites = Invite.where(eventable_type: 'Deal').where(
         'eventable_id= ? OR invitee_id= ? OR user_id= ?',
         params[:deal_id], params[:invitee_id], params[:user_id]
-      ).active.by_status(status).latest_first
+      ).active.syndication
+      @states = states_by_status
+      @invites.by_status(status).latest_first
     end
 
     def validate_invite_status
@@ -106,11 +108,11 @@ module V1
 
     def states_by_status
       {
-        all: invites.count,
-        pending: invites.pending.count,
-        interested: invites.interested.count,
-        accepted: invites.accepted.count,
-        approved: invites.approved.count
+        all: @invites.count,
+        pending: @invites.pending.count,
+        interested: @invites.interested.count,
+        accepted: @invites.accepted.count,
+        approved: @invites.approved.count
       }
     end
   end
