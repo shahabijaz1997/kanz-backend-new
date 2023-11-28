@@ -8,11 +8,13 @@ module V1
 
     def index
       connection = params[:connection].in?(SyndicateMember::connections.keys) ? params[:connection] : SyndicateMember::connections.keys
+      @syndicate_members = current_user.syndicate_members
       success(
         'success',
-        SyndicateMemberSerializer.new(
-          current_user.syndicate_members.filter_by_connection(connection)
-        ).serializable_hash[:data].map {|d| d[:attributes]}
+        { members: SyndicateMemberSerializer.new(
+                    @syndicate_members.filter_by_connection(connection)
+                   ).serializable_hash[:data].map {|d| d[:attributes]}
+                  }.merge(states: states_by_connection)
       )
     end
 
@@ -43,6 +45,14 @@ module V1
       @syndicate_member = @syndicate.syndicate_members.find_by(id: params[:id])
 
       failure('Syndicate member not found') if @syndicate_member.blank?
+    end
+
+    def states_by_connection
+      {
+        all: @syndicate_members.count,
+        added: @syndicate_members.added.count,
+        follower: @syndicate_members.follower.count
+      }
     end
   end
 end
