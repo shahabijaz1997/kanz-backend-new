@@ -53,7 +53,7 @@ module V1
         current_user.syndicate_members.each do |member|
           next if Invite.exists?(invitee_id: member.id, eventable_id: @deal.id, eventable_type: 'Deal')
           current_user.invites.create!({
-            invitee_id: id, purpose: Invite::purposes[:investment]
+            invitee_id: member.id, purpose: Invite::purposes[:investment]
           }.merge(eventable))
         end
       end
