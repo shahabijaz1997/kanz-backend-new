@@ -48,20 +48,22 @@ module V1
 
     def deals
       params[:deal_type] ||= [Deal::deal_types[:startup], Deal::deal_types[:property]]
-      @deals = Deal.live_or_closed.where(deal_type: params[:deal_type]).latest_first
+      @deals = Deal.live_or_closed
+      stats = stats_by_deal_type
+      @deals = @deals.where(deal_type: params[:deal_type]).latest_first
       @deals = @deals.user_invested(current_user.id)if params[:invested].present?
 
       success(
         'success',
         { deals: DealSerializer.new(@deals).serializable_hash[:data].map do |d|
-          if d[:attributes][:details].present?
-            d[:attributes].merge!(d[:attributes][:details])
-            d[:attributes].delete(:details)
+            if d[:attributes][:details].present?
+              d[:attributes].merge!(d[:attributes][:details])
+              d[:attributes].delete(:details)
+            end
+            d[:attributes][:invested_amount] = current_user.investments_in_deal(d[:attributes][:id])
+            d[:attributes]
           end
-          d[:attributes][:invested_amount] = current_user.investments_in_deal(d[:attributes][:id])
-          d[:attributes]
-        end
-      }.merge(states: states_by_deal_type)
+        }.merge(stats: stats)
       )
     end
 
@@ -103,7 +105,7 @@ module V1
       failure('Deal not found') if @deal.blank?
     end
 
-    def states_by_deal_type
+    def stats_by_deal_type
       {
         all: @deals.count,
         property: @deals.property.count,
