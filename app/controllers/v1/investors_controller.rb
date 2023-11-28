@@ -11,9 +11,9 @@ module V1
       invitees_ids = @deal.invites.pluck(:invitee_id) if @deal.present?
       investors = InvestorSerializer.new(
         Investor.approved.where.not(id: member_ids)).serializable_hash[:data].map do |d|
-          d[:attributes].select { |key,_| %i[id name invested_amount no_investments].include? key }
-          d[:attributes][:already_invited] = d[:attributes][:id].in? invitees_ids if @deal.present?
-          d[:attributes]
+          d[:attributes][:already_invited] = false
+          d[:attributes][:already_invited] = d[:attributes][:id].in?(invitees_ids) if @deal.present?
+          d[:attributes].select { |key,_| %i[id name invested_amount no_investments already_invited].include? key }
         end
       success('success', investors)
     end
