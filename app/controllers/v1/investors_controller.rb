@@ -49,7 +49,7 @@ module V1
     def deals
       params[:deal_type] ||= [Deal::deal_types[:startup], Deal::deal_types[:property]]
       @deals = Deal.live_or_closed
-      states = states_by_deal_type
+      stats = stats_by_deal_type
       @deals = @deals.where(deal_type: params[:deal_type]).latest_first
       @deals = @deals.user_invested(current_user.id)if params[:invested].present?
 
@@ -63,7 +63,7 @@ module V1
             d[:attributes][:invested_amount] = current_user.investments_in_deal(d[:attributes][:id])
             d[:attributes]
           end
-        }.merge(states: states)
+        }.merge(stats: stats)
       )
     end
 
@@ -105,7 +105,7 @@ module V1
       failure('Deal not found') if @deal.blank?
     end
 
-    def states_by_deal_type
+    def stats_by_deal_type
       {
         all: @deals.count,
         property: @deals.property.count,

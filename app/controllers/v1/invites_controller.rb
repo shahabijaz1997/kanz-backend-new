@@ -12,7 +12,7 @@ module V1
     # /1.0/invitees/:invitee_id/invites
     def index
       invites_data = InviteSerializer.new(@invites).serializable_hash[:data].map { |d| d[:attributes] }
-      invites_data = { states: @states, invites: invites_data } if params[:invitee_id]
+      invites_data = { stats: @stats, invites: invites_data } if params[:invitee_id]
       success('success', invites_data)
     end
 
@@ -87,7 +87,7 @@ module V1
         'eventable_id= ? OR invitee_id= ? OR user_id= ?',
         params[:deal_id], params[:invitee_id], params[:user_id]
       ).active.syndication
-      @states = states_by_status
+      @stats = stats_by_status
       @invites.by_status(status).latest_first
     end
 
@@ -106,7 +106,7 @@ module V1
       end
     end
 
-    def states_by_status
+    def stats_by_status
       {
         all: @invites.count,
         pending: @invites.pending.count,

@@ -14,7 +14,7 @@ module V1
         { members: SyndicateMemberSerializer.new(
                     @syndicate_members.filter_by_connection(connection)
                    ).serializable_hash[:data].map {|d| d[:attributes]}
-                  }.merge(states: states_by_connection)
+                  }.merge(stats: stats_by_connection)
       )
     end
 
@@ -47,7 +47,7 @@ module V1
       failure('Syndicate member not found') if @syndicate_member.blank?
     end
 
-    def states_by_connection
+    def stats_by_connection
       {
         all: @syndicate_members.count,
         added: @syndicate_members.added.count,
