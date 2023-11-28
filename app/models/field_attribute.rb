@@ -16,4 +16,8 @@ class FieldAttribute < ApplicationRecord
   def dependent_field
     self.class.find_by(id: dependent_id)
   end
+
+  def self.minimum_check_size
+    find_by(field_mapping: 'terms_attributes.custom_input', statement: 'Minimum Check Size')
+  end
 end
