@@ -75,6 +75,10 @@ class Deal < ApplicationRecord
     0.00
   end
 
+  def minimum_check_size
+    terms.minimum_check_size.first&.custom_input.to_f
+  end
+
   def activities
     invites.investment.where.not(invitee_id: investments.pluck(:user_id)).latest_first + investments.latest_first
   end
