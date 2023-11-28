@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     resources :syndicates do
       collection do
         get :all
+        get :deals
       end
       resources :syndicate_members, only: %i[index create destroy]
     end

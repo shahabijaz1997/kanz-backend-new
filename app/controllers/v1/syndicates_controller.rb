@@ -56,6 +56,14 @@ module V1
       failure(profile.errors.full_messages.to_sentence.presence || e.message)
     end
 
+    def deals
+      @deals = Deal.syndicate_deals.latest_first
+      success(
+        'success',
+        DealSerializer.new(@deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) }
+      )
+    end
+
     private
 
     def profile_params

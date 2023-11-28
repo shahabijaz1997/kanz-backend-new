@@ -11,16 +11,17 @@ module V1
     skip_before_action :authenticate_user!, only: %i[show]
 
     def index
-      deals = if current_user.syndicate?
-        Deal.syndicate_deals.latest_first
-      else
-        status = params[:status].in?(Deal::statuses.keys) ? params[:status] : Deal::statuses.keys
-        current_user.deals.by_status(status).latest_first
-      end
+      @deals = current_user.deals
+      stats = stats_by_status
+      status = params[:status].in?(Deal::statuses.keys) ? params[:status] : Deal::statuses.keys
+      @deals = @deals.by_status(status).latest_first
 
       success(
         'success',
-        DealSerializer.new(deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) }
+        {
+          deals: DealSerializer.new(@deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) },
+          stats: stats
+        }
       )
     end
 
@@ -156,6 +157,14 @@ module V1
     def set_invite
       @invite = @deal.invites.find_by(id: deal_approval_params[:invite_id], status: Invite::statuses[:accepted])
       failure("Invite can't be updated") if @invite.blank?
+    end
+
+    def stats_by_status
+      hash = { all: @deals.count }
+      Deal::statuses.keys.map do |status|
+        hash[status] = @deals.send(status).count
+      end
+      hash
     end
   end
 end
