@@ -12,7 +12,7 @@ module V1
     # /1.0/invitees/:invitee_id/invites
     def index
       invites_data = InviteSerializer.new(invites.syndication).serializable_hash[:data].map { |d| d[:attributes] }
-      invites_data = { filters: filters_by_status, invites: invites_data } if params[:invitee_id]
+      invites_data = { filters: states_by_status, invites: invites_data } if params[:invitee_id]
       success('success', invites_data)
     end
 
@@ -104,7 +104,7 @@ module V1
       end
     end
 
-    def filters_by_status
+    def states_by_status
       {
         all: invites.count,
         pending: invites.pending.count,
