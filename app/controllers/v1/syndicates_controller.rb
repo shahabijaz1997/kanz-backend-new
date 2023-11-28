@@ -143,5 +143,13 @@ module V1
         @syndicates = Syndicate.approved.where(id: syndicate_ids)
       end
     end
+
+    def simplify_attributes(attributes)
+      return attributes if attributes[:details].blank?
+
+      attributes = attributes.merge(attributes[:details])
+      attributes.delete(:details)
+      attributes
+    end
   end
 end
