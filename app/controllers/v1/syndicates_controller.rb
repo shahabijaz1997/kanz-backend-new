@@ -60,7 +60,10 @@ module V1
       @deals = Deal.syndicate_deals.latest_first
       success(
         'success',
-        DealSerializer.new(@deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) }
+        {
+          deals: DealSerializer.new(@deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) },
+          filters: stats_by_deal_type
+        }
       )
     end
 
@@ -150,6 +153,14 @@ module V1
       attributes = attributes.merge(attributes[:details])
       attributes.delete(:details)
       attributes
+    end
+
+    def stats_by_deal_type
+      {
+        all: @deals.count,
+        property: @deals.property.count,
+        startup: @deals.startup.count
+      }
     end
   end
 end

@@ -14,7 +14,8 @@ module V1
       @deals = current_user.deals
       stats = stats_by_status
       status = params[:status].in?(Deal::statuses.keys) ? params[:status] : Deal::statuses.keys
-      @deals = @deals.by_status(status).latest_first
+      @deals = @deals.by_status(status).ransack(params[:search])
+      debugger
 
       success(
         'success',
