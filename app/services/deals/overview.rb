@@ -53,7 +53,8 @@ module Deals
         safe_type: round.safe_kind,
         valuation_type: round.valuation_type,
         valuation: round.valuation,
-        terms: deal_terms
+        terms: deal_terms,
+        pitch_deck: AttachmentSerializer.new(pitch_deck).serializable_hash[:data]
       }
     end
 
@@ -127,6 +128,10 @@ module Deals
       return {} if docs.blank?
 
       { docs: AttachmentSerializer.new(docs).serializable_hash[:data].map {|d| d[:attributes]} }
+    end
+
+    def pitch_deck
+      deal.attachments.find_by(uploaded_by_id: deal.author_id, name: 'Pitch Deck')
     end
 
     def comments
