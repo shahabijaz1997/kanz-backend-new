@@ -58,11 +58,13 @@ module V1
 
     def deals
       @deals = Deal.syndicate_deals.latest_first
+      stats = stats_by_deal_type
+      @deals = @deals.where(deal_type: [params[:deal_type] || [Deal::deal_types[:startup], Deal::deal_types[:property]]])
       success(
         'success',
         {
           deals: DealSerializer.new(@deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) },
-          filters: stats_by_deal_type
+          filters: stats
         }
       )
     end
