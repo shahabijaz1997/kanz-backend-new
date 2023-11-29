@@ -58,10 +58,10 @@ module V1
 
     def deals
       @deals = Deal.syndicate_deals.latest_first
-      stats = stats_by_deal_type
       status = params[:status].in?(Deal::statuses.keys) ? params[:status] : Deal::statuses.keys
-      deal_type = params[:deal_type] || [Deal::deal_types[:startup], Deal::deal_types[:property]]
-      @deals = @deals.where(deal_type: deal_type, status: status)
+      @deals = @deals.where(status: status)
+      stats = stats_by_deal_type
+      @deals = @deals.where(deal_type: (params[:deal_type] || [Deal::deal_types[:startup], Deal::deal_types[:property]]))
       success(
         'success',
         {
