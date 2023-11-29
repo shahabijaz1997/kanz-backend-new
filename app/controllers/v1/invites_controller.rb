@@ -87,9 +87,9 @@ module V1
       @invites = Invite.where(eventable_type: 'Deal').where(
         'eventable_id= ? OR invitee_id= ? OR user_id= ?',
         params[:deal_id], params[:invitee_id], params[:user_id]
-      ).active.syndication
+      ).active.syndication.latest_first
       @stats = stats_by_status
-      @invites.by_status(status).latest_first
+      @invites.by_status(status)
     end
 
     def validate_invite_status
