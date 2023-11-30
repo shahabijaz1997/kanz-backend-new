@@ -37,7 +37,7 @@ module Deals
         end_at: deal.end_at.blank? ? '' : Date.parse(deal.end_at.to_s).strftime('%d/%m/%Y'),
         token: deal.token,
         is_invested: user.investments.present?,
-        my_invested_amount: user.investments.find_by(deal_id: deal.id).amount
+        my_invested_amount: user.investments.find_by(deal_id: deal.id)&.amount
       }
 
       additional_params = deal.startup? ? startup_params : property_params
