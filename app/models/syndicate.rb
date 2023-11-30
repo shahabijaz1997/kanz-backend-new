@@ -20,4 +20,8 @@ class Syndicate < User
   def no_active_deals
     deals.live.count
   end
+
+  def membership(member_id)
+    syndicate_members.find_by(member_id: member_id)
+  end
 end

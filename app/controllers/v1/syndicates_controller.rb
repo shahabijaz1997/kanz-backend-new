@@ -23,7 +23,7 @@ module V1
         I18n.t('syndicate.get.success.show'),
         SyndicateSerializer.new(@syndicates, { params: { investor_list_view: current_user.investor? }}).
           serializable_hash[:data].map do |sy|
-            sy.present? ? (sy[:attributes].present? ? sy[:attributes][:syndicate_list] : sy[:attributes]) : []
+            sy[:attributes].present? ? sy[:attributes][:syndicate_list] : sy[:attributes]
           end
       )
     end
@@ -39,7 +39,9 @@ module V1
       ).serializable_hash[:data][:attributes]
       if current_user.investor?
         syndicate_data = syndicate_data[:detail]
-        syndicate_data[:following] = current_user.following?(@syndicate.id)
+        membership = @syndicate.membership(current_user.id)
+        syndicate_data[:following] = membership.present?
+        syndicate_data[:membership_id] = membership&.id
       end
       syndicate_data = additional_attributes(syndicate_data) if params[:deal_id].present?
       success(I18n.t('syndicate.get.success.show'), syndicate_data)
