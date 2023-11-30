@@ -106,13 +106,11 @@ class User < ApplicationRecord
   end
 
   def no_investments
-    # need implementation
-    0
+    investments.count
   end
 
   def invested_amount
-    # need implementation
-    0.00
+    investments.sum(:amount)
   end
 
   private
