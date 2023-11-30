@@ -5,7 +5,8 @@ class Investment < ApplicationRecord
   belongs_to :user
   belongs_to :deal
 
-  validate :invested_amount_limit, :dublicate_investment
+  validate :invested_amount_limit
+  validates :user_id, uniqueness: { scope: [:deal_id], message: "invest again in same deal" }
 
   before_save :check_account_balance
 
@@ -26,8 +27,8 @@ class Investment < ApplicationRecord
   end
 
   def dublicate_investment
-    return unless Investment.exists?(user_id: user_id, deal_id: deal_id)
-
-    errors.add(:base, 'You can invest once!')
+    if Investment.exists?(user_id: user_id, deal_id: deal_id)
+      errors.add(:base, 'You can invest once!')
+    end
   end
 end
