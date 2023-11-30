@@ -27,7 +27,6 @@ class Investment < ApplicationRecord
   end
 
   def dublicate_investment
-    debugger
     if Investment.exists?(user_id: user_id, deal_id: deal_id)
       errors.add(:base, 'You can invest once!')
     end
