@@ -5,7 +5,7 @@ class Investment < ApplicationRecord
   belongs_to :user
   belongs_to :deal
 
-  validate :invested_amount_limit
+  validate :invested_amount_limit, :dublicate_investment
 
   before_save :check_account_balance
 
@@ -23,5 +23,11 @@ class Investment < ApplicationRecord
     pending_amount = deal.target - deal.raised
     return errors.add(:investment_amount, "exceedes the target amount, you can invest #{pending_amount} at max") if amount > pending_amount
     return errors.add(:investment_amount, "can't be less than minimum check size" ) if amount < deal.minimum_check_size
+  end
+
+  def dublicate_investment
+    return unless exists?(user_id: user_id, deal_id: deal_id)
+
+    errors.add(:base, 'You can invest once!')
   end
 end
