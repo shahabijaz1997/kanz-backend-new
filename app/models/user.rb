@@ -113,6 +113,14 @@ class User < ApplicationRecord
     investments.sum(:amount)
   end
 
+  def total_deals
+    deals.count
+  end
+
+  def no_active_deals
+    deals.live.count
+  end
+
   private
 
   def profile_reopened?
