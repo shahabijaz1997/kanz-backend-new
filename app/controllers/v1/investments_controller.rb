@@ -15,7 +15,7 @@ module V1
     def create
       investment = current_user.investments.create(investment_params.merge(deal_id: @deal.id))
       if investment.valid?
-        success('success', 200)
+        success('success', InvestmentSerializer.new(investment).serializable_hash[:data][:attributes])
       else
         failure(investment.errors.full_messages.to_sentence, 401)
       end
