@@ -63,8 +63,8 @@ class SyndicateSerializer
       total_deals: syndicate.total_deals,
       active_deals: syndicate.no_active_deals,
       raising_fund: !syndicate.no_active_deals.zero?,
-      raised_amount: syndicate.no_investments,
-      no_times_raised: syndicate.invested_amount,
+      no_times_raised: syndicate.no_investments,
+      raised_amount: syndicate.invested_amount,
       profile: SyndicateProfileSerializer.new( syndicate.profile).serializable_hash[:data]&.fetch(:attributes)
     }
   end
