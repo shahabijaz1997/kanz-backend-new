@@ -44,13 +44,14 @@ module V1
 
     def create
       response = Deals::ParamComposer.call(deal_params, @deal)
-      failure(response.message) unless response.status
+      return failure(response.message) unless response.status
 
-      Deal.transaction do
-        response.data.merge!(status: 'draft') if @deal.status == 'approved'
-        @deal.update!(response.data)
+      response.data.merge!(status: 'draft') if @deal.status == 'approved'
+      if @deal.update(response.data)
+        success('success', { id: @deal.id })
+      else
+        failure(@deal.errors.full_messages.to_sentence)
       end
-      success('success', { id: @deal.id })
     end
 
     def review

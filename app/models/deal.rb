@@ -24,6 +24,7 @@ class Deal < ApplicationRecord
   enum status: { draft: 0, submitted: 1, reopened: 2, verified: 3, rejected: 4, approved: 5, live: 6, closed: 7 }
   enum model: { classic: 0, syndicate: 1 }
 
+  validates_numericality_of(:target, greater_than: 0)
   validate :start_and_end_date_presence, :start_date_and_end_date
 
   after_save :update_current_state
@@ -53,7 +54,7 @@ class Deal < ApplicationRecord
   end
 
   def self.ransackable_associations(_auth_object = nil)
-    %w[user property_detail funding_round]
+    %w[user property_detail funding_round syndicate]
   end
 
   def syndicate_comment(author_id)
@@ -83,7 +84,7 @@ class Deal < ApplicationRecord
   end
 
   def activities
-    invites.investment.where.not(invitee_id: investments.pluck(:user_id)).latest_first + investments.latest_first
+    invites.where.not(invitee_id: investments.pluck(:user_id)).latest_first + investments.latest_first
   end
 
   private

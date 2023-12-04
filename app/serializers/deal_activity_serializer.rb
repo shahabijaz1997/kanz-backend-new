@@ -26,6 +26,10 @@ class DealActivitySerializer
     end
   end
 
+  attribute :type do |activity|
+    activity.is_a?(Investment) ? 'investment' : activity.purpose
+  end
+
   attribute :date do |activity|
     Date.parse(activity.created_at.to_s).strftime('%d/%m/%Y')
   end
