@@ -61,8 +61,11 @@ module V1
     end
 
     def documents
-      docs = AttachmentSerializer.new(@deal.attachments).serializable_hash[:data].map { |d| d[:attributes] }
-      success('Success', docs)
+      attachments = @deal.attachments.where(uploaded_by: @deal.user)
+      success(
+        'Success',
+        AttachmentSerializer.new(attachments).serializable_hash[:data].map { |d| d[:attributes] }
+      )
     end
 
     def comments
