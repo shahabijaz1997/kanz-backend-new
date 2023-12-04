@@ -49,8 +49,7 @@ module V1
 
     def deals
       params[:deal_type] ||= [Deal::deal_types[:startup], Deal::deal_types[:property]]
-      @deals = Deal.live_or_closed.ransack(params[:search]).result
-      debugger
+      @deals = Deal.live_or_closed
       @deals = @deals.user_invested(current_user.id) if params[:invested].present?
       stats = stats_by_deal_type
       @deals = @deals.where(deal_type: params[:deal_type]).ransack(params[:search]).result.latest_first
@@ -118,9 +117,7 @@ module V1
     def search_params
       return if params[:search].blank?
 
-      params[:search] = {
-                          title_or_target_or_syndicate_name_i_cont: params[:search]
-                        }
+      params[:search] = { title_or_syndicate_name_i_cont: params[:search] }
     end
 
   end
