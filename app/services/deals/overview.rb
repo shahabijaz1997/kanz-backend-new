@@ -39,7 +39,8 @@ module Deals
         is_invested: user.investments.exists?(deal_id: deal.id),
         my_invested_amount: user.investments.find_by(deal_id: deal.id)&.amount,
         current_deal_syndicate: deal.syndicate_id == user.id,
-        syndicate_id: deal.syndicate_id
+        syndicate_id: deal.syndicate_id,
+        model: deal.model
       }
 
       additional_params = deal.startup? ? startup_params : property_params
