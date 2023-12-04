@@ -24,7 +24,7 @@ class Deal < ApplicationRecord
   enum status: { draft: 0, submitted: 1, reopened: 2, verified: 3, rejected: 4, approved: 5, live: 6, closed: 7 }
   enum model: { classic: 0, syndicate: 1 }
 
-  validates_numericality_of(:target, greater_than: 0), allow_nil: true
+  validates_numericality_of(:target, greater_than: 0, allow_nil: true)
   validate :start_and_end_date_presence, :start_date_and_end_date
 
   after_save :update_current_state
