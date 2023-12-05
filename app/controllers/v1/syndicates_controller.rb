@@ -5,8 +5,8 @@ module V1
   class SyndicatesController < ApiController
     before_action :check_file_presence, only: %i[create]
     before_action :find_syndicate, :validate_deal_association, only: %i[show]
-    before_action :authorize_role!, :search_params, :extract_syndicates, only: %i[all]
-    before_action :search_params, only: %i[index deals]
+    before_action :search_params, only: %i[index deals all]
+    before_action :authorize_role!, :extract_syndicates, only: %i[all]
 
     def index
       deal = Deal.find_by(id: params[:deal_id])
@@ -164,14 +164,6 @@ module V1
         property: @deals.property.count,
         startup: @deals.startup.count
       }
-    end
-
-    def search_params
-      return if params[:search].blank?
-
-      search_hash = { index: 'name_i_cont', deals: 'title_i_cont', all: 'name_i_cont' }
-      attribute = search_hash[action_name.to_sym]
-      params[:search][attribute.to_sym] = params[:search]
     end
   end
 end

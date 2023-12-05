@@ -171,13 +171,5 @@ module V1
       end
       hash
     end
-
-    def search_params
-      return if params[:search].blank?
-
-      search_hash = { index: 'title_i_cont' }
-      attribute = search_hash[action_name.to_sym]
-      params[:search][attribute.to_sym] = params[:search]
-    end
   end
 end

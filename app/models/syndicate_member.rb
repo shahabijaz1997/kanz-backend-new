@@ -10,6 +10,10 @@ class SyndicateMember < ApplicationRecord
   scope :by_syndicate, -> (syndicate_id) {where(syndicate_id: syndicate_id)}
   scope :latest_first, -> { order(created_at: :desc) }
 
+  def self.ransackable_attributes(auth_object = nil)
+    %w[connection]
+  end
+
   def self.ransackable_associations(_auth_object = nil)
     %w[member]
   end
