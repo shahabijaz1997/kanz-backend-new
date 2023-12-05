@@ -5,6 +5,7 @@ class ApiController < ActionController::API
   include Pundit::Authorization
   include PunditApiHelper
   include ExceptionHandler
+  include SearchHelper
 
   before_action :authenticate_user!
   before_action :block_unconfirmed_access

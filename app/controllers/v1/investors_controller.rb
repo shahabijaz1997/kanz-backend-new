@@ -113,13 +113,5 @@ module V1
         startup: @deals.startup.count
       }
     end
-
-    def search_params
-      return if params[:search].blank?
-
-      search_hash = { index: 'name_i_cont', deals: 'title_or_syndicate_name_i_cont' }
-      attribute = search_hash[action_name.to_sym]
-      params[:search][attribute.to_sym] = params[:search]
-    end
   end
 end

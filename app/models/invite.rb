@@ -40,7 +40,7 @@ class Invite < ApplicationRecord
   end
 
   def self.ransackable_associations(_auth_object = nil)
-    %w[eventable]
+    %w[eventable user invitee]
   end
 
   private

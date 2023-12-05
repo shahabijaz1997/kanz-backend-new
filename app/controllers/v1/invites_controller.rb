@@ -116,13 +116,5 @@ module V1
         approved: @invites.approved.count
       }
     end
-
-    def search_params
-      return if params[:search].blank?
-
-      search_hash = { index: 'eventable_title_i_cont' }
-      attribute = search_hash[action_name.to_sym]
-      params[:search][attribute.to_sym] = params[:search]
-    end
   end
 end
