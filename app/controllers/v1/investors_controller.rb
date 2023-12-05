@@ -5,13 +5,13 @@ module V1
   class InvestorsController < ApiController
     before_action :validate_persona, except: %i[index]
     before_action :find_deal, only: %i[index]
-    before_action :search_params, only: %[deals]
+    before_action :search_params, only: %i[deals index]
 
     def index
       member_ids = syndicate_member_filter? ? SyndicateMember.by_syndicate(current_user.id).pluck(:member_id) : []
       invitees_ids = @deal.invites.pluck(:invitee_id) if @deal.present?
-      investors = InvestorSerializer.new(
-        Investor.approved.where.not(id: member_ids)).serializable_hash[:data].map do |d|
+      investors = Investor.approved.where.not(id: member_ids).ransack(params[:search]).result
+      investors = InvestorSerializer.new(investors).serializable_hash[:data].map do |d|
           d[:attributes][:already_invited] = @deal.present? ? d[:attributes][:id].in?(invitees_ids) : false
           d[:attributes].select { |key,_| %i[id name invested_amount no_investments already_invited].include? key }
         end
@@ -117,8 +117,9 @@ module V1
     def search_params
       return if params[:search].blank?
 
-      params[:search] = { title_or_syndicate_name_i_cont: params[:search] }
+      search_hash = { index: 'name_i_cont', deals: 'title_or_syndicate_name_i_cont' }
+      attribute = search_hash[action_name.to_sym]
+      params[:search][attribute.to_sym] = params[:search]
     end
-
   end
 end

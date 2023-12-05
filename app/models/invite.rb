@@ -35,6 +35,14 @@ class Invite < ApplicationRecord
     invite.update!(status: statuses[:interested])
   end
 
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[eventable_type]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[eventable]
+  end
+
   private
 
   def set_defaults

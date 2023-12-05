@@ -9,12 +9,13 @@ module V1
     before_action :set_invite, only: %i[sign_off]
     before_action :set_features, only: %i[unique_selling_points]
     skip_before_action :authenticate_user!, only: %i[show]
+    before_action :search_params, only: %i[index]
 
     def index
       @deals = current_user.deals
       stats = stats_by_status
       status = params[:status].in?(Deal::statuses.keys) ? params[:status] : Deal::statuses.keys
-      @deals = @deals.by_status(status).latest_first
+      @deals = @deals.by_status(status).ransack(params[:search]).result.latest_first
 
       success(
         'success',
@@ -169,6 +170,14 @@ module V1
         hash[status] = @deals.send(status).count
       end
       hash
+    end
+
+    def search_params
+      return if params[:search].blank?
+
+      search_hash = { index: 'title_i_cont' }
+      attribute = search_hash[action_name.to_sym]
+      params[:search][attribute.to_sym] = params[:search]
     end
   end
 end
