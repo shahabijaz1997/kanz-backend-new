@@ -119,6 +119,5 @@ module V1
 
       params[:search] = { title_or_syndicate_name_i_cont: params[:search] }
     end
-
   end
 end

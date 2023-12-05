@@ -5,7 +5,7 @@ module V1
   class SyndicatesController < ApiController
     before_action :check_file_presence, only: %i[create]
     before_action :find_syndicate, :validate_deal_association, only: %i[show]
-    before_action :authorize_role!, :extract_synidcates, only: %i[all]
+    before_action :authorize_role!, :search_params, :extract_syndicates, only: %i[all]
 
     def index
       deal = Deal.find_by(id: params[:deal_id])
@@ -145,12 +145,13 @@ module V1
       }
     end
 
-    def extract_synidcates
-      @syndicates = Syndicate.approved
+    def extract_syndicates
+      @syndicates = Syndicate.approved.ransack(params[:search]).result
       if params[:followed].present?
         syndicate_ids = current_user.syndicate_members.pluck(:syndicate_id)
         @syndicates = Syndicate.approved.where(id: syndicate_ids)
       end
+      @syndicates = @syndicates.ransack(params[:search]).result
     end
 
     def simplify_attributes(attributes)
@@ -167,6 +168,12 @@ module V1
         property: @deals.property.count,
         startup: @deals.startup.count
       }
+    end
+
+    def search_params
+      return if params[:search].blank?
+
+      params[:search] = { name_i_cont: params[:search] }
     end
   end
 end
