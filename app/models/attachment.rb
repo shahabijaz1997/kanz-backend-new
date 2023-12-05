@@ -27,6 +27,8 @@ class Attachment < ApplicationRecord
   end
 
   def local_storage_path
+    return '' if file.blank?
+
     ActiveStorage::Blob.service.path_for(file.key)
   end
 end

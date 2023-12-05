@@ -5,7 +5,7 @@ module V1
   class InvitesController < ApiController
     before_action :set_deal, except: %i[index]
     before_action :find_invite, :validate_invite_status, only: %i[update]
-    before_action :invites, only: %i[index]
+    before_action :search_params, :invites, only: %i[index]
 
     # GET
     # /1.0/deals/:deal_id/invites
@@ -87,7 +87,7 @@ module V1
       @invites = Invite.where(eventable_type: 'Deal').where(
         'eventable_id= ? OR invitee_id= ? OR user_id= ?',
         params[:deal_id], params[:invitee_id], params[:user_id]
-      ).active.syndication.latest_first
+      ).active.syndication.ransack(params[:search]).result.latest_first
       @stats = stats_by_status
       @invites.by_status(status)
     end
@@ -115,6 +115,14 @@ module V1
         accepted: @invites.accepted.count,
         approved: @invites.approved.count
       }
+    end
+
+    def search_params
+      return if params[:search].blank?
+
+      search_hash = { index: 'eventable_title_i_cont' }
+      attribute = search_hash[action_name.to_sym]
+      params[:search][attribute.to_sym] = params[:search]
     end
   end
 end

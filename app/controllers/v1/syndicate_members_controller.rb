@@ -5,10 +5,11 @@ module V1
   class SyndicateMembersController < ApiController
     before_action :find_syndicate, only: %i[create destroy]
     before_action :find_syndicate_member, only: %i[destroy]
+    before_action :search_params, only: %i[index]
 
     def index
       connection = params[:connection].in?(SyndicateMember::connections.keys) ? params[:connection] : SyndicateMember::connections.keys
-      @syndicate_members = current_user.syndicate_members
+      @syndicate_members = current_user.syndicate_members.ransack(params[:search]).result.latest_first
       success(
         'success',
         { members: SyndicateMemberSerializer.new(
@@ -53,6 +54,14 @@ module V1
         added: @syndicate_members.added.count,
         follower: @syndicate_members.follower.count
       }
+    end
+
+    def search_params
+      return if params[:search].blank?
+
+      search_hash = { index: 'member_name_i_cont' }
+      attribute = search_hash[action_name.to_sym]
+      params[:search][attribute.to_sym] = params[:search]
     end
   end
 end

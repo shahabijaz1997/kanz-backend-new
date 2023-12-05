@@ -6,15 +6,14 @@ module V1
     before_action :check_file_presence, only: %i[create]
     before_action :find_syndicate, :validate_deal_association, only: %i[show]
     before_action :authorize_role!, :search_params, :extract_syndicates, only: %i[all]
+    before_action :search_params, only: %i[index deals]
 
     def index
       deal = Deal.find_by(id: params[:deal_id])
-      deal_invitees_ids = deal.invites.pluck(:invitee_id)
+      syndicates = Syndicate.approved.where.not(id: deal.invites.pluck(:invitee_id)).ransack(params[:search]).result
       success(
         I18n.t('syndicate.get.success.show'),
-        SyndicateSerializer.new(
-          Syndicate.approved.where.not(id: deal_invitees_ids), { params: { investor: false }}
-        ).serializable_hash[:data].map{ |sy| sy[:attributes] }
+        SyndicateSerializer.new(syndicates, { params: { investor: false }}).serializable_hash[:data].map{ |sy| sy[:attributes] }
       )
     end
 
@@ -59,11 +58,10 @@ module V1
     end
 
     def deals
-      @deals = Deal.syndicate_deals.latest_first
       status = params[:status].in?(Deal::statuses.keys) ? params[:status] : Deal::statuses.keys
-      @deals = @deals.where(status: status)
+      @deals = Deal.syndicate_deals.where(status: status).ransack(params[:search]).result.latest_first
       stats = stats_by_deal_type
-      @deals = @deals.where(deal_type: (params[:deal_type] || [Deal::deal_types[:startup], Deal::deal_types[:property]]))
+      @deals = @deals.where(deal_type: (params[:deal_type] || Deal::deal_types.keys))
       success(
         'success',
         {
@@ -147,11 +145,9 @@ module V1
 
     def extract_syndicates
       @syndicates = Syndicate.approved.ransack(params[:search]).result
-      if params[:followed].present?
-        syndicate_ids = current_user.syndicate_members.pluck(:syndicate_id)
-        @syndicates = Syndicate.approved.where(id: syndicate_ids)
-      end
-      @syndicates = @syndicates.ransack(params[:search]).result
+      return if params[:followed].blank?
+
+      @syndicates = Syndicate.approved.where(id: current_user.syndicate_members.pluck(:syndicate_id))
     end
 
     def simplify_attributes(attributes)
@@ -173,7 +169,9 @@ module V1
     def search_params
       return if params[:search].blank?
 
-      params[:search] = { name_i_cont: params[:search] }
+      search_hash = { index: 'name_i_cont', deals: 'title_i_cont', all: 'name_i_cont' }
+      attribute = search_hash[action_name.to_sym]
+      params[:search][attribute.to_sym] = params[:search]
     end
   end
 end
