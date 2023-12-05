@@ -5,6 +5,7 @@ module V1
   class InvestorsController < ApiController
     before_action :validate_persona, except: %i[index]
     before_action :find_deal, only: %i[index]
+    before_action :search_params, only: %[deals]
 
     def index
       member_ids = syndicate_member_filter? ? SyndicateMember.by_syndicate(current_user.id).pluck(:member_id) : []
@@ -51,7 +52,7 @@ module V1
       @deals = Deal.live_or_closed
       @deals = @deals.user_invested(current_user.id) if params[:invested].present?
       stats = stats_by_deal_type
-      @deals = @deals.where(deal_type: params[:deal_type]).latest_first
+      @deals = @deals.where(deal_type: params[:deal_type]).ransack(params[:search]).result.latest_first
 
       success(
         'success',
@@ -112,5 +113,12 @@ module V1
         startup: @deals.startup.count
       }
     end
+
+    def search_params
+      return if params[:search].blank?
+
+      params[:search] = { title_or_syndicate_name_i_cont: params[:search] }
+    end
+
   end
 end
