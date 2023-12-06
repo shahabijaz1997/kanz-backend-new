@@ -11,7 +11,9 @@
 # file_names = ['admin_roles', 'countries', 'industries', 'regions', 'role_vise_attachments',
 #               'startup_stepper', 'property_stepper', 'dependency_tree']
 
-file_names = ['stepper_updates']
+# file_names = ['stepper_updates']
+
+file_names = ['role_vise_attachments']
 
 file_names.each do |file_name|
   load Rails.root.join('db', 'seeds', "#{file_name}.rb")
