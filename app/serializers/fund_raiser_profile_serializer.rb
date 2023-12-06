@@ -18,15 +18,15 @@ class FundRaiserProfileSerializer
 
   attribute :en do |profile|
     {
-      residence: profile.residence.name,
-      nationality: profile.nationality.name,
+      residence: profile.residence&.name,
+      nationality: profile.nationality&.name,
     }
   end
 
   attribute :ar do |profile|
     {
-      residence: profile.residence.name_ar,
-      nationality: profile.nationality.name_ar
+      residence: profile.residence&.name_ar,
+      nationality: profile.nationality&.name_ar
     }
   end
 end
