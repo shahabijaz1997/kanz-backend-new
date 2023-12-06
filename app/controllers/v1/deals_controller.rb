@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Startups apis
+# Deals api's
 module V1
   class DealsController < ApiController
     before_action :find_deal, only: %i[review submit documents comments sign_off]

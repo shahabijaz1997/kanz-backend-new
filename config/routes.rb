@@ -35,7 +35,7 @@ Rails.application.routes.draw do
       resources :syndicate_members, only: %i[index create destroy]
     end
     resources :syndicate_members, only: %i[index create destroy]
-    resources :startups
+    resources :fund_raisers
     resources :investors, only: %i[index show] do
       post :accreditation
       post :investor_type
@@ -43,7 +43,6 @@ Rails.application.routes.draw do
         get :deals
       end
     end
-    resources :property_owners
     resources :attachments, except: :index
     resources :countries, only: %i[index]
     resources :users, only: %i[show update]
@@ -99,8 +98,7 @@ Rails.application.routes.draw do
       resources :firms, only: %i[index show], controller: 'investors', type: 'firms'
     end
   end
-  resources :property_owners, only: %i[index show update]
-  resources :startups, only: %i[index show update]
+  resources :fund_raisers, only: %i[index show update]
   resources :syndicates, only: %i[index show update] do
     resources :syndicate_groups, only: %i[index create destroy]
   end

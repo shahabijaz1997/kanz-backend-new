@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Startups apis
+# Settings api's
 module V1
   class SettingsController < ApiController
     before_action :find_deal, :verify_deal_status, only: [:stepper]
@@ -17,7 +17,7 @@ module V1
         })
       end
 
-      success(I18n.t('property_owner.get.success.show'), attachment_configs)
+      success(I18n.t('fund_raiser.get.success.show'), attachment_configs)
     end
 
     def stepper

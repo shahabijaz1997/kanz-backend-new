@@ -1,5 +1,5 @@
 ar:
-  startup:
+  fund_raiser:
     get:
       success:
         show: 'تم استرداد البيانات بنجاح.'
