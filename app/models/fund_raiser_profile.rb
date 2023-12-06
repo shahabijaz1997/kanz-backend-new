@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
-class StartupProfile < ApplicationRecord
+class FundRaiserProfile < ApplicationRecord
   include ProfileState
 
   attr_accessor :industry_ids
 
-  belongs_to :startup
-  belongs_to :country
+  belongs_to :fund_raiser
+  belongs_to :nationality, class_name: 'Country'
+  belongs_to :residence, class_name: 'Country'
   has_one :attachment, as: :parent, dependent: :destroy
   has_many :profiles_industries, as: :profile, dependent: :destroy
   has_many :industries, through: :profiles_industries

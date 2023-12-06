@@ -51,16 +51,8 @@ class User < ApplicationRecord
     type == 'Syndicate'
   end
 
-  def startup?
-    type == 'Startup'
-  end
-
-  def property_owner?
-    type == 'PropertyOwner'
-  end
-
-  def creator?
-    startup? || property_owner?
+  def fund_raiser?
+    type == 'FundRaiser'
   end
 
   def arabic?

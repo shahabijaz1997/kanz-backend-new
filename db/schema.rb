@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_04_113057) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_06_080605) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -230,6 +230,28 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_04_113057) do
     t.index ["section_id"], name: "index_fields_sections_on_section_id"
   end
 
+  create_table "fund_raiser_profiles", force: :cascade do |t|
+    t.string "company_name"
+    t.string "legal_name"
+    t.string "industry_market", array: true
+    t.string "website"
+    t.string "address"
+    t.text "description"
+    t.string "ceo_name"
+    t.string "ceo_email"
+    t.float "total_capital_raised"
+    t.float "current_round_capital_target"
+    t.bigint "fund_raiser_id"
+    t.bigint "residence_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "currency", default: "USD", null: false
+    t.integer "no_of_properties"
+    t.bigint "nationality_id"
+    t.index ["fund_raiser_id"], name: "index_fund_raiser_profiles_on_fund_raiser_id"
+    t.index ["residence_id"], name: "index_fund_raiser_profiles_on_residence_id"
+  end
+
   create_table "funding_rounds", force: :cascade do |t|
     t.bigint "round_id", default: 0
     t.bigint "instrument_type_id", default: 0
@@ -365,18 +387,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_04_113057) do
     t.index ["field_attribute_id"], name: "index_property_details_on_field_attribute_id"
   end
 
-  create_table "property_owner_profiles", force: :cascade do |t|
-    t.integer "no_of_properties"
-    t.bigint "nationality_id"
-    t.bigint "residence_id"
-    t.bigint "property_owner_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["nationality_id"], name: "index_property_owner_profiles_on_nationality_id"
-    t.index ["property_owner_id"], name: "index_property_owner_profiles_on_property_owner_id"
-    t.index ["residence_id"], name: "index_property_owner_profiles_on_residence_id"
-  end
-
   create_table "questions", force: :cascade do |t|
     t.integer "step"
     t.integer "index"
@@ -426,26 +436,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_04_113057) do
     t.datetime "updated_at", null: false
     t.string "condition", default: ""
     t.index ["stepper_id"], name: "index_sections_on_stepper_id"
-  end
-
-  create_table "startup_profiles", force: :cascade do |t|
-    t.string "company_name", null: false
-    t.string "legal_name", null: false
-    t.string "industry_market", array: true
-    t.string "website"
-    t.string "address"
-    t.text "description"
-    t.string "ceo_name"
-    t.string "ceo_email"
-    t.float "total_capital_raised"
-    t.float "current_round_capital_target"
-    t.bigint "startup_id"
-    t.bigint "country_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "currency", default: "USD", null: false
-    t.index ["country_id"], name: "index_startup_profiles_on_country_id"
-    t.index ["startup_id"], name: "index_startup_profiles_on_startup_id"
   end
 
   create_table "steppers", force: :cascade do |t|
