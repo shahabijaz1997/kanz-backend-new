@@ -1,0 +1,31 @@
+= link_to '< Back', fund_raisers_path, class: 'mb-2'
+= render 'shared/page_title', title: "Fund Raiser Details"
+
+div.w-75
+  = render 'shared/section_card', section_title: 'Fund Raiser User', editable: false do
+    = render 'shared/section_list_item', title: 'Name', value: @fund_raiser.name
+    = render 'shared/section_list_item', title: 'Email', value: @fund_raiser.email
+    li.list-group-item
+      span.col-3.title Status
+      span.col = render 'shared/user_status', status: @fund_raiser.status
+
+  - if @fund_raiser.profile.present?
+    = render 'shared/section_card', section_title: 'Company Details', editable: false do
+      li.list-group-item
+        span.col-3.title Logo
+        = render 'shared/attached_logo', logo: @fund_raiser.profile.attachment.file if @fund_raiser.profile.attachment.present?
+      = render 'shared/section_list_item', title: 'Name', value: @fund_raiser.profile.company_name
+      = render 'shared/section_list_item', title: 'Legal Name', value: @fund_raiser.profile.legal_name
+      = render 'shared/section_list_item', title: 'Industry/Market', value: @fund_raiser.profile.industries&.pluck(:name)&.join(", ")
+      = render 'shared/section_list_item', title: 'Website', value: @fund_raiser.profile.website
+      = render 'shared/section_list_item', title: 'Address', value: @fund_raiser.profile.address
+      = render 'shared/section_list_item', title: 'Description', value: @fund_raiser.profile.description
+      = render 'shared/section_list_item', title: 'CEO Name', value: @fund_raiser.profile.ceo_name
+      = render 'shared/section_list_item', title: 'CEO Email', value: @fund_raiser.profile.ceo_email
+      = render 'shared/section_list_item', title: 'Total Capital Raised', value: @fund_raiser.profile.total_capital_raised_with_currency
+      = render 'shared/section_list_item', title: 'Current Round Capital Target', value: @fund_raiser.profile.current_round_capital_target_with_currency
+
+  = render 'shared/attachments_section', attachments: @fund_raiser.attachments
+
+  = render 'shared/approval_section', resource: @fund_raiser
+  = render 'shared/history_section', resource: @fund_raiser

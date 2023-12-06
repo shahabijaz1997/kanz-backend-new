@@ -4,8 +4,7 @@
   { title: 'Individual Investor', title_ar: 'فرد' },
   { title: 'Investment Firm', title_ar: 'شركة' },
   { title: 'Syndicate', title_ar: 'نقابة' },
-  { title: 'Property Owner', title_ar: 'سمسار عقارات' },
-  { title: 'Startup', title_ar: 'بدء' }
+  { title: 'Fund Raiser', title_ar: 'جامع الأموال' },
 ].each do |role|
   record = Role.find_or_initialize_by(title: role[:title])
 
@@ -40,29 +39,6 @@ attachment_config = {
       label_ar: 'تحميل نسخة وثيقة الملكية الخاصة بك'
     }
   ],
-  property_owner: [
-    {
-      index: 0,
-      name: 'Proof of Identity',
-      label: 'Upload a scanned copy of your passport',
-      name_ar: 'إثبات الهوية',
-      label_ar: 'قم بتحميل صورة من جواز سفرك'
-    },
-    {
-      index: 1,
-      name: 'Identity Verification',
-      label: 'Take a selfie with your passport',
-      name_ar: 'التحقق من الهوية',
-      label_ar: 'قم بتحميل صورتك الشخصية مع نسخة من جواز السفر'
-    },
-    {
-      index: 2,
-      name: 'Proof of Residence',
-      label: 'Upload your tenancy contract',
-      name_ar: 'دليل الإقامة',
-      label_ar: 'تحميل نسخة وثيقة الملكية الخاصة بك'
-    }
-  ],
   syndicate: [
     {
       index: 0,
@@ -86,7 +62,7 @@ attachment_config = {
       label_ar: 'تحميل نسخة وثيقة الملكية الخاصة بك'
     }
   ],
-  startup: [
+  fund_raiser: [
     {
       index: 0,
       name: 'Proof of Identity',

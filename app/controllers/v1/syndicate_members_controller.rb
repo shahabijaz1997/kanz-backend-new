@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Startups apis
+# Syndicate Member Apis
 module V1
   class SyndicateMembersController < ApiController
     before_action :find_syndicate, only: %i[create destroy]
