@@ -20,7 +20,7 @@ class DealsController < ApplicationController
         upload_attachments
         format.html { redirect_to @deal, notice: 'Successfully updated.' }
       else
-        format.html { render :show, status: :unprocessable_entity }
+        format.html { redirect_to deal_path(@deal), alert: @deal.errors.full_messages.to_sentence }
       end
     end
   end
