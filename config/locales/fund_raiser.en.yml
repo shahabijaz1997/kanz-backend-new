@@ -1,5 +1,5 @@
 en:
-  property_owner:
+  fund_raiser:
     get:
       success:
         show: 'Data successfully retrieved.'
@@ -7,4 +7,4 @@ en:
         step: 'Record not found.'
     update:
       success:
-        owner: 'Successfuly updated the property info.'
+        comapny_info: 'Successfuly updated the fund raiser profile.'

@@ -8,14 +8,20 @@ module DatesHelper
 
   class << self
     def standard_format(date, time_zone: DEFAULT_DISPLAY_TIME_ZONE)
+      return nil if date.blank?
+
       date.in_time_zone(time_zone).strftime(DATE_WITHOUT_TIME_AND_ZONE)
     end
 
     def zoned_format(date, time_zone: DEFAULT_DISPLAY_TIME_ZONE)
+      return nil if date.blank?
+
       date.in_time_zone(time_zone).strftime(DATE_WITH_TIME_AND_ZONE)
     end
 
     def date_only(date, time_zone: DEFAULT_DISPLAY_TIME_ZONE)
+      return nil if date.blank?
+
       date.in_time_zone(time_zone).strftime(DATE_ONLY)
     end
   end

@@ -1,23 +1,23 @@
 # frozen_string_literal: true
 
-# Startups apis
+# Fund Raiser's apis
 module V1
-  class StartupsController < ApiController
-    before_action :validate_startup
+  class FundRaisersController < ApiController
+    before_action :validate_fund_raiser
     before_action :check_file_presence, only: %i[create]
 
     def show
-      startup_attributes = StartupSerializer.new(@startup).serializable_hash[:data][:attributes]
-      success(I18n.t('startup.get.success.show'), startup_attributes)
+      fund_raiser_attributes = FundRaiserSerializer.new(@fund_raiser).serializable_hash[:data][:attributes]
+      success(I18n.t('fund_raiser.get.success.show'), startup_attributes)
     end
 
     def create
-      profile = @startup.profile || StartupProfile.new(startup_id: @startup.id)
-      StartupProfile.transaction do
+      profile = @fund_raiser.profile || FundRaiserProfile.new(startup_id: @fund_raiser.id)
+      FundRaiserProfile.transaction do
         profile.update!(profile_params.except(:logo))
         Attachment.upload_file(profile, profile_params[:logo]) if profile_params[:logo].present?
       end
-      success(I18n.t('startup.update.success.comapny_info'))
+      success(I18n.t('fund_raiser.update.success.comapny_info'))
     rescue StandardError => e
       failure(profile.errors.full_messages.to_sentence.presence || e.message)
     end
@@ -40,13 +40,13 @@ module V1
     end
 
     def validate_startup
-      return unprocessable unless current_user.startup?
+      return unprocessable unless current_user.fund_raiser?
 
-      @startup = current_user
+      @fund_raiser = current_user
     end
 
     def check_file_presence
-      return if @startup.profile&.attachment || params[:startup_profile][:step].to_i == 1
+      return if @fund_raiser.profile&.attachment || params[:startup_profile][:step].to_i == 1
 
       failure(I18n.t('errors.exceptions.file_missing')) if profile_params[:logo].blank?
     end

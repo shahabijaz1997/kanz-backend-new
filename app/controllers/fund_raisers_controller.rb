@@ -7,7 +7,7 @@ class FundRaisersController < ApplicationController
   def index
     load_industry_markets
     @filtered_fund_raisers = FundRaiser.ransack(params[:search])
-    @pagy, @fund_raiser = pagy(policy_scope(@filtered_fund_raisers.result.includes(:profile).order(created_at: :desc)))
+    @pagy, @fund_raisers = pagy(policy_scope(@filtered_fund_raisers.result.includes(:profile).order(created_at: :desc)))
   end
 
   def show; end
