@@ -6,8 +6,8 @@ class FundRaiserProfile < ApplicationRecord
   attr_accessor :industry_ids
 
   belongs_to :fund_raiser
-  belongs_to :nationality, class_name: 'Country'
-  belongs_to :residence, class_name: 'Country'
+  belongs_to :nationality, class_name: 'Country', optional: true
+  belongs_to :residence, class_name: 'Country', optional: true
   has_one :attachment, as: :parent, dependent: :destroy
   has_many :profiles_industries, as: :profile, dependent: :destroy
   has_many :industries, through: :profiles_industries

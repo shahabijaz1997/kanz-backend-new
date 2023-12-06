@@ -29,7 +29,7 @@ module V1
 
       if params[:fund_raiser_profile][:step].to_i == 1
         params.require(:fund_raiser_profile).permit(
-          :step, :company_name, :legal_name, :country_id, :website, :address, industry_ids: []
+          :step, :company_name, :legal_name, :residence_id, :nationality_id, :website, :address, industry_ids: []
         )
       else
         params.require(:fund_raiser_profile).permit(
