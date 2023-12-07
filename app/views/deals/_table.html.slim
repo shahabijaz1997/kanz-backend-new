@@ -21,17 +21,17 @@ div.table
         div.card.position-relative.shadow-sm
           div.card-body.d-flex
             - if startup_deal
-              span.col = deal.user.profile.company_name
+              span.col = deal.user.profile&.company_name
               span.col = deal.user.email
-              span.col = deal.funding_round.stage
-              span.col = deal.funding_round.instrument
+              span.col = deal.funding_round&.stage
+              span.col = deal.funding_round&.instrument
               span.col = deal.user.name
             - else
               span.col = deal.title
               span.col = deal.user.email
               span.col = "$#{deal.target}" if deal.target
-              span.col = deal.property_detail.size
-              span.col = deal.property_detail.is_rental ? 'Rented' :  'Not Rented'
+              span.col = deal.property_detail&.size
+              span.col = deal.property_detail&.is_rental ? 'Rented' :  'Not Rented'
             span.col = render 'shared/user_status', status: deal.status
             span.col = link_to "View", startup_deal ? start_up_path(deal) : property_path(deal), class: 'stretched-link'            
       - if @pagy.pages > 1
