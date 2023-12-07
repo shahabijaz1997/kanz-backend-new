@@ -21,8 +21,10 @@ module ApprovalHelper
   def approval_options(resource)
     if current_admin_user.customer_support_rep? && resource.submitted?
       [['Request Change', :reopened], ['Verify', :verified, {:checked => true}]]
-    elsif current_admin_user.compliance_officer? && resource.verified? && resource.is_a?(Deal)
+    elsif current_admin_user.compliance_officer? && verified_syndicate_deal?(resource)
       [['Request Change', :reopened], ['Approve', :approved, {:checked => true}]]
+    elsif current_admin_user.compliance_officer? && verified_classic_deal?(resource)
+      [['Request Change', :reopened], ['Approve', :live, {:checked => true}]]
     elsif current_admin_user.compliance_officer? && resource.verified?
       [['Reject', :rejected], ['Approve', :approved, {:checked => true}]]
     end
@@ -42,5 +44,13 @@ module ApprovalHelper
   
   def compliance_officer_attachments(resource)
     resource.attachments.where(uploaded_by: AdminUser.compliance_officer)
+  end
+
+  def verified_syndicate_deal?(resource)
+    resource.is_a?(Deal) && resource.verified? && resource.syndicate?
+  end
+
+  def verified_classic_deal?(resource)
+    resource.is_a?(Deal) && resource.verified? && resource.classic?
   end
 end

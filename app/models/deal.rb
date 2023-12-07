@@ -127,7 +127,7 @@ class Deal < ApplicationRecord
     elsif status == 'approved' && status_was != 'verified'
       errors[:base] << 'Only verified deals can be approved'
     elsif status == 'live' && status_was != 'approved'
-      errors[:base] << 'Only verified deals can be approved'
+      errors[:base] << 'Only approved deals can be live'
     end
   end
 
