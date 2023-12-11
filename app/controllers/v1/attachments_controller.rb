@@ -54,7 +54,7 @@ module V1
 
     def download
       success('success',
-        Rails.application.routes.url_helpers.rails_blob_path(
+        "#{ENV['API_BASE_URL']}" + Rails.application.routes.url_helpers.rails_blob_path(
           @attachment.file,
           disposition: 'attachment',
           host: ENV['API_BASE_URL']
