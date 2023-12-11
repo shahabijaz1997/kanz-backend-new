@@ -10,7 +10,7 @@ class Attachment < ApplicationRecord
   before_validation :set_directory_path
 
   def url
-    Rails.env.development? ? local_storage_path : file.url
+    Rails.env.development? ? local_storage_path : file.url(expires_in: 30.minutes)
   end
 
   def self.upload_file(attachable, file, name = 'logo')
