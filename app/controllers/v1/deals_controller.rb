@@ -12,7 +12,7 @@ module V1
     before_action :search_params, only: %i[index]
 
     def index
-      params[:deal_type] ||= [Deal::deal_types[:startup], Deal::deal_types[:property]]
+      params[:deal_type] ||= [Deal::deal_types.values]
       @deals = current_user.deals.where(deal_type: params[:deal_type])
       stats = stats_by_status
       status = params[:status].in?(Deal::statuses.keys) ? params[:status] : Deal::statuses.keys

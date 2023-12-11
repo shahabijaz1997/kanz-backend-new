@@ -51,7 +51,7 @@ module V1
       @deals = Deal.live_or_closed
       @deals = @deals.user_invested(current_user.id) if params[:invested].present?
       stats = stats_by_deal_type
-      params[:deal_type] ||= [Deal::deal_types[:startup], Deal::deal_types[:property]]
+      params[:deal_type] ||= [Deal::deal_types.values]
       @deals = @deals.where(deal_type: params[:deal_type]).ransack(params[:search]).result.latest_first
 
       success(
