@@ -90,7 +90,7 @@ module V1
         params[:deal_id], params[:invitee_id], params[:user_id]
       ).active.syndication.ransack(params[:search]).result.latest_first
       @stats = stats_by_status
-      @invites = @invites.by_status(status).where(invite_type: params[:invite_type])
+      @invites = @invites.by_status(status).where(purpose: params[:invite_type])
     end
 
     def validate_invite_status
