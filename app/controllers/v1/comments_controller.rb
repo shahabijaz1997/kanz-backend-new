@@ -28,17 +28,13 @@ module V1
     private
 
     def comment_params
-      params.require(:comment).permit(:message, :thread_id)
+      params.require(:comment).permit(:message, :thread_id, :invite_id)
     end
 
     def find_deal
       @deal = Deal.find_by(id: params[:deal_id])
 
       return failure('Deal not found') if @deal.blank?
-    end
-
-    def find_inivte
-      @invite = @deal.invites.find_by(invitee: current_user)
     end
 
     def find_deal_comment
@@ -49,7 +45,8 @@ module V1
 
     def recipient_id
       if @deal.user == current_user
-        Comment.find_by(id: comment_params[:thread_id])&.author_id
+        author_id = Comment.find_by(id: comment_params[:thread_id])&.author_id
+        author_id || @deal.invites.find_by(invite_id: params[:comment][:invite_id])&.invitee_id
       else
         @deal.author_id
       end
