@@ -43,7 +43,14 @@ Rails.application.routes.draw do
         get :deals
       end
     end
-    resources :attachments, except: :index
+    resources :attachments, except: :index do
+      collection do
+        post :submit
+      end
+      member do
+        get :download
+      end
+    end
     resources :countries, only: %i[index]
     resources :users, only: %i[show update]
     resources :industries, only: %i[index]
@@ -76,7 +83,6 @@ Rails.application.routes.draw do
     get 'settings/attachments' => 'settings#attachments'
     get 'settings/stepper' => 'settings#stepper'
     get 'regions' => 'industries#regions'
-    post 'attachments/submit', to: 'attachments#submit'
 
     resources :users do
       resources :invites, only: %i[index]
