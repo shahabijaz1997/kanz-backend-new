@@ -30,5 +30,7 @@ class Attachment < ApplicationRecord
     return '' if file.blank?
 
     ActiveStorage::Blob.service.path_for(file.key)
+  rescue StandardError => error
+    ''
   end
 end
