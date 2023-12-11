@@ -12,7 +12,8 @@ module V1
     before_action :search_params, only: %i[index]
 
     def index
-      @deals = current_user.deals
+      params[:deal_type] ||= [Deal::deal_types.values]
+      @deals = current_user.deals.where(deal_type: params[:deal_type])
       stats = stats_by_status
       status = params[:status].in?(Deal::statuses.keys) ? params[:status] : Deal::statuses.keys
       @deals = @deals.by_status(status).ransack(params[:search]).result.latest_first

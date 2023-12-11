@@ -522,7 +522,7 @@ statements = ['Additional Terms', 'Minimum Check Size', 'Pro Rata']
 section.fields << FieldAttribute.where(statement: statements)
 
 attachments = [
-  { statement: "Investor Presentation or  Pitch Deck", label: "A slide presentation summarizing the business  and investment opportunity.", description: "To present to potential investors  in meetings or pitches.", is_required: true },
+  { statement: "Investor Presentation or Pitch Deck", label: "A slide presentation summarizing the business  and investment opportunity.", description: "To present to potential investors  in meetings or pitches.", is_required: true },
   { statement: "Business Plan", label: "A comprehensive document outlining the business strategy, market analysis, and financial projections.", description: "To provide an in-depth understanding of the business  model and its growth prospects.", is_required: true },
   { statement: "Financial Statements", label: "Historical financial records  for the past three years.", description: "To offer insight into the startup's  financial health.", is_required: true },
   { statement: "SWOT Analysis", label: "Analysis of Strengths, Weaknesses, Opportunities, and Threats.", description: "To offer a balanced perspective  of risks and potential.", is_required: false },
