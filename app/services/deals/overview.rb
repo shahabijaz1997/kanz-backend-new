@@ -136,7 +136,7 @@ module Deals
     end
 
     def pitch_deck
-      deal.attachments.find_by(uploaded_by_id: deal.author_id, name: 'Pitch Deck')
+      deal.attachments.find_by(uploaded_by_id: deal.author_id, name: 'Investor Presentation or Pitch Deck')
     end
 
     def comments
