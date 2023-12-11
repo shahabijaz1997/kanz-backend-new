@@ -128,7 +128,7 @@ module V1
       data[:comments] = syndicate_comments
       data[:attachments] = syndicate_docs
       data[:deal] = deal_details
-      data[:thread_id] = @deal.syndicate_comment(@syndicate.id)&.id
+      data[:thread_id] = thread_id
       data[:invite_id] = @deal.invites.find_by(invitee_id: params[:id])&.id
       data[:status] = @deal.invites.find_by(invitee_id: params[:id])&.status
 
@@ -164,6 +164,10 @@ module V1
         property: @deals.property.count,
         startup: @deals.startup.count
       }
+    end
+
+    def thread_id
+      @deal.syndicate_comment(@syndicate.id)&.id || @deal.syndicate_and_creator_discussion(@syndicate.id)&.first&.id
     end
   end
 end
