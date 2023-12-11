@@ -45,7 +45,8 @@ module V1
 
     def recipient_id
       if @deal.user == current_user
-        author_id = Comment.find_by(id: comment_params[:thread_id])&.author_id
+        comment = Comment.find_by(id: comment_params[:thread_id])
+        author_id = comment&.author_id == recipient_id ? comment&.recipient_id : comment&.thread_id
         author_id || @deal.invites.find_by(id: comment_params[:invite_id])&.invitee_id
       else
         @deal.author_id
