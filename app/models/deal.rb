@@ -37,12 +37,12 @@ class Deal < ApplicationRecord
   scope :live, -> { where(status: Deal::statuses[:live]) }
   scope :approved_or_live, -> { where(status: [Deal::statuses[:approved], Deal::statuses[:live]]) }
   scope :syndicate_model, -> { where(model: Deal::models[:syndicate]) }
-  scope :syndicate_deals, -> { approved_or_live.syndicate_model }
+  scope :classic_model, -> { where(model: Deal::models[:classic]) }
+  scope :syndicate_deals, -> { approved_or_live.syndicate_model.or(Deal.live.classic_model) }
   scope :latest_first, -> { order(created_at: :desc) }
   scope :by_status, -> (status) { where(status: status) }
   scope :by_type, -> (type) { where(deal_type: type) }
   scope :live_or_closed, -> { where(status: [Deal::statuses[:closed], Deal::statuses[:live]]) }
-  scope :investor_deals, -> { live_or_closed.syndicate_model }
   scope :user_invested, -> (user_id) { joins(:investments).where(investments: {user_id: user_id}) }
 
   def attachments_by_creator

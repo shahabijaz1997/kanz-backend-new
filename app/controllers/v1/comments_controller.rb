@@ -44,13 +44,11 @@ module V1
     end
 
     def recipient_id
-      if @deal.user == current_user
-        comment = Comment.find_by(id: comment_params[:thread_id])
-        author_id = comment&.author_id == current_user.id ? comment&.recipient_id : comment&.thread_id
-        author_id || @deal.invites.find_by(id: comment_params[:invite_id])&.invitee_id
-      else
-        @deal.author_id
-      end
+      return @deal.author_id if @deal.user != current_user
+
+      comment = Comment.find_by(id: comment_params[:thread_id])
+      author_id = comment&.author_id == current_user.id ? comment&.recipient_id : comment&.thread_id
+      author_id || @deal.invites.find_by(id: comment_params[:invite_id])&.invitee_id
     end
   end
 end
