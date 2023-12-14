@@ -18,6 +18,8 @@ div.w-75
       = render 'shared/section_list_item', title: 'Legal Name', value: @fund_raiser.profile.legal_name
       = render 'shared/section_list_item', title: 'Industry/Market', value: @fund_raiser.profile.industries&.pluck(:name)&.join(", ")
       = render 'shared/section_list_item', title: 'Website', value: @fund_raiser.profile.website
+      = render 'shared/section_list_item', title: 'Nationality', value: @fund_raiser.profile.nationality&.name
+      = render 'shared/section_list_item', title: 'Country of Residence', value: @fund_raiser.profile.residence&.name
       = render 'shared/section_list_item', title: 'Address', value: @fund_raiser.profile.address
       = render 'shared/section_list_item', title: 'Description', value: @fund_raiser.profile.description
       = render 'shared/section_list_item', title: 'CEO Name', value: @fund_raiser.profile.ceo_name
