@@ -22,10 +22,11 @@ module Users
     end
 
     def respond_to_on_destroy
-      if current_user
+      update_language
+      if current_user.blank?
         success(I18n.t('devise.sessions.signed_out'))
       else
-        failure(I18n.t('devise.failure.unauthenticated'), 401)
+        failure(I18n.t('devise.failure.unable_to_signout'), 401)
       end
     end
 
