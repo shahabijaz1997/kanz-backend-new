@@ -16,12 +16,13 @@ module V1
       @deals = current_user.deals.where(deal_type: params[:deal_type])
       stats = stats_by_status
       status = params[:status].in?(Deal::statuses.keys) ? params[:status] : Deal::statuses.keys
-      @deals = @deals.by_status(status).ransack(params[:search]).result.latest_first
+      pagy, @deals = pagy @deals.by_status(status).ransack(params[:search]).result.latest_first
 
       success(
         'success',
         {
           deals: DealSerializer.new(@deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) },
+          pagy: pagy_metadata(pagy),
           stats: stats
         }
       )
@@ -29,10 +30,11 @@ module V1
 
     def live
       types = params[:type].in?(Deal::deal_types.keys) ? params[:type] : Deal::deal_types.keys
-      deals = current_user.deals.live_or_closed.by_type(types).latest_first
+      pagy, deals = pagy current_user.deals.live_or_closed.by_type(types).latest_first
       success(
         'success',
-        DealSerializer.new(deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) }
+        deals: DealSerializer.new(deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) },
+        pagy: pagy_metadata(pagy)
       )
     end
 
