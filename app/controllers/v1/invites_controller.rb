@@ -12,9 +12,12 @@ module V1
     # /1.0/users/:user_id/invites
     # /1.0/invitees/:invitee_id/invites
     def index
-      invites_data = InviteSerializer.new(@invites).serializable_hash[:data].map { |d| d[:attributes] }
-      invites_data = { stats: @stats, invites: invites_data } if params[:invitee_id]
-      success('success', invites_data)
+      success(
+        'success',
+        invites: InviteSerializer.new(@invites).serializable_hash[:data].map { |d| d[:attributes] },
+        stats: @stats,
+        pagy: pagy_metadata(@pagy)
+      )
     end
 
     #POST /1.0/deals/:deal_id/invites
@@ -90,7 +93,7 @@ module V1
         params[:deal_id], params[:invitee_id], params[:user_id]
       ).active.syndication.ransack(params[:search]).result.latest_first
       @stats = stats_by_status
-      @invites = @invites.by_status(status).where(purpose: params[:invite_type])
+      @pagy, @invites = pagy @invites.by_status(status).where(purpose: params[:invite_type])
     end
 
     def validate_invite_status
