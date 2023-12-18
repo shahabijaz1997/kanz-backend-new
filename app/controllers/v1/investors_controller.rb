@@ -48,11 +48,11 @@ module V1
     end
 
     def deals
-      @deals = Deal.live_or_closed
+      @deals = Deal.live_or_closed.ransack(params[:search]).result
       @deals = @deals.user_invested(current_user.id) if params[:invested].present?
       stats = stats_by_deal_type
       params[:deal_type] ||= [Deal::deal_types.values]
-      pagy, @deals = pagy @deals.where(deal_type: params[:deal_type]).ransack(params[:search]).result.latest_first
+      pagy, @deals = pagy @deals.where(deal_type: params[:deal_type]).latest_first
 
       success(
         'success',

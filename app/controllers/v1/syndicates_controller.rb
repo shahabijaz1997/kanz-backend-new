@@ -11,19 +11,30 @@ module V1
     def index
       deal = Deal.find_by(id: params[:deal_id])
       syndicates = Syndicate.approved.where.not(id: deal.invites.pluck(:invitee_id)).ransack(params[:search]).result
+      pagy, syndicates = pagy syndicates
+      filters = { params: { investor: false }}
+
       success(
         I18n.t('syndicate.get.success.show'),
-        SyndicateSerializer.new(syndicates, { params: { investor: false }}).serializable_hash[:data].map{ |sy| sy[:attributes] }
+        {
+          records: SyndicateSerializer.new(syndicates, filter).serializable_hash[:data].map{ |sy| sy[:attributes] },
+          pagy: pagy_metadata(pagy),
+          stats: {}
+        }
       )
     end
 
     def all
+      pagy, @syndicates = pagy @syndicates.ransack(params[:search]).result
+      filter = { params: { investor_list_view: current_user.investor? }}
+
       success(
         I18n.t('syndicate.get.success.show'),
-        SyndicateSerializer.new(@syndicates, { params: { investor_list_view: current_user.investor? }}).
-          serializable_hash[:data].map do |sy|
-            sy[:attributes].present? ? sy[:attributes][:syndicate_list] : sy[:attributes]
-          end
+        {
+          records: SyndicateSerializer.new(@syndicates, filters).serializable_hash[:data].map { |sy| sy[:attributes][:syndicate_list] },
+          pagy: pagy_metadata(pagy),
+          stats: {}
+        }
       )
     end
 
@@ -61,12 +72,13 @@ module V1
       status = params[:status].in?(Deal::statuses.keys) ? params[:status] : Deal::statuses.keys
       @deals = Deal.syndicate_deals.where(status: status).ransack(params[:search]).result
       stats = stats_by_deal_type
-      @deals = @deals.where(deal_type: (params[:deal_type] || Deal::deal_types.keys)).latest_first
+      pagy, @deals = pagy @deals.where(deal_type: (params[:deal_type] || Deal::deal_types.keys)).latest_first
       success(
         'success',
         {
           deals: DealSerializer.new(@deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) },
-          stats: stats
+          stats: stats,
+          pagy: pagy_metadata(pagy)
         }
       )
     end
@@ -144,10 +156,10 @@ module V1
     end
 
     def extract_syndicates
-      @syndicates = Syndicate.approved.ransack(params[:search]).result
-      return if params[:followed].blank?
-
-      @syndicates = Syndicate.approved.where(id: current_user.syndicate_members.pluck(:syndicate_id))
+      @syndicates = Syndicate.approved
+      @syndicates = @syndicates.joins(:syndicate_members).where(
+        syndicate_members: { member_id: current_user.id }
+      ) if params[:followed].present?
     end
 
     def simplify_attributes(attributes)
