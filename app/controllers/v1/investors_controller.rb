@@ -52,7 +52,7 @@ module V1
       @deals = @deals.user_invested(current_user.id) if params[:invested].present?
       stats = stats_by_deal_type
       params[:deal_type] ||= [Deal::deal_types.values]
-      @deals = @deals.where(deal_type: params[:deal_type]).ransack(params[:search]).result.latest_first
+      pagy, @deals = pagy @deals.where(deal_type: params[:deal_type]).ransack(params[:search]).result.latest_first
 
       success(
         'success',
@@ -64,7 +64,7 @@ module V1
             d[:attributes][:invested_amount] = current_user.investments_in_deal(d[:attributes][:id])
             d[:attributes]
           end
-        }.merge(stats: stats)
+        }.merge(stats: stats, pagy: pagy_metadata(pagy))
       )
     end
 
