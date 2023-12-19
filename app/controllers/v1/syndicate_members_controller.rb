@@ -14,7 +14,7 @@ module V1
       success(
         'success',
         {
-          records: SyndicateMemberSerializer.new(@syndicate_members).serializable_hash[:data].map {|d| d[:attributes]}
+          records: SyndicateMemberSerializer.new(@syndicate_members).serializable_hash[:data].map {|d| d[:attributes]},
           stats: stats_by_connection,
           pagy: pagy
         }
