@@ -88,10 +88,12 @@ module V1
     def invites
       status = params[:status].in?(Invite::statuses.keys) ? params[:status] : Invite::statuses.keys
       params[:invite_type] ||= [Invite.purposes.keys]
+
       @invites = Invite.where(eventable_type: 'Deal').where(
         'eventable_id= ? OR invitee_id= ? OR user_id= ?',
         params[:deal_id], params[:invitee_id], params[:user_id]
       ).active.ransack(params[:search]).result.latest_first
+
       @stats = stats_by_status
       @pagy, @invites = pagy @invites.by_status(status).where(purpose: params[:invite_type])
     end

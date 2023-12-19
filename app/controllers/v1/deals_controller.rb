@@ -84,12 +84,12 @@ module V1
       deal = Deal.find_by(id: params[:id])
       return failure('Unable to find deal', 404) if deal.blank?
 
-      pagy, activities = pagy deal.activities
+      activities = deal.activities
       success(
         'success',
         records: DealActivitySerializer.new(activities).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) },
         stats: {},
-        pagy: pagy
+        pagy: {}
       )
     end
 
