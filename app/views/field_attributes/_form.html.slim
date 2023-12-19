@@ -1,0 +1,55 @@
+= render 'shared/section_card', section_title: 'Edit Field Properties', editable: false do
+  - if !user_can_update?
+    = form_for resource, method: :put do |form|
+      li.list-group-item
+        span.col-3.title Statement English
+        span.col.value
+          = form.text_field :statement, class: "form-control", placeholder: 'Field Statement', required: true
+      li.list-group-item
+        span.col-3.title Statement Arabic
+        span.col.value
+          = form.text_field :statement_ar, class: "form-control", placeholder: 'Field Statement', required: true
+      li.list-group-item
+        span.col-3.title Label English
+        span.col.value
+          = form.text_field :label, class: "form-control", placeholder: 'Field Label', required: true
+      li.list-group-item
+        span.col-3.title Label Arabic
+        span.col.value
+          = form.text_field :label_ar, class: "form-control", placeholder: 'Field Label', required: true
+      li.list-group-item
+        span.col-3.title Description English
+        span.col.value
+          = form.text_area :description, rows: 3, class: "form-control", placeholder: 'Description', required: true
+      li.list-group-item
+        span.col-3.title Description Arabic
+        span.col.value
+          = form.text_area :description_ar, rows: 3,class: "form-control", placeholder: 'Description', required: true
+      li.list-group-item
+        span.col-3.title Add More Label English
+        span.col.value
+          = form.text_field :add_more_label, class: "form-control", placeholder: 'Add More Label', required: true
+      li.list-group-item
+        span.col-3.title Add More Label Arabic
+        span.col.value
+          = form.text_field :add_more_label_ar, class: "form-control", placeholder: 'Add More Label', required: true
+      li.list-group-item
+        span.col-3.title Select model
+        span.col.value
+          div.checkboxes
+            = form.collection_radio_buttons :is_required, [['Syndicate Model', :syndicate], ['Classic Model', :classic, {:checked => true}]], :second, :first
+      li.list-group-item
+        span.col-3.title
+        span.col.value
+            = form.submit "Submit", class: 'btn btn-primary'
+
+
+    
+  / is_required
+  / is_multiple
+  / field_type
+  / decription_link
+  / permitted_types
+  / size_constraints
+  / suggestions
+  / input_type

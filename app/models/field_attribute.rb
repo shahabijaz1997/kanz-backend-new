@@ -20,4 +20,12 @@ class FieldAttribute < ApplicationRecord
   def self.minimum_check_size
     find_by(field_mapping: 'terms_attributes.custom_input', statement: 'Minimum Check Size')
   end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[statement lable field_type input_type]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[options fields_sections]
+  end
 end
