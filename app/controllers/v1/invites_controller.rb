@@ -22,7 +22,7 @@ module V1
 
     #POST /1.0/deals/:deal_id/invites
     def create
-      purpose = current_user.syndicate? ? Invite::purposes[:investment] : Invite::purposes[:syndication]
+      purpose = current_user.syndicate? || @deal.classic? ? Invite::purposes[:investment] : Invite::purposes[:syndication]
       invite = current_user.invites.new(invite_params.merge(purpose: purpose))
       invite.eventable = @deal
 
@@ -87,7 +87,7 @@ module V1
 
     def invites
       status = params[:status].in?(Invite::statuses.keys) ? params[:status] : Invite::statuses.keys
-      params[:invite_type] ||= [Invite.purposes.values]
+      params[:invite_type] ||= [Invite.purposes.keys]
       @invites = Invite.where(eventable_type: 'Deal').where(
         'eventable_id= ? OR invitee_id= ? OR user_id= ?',
         params[:deal_id], params[:invitee_id], params[:user_id]
