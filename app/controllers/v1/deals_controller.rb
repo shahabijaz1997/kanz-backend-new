@@ -83,9 +83,13 @@ module V1
     def activities
       deal = Deal.find_by(id: params[:id])
       return failure('Unable to find deal', 404) if deal.blank?
+
+      pagy, activities = pagy deal.activities
       success(
-        'Success',
-        DealActivitySerializer.new(deal.activities).serializable_hash[:data].map{|d| d[:attributes]}
+        'success',
+        records: DealActivitySerializer.new(activities).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) },
+        stats: {},
+        pagy: pagy
       )
     end
 

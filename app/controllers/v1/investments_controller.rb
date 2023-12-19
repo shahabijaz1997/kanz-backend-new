@@ -6,9 +6,14 @@ module V1
     before_action :find_investment, only: %i[show]
 
     def index
+      pagy, investments = pagy @deal.investments
       success(
         'success',
-        InvestmentSerializer.new(@deal.investments).serializable_hash[:data].map{|d| d[:attributes] }
+        {
+          records: InvestmentSerializer.new(investments).serializable_hash[:data].map{ |d| d[:attributes] },
+          pagy: pagy,
+          stats: {}
+        }
       )
     end
 
