@@ -86,16 +86,13 @@ module V1
     end
 
     def invites
-      status = params[:status].in?(Invite::statuses.keys) ? params[:status] : Invite::statuses.keys
-      params[:invite_type] ||= [Invite.purposes.keys]
-
       @invites = Invite.where(eventable_type: 'Deal').where(
         'eventable_id= ? OR invitee_id= ? OR user_id= ?',
         params[:deal_id], params[:invitee_id], params[:user_id]
       ).active.ransack(params[:search]).result.latest_first
 
       @stats = stats_by_status
-      @pagy, @invites = pagy @invites.by_status(status).where(purpose: params[:invite_type])
+      @pagy, @invites = pagy @invites.by_status(status_params).where(purpose: invite_type_params)
     end
 
     def validate_invite_status
@@ -121,6 +118,16 @@ module V1
         accepted: @invites.accepted.count,
         approved: @invites.approved.count
       }
+    end
+
+    def status_params
+      return Invite::statuses.keys unless params[:status].in?(Invite::statuses.keys)
+
+      (params[:status] == 'interested' && params[:deal_id].present?) ? %w[interested accepted approved] : params[:status]
+    end
+
+    def invite_type_params
+      params[:invite_type] ||= [Invite.purposes.keys]
     end
   end
 end
