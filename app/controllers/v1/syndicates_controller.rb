@@ -17,7 +17,7 @@ module V1
       success(
         I18n.t('syndicate.get.success.show'),
         {
-          records: SyndicateSerializer.new(syndicates, filter).serializable_hash[:data].map{ |sy| sy[:attributes] },
+          records: SyndicateSerializer.new(syndicates, filters).serializable_hash[:data].map{ |sy| sy[:attributes] },
           pagy: pagy_metadata(pagy),
           stats: {}
         }
@@ -26,7 +26,7 @@ module V1
 
     def all
       pagy, @syndicates = pagy @syndicates.ransack(params[:search]).result
-      filter = { params: { investor_list_view: current_user.investor? }}
+      filters = { params: { investor_list_view: current_user.investor? }}
 
       success(
         I18n.t('syndicate.get.success.show'),
