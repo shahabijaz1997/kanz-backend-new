@@ -8,7 +8,6 @@ module V1
     before_action :search_params, only: %i[index]
 
     def index
-      connection = params[:connection].in?(SyndicateMember::connections.keys) ? params[:connection] : SyndicateMember::connections.keys
       @syndicate_members = current_user.syndicate_members.ransack(params[:search]).result
       stats = stats_by_connection
       pagy, @syndicate_members = pagy @syndicate_members.filter_by_connection(connection).latest_first
@@ -57,6 +56,10 @@ module V1
         added: @syndicate_members.added.count,
         follower: @syndicate_members.follower.count
       }
+    end
+
+    def connection
+      params[:connection].in?(SyndicateMember::connections.keys) ? params[:connection] : SyndicateMember::connections.keys
     end
   end
 end
