@@ -64,7 +64,7 @@ module V1
             d[:attributes][:invested_amount] = current_user.investments_in_deal(d[:attributes][:id])
             d[:attributes]
           end
-        }.merge(stats: stats, pagy: pagy_metadata(pagy))
+        }.merge(stats: stats, pagy: pagy)
       )
     end
 

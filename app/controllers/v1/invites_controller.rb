@@ -16,7 +16,7 @@ module V1
         'success',
         invites: InviteSerializer.new(@invites).serializable_hash[:data].map { |d| d[:attributes] },
         stats: @stats,
-        pagy: pagy_metadata(@pagy)
+        pagy: @pagy
       )
     end
 

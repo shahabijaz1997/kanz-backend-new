@@ -18,7 +18,7 @@ module V1
         I18n.t('syndicate.get.success.show'),
         {
           records: SyndicateSerializer.new(syndicates, filters).serializable_hash[:data].map{ |sy| sy[:attributes] },
-          pagy: pagy_metadata(pagy),
+          pagy: pagy,
           stats: {}
         }
       )
@@ -32,7 +32,7 @@ module V1
         I18n.t('syndicate.get.success.show'),
         {
           records: SyndicateSerializer.new(@syndicates, filters).serializable_hash[:data].map { |sy| sy[:attributes][:syndicate_list] },
-          pagy: pagy_metadata(pagy),
+          pagy: pagy,
           stats: {}
         }
       )
@@ -78,7 +78,7 @@ module V1
         {
           deals: DealSerializer.new(@deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) },
           stats: stats,
-          pagy: pagy_metadata(pagy)
+          pagy: pagy
         }
       )
     end

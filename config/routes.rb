@@ -35,7 +35,11 @@ Rails.application.routes.draw do
       resources :syndicate_members, only: %i[index create destroy]
     end
     resources :syndicate_members, only: %i[index create destroy]
-    resources :fund_raisers
+    resources :fund_raisers do
+      collection do
+        get :investors
+      end
+    end
     resources :investors, only: %i[index show] do
       post :accreditation
       post :investor_type

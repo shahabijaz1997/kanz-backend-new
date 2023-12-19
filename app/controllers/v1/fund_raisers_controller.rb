@@ -22,6 +22,19 @@ module V1
       failure(profile.errors.full_messages.to_sentence.presence || e.message)
     end
 
+    def investors
+      pagy, investors = pagy User.joins(investments: :deal).where(deal: {author_id: current_user.id})
+
+      success(
+        'success',
+        {
+          records: InvestorSerializer.new(investors).serializable_hash[:data].map { |d| d[:attributes] },
+          stats: {},
+          pagy: pagy
+        }
+      )
+    end
+
     private
 
     def profile_params

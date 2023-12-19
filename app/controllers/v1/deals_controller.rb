@@ -21,7 +21,7 @@ module V1
         'success',
         {
           deals: DealSerializer.new(@deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) },
-          pagy: pagy_metadata(pagy),
+          pagy: pagy,
           stats: stats
         }
       )
@@ -33,7 +33,8 @@ module V1
       success(
         'success',
         deals: DealSerializer.new(deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) },
-        pagy: pagy_metadata(pagy)
+        stats: {},
+        pagy: pagy
       )
     end
 
