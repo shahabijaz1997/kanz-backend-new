@@ -11,16 +11,12 @@ module V1
     def index
       deal = Deal.find_by(id: params[:deal_id])
       syndicates = Syndicate.approved.where.not(id: deal.invites.pluck(:invitee_id)).ransack(params[:search]).result
-      pagy, syndicates = pagy syndicates
+      # pagy, syndicates = pagy syndicates
       filters = { params: { investor: false }}
 
       success(
         I18n.t('syndicate.get.success.show'),
-        {
-          records: SyndicateSerializer.new(syndicates, filters).serializable_hash[:data].map{ |sy| sy[:attributes] },
-          pagy: pagy,
-          stats: {}
-        }
+        SyndicateSerializer.new(syndicates, filters).serializable_hash[:data].map{ |sy| sy[:attributes] }
       )
     end
 
