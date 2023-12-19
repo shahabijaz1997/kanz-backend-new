@@ -187,7 +187,7 @@ module Settings
     def unit(input_type = nil)
       return '' if input_type.blank? || input_type == 'number'
 
-      return '$' if input_type == 'currency'
+      return (input_type == 'currency' && deal.startup?) ? '$' : 'AED'
       return '%' if input_type == 'percent'
       return 'sqft' if input_type == 'sqft'
     end
