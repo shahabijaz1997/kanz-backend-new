@@ -9,13 +9,16 @@ module V1
 
     def index
       connection = params[:connection].in?(SyndicateMember::connections.keys) ? params[:connection] : SyndicateMember::connections.keys
-      @syndicate_members = current_user.syndicate_members.ransack(params[:search]).result.latest_first
+      @syndicate_members = current_user.syndicate_members.ransack(params[:search]).result
+      stats = stats_by_connection
+      pagy, @syndicate_members = pagy @syndicate_members.filter_by_connection(connection).latest_first
       success(
         'success',
-        { members: SyndicateMemberSerializer.new(
-                    @syndicate_members.filter_by_connection(connection)
-                   ).serializable_hash[:data].map {|d| d[:attributes]}
-                  }.merge(stats: stats_by_connection)
+        {
+          records: SyndicateMemberSerializer.new(@syndicate_members).serializable_hash[:data].map {|d| d[:attributes]}
+          stats: stats_by_connection,
+          pagy: pagy
+        }
       )
     end
 
