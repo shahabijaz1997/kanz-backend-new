@@ -1,0 +1,47 @@
+= render 'shared/section_card', section_title: 'Edit Step Properties', editable: false do
+  - if !user_can_update?
+    = form_for resource, method: :put do |form|
+      li.list-group-item
+        span.col.title.strong
+          = resource.stepper_type
+      li.list-group-item
+        span.col-3.title Title English
+        span.col.value
+          = form.text_field :title, class: "form-control", placeholder: 'Field Statement', required: true
+      li.list-group-item
+        span.col-3.title Title Arabic
+        span.col.value
+          = form.text_field :title_ar, class: "form-control", placeholder: 'Field Statement', required: true
+      li.list-group-item.card-header
+        span.col Step Sections
+      = form.fields_for :sections do |step_sections|
+        = step_sections.hidden_field :id, required: true
+        li.list-group-item
+          span.col-3.title Title English
+          span.col.value
+            = step_sections.text_field :title, class: "form-control", placeholder: 'statement in english', required: true
+        li.list-group-item
+          span.col-3.title Title Arabic
+          span.col.value
+            = step_sections.text_field :title_ar, class: "form-control", placeholder: 'statements in arabic', required: true
+        li.list-group-item
+          span.col-3.title Description English
+          span.col.value
+            = step_sections.text_area :description, rows: 3, class: "form-control", placeholder: 'Description', required: false
+        li.list-group-item
+          span.col-3.title Description Arabic
+          span.col.value
+            = step_sections.text_area :description_ar, rows: 3,class: "form-control", placeholder: 'Description', required: false
+        li.list-group-item
+          span.col-3.title Add More Label English
+          span.col.value
+            = step_sections.text_field :add_more_label, class: "form-control", placeholder: 'Label in english'
+        li.list-group-item
+          span.col-3.title Add More Label Arabic
+          span.col.value
+            = step_sections.text_field :add_more_label_ar, class: "form-control", placeholder: 'Label in arabic'
+
+      li.list-group-item
+        span.col-3.title
+        span.col.value
+            = form.submit "Submit", class: 'btn btn-primary'
