@@ -2,7 +2,7 @@ class FieldAttributesController < ApplicationController
   before_action :find_field, only: %i[edit update]
   def index
     @filtered_fields = FieldAttribute.ransack(params[:search])
-    @pagy, @fields = pagy @filtered_fields.result
+    @pagy, @fields = pagy @filtered_fields.result.order(:id)
   end
   
   def new; end
