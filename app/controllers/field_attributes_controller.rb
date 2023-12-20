@@ -31,9 +31,9 @@ class FieldAttributesController < ApplicationController
   end
 
   def field_params
-    params.require(:field_attribute).permit(%i[index statement statement_ar label label_ar description
-                                               description_ar is_required is_multiple
-                                               add_more_label add_more_label_ar field_type decription_link
-                                               permitted_types size_constraints suggestions input_type])
+    params.require(:field_attribute).permit(:index, :statement, :statement_ar, :label, :label_ar,
+                                            :description, :description_ar, :is_required, :is_multiple,
+                                            :add_more_label, :add_more_label_ar, :decription_link,
+                                            options_attributes: %i[id statement statement_ar label label_ar])
   end
 end
