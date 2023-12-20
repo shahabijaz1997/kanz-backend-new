@@ -19,7 +19,11 @@ class FieldAttributesController < ApplicationController
   def edit; end
 
   def update
-    @field.update(field_params)
+    if @field.update(field_params)
+      redirect_to field_attributes_path, notice: 'Field updated successfully!'
+    else
+      render :edit, alert: @field.errors.full_messages.to_sentence
+    end
   end
   
   private
