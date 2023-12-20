@@ -125,6 +125,7 @@ Rails.application.routes.draw do
     end
   end
   resources :dashboard, only: %i[index]
+  resources :field_attributes
 
   root to: "dashboard#index"
 end

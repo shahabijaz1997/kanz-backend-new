@@ -1,0 +1,24 @@
+div.table
+  div.header
+    div.col = sort_link(@filtered_fields, :statement)
+    div.col = sort_link(@filtered_fields, :label)
+    div.col = sort_link(@filtered_fields, :is_required, "Is Required")
+    div.col = sort_link(@filtered_fields, :field_type, "Field Type")
+    div.col = sort_link(@filtered_fields, :input_type, "Input Type")
+    div.col
+      span Actions
+  div.content
+    - if fields.present?
+      - fields.each do |field|
+        div.card.position-relative.shadow-sm
+          div.card-body.d-flex
+            span.col = field.statement
+            span.col = field.label
+            span.col = field.is_required
+            span.col = field.field_type
+            span.col = field.input_type
+            span.col = link_to "Edit", edit_field_attribute_path(field), class: 'stretched-link'            
+      - if @pagy.pages > 1
+        == pagy_nav(@pagy)
+    - else
+      div.not_found No Field Found
