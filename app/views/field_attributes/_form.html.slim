@@ -38,7 +38,7 @@
         span.col-3.title Select model
         span.col.value
           div.checkboxes
-            = form.collection_radio_buttons :is_required, [['Yes', :true], ['No', :false, {:checked => true}]], :second, :first
+            = form.collection_radio_buttons :is_required, [['Yes', :true], ['No', :false]], :second, :first
       - if resource.field_type.in?(OPTION_FIELDS)
         li.list-group-item.card-header
           span.col Field Options
