@@ -4,18 +4,11 @@
 module V1
   class InvestorsController < ApiController
     before_action :validate_persona, except: %i[index]
-    before_action :find_deal, only: %i[index]
+    before_action :find_deal, :fetch_investors, only: %i[index]
     before_action :search_params, only: %i[deals index]
 
     def index
-      member_ids = syndicate_member_filter? ? SyndicateMember.by_syndicate(current_user.id).pluck(:member_id) : []
-      invitees_ids = @deal.invites.pluck(:invitee_id) if @deal.present?
-      investors = Investor.approved.where.not(id: member_ids).ransack(params[:search]).result
-      investors = InvestorSerializer.new(investors).serializable_hash[:data].map do |d|
-          d[:attributes][:already_invited] = @deal.present? ? d[:attributes][:id].in?(invitees_ids) : false
-          d[:attributes].select { |key,_| %i[id name invested_amount no_investments already_invited].include? key }
-        end
-      success('success', investors)
+      success('success', @investors)
     end
 
     def show
@@ -95,8 +88,9 @@ module V1
       @investor.update(profile_states: profile_states)
     end
 
-    def syndicate_member_filter?
-      params[:filter].present? && params[:filter] == 'not_a_member'
+    def syndicate_member_ids
+      need_members = params[:filter].present? && params[:filter] == 'not_a_member'
+      need_members ? SyndicateMember.by_syndicate(current_user.id).pluck(:member_id) : []
     end
 
     def find_deal
@@ -104,6 +98,18 @@ module V1
 
       @deal = Deal.live.find_by(id: params[:deal_id])
       failure('Deal not found') if @deal.blank?
+    end
+
+    def fetch_investors
+      investors = User.approved.where(type: 'Investor').where.not(id: syndicate_member_ids)
+      investors = investors.or(User.approved.where(type: 'Syndicate')) if @deal.present?
+      investors = investors.ransack(params[:search]).result
+
+      invitees_ids = @deal.present? ? @deal.invites.pluck(:invitee_id) : []
+      @investors = InvestorSerializer.new(investors).serializable_hash[:data].map do |d|
+        d[:attributes][:already_invited] = d[:attributes][:id].in?(invitees_ids)
+        d[:attributes].select { |key,_| %i[id name invested_amount no_investments already_invited].include? key }
+      end
     end
 
     def stats_by_deal_type
