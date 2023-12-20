@@ -38,7 +38,7 @@ module Deals
         token: deal.token,
         is_invested: user.investments.exists?(deal_id: deal.id),
         my_invested_amount: user.investments.find_by(deal_id: deal.id)&.amount,
-        current_deal_syndicate: deal.syndicate_id == user.id,
+        current_deal_syndicate: deal.syndicate_id == user.id && deal.syndicate?,
         syndicate_id: deal.syndicate_id,
         model: deal.model
       }
