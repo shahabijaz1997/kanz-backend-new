@@ -26,7 +26,7 @@ class InvestorSerializer
   end
 
   attribute :steps_completed do |user|
-    if UsersResponse.exists?(user_id: user.id)
+    if user.investor? && UsersResponse.exists?(user_id: user.id)
       question_ids = user.investment_philosophies.pluck(:question_id)
       Question.where(id: question_ids).maximum(:step)
     else
