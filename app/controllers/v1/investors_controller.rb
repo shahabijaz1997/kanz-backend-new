@@ -102,7 +102,7 @@ module V1
 
     def fetch_investors
       investors = User.approved.where(type: 'Investor').where.not(id: syndicate_member_ids)
-      investors = investors.or(User.approved.where(type: 'Syndicate')) if @deal.present?
+      investors = investors.or(User.approved.where(type: 'Syndicate')) if @deal&.classic?
       investors = investors.ransack(params[:search]).result
 
       invitees_ids = @deal.present? ? @deal.invites.pluck(:invitee_id) : []
