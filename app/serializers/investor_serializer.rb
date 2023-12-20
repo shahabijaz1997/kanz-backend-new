@@ -9,7 +9,7 @@ class InvestorSerializer
 
   attribute :profile do |investor|
     if investor.syndicate?
-      profile = investor.profile || SyndicateProfile.new(investor: investor)
+      profile = investor.profile || SyndicateProfile.new(syndicate: investor)
       SyndicateProfileSerializer.new(profile).serializable_hash[:data]&.fetch(:attributes)
     else
       profile = investor.profile || InvestorProfile.new(investor: investor)
