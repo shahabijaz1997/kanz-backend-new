@@ -28,8 +28,10 @@ module Settings
 
     def map_values
       dependent_ids = dependent_field_ids
+      arabic = deal.user.arabic?
       steps = params.each do |step|
-        sections = step[:en][:sections].each do |section|
+        sections = arabic ? step[:ar][:sections] : step[:en][:sections]
+        sections = sections.each do |section|
           if section[:is_multiple]
             fields = map_multiple_fields(section[:fields]) 
           else
@@ -51,7 +53,11 @@ module Settings
           end
           section[:fields] = fields
         end
-        step[:en][:sections] = sections
+        if arabic
+          step[:ar][:sections] = sections
+        else
+          step[:en][:sections] = sections
+        end
       end
       steps
     end
