@@ -172,7 +172,7 @@ module Settings
       params.map do |step|
         title = arabic ? step[:ar][:title]: step[:en][:title]
         current_step = { id: step[:id], index: step[:index], title: title, fields: [] }
-        sections = arabic ? step[:en][:sections] : step[:ar][:sections]
+        sections = arabic ? step[:ar][:sections] : step[:en][:sections]
         sections.each do |section|
           current_step[:fields] << section[:fields].map do |field|
             if section[:is_multiple]
