@@ -168,14 +168,16 @@ module Settings
     end
 
     def update_for_review
+      arabic = deal.user.arabic?
       params.map do |step|
         current_step = { id: step[:id], index: step[:index], title: step[:en][:title], fields: [] }
         step[:en][:sections].each do |section|
           current_step[:fields] << section[:fields].map do |field|
+            statement = arabic ? field[:statement_ar] : field[:statement]
             if section[:is_multiple]
-              { statement: field[:statement], value: field[:value], index: field[:index], unit: unit(field[:input_type]) }
+              { statement: statement, value: field[:value], index: field[:index], unit: unit(field[:input_type]) }
             else
-              { statement: field[:statement], value: field[:value], unit: unit(field[:input_type]) }
+              { statement: statement, value: field[:value], unit: unit(field[:input_type]) }
             end
           end
         end

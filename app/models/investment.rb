@@ -9,6 +9,7 @@ class Investment < ApplicationRecord
   validates :user_id, uniqueness: { scope: [:deal_id], message: "invest again in same deal" }
 
   before_save :check_account_balance
+  after_create :update_invite
 
   scope :latest_first, -> { order(created_at: :desc) }
 
@@ -30,5 +31,10 @@ class Investment < ApplicationRecord
     if Investment.exists?(user_id: user_id, deal_id: deal_id)
       errors.add(:base, 'You can invest once!')
     end
+  end
+
+  def update_invite
+    invite = deal.invites.investment.find_by(invitee_id: user_id)
+    invite.present? && invite.update!(status: Invite::statuses[:invested])
   end
 end
