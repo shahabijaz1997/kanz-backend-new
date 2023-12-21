@@ -51,16 +51,8 @@ class User < ApplicationRecord
     type == 'Syndicate'
   end
 
-  def startup?
-    type == 'Startup'
-  end
-
-  def property_owner?
-    type == 'PropertyOwner'
-  end
-
-  def creator?
-    startup? || property_owner?
+  def fund_raiser?
+    type == 'FundRaiser'
   end
 
   def arabic?
@@ -101,14 +93,24 @@ class User < ApplicationRecord
     save
   end
 
+  def investments_in_deal(deal_id)
+    investments.where(deal_id: deal_id).pluck(:amount).reduce(:+)
+  end
+
   def no_investments
-    # need implementation
-    0
+    investments.count
   end
 
   def invested_amount
-    # need implementation
-    0.00
+    investments.sum(:amount)
+  end
+
+  def total_deals
+    deals.count
+  end
+
+  def no_active_deals
+    deals.live.count
   end
 
   private

@@ -5,6 +5,7 @@ module V1
   class InvitesController < ApiController
     before_action :set_deal, except: %i[index]
     before_action :find_invite, :validate_invite_status, only: %i[update]
+    before_action :search_params, :invites, only: %i[index]
 
     # GET
     # /1.0/deals/:deal_id/invites
@@ -13,15 +14,15 @@ module V1
     def index
       success(
         'success',
-        InviteSerializer.new(
-          invites.syndication
-        ).serializable_hash[:data].map { |d| d[:attributes] }
+        invites: InviteSerializer.new(@invites).serializable_hash[:data].map { |d| d[:attributes] },
+        stats: @stats,
+        pagy: @pagy
       )
     end
 
     #POST /1.0/deals/:deal_id/invites
     def create
-      purpose = current_user.syndicate? ? Invite::purposes[:investment] : Invite::purposes[:syndication]
+      purpose = current_user.syndicate? || @deal.classic? ? Invite::purposes[:investment] : Invite::purposes[:syndication]
       invite = current_user.invites.new(invite_params.merge(purpose: purpose))
       invite.eventable = @deal
 
@@ -41,13 +42,22 @@ module V1
       success('success', @invite)
     end
 
+    def request_syndication
+      Invite.transaction do
+        @invite = Invite.create(user: @deal.user, invitee: current_user, eventable: @deal)
+        upload_attachments
+        @invite.update!(status: invite_update_params[:status])
+      end
+      success('success', @invite)
+    end
+
     def syndicate_group
       eventable = { eventable_id: @deal.id, eventable_type: 'Deal' }
       Invite.transaction do
         current_user.syndicate_members.each do |member|
-          next if Invite.exists?(invite_id: member.id, eventable_id: @deal.id, eventable_type: 'Deal')
-          current_user.invites.create!({ 
-            invitee_id: id, purpose: Invite::purposes[:investment]
+          next if Invite.exists?(invitee_id: member.id, eventable_id: @deal.id, eventable_type: 'Deal')
+          current_user.invites.create!({
+            invitee_id: member.id, purpose: Invite::purposes[:investment]
           }.merge(eventable))
         end
       end
@@ -76,11 +86,13 @@ module V1
     end
 
     def invites
-      status = params[:status].in?(Invite::statuses.keys) ? params[:status] : Invite::statuses.keys
-      invites = Invite.where(eventable_type: 'Deal').where(
+      @invites = Invite.where(eventable_type: 'Deal').where(
         'eventable_id= ? OR invitee_id= ? OR user_id= ?',
         params[:deal_id], params[:invitee_id], params[:user_id]
-      ).active.by_status(status).latest_first
+      ).active.ransack(params[:search]).result.latest_first
+
+      @stats = stats_by_status
+      @pagy, @invites = pagy @invites.by_status(status_params).where(purpose: invite_type_params)
     end
 
     def validate_invite_status
@@ -96,6 +108,26 @@ module V1
       invite_update_params[:deal_attachments].values.each do |attachment_params|
         @deal.attachments.create!(attachment_params.merge(uploaded_by: current_user))
       end
+    end
+
+    def stats_by_status
+      {
+        all: @invites.count,
+        pending: @invites.pending.count,
+        interested: @invites.interested.count,
+        accepted: @invites.accepted.count,
+        approved: @invites.approved.count
+      }
+    end
+
+    def status_params
+      return Invite::statuses.keys unless params[:status].in?(Invite::statuses.keys)
+
+      (params[:status] == 'interested' && params[:deal_id].present?) ? %w[interested accepted approved] : params[:status]
+    end
+
+    def invite_type_params
+      params[:invite_type] ||= [Invite.purposes.keys]
     end
   end
 end

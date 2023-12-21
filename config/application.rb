@@ -33,5 +33,8 @@ module KanzApi
     config.middleware.use ActionDispatch::Flash
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore, key: '_namespace_key'
+
+    # active storage url expiry
+    config.active_storage.urls_expire_in = 30.minutes
   end
 end

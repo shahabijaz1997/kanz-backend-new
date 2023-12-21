@@ -2,7 +2,7 @@
 
 module V1
   class AttachmentsController < ApiController
-    before_action :set_attachment, only: %i[show update destroy]
+    before_action :set_attachment, only: %i[show update destroy download]
     before_action :check_file_presence, only: %i[create]
 
     # GET /attachments/1
@@ -50,6 +50,16 @@ module V1
       else
         failure(response.message)
       end
+    end
+
+    def download
+      success('success',
+        "#{ENV['API_BASE_URL']}" + Rails.application.routes.url_helpers.rails_blob_path(
+          @attachment.file,
+          disposition: 'attachment',
+          host: ENV['API_BASE_URL']
+        )
+      )
     end
 
     private

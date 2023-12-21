@@ -1,7 +1,7 @@
 div.filters.bg-light.border.rounded
   span.title Filters
   = search_form_for @filtered_deals, url: search_path, class: 'form' do |form|
-    - if startup
+    - if startup_deal
       div.search_field
         = form.label :funding_round_round_statement_eq, 'Stage'
         = form.select :funding_round_round_statement_eq, STAGES, { include_blank: true }, { class: 'form-control' }

@@ -107,7 +107,7 @@ Pagy::DEFAULT[:items]  = 10                                 # default
 # See https://ddnexus.github.io/pagy/docs/extras/metadata
 # you must require the frontend helpers internal extra (BEFORE the metadata extra) ONLY if you need also the :sequels
 # require 'pagy/extras/frontend_helpers'
-# require 'pagy/extras/metadata'
+require 'pagy/extras/metadata'
 # For performance reasons, you should explicitly set ONLY the metadata you use in the frontend
 # Pagy::DEFAULT[:metadata] = %i[scaffold_url page prev next last]   # example
 

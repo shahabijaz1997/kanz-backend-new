@@ -1,0 +1,30 @@
+= render 'shared/page_title', title: "Fund Raisers"
+= render 'filters'
+
+div.table
+  div.header
+    div.col = sort_link(@filtered_fund_raisers, :name)
+    div.col = sort_link(@filtered_fund_raisers, :email)
+    div.col = sort_link(@filtered_fund_raisers, :profile_company_name)
+    div.col = sort_link(@filtered_fund_raisers, :profile_legal_name)
+    div.col
+      span Industry/Market
+    div.col = sort_link(@filtered_fund_raisers, :status)
+    div.col
+      span Actions
+  div.content
+    - if @fund_raisers.present?
+      - @fund_raisers.each do |fund_raiser|
+        div.card.position-relative.shadow-sm
+          div.card-body.d-flex
+            span.col = fund_raiser.name
+            span.col = fund_raiser.email
+            span.col = fund_raiser.profile&.company_name
+            span.col = fund_raiser.profile&.legal_name
+            span.col = fund_raiser.profile&.industries&.pluck(:name)&.join(", ")
+            span.col = render 'shared/user_status', status: fund_raiser.status
+            span.col = link_to "View", fund_raiser_path(fund_raiser), class: 'stretched-link'
+      - if @pagy.pages > 1        
+        == pagy_nav(@pagy)
+    - else
+      div.not_found No Fund Raiser Found

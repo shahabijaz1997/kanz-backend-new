@@ -13,11 +13,7 @@ class Syndicate < User
     ['profile']
   end
 
-  def total_deals
-    deals.count
-  end
-
-  def no_active_deals
-    deals.live.count
+  def membership(member_id)
+    syndicate_members.find_by(member_id: member_id)
   end
 end

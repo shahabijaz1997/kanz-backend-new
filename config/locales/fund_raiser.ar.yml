@@ -1,0 +1,10 @@
+ar:
+  fund_raiser:
+    get:
+      success:
+        show: 'تم استرداد البيانات بنجاح.'
+      failure:
+        step: 'لم يتم العثور على السجل.'
+    update:
+      success:
+        comapny_info: 'تم تحديث ملف تعريف الشركة بنجاح.'

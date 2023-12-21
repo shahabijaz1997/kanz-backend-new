@@ -30,17 +30,31 @@ Rails.application.routes.draw do
     resources :syndicates do
       collection do
         get :all
+        get :deals
       end
       resources :syndicate_members, only: %i[index create destroy]
     end
     resources :syndicate_members, only: %i[index create destroy]
-    resources :startups
+    resources :fund_raisers do
+      collection do
+        get :investors
+      end
+    end
     resources :investors, only: %i[index show] do
       post :accreditation
       post :investor_type
+      collection do
+        get :deals
+      end
     end
-    resources :property_owners
-    resources :attachments, except: :index
+    resources :attachments, except: :index do
+      collection do
+        post :submit
+      end
+      member do
+        get :download
+      end
+    end
     resources :countries, only: %i[index]
     resources :users, only: %i[show update]
     resources :industries, only: %i[index]
@@ -59,11 +73,13 @@ Rails.application.routes.draw do
       resources :invites do
         collection do
           post :syndicate_group
+          post :request_syndication
         end
       end
       resources :comments
       resources :syndicates, only: %i[show index]
       resources :investments, only: %i[index create]
+      resources :investors, only: %i[index]
     end
     resources :deals, param: :token, only: %i[show]
     post 'deals/:id/submit' => 'deals#submit'
@@ -71,7 +87,6 @@ Rails.application.routes.draw do
     get 'settings/attachments' => 'settings#attachments'
     get 'settings/stepper' => 'settings#stepper'
     get 'regions' => 'industries#regions'
-    post 'attachments/submit', to: 'attachments#submit'
 
     resources :users do
       resources :invites, only: %i[index]
@@ -93,8 +108,7 @@ Rails.application.routes.draw do
       resources :firms, only: %i[index show], controller: 'investors', type: 'firms'
     end
   end
-  resources :property_owners, only: %i[index show update]
-  resources :startups, only: %i[index show update]
+  resources :fund_raisers, only: %i[index show update]
   resources :syndicates, only: %i[index show update] do
     resources :syndicate_groups, only: %i[index create destroy]
   end
@@ -111,6 +125,8 @@ Rails.application.routes.draw do
     end
   end
   resources :dashboard, only: %i[index]
+  resources :field_attributes
+  resources :steppers
 
   root to: "dashboard#index"
 end

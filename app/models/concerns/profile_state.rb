@@ -33,7 +33,7 @@ module ProfileState
       public_send(association_name)
     end
 
-    # Name of blonging persone, e.g investor, startup...
+    # Name of blonging persone, e.g investor, Fund Raisers...
     def association_name
       self.class.name.underscore.gsub('_profile', '')
     end

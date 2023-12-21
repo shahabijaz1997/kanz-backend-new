@@ -4,7 +4,7 @@
 class SyndicateMemberSerializer
   include JSONAPI::Serializer
 
-  attributes :id, :connection
+  attributes :id, :connection, :syndicate_id
 
   attribute :joining_date do |syndicate_member|
     DateTime.parse(syndicate_member.created_at.to_s).strftime('%d/%m/%Y')

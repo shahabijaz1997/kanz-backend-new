@@ -64,4 +64,4 @@ html
           - if @deal.reopened?
             p = @deal.audits.last.comment
           p.action-detail = I18n.t("mailer.deal.access")
-          a.button href="#{ENV.fetch('FRONTEND_URL')}/view-deal/#{@deal.id}" target="_blank" View Deal
+          a.button href="#{ENV.fetch('FRONTEND_URL')}/deal/#{@deal.token}" target="_blank" View Deal

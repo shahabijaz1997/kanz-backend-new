@@ -1,35 +1,40 @@
 # frozen_string_literal: true
 
-# Startups apis
+# Deals api's
 module V1
   class DealsController < ApiController
-    before_action :find_deal, only: %i[review submit documents comments activities sign_off]
+    before_action :find_deal, only: %i[review submit documents comments sign_off]
     before_action :set_deal, only: %i[create]
     before_action :get_deal, only: %i[show]
     before_action :set_invite, only: %i[sign_off]
     before_action :set_features, only: %i[unique_selling_points]
     skip_before_action :authenticate_user!, only: %i[show]
+    before_action :search_params, only: %i[index]
 
     def index
-      deals = if current_user.syndicate?
-        Deal.syndicate_deals.latest_first
-      else
-        status = params[:status].in?(Deal::statuses.keys) ? params[:status] : Deal::statuses.keys
-        current_user.deals.by_status(status).latest_first
-      end
+      @deals = current_user.deals.where(deal_type: params[:deal_type]).ransack(params[:search]).result
+      stats = stats_by_status
+      status = params[:status].in?(Deal::statuses.keys) ? params[:status] : Deal::statuses.keys
+      pagy, @deals = pagy @deals.by_status(status).latest_first
 
       success(
         'success',
-        DealSerializer.new(deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) }
+        {
+          deals: DealSerializer.new(@deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) },
+          pagy: pagy,
+          stats: stats
+        }
       )
     end
 
     def live
       types = params[:type].in?(Deal::deal_types.keys) ? params[:type] : Deal::deal_types.keys
-      deals = current_user.deals.live_or_closed.by_type(types).latest_first
+      pagy, deals = pagy current_user.deals.live_or_closed.by_type(types).latest_first
       success(
         'success',
-        DealSerializer.new(deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) }
+        deals: DealSerializer.new(deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) },
+        stats: {},
+        pagy: pagy
       )
     end
 
@@ -43,8 +48,9 @@ module V1
 
     def create
       response = Deals::ParamComposer.call(deal_params, @deal)
-      failure(response.message) unless response.status
+      return failure(response.message) unless response.status
 
+      response.data.merge!(status: 'draft') if @deal.status == 'approved'
       if @deal.update(response.data)
         success('success', { id: @deal.id })
       else
@@ -59,8 +65,11 @@ module V1
     end
 
     def documents
-      docs = AttachmentSerializer.new(@deal.attachments).serializable_hash[:data].map { |d| d[:attributes] }
-      success('Success', docs)
+      attachments = @deal.attachments.where(uploaded_by: @deal.user)
+      success(
+        'Success',
+        AttachmentSerializer.new(attachments).serializable_hash[:data].map { |d| d[:attributes] }
+      )
     end
 
     def comments
@@ -70,11 +79,17 @@ module V1
       )
     end
 
+    # Only for Syndicates and Deal Creators
     def activities
-      # Only for Syndicates and Deal Creators
+      deal = Deal.find_by(id: params[:id])
+      return failure('Unable to find deal', 404) if deal.blank?
+
+      activities = deal.activities
       success(
-        'Success',
-        DealActivitySerializer.new(@deal.activities).serializable_hash[:data].map{|d| d[:attributes]}
+        'success',
+        records: DealActivitySerializer.new(activities).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) },
+        stats: {},
+        pagy: {}
       )
     end
 
@@ -154,6 +169,14 @@ module V1
     def set_invite
       @invite = @deal.invites.find_by(id: deal_approval_params[:invite_id], status: Invite::statuses[:accepted])
       failure("Invite can't be updated") if @invite.blank?
+    end
+
+    def stats_by_status
+      hash = { all: @deals.count }
+      Deal::statuses.keys.map do |status|
+        hash[status] = @deals.send(status).count
+      end
+      hash
     end
   end
 end

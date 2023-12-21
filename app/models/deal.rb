@@ -22,8 +22,9 @@ class Deal < ApplicationRecord
 
   enum deal_type: DEAL_TYPES
   enum status: { draft: 0, submitted: 1, reopened: 2, verified: 3, rejected: 4, approved: 5, live: 6, closed: 7 }
-  enum model: { classic: 0, syndicate: 1 }
+  enum model: { _: 0, classic: 1, syndicate: 2 }
 
+  validates_numericality_of(:target, greater_than: 0, allow_nil: true)
   validate :start_and_end_date_presence, :start_date_and_end_date
 
   after_save :update_current_state
@@ -36,11 +37,13 @@ class Deal < ApplicationRecord
   scope :live, -> { where(status: Deal::statuses[:live]) }
   scope :approved_or_live, -> { where(status: [Deal::statuses[:approved], Deal::statuses[:live]]) }
   scope :syndicate_model, -> { where(model: Deal::models[:syndicate]) }
-  scope :syndicate_deals, -> { approved_or_live.syndicate_model }
+  scope :classic_model, -> { where(model: Deal::models[:classic]) }
+  scope :syndicate_deals, -> { approved_or_live.syndicate_model.or(Deal.live.classic_model) }
   scope :latest_first, -> { order(created_at: :desc) }
   scope :by_status, -> (status) { where(status: status) }
   scope :by_type, -> (type) { where(deal_type: type) }
   scope :live_or_closed, -> { where(status: [Deal::statuses[:closed], Deal::statuses[:live]]) }
+  scope :user_invested, -> (user_id) { joins(:investments).where(investments: {user_id: user_id}) }
 
   def attachments_by_creator
     attachments.where(uploaded_by: user)
@@ -51,7 +54,7 @@ class Deal < ApplicationRecord
   end
 
   def self.ransackable_associations(_auth_object = nil)
-    %w[user property_detail funding_round]
+    %w[user property_detail funding_round syndicate]
   end
 
   def syndicate_comment(author_id)
@@ -69,12 +72,19 @@ class Deal < ApplicationRecord
   end
 
   def raised
-    # implementation pending, if deal is live or closed then check for 
-    0.00
+    investments.sum(:amount)
+  end
+
+  def investors_count
+    investments.pluck(:user_id).uniq.count
+  end
+
+  def minimum_check_size
+    terms.minimum_check_size.first&.custom_input.to_f
   end
 
   def activities
-    invites.investment
+    invites.where.not(invitee_id: investments.pluck(:user_id)).latest_first + investments.latest_first
   end
 
   private
@@ -117,7 +127,7 @@ class Deal < ApplicationRecord
     elsif status == 'approved' && status_was != 'verified'
       errors[:base] << 'Only verified deals can be approved'
     elsif status == 'live' && status_was != 'approved'
-      errors[:base] << 'Only verified deals can be approved'
+      errors[:base] << 'Only approved deals can be live'
     end
   end
 

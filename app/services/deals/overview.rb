@@ -7,13 +7,19 @@ module Deals
     end
 
     def call
-      user.syndicate? ? syndicate_deal_params : deal_params
+      return syndicate_deal_params if user.syndicate?
+      return investor_deal_params if user.investor?
+      deal_params
     end
 
     private
 
     def syndicate_deal_params
       deal_params.merge(docs).merge(comments).merge(invite)
+    end
+
+    def investor_deal_params
+      deal_params.merge(docs)
     end
 
     def deal_params
@@ -29,7 +35,12 @@ module Deals
         status: deal.status,
         start_at: deal.start_at.blank? ? '' : Date.parse(deal.start_at.to_s).strftime('%d/%m/%Y'),
         end_at: deal.end_at.blank? ? '' : Date.parse(deal.end_at.to_s).strftime('%d/%m/%Y'),
-        token: deal.token
+        token: deal.token,
+        is_invested: user.investments.exists?(deal_id: deal.id),
+        my_invested_amount: user.investments.find_by(deal_id: deal.id)&.amount,
+        current_deal_syndicate: deal.syndicate_id == user.id && deal.syndicate?,
+        syndicate_id: deal.syndicate_id,
+        model: deal.model
       }
 
       additional_params = deal.startup? ? startup_params : property_params
@@ -47,7 +58,8 @@ module Deals
         safe_type: round.safe_kind,
         valuation_type: round.valuation_type,
         valuation: round.valuation,
-        terms: deal_terms
+        terms: deal_terms,
+        pitch_deck: AttachmentSerializer.new(pitch_deck).serializable_hash[:data]
       }
     end
 
@@ -123,6 +135,10 @@ module Deals
       { docs: AttachmentSerializer.new(docs).serializable_hash[:data].map {|d| d[:attributes]} }
     end
 
+    def pitch_deck
+      deal.attachments.find_by(uploaded_by_id: deal.author_id, name: 'Investor Presentation or Pitch Deck')
+    end
+
     def comments
       comments = deal.comments.where('author_id=? OR recipient_id=?', user.id, user.id)
       return {} if comments.blank?
@@ -152,19 +168,15 @@ module Deals
     end
 
     def total_raised
-      # how_much_funded
-      # Implement to calculate total raised from invoices
-      0
+      deal.raised
     end
 
     def total_committed
-      # Implement to calculate total committed from comitments, Need to decide 
-      0
+      deal.raised
     end
 
     def total_investors
-      # investors.count
-      0
+      deal.investors_count
     end
   end
 end

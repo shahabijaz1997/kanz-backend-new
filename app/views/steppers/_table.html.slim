@@ -1,0 +1,20 @@
+div.table
+  div.header
+    div.col = sort_link(@filtered_steps, :stepper_type)
+    div.col = sort_link(@filtered_steps, :title)
+    div.col = sort_link(@filtered_steps, :title_ar, "Title Arabic")
+    div.col
+      span Actions
+  div.content
+    - if steps.present?
+      - steps.each do |step|
+        div.card.position-relative.shadow-sm
+          div.card-body.d-flex
+            span.col = step.stepper_type
+            span.col = step.title
+            span.col = step.title_ar
+            span.col = link_to "Edit", edit_stepper_path(step), class: 'stretched-link'            
+      - if @pagy.pages > 1
+        == pagy_nav(@pagy)
+    - else
+      div.not_found No Step Found

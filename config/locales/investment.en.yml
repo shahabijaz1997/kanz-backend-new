@@ -1,0 +1,11 @@
+en:
+  activerecord:
+    attributes:
+      investment:
+        user_id: "You can't"
+    errors:
+      models:
+        investment:
+          attributes:
+            user_id:
+              uniqueness: "invest again in same deal"

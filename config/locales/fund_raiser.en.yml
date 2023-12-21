@@ -1,0 +1,10 @@
+en:
+  fund_raiser:
+    get:
+      success:
+        show: 'Data successfully retrieved.'
+      failure:
+        step: 'Record not found.'
+    update:
+      success:
+        comapny_info: 'Successfuly updated the fund raiser profile.'

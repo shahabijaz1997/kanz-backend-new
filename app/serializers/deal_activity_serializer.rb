@@ -4,29 +4,37 @@
 class DealActivitySerializer
   include JSONAPI::Serializer
 
-  attribute :invite_id do |invite|
-    invite.id
+  attribute :activity_id do |activity|
+    activity.id
   end
 
-  attribute :status do |invite|
-    invite.status
+  attribute :status do |activity|
+    activity.status
   end
 
-  attribute :investor do |invite|
-    {
-      id: invite.invitee_id,
-      name: invite.invitee.name
-    }
+  attribute :investor do |activity|
+    if activity.is_a? Investment
+      {
+        id: activity.user_id,
+        name: activity.user.name
+      }
+    else
+      {
+        id: activity.invitee_id,
+        name: activity.invitee.name
+      }
+    end
   end
 
-  attribute :date do |invite|
-    investment = Investment.find_by(deal_id: invite.eventable_id, user_id: invite.invitee_id)
-    created_date = investment.present? ? investment.created_at : invite.created_at
-    Date.parse(created_date.to_s).strftime('%d/%m/%Y')
+  attribute :type do |activity|
+    activity.is_a?(Investment) ? 'investment' : activity.purpose
   end
 
-  attribute :amount do |invite|
-    investment = Investment.find_by(deal_id: invite.eventable_id, user_id: invite.invitee_id)
-    investment.present? ? investment.amount : 0.00
+  attribute :date do |activity|
+    Date.parse(activity.created_at.to_s).strftime('%d/%m/%Y')
+  end
+
+  attribute :amount do |activity|
+    (activity.is_a? Investment) ? activity.amount : 0.00
   end
 end

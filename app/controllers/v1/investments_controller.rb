@@ -6,16 +6,21 @@ module V1
     before_action :find_investment, only: %i[show]
 
     def index
+      pagy, investments = pagy @deal.investments
       success(
         'success',
-        InvestmentSerializer.new(@deal.investments).serializable_hash[:data].map{|d| d[:attributes] }
+        {
+          records: InvestmentSerializer.new(investments).serializable_hash[:data].map{ |d| d[:attributes] },
+          pagy: pagy,
+          stats: {}
+        }
       )
     end
 
     def create
       investment = current_user.investments.create(investment_params.merge(deal_id: @deal.id))
       if investment.valid?
-        success('success', 200)
+        success('success', InvestmentSerializer.new(investment).serializable_hash[:data][:attributes])
       else
         failure(investment.errors.full_messages.to_sentence, 401)
       end

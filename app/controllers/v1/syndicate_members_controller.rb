@@ -1,18 +1,23 @@
 # frozen_string_literal: true
 
-# Startups apis
+# Syndicate Member Apis
 module V1
   class SyndicateMembersController < ApiController
     before_action :find_syndicate, only: %i[create destroy]
     before_action :find_syndicate_member, only: %i[destroy]
+    before_action :search_params, only: %i[index]
 
     def index
-      connection = params[:connection].in?(SyndicateMember::connections.keys) ? params[:connection] : SyndicateMember::connections.keys
+      @syndicate_members = current_user.syndicate_members.ransack(params[:search]).result
+      stats = stats_by_connection
+      pagy, @syndicate_members = pagy @syndicate_members.filter_by_connection(connection).latest_first
       success(
         'success',
-        SyndicateMemberSerializer.new(
-          current_user.syndicate_members.filter_by_connection(connection)
-        ).serializable_hash[:data].map {|d| d[:attributes]}
+        {
+          records: SyndicateMemberSerializer.new(@syndicate_members).serializable_hash[:data].map {|d| d[:attributes]},
+          stats: stats_by_connection,
+          pagy: pagy
+        }
       )
     end
 
@@ -43,6 +48,18 @@ module V1
       @syndicate_member = @syndicate.syndicate_members.find_by(id: params[:id])
 
       failure('Syndicate member not found') if @syndicate_member.blank?
+    end
+
+    def stats_by_connection
+      {
+        all: @syndicate_members.count,
+        added: @syndicate_members.added.count,
+        follower: @syndicate_members.follower.count
+      }
+    end
+
+    def connection
+      params[:connection].in?(SyndicateMember::connections.keys) ? params[:connection] : SyndicateMember::connections.keys
     end
   end
 end

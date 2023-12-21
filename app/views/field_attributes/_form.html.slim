@@ -1,0 +1,67 @@
+= render 'shared/section_card', section_title: 'Edit Field Properties', editable: false do
+  - if !user_can_update?
+    = form_for resource, method: :put do |form|
+      li.list-group-item
+        span.col-3.title Statement English
+        span.col.value
+          = form.text_field :statement, class: "form-control", placeholder: 'Field Statement', required: true
+      li.list-group-item
+        span.col-3.title Statement Arabic
+        span.col.value
+          = form.text_field :statement_ar, class: "form-control", placeholder: 'Field Statement', required: true
+      li.list-group-item
+        span.col-3.title Label English
+        span.col.value
+          = form.text_field :label, class: "form-control", placeholder: 'Field Label'
+      li.list-group-item
+        span.col-3.title Label Arabic
+        span.col.value
+          = form.text_field :label_ar, class: "form-control", placeholder: 'Field Label'
+      li.list-group-item
+        span.col-3.title Description English
+        span.col.value
+          = form.text_area :description, rows: 3, class: "form-control", placeholder: 'Description', required: false
+      li.list-group-item
+        span.col-3.title Description Arabic
+        span.col.value
+          = form.text_area :description_ar, rows: 3,class: "form-control", placeholder: 'Description', required: false
+      - if resource.is_multiple
+        li.list-group-item
+          span.col-3.title Add More Label English
+          span.col.value
+            = form.text_field :add_more_label, class: "form-control", placeholder: 'Add More Label', required: true
+        li.list-group-item
+          span.col-3.title Add More Label Arabic
+          span.col.value
+            = form.text_field :add_more_label_ar, class: "form-control", placeholder: 'Add More Label', required: true
+      li.list-group-item
+        span.col-3.title Select model
+        span.col.value
+          div.checkboxes
+            = form.collection_radio_buttons :is_required, [['Yes', :true], ['No', :false]], :second, :first
+      - if resource.field_type.in?(OPTION_FIELDS)
+        li.list-group-item.card-header
+          span.col Field Options
+        = form.fields_for :options do |option_fields|
+          = option_fields.hidden_field :id, required: true
+          li.list-group-item
+            span.col-3.title Option Statement English
+            span.col.value
+              = option_fields.text_field :statement, class: "form-control", placeholder: 'statement in english', required: true
+          li.list-group-item
+            span.col-3.title Option Statement Arabic
+            span.col.value
+              = option_fields.text_field :statement_ar, class: "form-control", placeholder: 'statements in arabic', required: true
+          li.list-group-item
+            span.col-3.title Option Label English
+            span.col.value
+              = option_fields.text_field :label, class: "form-control", placeholder: 'Label in english'
+          li.list-group-item
+            span.col-3.title Option Label Arabic
+            span.col.value
+              = option_fields.text_field :label_ar, class: "form-control", placeholder: 'Label in arabic'
+
+      li.list-group-item
+        span.col-3.title
+        span.col.value
+            = form.submit "Submit", class: 'btn btn-primary'

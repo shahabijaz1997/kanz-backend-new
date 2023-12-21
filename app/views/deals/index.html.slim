@@ -1,4 +1,4 @@
-- startup = params[:type] == 'start_up'
+- startup_deal = params[:type] == 'start_up'
 = render 'shared/page_title', title: "Deals - #{params[:type].split('_').join('').capitalize}"
-= render 'filters', search_path: startup ? start_up_index_path : property_index_path, startup: startup
-= render 'table', deals: @deals, startup: startup
+= render 'filters', search_path: startup_deal ? start_up_index_path : property_index_path, startup_deal: startup_deal
+= render 'table', deals: @deals, startup_deal: startup_deal

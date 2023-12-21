@@ -5,26 +5,32 @@ module V1
   class SyndicatesController < ApiController
     before_action :check_file_presence, only: %i[create]
     before_action :find_syndicate, :validate_deal_association, only: %i[show]
-    before_action :authorize_role!, :extract_synidcates, only: %i[all]
+    before_action :search_params, only: %i[index deals all]
+    before_action :authorize_role!, :extract_syndicates, only: %i[all]
 
     def index
       deal = Deal.find_by(id: params[:deal_id])
-      deal_invitees_ids = deal.invites.pluck(:invitee_id)
+      syndicates = Syndicate.approved.where.not(id: deal.invites.pluck(:invitee_id)).ransack(params[:search]).result
+      # pagy, syndicates = pagy syndicates
+      filters = { params: { investor: false }}
+
       success(
         I18n.t('syndicate.get.success.show'),
-        SyndicateSerializer.new(
-          Syndicate.approved.where.not(id: deal_invitees_ids), { params: { investor: false }}
-        ).serializable_hash[:data].map{ |sy| sy[:attributes] }
+        SyndicateSerializer.new(syndicates, filters).serializable_hash[:data].map{ |sy| sy[:attributes] }
       )
     end
 
     def all
+      pagy, @syndicates = pagy @syndicates.ransack(params[:search]).result
+      filters = { params: { investor_list_view: current_user.investor? }}
+
       success(
         I18n.t('syndicate.get.success.show'),
-        SyndicateSerializer.new(@syndicates, { params: { investor_list_view: current_user.investor? }}).
-          serializable_hash[:data].map do |sy|
-            sy.present? ? (sy[:attributes].present? ? sy[:attributes][:syndicate_list] : sy[:attributes]) : []
-          end
+        {
+          records: SyndicateSerializer.new(@syndicates, filters).serializable_hash[:data].map { |sy| sy[:attributes][:syndicate_list] },
+          pagy: pagy,
+          stats: {}
+        }
       )
     end
 
@@ -39,7 +45,9 @@ module V1
       ).serializable_hash[:data][:attributes]
       if current_user.investor?
         syndicate_data = syndicate_data[:detail]
-        syndicate_data[:following] = current_user.following?(@syndicate.id)
+        membership = @syndicate.membership(current_user.id)
+        syndicate_data[:following] = membership.present?
+        syndicate_data[:membership_id] = membership&.id
       end
       syndicate_data = additional_attributes(syndicate_data) if params[:deal_id].present?
       success(I18n.t('syndicate.get.success.show'), syndicate_data)
@@ -54,6 +62,21 @@ module V1
       success(I18n.t('syndicate.update.success'))
     rescue StandardError => e
       failure(profile.errors.full_messages.to_sentence.presence || e.message)
+    end
+
+    def deals
+      status = params[:status].in?(Deal::statuses.keys) ? params[:status] : Deal::statuses.keys
+      @deals = Deal.syndicate_deals.where(status: status).ransack(params[:search]).result
+      stats = stats_by_deal_type
+      pagy, @deals = pagy @deals.where(deal_type: (params[:deal_type] || Deal::deal_types.keys)).latest_first
+      success(
+        'success',
+        {
+          deals: DealSerializer.new(@deals).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) },
+          stats: stats,
+          pagy: pagy
+        }
+      )
     end
 
     private
@@ -113,7 +136,7 @@ module V1
       data[:comments] = syndicate_comments
       data[:attachments] = syndicate_docs
       data[:deal] = deal_details
-      data[:thread_id] = @deal.syndicate_comment(@syndicate.id)&.id
+      data[:thread_id] = thread_id
       data[:invite_id] = @deal.invites.find_by(invitee_id: params[:id])&.id
       data[:status] = @deal.invites.find_by(invitee_id: params[:id])&.status
 
@@ -128,12 +151,31 @@ module V1
       }
     end
 
-    def extract_synidcates
+    def extract_syndicates
       @syndicates = Syndicate.approved
-      if params[:followed].present?
-        syndicate_ids = current_user.syndicate_members.pluck(:syndicate_id)
-        @syndicates = Syndicate.approved.where(id: syndicate_ids)
-      end
+      @syndicates = @syndicates.joins(:syndicate_members).where(
+        syndicate_members: { member_id: current_user.id }
+      ) if params[:followed].present?
+    end
+
+    def simplify_attributes(attributes)
+      return attributes if attributes[:details].blank?
+
+      attributes = attributes.merge(attributes[:details])
+      attributes.delete(:details)
+      attributes
+    end
+
+    def stats_by_deal_type
+      {
+        all: @deals.count,
+        property: @deals.property.count,
+        startup: @deals.startup.count
+      }
+    end
+
+    def thread_id
+      @deal.syndicate_comment(@syndicate.id)&.id || @deal.syndicate_and_creator_discussion(@syndicate.id)&.first&.id
     end
   end
 end

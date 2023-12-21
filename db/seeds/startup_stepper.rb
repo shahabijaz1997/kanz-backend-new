@@ -522,6 +522,7 @@ statements = ['Additional Terms', 'Minimum Check Size', 'Pro Rata']
 section.fields << FieldAttribute.where(statement: statements)
 
 attachments = [
+  { statement: "Investor Presentation or Pitch Deck", label: "A slide presentation summarizing the business  and investment opportunity.", description: "To present to potential investors  in meetings or pitches.", is_required: true },
   { statement: "Business Plan", label: "A comprehensive document outlining the business strategy, market analysis, and financial projections.", description: "To provide an in-depth understanding of the business  model and its growth prospects.", is_required: true },
   { statement: "Financial Statements", label: "Historical financial records  for the past three years.", description: "To offer insight into the startup's  financial health.", is_required: true },
   { statement: "SWOT Analysis", label: "Analysis of Strengths, Weaknesses, Opportunities, and Threats.", description: "To offer a balanced perspective  of risks and potential.", is_required: false },
@@ -533,7 +534,6 @@ attachments = [
   { statement: "Initial Valuation Report ", label: "Preliminary estimate of the  startup's value.", description: "To facilitate negotiation and  decision-making.", is_required: false },
   { statement: "Cap Table", label: "A table showing the ownership structure of the  company, including shares held by each stakeholder.", description: "To understand the ownership  distribution and stakeholder  equity.", is_required: false },
   { statement: "Investment Memo", label: "A detailed memorandum  outlining the investment  opportunity, terms, and  conditions.", description: "To provide prospective investors  with necessary information for  decision-making.", is_required: false },
-  { statement: "Investor Presentation or  Pitch Deck", label: "A slide presentation summarizing the business  and investment opportunity.", description: "To present to potential investors  in meetings or pitches.", is_required: false },
   { statement: "Lead Syndicate Profile &  Credentials", label: "Detailed information about  the lead syndicate, their  track record, and qualifications.", description: "To establish credibility and  attract potential co-investors.", is_required: false },
   { statement: "Term Sheet", label: "A preliminary agreement  outlining the terms of the  investment.", description: "To serve as a basis for final  negotiations and legal agreements.", is_required: false },
   { statement: "Projections", label: "Forecasted revenue, expenses, and other financial metrics for future years.", description: "To provide a financial outlook and support valuation discussions.", is_required: false },
