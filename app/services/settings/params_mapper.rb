@@ -1,20 +1,21 @@
 module Settings
   class ParamsMapper < ApplicationService
-    attr_reader :params, :deal, :review, :step_titles, :step_titles_ar
+    attr_reader :params, :deal, :review, :step_titles, :step_titles_ar, :user
 
-    def initialize(deal, steppers, review = false)
+    def initialize(deal, steppers, review = false, user = nil)
       @deal = deal
       @params = StepperSerializer.new(steppers).serializable_hash[:data].map { |d| d[:attributes] }
       @step_titles = steppers.pluck(:title)
       @step_titles_ar = steppers.pluck(:title_ar)
       @review = review
+      @user = user || @deal&.user
     end
 
     def call
       if deal.present?
         update_steps_on_instrumentation
-        @params = map_values
-        @params = update_for_review if review
+        @params = map_values(user&.arabic?)
+        @params = update_for_review(user&.arabic?) if review
       end
 
       {
@@ -26,9 +27,8 @@ module Settings
 
     private
 
-    def map_values
+    def map_values(arabic)
       dependent_ids = dependent_field_ids
-      arabic = deal.user.arabic?
       steps = params.each do |step|
         sections = arabic ? step[:ar][:sections] : step[:en][:sections]
         sections = sections.each do |section|
@@ -166,15 +166,19 @@ module Settings
       @params = params.map do |step|
         temp = step
         if step[:en][:title] == 'terms'
-          temp = temp[:en][:sections].reject {|section| section[:condition] != instrument_type }
-          step[:en][:sections] = temp
+          if user.arabic?
+            temp = temp[:ar][:sections].reject {|section| section[:condition] != instrument_type }
+            step[:ar][:sections] = temp
+          else
+            temp = temp[:en][:sections].reject {|section| section[:condition] != instrument_type }
+            step[:en][:sections] = temp
+          end
         end
         step
       end
     end
 
-    def update_for_review
-      arabic = deal.user.arabic?
+    def update_for_review(arabic)
       params.map do |step|
         title = arabic ? step[:ar][:title]: step[:en][:title]
         current_step = { id: step[:id], index: step[:index], title: title, fields: [] }
