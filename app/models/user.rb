@@ -125,6 +125,7 @@ class User < ApplicationRecord
 
   def update_role
     title = investor? ? 'Individual Investor' : type
+    title = title == 'FundRaiser' ? 'Fund Raiser' : title
     self.role_id = Role.find_by(title:).id
   end
 
