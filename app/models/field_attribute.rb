@@ -26,6 +26,6 @@ class FieldAttribute < ApplicationRecord
   end
 
   def self.ransackable_associations(_auth_object = nil)
-    %w[options fields_sections]
+    %w[options fields_section]
   end
 end
