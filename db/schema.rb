@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_06_080605) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_26_082204) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -140,7 +140,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_06_080605) do
   end
 
   create_table "deals", force: :cascade do |t|
-    t.integer "target"
+    t.bigint "target"
     t.integer "deal_type", default: 0
     t.integer "status", default: 0
     t.datetime "start_at"
@@ -208,11 +208,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_06_080605) do
     t.text "description"
     t.text "description_ar"
     t.boolean "is_required", default: false
-    t.boolean "is_multiple", default: false
-    t.string "add_more_label"
-    t.string "add_more_label_ar"
     t.integer "field_type", default: 0
-    t.jsonb "decription_link", default: {}
     t.string "permitted_types", array: true
     t.jsonb "size_constraints", default: {}
     t.float "suggestions", default: [], array: true
@@ -221,13 +217,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_06_080605) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "input_type", default: 0
-  end
-
-  create_table "fields_sections", force: :cascade do |t|
-    t.bigint "field_id", null: false
     t.bigint "section_id"
-    t.index ["field_id"], name: "index_fields_sections_on_field_id"
-    t.index ["section_id"], name: "index_fields_sections_on_section_id"
   end
 
   create_table "fund_raiser_profiles", force: :cascade do |t|
@@ -246,8 +236,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_06_080605) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "currency", default: "USD", null: false
-    t.integer "no_of_properties"
     t.bigint "nationality_id"
+    t.integer "no_of_properties"
     t.index ["fund_raiser_id"], name: "index_fund_raiser_profiles_on_fund_raiser_id"
     t.index ["residence_id"], name: "index_fund_raiser_profiles_on_residence_id"
   end
@@ -379,12 +369,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_06_080605) do
     t.float "yearly_appreciation"
     t.jsonb "external_links", default: {}
     t.bigint "deal_id"
-    t.bigint "field_attribute_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_property_details_on_country_id"
     t.index ["deal_id"], name: "index_property_details_on_deal_id"
-    t.index ["field_attribute_id"], name: "index_property_details_on_field_attribute_id"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -429,7 +417,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_06_080605) do
     t.boolean "is_multiple", default: false
     t.string "add_more_label", limit: 50
     t.string "add_more_label_ar", limit: 50
-    t.jsonb "description_link", default: {}
     t.bigint "stepper_id"
     t.boolean "display_card", default: false
     t.datetime "created_at", null: false
@@ -533,7 +520,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_06_080605) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_users", "admin_roles"
   add_foreign_key "deals", "users", column: "author_id"
-  add_foreign_key "fields_sections", "field_attributes", column: "field_id"
-  add_foreign_key "fields_sections", "sections"
   add_foreign_key "invites", "users", column: "invitee_id"
 end
