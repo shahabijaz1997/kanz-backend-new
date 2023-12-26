@@ -4,8 +4,7 @@ class FieldAttribute < ApplicationRecord
   enum field_type: FIELD_TYPE
   enum input_type: INPUT_TYPES
   has_many :options, as: :optionable, class_name: 'Option', dependent: :destroy
-  has_many :fields_sections, dependent: :delete_all
-  has_many :sections, through: :fields_sections
+  belongs_to :section
   has_many :dependencies, as: :dependable, class_name: 'DependencyTree', dependent: :destroy
   has_many :dependents, as: :dependent, class_name: 'DependencyTree', dependent: :destroy
   has_many :attachment, as: :configurable, dependent: :destroy
@@ -26,6 +25,6 @@ class FieldAttribute < ApplicationRecord
   end
 
   def self.ransackable_associations(_auth_object = nil)
-    %w[options fields_sections]
+    %w[options section]
   end
 end

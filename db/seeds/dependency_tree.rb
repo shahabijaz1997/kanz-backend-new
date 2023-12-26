@@ -57,3 +57,23 @@ dependencies.each do |dependency|
     puts record.errors.full_messages
   end
 end
+
+### Set Dependent for startup deal terms step
+statements = ['Valuation Cap', 'Discount' ,'Minimum Check Size','Additional Terms']
+FieldAttribute.where(statement: statements).where.not(field_type: FIELD_TYPE[:switch]).each do |f|
+  dependent_id = FieldAttribute.find_by(statement: f.statement, field_type: FIELD_TYPE[:switch])&.id
+  f.update!(dependent_id: dependent_id)
+end
+
+### Set Dependent for Property deal first step
+statements = ['Swimming Pool', 'Parking','Washrooms', 'Kitchen','Bedrooms']
+FieldAttribute.where(statement: statements).where.not(field_type: FIELD_TYPE[:switch]).each do |f|
+  dependent_id = FieldAttribute.find_by(statement: f.statement, field_type: FIELD_TYPE[:switch])&.id
+  f.update!(dependent_id: dependent_id)
+end
+
+statements = ['duration', 'rent']
+FieldAttribute.where(statement: statements).where.not(field_type: FIELD_TYPE[:switch]).each do |f|
+  dependent_id = FieldAttribute.find_by(statement: 'Property on a rent?', field_type: FIELD_TYPE[:switch])&.id
+  f.update!(dependent_id: dependent_id)
+end
