@@ -52,7 +52,7 @@ class Invite < ApplicationRecord
   def validate_status_change
     return if status_was == 'pending'
 
-    errors[:base] << 'Only pending invites can be updated'
+    errors[:base] << I18n.t('invite_update_condition')
   end
 
   def send_invite_email

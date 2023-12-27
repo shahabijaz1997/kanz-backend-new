@@ -1,0 +1,9 @@
+en:
+  start_date_in_future: "Start date should be in future"
+  end_date_after_start: "End date should be after start date"
+  dates_presence: "Start date and end date should be present"
+  submitted_condition: "Only draft or reopened deals can be submitted"
+  verified_condition: "Only submitted deals can be verified"
+  reopened_condition: "Only submitted or verified deals can be reopened"
+  approved_condition: "Only verified deals can be approved"
+  live_condition: "Only approved deals can be live"
