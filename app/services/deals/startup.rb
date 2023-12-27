@@ -25,8 +25,16 @@ module Deals
     private
 
     def terms
-      terms = FieldAttribute.joins(:terms).where("terms.deal_id = #{deal.id}").pluck(:statement, :enabled, :custom_input)
-      terms.map { |term| { term: term[0], is_enabled: term[1], value: term[2] }}
+      terms = FieldAttribute.joins(:terms).where("terms.deal_id = #{deal.id}")
+      terms = I18n.locale == :en ? terms.pluck(:statement, :enabled, :custom_input) : terms.pluck(:statement_ar, :enabled, :custom_input)
+
+      terms.map do |term|
+        {
+          term: term[0],
+          is_enabled: term[1],
+          value: term[2] 
+        }
+      end
     end
 
     def pitch_deck
