@@ -92,19 +92,19 @@ class Deal < ApplicationRecord
   def start_date_in_future
     return if start_at.blank?
     return if start_at > Time.zone.now
-    errors.add(:base, 'Start date should be in future')
+    errors.add(:base, I18n.t('start_date_in_future'))
   end
 
   def start_date_and_end_date
     return if start_at.blank? || end_at.blank?
     return if start_at < end_at
-    errors.add(:base, 'End date should be after start date')
+    errors.add(:base, I18n.t('end_date_after_start'))
   end
 
   def start_and_end_date_presence
     return if draft?
     return if start_at.present? && end_at.present?
-    errors.add(:base, 'Start date and end date should be present')
+    errors.add(:base, I18n.t('dates_presence'))
   end
 
   def update_current_state
@@ -119,15 +119,15 @@ class Deal < ApplicationRecord
   
   def validate_status_change
     if status == 'submitted' && !(status_was.in? %w[draft reopened])
-      errors[:base] << 'Only draft or reopened deals can be submitted'
+      errors[:base] << I18n.t('submitted_condition')
     elsif status == 'verified' && status_was != 'submitted'
-      errors[:base] << 'Only submitted deals can be verified'
+      errors[:base] << I18n.t('verified_condition')
     elsif status == 'reopened' && !(status_was.in? %w[verified submitted])
-      errors[:base] << 'Only submitted or verified deals can be reopened'
+      errors[:base] << I18n.t('reopened_condition')
     elsif status == 'approved' && status_was != 'verified'
-      errors[:base] << 'Only verified deals can be approved'
+      errors[:base] << I18n.t('approved_condition')
     elsif status == 'live' && status_was != 'approved'
-      errors[:base] << 'Only approved deals can be live'
+      errors[:base] << I18n.t('live_condition')
     end
   end
 
