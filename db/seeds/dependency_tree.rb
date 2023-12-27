@@ -61,7 +61,8 @@ end
 ### Set Dependent for startup deal terms step
 statements = ['Valuation Cap', 'Discount' ,'Minimum Check Size','Additional Terms']
 FieldAttribute.where(statement: statements).where.not(field_type: FIELD_TYPE[:switch]).each do |f|
-  dependent_id = FieldAttribute.find_by(statement: f.statement, field_type: FIELD_TYPE[:switch])&.id
+  section_id = f.section_id
+  dependent_id = FieldAttribute.find_by(statement: f.statement, field_type: FIELD_TYPE[:switch], section_id: section_id)&.id
   f.update!(dependent_id: dependent_id)
 end
 
@@ -77,3 +78,6 @@ FieldAttribute.where(statement: statements).where.not(field_type: FIELD_TYPE[:sw
   dependent_id = FieldAttribute.find_by(statement: 'Property on a rent?', field_type: FIELD_TYPE[:switch])&.id
   f.update!(dependent_id: dependent_id)
 end
+
+field = FieldAttribute.find_by(field_mapping: 'features_attributes.title')
+FieldAttribute.find_by(field_mapping: 'features_attributes.description').update(dependent_id: field.id)
