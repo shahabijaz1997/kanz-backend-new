@@ -9,8 +9,6 @@ file_names = [
   'user_attachments_config', 'questions' , 'deal_stepper', 'dependency_tree'
 ]
 
-file_names = ['questions']
-
 file_names.each do |file_name|
   load Rails.root.join('db', 'seeds', "#{file_name}.rb")
 end
