@@ -19,6 +19,16 @@ class Attachment < ApplicationRecord
     attachment.save!
   end
 
+  def attachment_name
+    return name if configurable.blank?
+
+    if configurable_type == 'AttachmentConfig'
+      I18n.locale == :en ? configurable.name : configurable.name_ar
+    else
+      I18n.locale == :en ? configurable.statement : configurable.statement_ar
+    end
+  end
+
   private
 
   def set_directory_path
