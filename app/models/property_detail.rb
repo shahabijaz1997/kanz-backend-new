@@ -8,15 +8,15 @@ class PropertyDetail < ApplicationRecord
   belongs_to :country, class_name: 'Option'
 
   def swimming_pool_type
-    swimming_pool&.statement
+    I18n.locale == :en ? swimming_pool&.statement : swimming_pool&.statement_ar
   end
 
   def rental_duration
-    rental_period&.statement
+    I18n.locale == :en ? rental_period&.statement : rental_period&.statement_ar
   end
 
   def country_name
-    country&.statement
+    I18n.locale == :en ? country&.statement : country&.statement_ar
   end
 
   def location_detail
