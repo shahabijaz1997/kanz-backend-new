@@ -10,23 +10,23 @@ class FundingRound < ApplicationRecord
   belongs_to :valuation_phase, class_name: 'Option', optional: true
 
   def stage
-    round&.statement
+    I18n.locale == :en ? round&.statement : round&.statement_ar
   end
 
   def instrument
-    instrument_type&.statement
+    I18n.locale == :en ? instrument_type&.statement : instrument_type&.statement_ar
   end
 
   def equity_kind
-    equity_type&.statement
+    I18n.locale == :en ? equity_type&.statement : equity_type&.statement_ar
   end
 
   def safe_kind
-    safe_type&.statement
+    I18n.locale == :en ? safe_type&.statement : safe_type&.statement_ar
   end
 
   def valuation_type
-    valuation_phase&.statement
+    I18n.locale == :en ? valuation_phase&.statement : valuation_phase&.statement_ar
   end
 
   def self.ransackable_attributes(_auth_object = nil)
