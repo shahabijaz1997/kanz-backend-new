@@ -46,7 +46,7 @@ module Deals
       {
         invite: {
           id: invite.id,
-          status: (invite.expired? ? 'expired' : invite.status),
+          status: invite.humanized_enum((invite.expired? ? 'expired' : invite.status)),
           invited_by: invite.user.name
         }
       }

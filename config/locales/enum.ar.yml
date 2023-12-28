@@ -26,3 +26,9 @@ ar:
     investment:
       committed_amount: 'ملتزم'
       completed: 'مكتمل'
+    comment:
+      pending: 'قيد الانتظار'
+      read: 'يقرأ'
+    syndicate_member:
+      added: 'وأضاف'
+      follower: 'تابع'
