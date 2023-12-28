@@ -26,3 +26,9 @@ en:
     investment:
       committed_amount: 'committed'
       completed: 'completed'
+    comment:
+      pending: 'pending'
+      read: 'read'
+    syndicate_member:
+      added: 'added'
+      follower: 'follower'
