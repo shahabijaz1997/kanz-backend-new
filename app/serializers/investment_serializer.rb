@@ -4,7 +4,11 @@
 class InvestmentSerializer
   include JSONAPI::Serializer
 
-  attributes :id, :amount, :status
+  attributes :id, :amount
+
+  attribute :status do |investment|
+    investment.humanized_enum(investment.status)
+  end
 
   attribute :date do |investment|
     Date.parse(investment.created_at.to_s).strftime('%d/%m/%Y')

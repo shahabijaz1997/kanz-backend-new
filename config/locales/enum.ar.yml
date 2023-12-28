@@ -1,0 +1,28 @@
+ar:
+  enums:
+    deal:
+      draft: 'مسودة'
+      submitted: 'مُقَدَّم'
+      reopened: 'أعيد فتحه'
+      verified: 'تم التحقق'
+      rejected: 'مرفوض'
+      approved: 'موافقة'
+      live: 'مباشرة'
+      closed: 'مغلقة'
+      startup: 'بدء'
+      property: 'عقار'
+      _: 'لا أحد'
+      classic: 'كلاسيكية'
+      syndicate: 'تعاونية'
+    invite:
+      pending: 'قيد الانتظار'
+      interested: 'مهتم'
+      accepted: 'قبلت'
+      approved: 'موافقة'
+      expired: 'منتهية الصلاحية'
+      invested: 'استثمرت'
+      syndication: 'تعاونية'
+      investment: 'استثمار'
+    investment:
+      committed_amount: 'ملتزم'
+      completed: 'مكتمل'

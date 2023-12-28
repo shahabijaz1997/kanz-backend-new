@@ -9,7 +9,7 @@ class DealActivitySerializer
   end
 
   attribute :status do |activity|
-    activity.status
+    activity.humanized_enum(activity.status)
   end
 
   attribute :investor do |activity|
@@ -27,7 +27,8 @@ class DealActivitySerializer
   end
 
   attribute :type do |activity|
-    activity.is_a?(Investment) ? 'investment' : activity.purpose
+    value = activity.is_a?(Investment) ? 'committed_amount' : activity.purpose
+    activity.humanized_enum(value)
   end
 
   attribute :date do |activity|
