@@ -137,8 +137,9 @@ module V1
       data[:attachments] = syndicate_docs
       data[:deal] = deal_details
       data[:thread_id] = thread_id
-      data[:invite_id] = @deal.invites.find_by(invitee_id: params[:id])&.id
-      data[:status] = @deal.invites.find_by(invitee_id: params[:id])&.status
+      invite = @deal.invites.find_by(invitee_id: params[:id])
+      data[:invite_id] = invite&.id
+      data[:status] = invite&.humanized_enum(invite&.status)
 
       data
     end
@@ -147,7 +148,7 @@ module V1
       {
         id: @deal.id,
         title: @deal.title,
-        status: @deal.status
+        status: @deal.humanized_enum(@deal.status)
       }
     end
 

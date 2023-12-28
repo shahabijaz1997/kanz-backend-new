@@ -15,7 +15,7 @@ module Deals
         raised: total_raised,
         committed: total_committed,
         investors: total_investors,
-        category: deal.deal_type,
+        category: deal.humanized_enum(deal.deal_type),
         selling_price: deal.target,
         title: deal.title,
         description: deal.description,
