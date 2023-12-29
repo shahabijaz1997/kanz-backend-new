@@ -21,7 +21,8 @@ module V1
     def all
       pagy, @syndicates = pagy @syndicates.ransack(params[:search]).result
       syndicates = SyndicateListSerializer.new(@syndicates).serializable_hash[:data].map do |sy|
-        sy[:attributes][:invite_status] = invite_status(sy[:attributes][:id])
+        sy[:attributes][:invite] = invite(sy[:attributes][:id])
+        sy[:attributes][:membership_status] = membership_status(sy[:attributes][:id])
         sy[:attributes]
       end
 
@@ -40,8 +41,11 @@ module V1
 
       if current_user.investor?
         membership = @syndicate.membership(current_user.id)
-        syndicate_data[:following] = membership.present?
+        invite = invite(syndicate_data[:id])
+        syndicate_data[:is_member] = membership.present?
         syndicate_data[:membership_id] = membership&.id
+        syndicate_data[:is_invited] = (invite == {})
+        syndicate_data[:invite] = invite(syndicate_data[:id])
       else
         syndicate_data = additional_attributes(syndicate_data) if params[:deal_id].present?
       end
@@ -83,7 +87,7 @@ module V1
       if params[:syndicate_profile][:step].to_i == 1
         params.require(:syndicate_profile).permit(
           :step, :have_you_ever_raised, :raised_amount, :no_times_raised, :profile_link,
-          :dealflow, region_ids: [], industry_ids: []
+          :dealflow, :about, region_ids: [], industry_ids: []
         )
       else
         params.require(:syndicate_profile).permit(:step, :name, :tagline, :logo)
@@ -159,7 +163,8 @@ module V1
     end
 
     def applied_or_received_invitation
-      @syndicates.joins(syndicate_group: :invites).where("invites.invitee_id = ? or invites.user_id =?", current_user.id, current_user.id)
+      @syndicates.joins(syndicate_group: :invites).where("invites.status = ? and invites.invitee_id = ? or invites.user_id =?",
+                                                         Invite::statuses[:pending], current_user.id, current_user.id)
     end
 
     def simplify_attributes(attributes)
@@ -182,14 +187,28 @@ module V1
       @deal.syndicate_comment(@syndicate.id)&.id || @deal.syndicate_and_creator_discussion(@syndicate.id)&.first&.id
     end
 
-    def invite_status(syndicate_id)
-      if Invite.exists?(user_id: syndicate_id, invitee_id: current_user.id, purpose: Invite::purposes[:investment])
+    def membership_status(syndicate_id)
+      syndicate_group = SyndicateGroup.find_by(syndicate_id: syndicate_id)
+      return I18n.t('statuses.member') if syndicate.syndicate_members.exists?(member_id: current_user.id)
+      if Invite.exists?(user_id: syndicate_id, invitee_id: current_user.id, eventable: syndicate_group)
         I18n.t('statuses.invited')
-      elsif Invite.exists?(user_id: current_user.id, invitee_id: syndicate_id, purpose: Invite::purposes[:investment])
+      elsif Invite.exists?(user_id: current_user.id, invitee_id: syndicate_id, eventable: syndicate_group)
         I18n.t('statuses.invited')
       else
         I18n.t('statuses.not_invited')
       end
+    end
+
+    def invite(sy[:attributes][:id])
+      syndicate_group = SyndicateGroup.find_by(syndicate_id: syndicate_id)
+      invite = Invite.find_by(user_id: syndicate_id, invitee_id: current_user.id, eventable: syndicate_group)
+      invite ||= Invite.find_by(user_id: current_user.id, invitee_id: syndicate_id, eventable: syndicate_group)
+      return {} if invite.blank?
+      {
+        id: invite.id,
+        created_at: DateTime.parse(invite.created_at.to_s).strftime('%d/%m/%Y %I:%M:%S %p'),
+        status: invite.humanized_enum(invite.status)
+      }
     end
   end
 end
