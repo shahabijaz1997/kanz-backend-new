@@ -3,6 +3,8 @@ en:
     attributes:
       investment:
         user_id: "You can't"
+        amount: "amount"
+        investment_amount: "investment_amount"
     errors:
       models:
         investment:
