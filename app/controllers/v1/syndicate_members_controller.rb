@@ -23,11 +23,11 @@ module V1
 
     def create
       member = @syndicate.syndicate_members.build(membership_params)
-      member.save ? success('successfully added') : failure(member.errors.full_messages.to_sentence)
+      member.save ? success(I18n.t("syndicate_member.added")) : failure(member.errors.full_messages.to_sentence)
     end
 
     def destroy
-      return success('successfully removed from group') if @syndicate_member.destroy
+      return success(I18n.t("syndicate_member.removed_from_group")) if @syndicate_member.destroy
       
       failure(@syndicate_member.errors.full_messages.to_sentence)
     end
@@ -41,13 +41,13 @@ module V1
     def find_syndicate
       @syndicate = Syndicate.find_by(id: params[:syndicate_id])
 
-      failure('Syndicate not found') if @syndicate.blank?
+      failure(I18n.t("syndicate.not_found")) if @syndicate.blank?
     end
 
     def find_syndicate_member
       @syndicate_member = @syndicate.syndicate_members.find_by(id: params[:id])
 
-      failure('Syndicate member not found') if @syndicate_member.blank?
+      failure(I18n.t("syndicate_member.not_found")) if @syndicate_member.blank?
     end
 
     def stats_by_connection

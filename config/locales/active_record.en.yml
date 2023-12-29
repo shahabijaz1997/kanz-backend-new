@@ -14,7 +14,7 @@ en:
   invite:
     invite_update_condition: "Only pending invites can be updated"
     not_updatable: "Invite can't be updated"
-    group_invited: "successfuly sent an invite to all group members"
+    group_invited: "successfully sent an invite to all group members"
     not_found: "Invite not found"
     invalid_status: "Not a valid status"
   comment:
@@ -29,3 +29,7 @@ en:
     try_again: "invest again in same deal"
   syndicate:
     not_found: "Syndicate not found"
+  syndicate_member:
+    not_found: "Syndicate member not found"
+    removed_from_group: "successfully removed from group"
+    added: "successfully added to group"

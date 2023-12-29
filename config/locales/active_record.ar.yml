@@ -29,3 +29,7 @@ ar:
     try_again: "استثمر مرة أخرى في نفس الصفقة"
   syndicate:
     not_found: "لم يتم العثور على النقابة"
+  syndicate_member:
+    not_found: "لم يتم العثور على عضو النقابة"
+    removed_from_group: "تمت الإزالة بنجاح من المجموعة"
+    added: "تمت الإضافة بنجاح إلى المجموعة"
