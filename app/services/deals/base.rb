@@ -15,11 +15,11 @@ module Deals
         raised: total_raised,
         committed: total_committed,
         investors: total_investors,
-        category: deal.deal_type,
+        category: deal.humanized_enum(deal.deal_type),
         selling_price: deal.target,
         title: deal.title,
         description: deal.description,
-        status: deal.status,
+        status: deal.humanized_enum(deal.status),
         start_at: deal.start_at.blank? ? '' : Date.parse(deal.start_at.to_s).strftime('%d/%m/%Y'),
         end_at: deal.end_at.blank? ? '' : Date.parse(deal.end_at.to_s).strftime('%d/%m/%Y'),
         token: deal.token,
@@ -27,7 +27,7 @@ module Deals
         my_invested_amount: user.investments.find_by(deal_id: deal.id)&.amount,
         current_deal_syndicate: deal.syndicate_id == user.id && deal.syndicate?,
         syndicate_id: deal.syndicate_id,
-        model: deal.model
+        model: deal.humanized_enum(deal.model)
       }.merge(association_attributes)
     end
 

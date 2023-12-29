@@ -44,12 +44,12 @@ module V1
     def find_deal
       @deal = Deal.find_by(id: params[:deal_id])
 
-      failure('Deal not found', 401) if @deal.blank?
+      failure(I18n.t('deal.not_found'), 401) if @deal.blank?
     end
 
     def find_investment
       @investment = current_user.investments.find_by(id: params[:id])
-      failure('Investment not found', 401) if @investment.blank?
+      failure(I18n.t('investment.not_found'), 401) if @investment.blank?
     end
   end
 end

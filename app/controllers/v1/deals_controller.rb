@@ -82,7 +82,7 @@ module V1
     # Only for Syndicates and Deal Creators
     def activities
       deal = Deal.find_by(id: params[:id])
-      return failure('Unable to find deal', 404) if deal.blank?
+      return failure(I18n.t('deal.not_found'), 404) if deal.blank?
 
       activities = deal.activities
       success(
@@ -124,13 +124,13 @@ module V1
 
     def find_deal
       @deal = current_user.deals.find_by(id: params[:id])
-      failure('Unable to find deal', 404) if @deal.blank?
+      failure(I18n.t('deal.not_found'), 404) if @deal.blank?
     end
 
     def set_features
       deal = Deal.find_by(id: params[:id])
-      failure('Unable to find deal', 404) if deal.blank?
-      failure("Startup deals don't have usps") unless deal.property?
+      failure(I18n.t('deal.not_found'), 404) if deal.blank?
+      failure(I18n.t('deal.no_usps')) unless deal.property?
       @features = deal.features
     end
 
@@ -151,7 +151,7 @@ module V1
 
     def get_deal
       @deal = Deal.find_by(token: params[:token])
-      failure('Deal not found', 404) if @deal.blank?
+      failure(I18n.t('deal.not_found'), 404) if @deal.blank?
     end
 
     def invalid_deal_type?
@@ -168,7 +168,7 @@ module V1
 
     def set_invite
       @invite = @deal.invites.find_by(id: deal_approval_params[:invite_id], status: Invite::statuses[:accepted])
-      failure("Invite can't be updated") if @invite.blank?
+      failure(I18n.t('invite.not_updatable')) if @invite.blank?
     end
 
     def stats_by_status

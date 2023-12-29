@@ -102,16 +102,16 @@ module V1
 
     def find_syndicate
       @syndicate = Syndicate.find_by(id: params[:id])
-      failure('No syndicate found', 404) if @syndicate.blank?
+      failure(I18n.t('syndicate.not_found'), 404) if @syndicate.blank?
     end
 
     def validate_deal_association
       return if params[:deal_id].blank?
 
       @deal = Deal.find_by(id: params[:deal_id])
-      failure('Deal not found', 404) if @deal.blank?
+      failure(I18n.t('deal.not_found'), 404) if @deal.blank?
       @invite = @deal.invites.find_by(invitee: params[:id])
-      failure('No invitation found', 404) if @invite.blank?
+      failure(I18n.t('invite.not_found'), 404) if @invite.blank?
     end
 
     def syndicate_comments
@@ -137,8 +137,9 @@ module V1
       data[:attachments] = syndicate_docs
       data[:deal] = deal_details
       data[:thread_id] = thread_id
-      data[:invite_id] = @deal.invites.find_by(invitee_id: params[:id])&.id
-      data[:status] = @deal.invites.find_by(invitee_id: params[:id])&.status
+      invite = @deal.invites.find_by(invitee_id: params[:id])
+      data[:invite_id] = invite&.id
+      data[:status] = invite&.humanized_enum(invite&.status)
 
       data
     end
@@ -147,7 +148,7 @@ module V1
       {
         id: @deal.id,
         title: @deal.title,
-        status: @deal.status
+        status: @deal.humanized_enum(@deal.status)
       }
     end
 

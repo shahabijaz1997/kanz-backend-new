@@ -1,0 +1,34 @@
+en:
+  enums:
+    deal:
+      draft: 'draft'
+      submitted: 'submitted'
+      reopened: 'reopened'
+      verified: 'verified'
+      rejected: 'rejected'
+      approved: 'approved'
+      live: 'live'
+      closed: 'closed'
+      startup: 'startup'
+      property: 'property'
+      _: 'none'
+      classic: 'classic'
+      syndicate: 'syndicate'
+    invite:
+      pending: 'pending'
+      interested: 'interested'
+      accepted: 'accepted'
+      approved: 'approved'
+      expired: 'expired'
+      invested: 'invested'
+      syndication: 'syndication'
+      investment: 'investment'
+    investment:
+      committed_amount: 'committed'
+      completed: 'completed'
+    comment:
+      pending: 'pending'
+      read: 'read'
+    syndicate_member:
+      added: 'added'
+      follower: 'follower'

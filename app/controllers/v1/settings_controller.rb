@@ -35,7 +35,7 @@ module V1
     def verify_deal_status
       return true if @deal.blank?
 
-     failure("Can't update #{@deal.status} deals") unless (@deal.draft? || @deal.reopened? || @deal.approved?)
+     failure(I18n.t('deal.cannot_update', @deal.status)) unless (@deal.draft? || @deal.reopened? || @deal.approved?)
     end
   end
 end

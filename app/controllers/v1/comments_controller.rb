@@ -34,13 +34,13 @@ module V1
     def find_deal
       @deal = Deal.find_by(id: params[:deal_id])
 
-      return failure('Deal not found') if @deal.blank?
+      return failure(I18n.t('deal.not_found')) if @deal.blank?
     end
 
     def find_deal_comment
       @comment = @deal.comments.find_by(id: id)
 
-      return failure('Comment not found') if @comment.blank?
+      return failure(I18n.t('comment.not_found')) if @comment.blank?
     end
 
     def recipient_id
