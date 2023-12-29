@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_26_082204) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_29_080434) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -434,13 +434,21 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_26_082204) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "syndicate_members", force: :cascade do |t|
+  create_table "syndicate_groups", force: :cascade do |t|
+    t.string "title"
     t.bigint "syndicate_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["syndicate_id"], name: "index_syndicate_groups_on_syndicate_id"
+  end
+
+  create_table "syndicate_members", force: :cascade do |t|
+    t.bigint "syndicate_group_id"
     t.bigint "member_id", null: false
     t.integer "connection", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["syndicate_id"], name: "index_syndicate_members_on_syndicate_id"
+    t.index ["syndicate_group_id"], name: "index_syndicate_members_on_syndicate_group_id"
   end
 
   create_table "syndicate_profiles", force: :cascade do |t|

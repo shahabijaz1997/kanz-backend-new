@@ -22,12 +22,15 @@ module V1
 
     def all
       pagy, @syndicates = pagy @syndicates.ransack(params[:search]).result
-      filters = { params: { investor_list_view: current_user.investor? }}
+      syndicates = SyndicateListSerializer.new(@syndicates).serializable_hash[:data].map do |sy|
+        sy[:attributes][:invite_status] = invite_status(sy[:attributes][:id])
+        sy[:attributes]
+      end
 
       success(
         I18n.t('syndicate.get.success.show'),
         {
-          records: SyndicateSerializer.new(@syndicates, filters).serializable_hash[:data].map { |sy| sy[:attributes][:syndicate_list] },
+          records: syndicates,
           pagy: pagy,
           stats: {}
         }
@@ -154,9 +157,16 @@ module V1
 
     def extract_syndicates
       @syndicates = Syndicate.approved
-      @syndicates = @syndicates.joins(:syndicate_members).where(
-        syndicate_members: { member_id: current_user.id }
-      ) if params[:followed].present?
+      @syndicates = my_syndicates if params[:mine].present?
+      @syndicates = applied_or_received_invitation if params[:pending_invite]
+    end
+
+    def my_syndicates
+      @syndicates.joins(syndicate_group: :syndicate_members).where(syndicate_members: { member_id: current_user.id })
+    end
+
+    def applied_or_received_invitation
+      @syndicates.joins(syndicate_group: :invites).where("invites.invitee_id = ? or invites.user_id =?", current_user.id, current_user.id)
     end
 
     def simplify_attributes(attributes)
@@ -177,6 +187,16 @@ module V1
 
     def thread_id
       @deal.syndicate_comment(@syndicate.id)&.id || @deal.syndicate_and_creator_discussion(@syndicate.id)&.first&.id
+    end
+
+    def invite_status(syndicate_id)
+      if Invite.exists?(user_id: syndicate_id, invitee_id: current_user.id, purpose: Invite::purposes[:investment])
+        I18n.t('statuses.invited')
+      elsif Invite.exists?(user_id: current_user.id, invitee_id: syndicate_id, purpose: Invite::purposes[:investment])
+        I18n.t('statuses.invited')
+      else
+        I18n.t('statuses.not_invited')
+      end
     end
   end
 end

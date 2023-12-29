@@ -32,6 +32,7 @@ Rails.application.routes.draw do
         get :all
         get :deals
       end
+      resources :invites, only: %i[create]
       resources :syndicate_members, only: %i[index create destroy]
     end
     resources :syndicate_members, only: %i[index create destroy]

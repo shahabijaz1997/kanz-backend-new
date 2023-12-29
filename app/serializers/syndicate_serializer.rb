@@ -42,18 +42,6 @@ class SyndicateSerializer
     user.role_title
   end
 
-  attribute :syndicate_list, if: Proc.new { |record, params| params && params[:investor_list_view] } do |syndicate|
-    {
-      id: syndicate.id,
-      logo: syndicate.profile&.attachment&.url,
-      name: syndicate.name,
-      created_at: DateTime.parse(syndicate.created_at.to_s).strftime('%d/%m/%Y'),
-      total_deals: syndicate.total_deals,
-      active_deals: syndicate.no_active_deals,
-      raising_fund: !syndicate.no_active_deals.zero?
-    }
-  end
-
   attribute :detail, if: Proc.new { |record, params| params && params[:investor_detail_view] } do |syndicate|
     {
       id: syndicate.id,
