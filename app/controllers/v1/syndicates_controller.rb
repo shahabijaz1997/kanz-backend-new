@@ -22,12 +22,10 @@ module V1
 
     def all
       pagy, @syndicates = pagy @syndicates.ransack(params[:search]).result
-      filters = { params: { investor_list_view: current_user.investor? }}
 
-      syndicates = SyndicateSerializer.new(@syndicates, filters).serializable_hash[:data].map do |sy|
-        syndicate = sy[:attributes][:syndicate_list]
-        syndicate[:invite_status] = invite_status(syndicate[:id])
-        syndicate
+      syndicates = SyndicateListSerializer.new(@syndicates).serializable_hash[:data].map do |sy|
+        sy[:attributes][:invite_status] = invite_status(sy[:attributes][:id])
+        sy[:attributes]
       end
 
       success(
