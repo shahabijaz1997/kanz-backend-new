@@ -24,10 +24,16 @@ module V1
       pagy, @syndicates = pagy @syndicates.ransack(params[:search]).result
       filters = { params: { investor_list_view: current_user.investor? }}
 
+      syndicates = SyndicateSerializer.new(@syndicates, filters).serializable_hash[:data].map do |sy|
+        syndicate = sy[:attributes][:syndicate_list]
+        syndicate[:invite_status] = invite_status(syndicate[:id])
+        syndicate
+      end
+
       success(
         I18n.t('syndicate.get.success.show'),
         {
-          records: SyndicateSerializer.new(@syndicates, filters).serializable_hash[:data].map { |sy| sy[:attributes][:syndicate_list] },
+          records: syndicates,
           pagy: pagy,
           stats: {}
         }
@@ -177,6 +183,16 @@ module V1
 
     def thread_id
       @deal.syndicate_comment(@syndicate.id)&.id || @deal.syndicate_and_creator_discussion(@syndicate.id)&.first&.id
+    end
+
+    def invite_status(syndicate_id)
+      if Invite.exists?(user_id: syndicate_id, invitee_id: current_user.id, purpose: Invite::purposes[:investment])
+        I18n.t('statuses.invited')
+      elsif Invite.exists?(user_id: current_user.id, invitee_id: syndicate_id, purpose: Invite::purposes[:investment])
+        I18n.t('statuses.invited')
+      else
+        I18n.t('statuses.not_invited')
+      end
     end
   end
 end
