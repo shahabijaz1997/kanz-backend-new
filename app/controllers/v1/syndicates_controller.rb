@@ -44,7 +44,7 @@ module V1
         invite = invite(syndicate_data[:id])
         syndicate_data[:is_member] = membership.present?
         syndicate_data[:membership_id] = membership&.id
-        syndicate_data[:is_invited] = (invite == {})
+        syndicate_data[:is_invited] = invite.present?
         syndicate_data[:invite] = invite(syndicate_data[:id])
       else
         syndicate_data = additional_attributes(syndicate_data) if params[:deal_id].present?
@@ -203,7 +203,7 @@ module V1
       syndicate_group = SyndicateGroup.find_by(syndicate_id: syndicate_id)
       invite = Invite.find_by(user_id: syndicate_id, invitee_id: current_user.id, eventable: syndicate_group)
       invite ||= Invite.find_by(user_id: current_user.id, invitee_id: syndicate_id, eventable: syndicate_group)
-      return {} if invite.blank?
+      return nil if invite.blank?
       {
         id: invite.id,
         created_at: DateTime.parse(invite.created_at.to_s).strftime('%d/%m/%Y %I:%M:%S %p'),
