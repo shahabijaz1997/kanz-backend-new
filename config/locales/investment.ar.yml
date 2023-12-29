@@ -1,0 +1,13 @@
+en:
+  activerecord:
+    attributes:
+      investment:
+        user_id: "لا يمكنك"
+        amount: "كمية"
+        investment_amount: "مبلغ الاستثمار"
+    errors:
+      models:
+        investment:
+          attributes:
+            user_id:
+              uniqueness: "استثمر مرة أخرى في نفس الصفقة"
