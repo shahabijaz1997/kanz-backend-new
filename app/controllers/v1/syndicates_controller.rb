@@ -199,7 +199,7 @@ module V1
       end
     end
 
-    def invite(sy[:attributes][:id])
+    def invite(syndicate_id)
       syndicate_group = SyndicateGroup.find_by(syndicate_id: syndicate_id)
       invite = Invite.find_by(user_id: syndicate_id, invitee_id: current_user.id, eventable: syndicate_group)
       invite ||= Invite.find_by(user_id: current_user.id, invitee_id: syndicate_id, eventable: syndicate_group)
