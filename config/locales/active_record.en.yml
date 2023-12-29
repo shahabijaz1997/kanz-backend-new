@@ -1,5 +1,5 @@
 en:
-  deals:
+  deal:
     start_date_in_future: "Start date should be in future"
     end_date_after_start: "End date should be after start date"
     dates_presence: "Start date and end date should be present"
@@ -8,5 +8,28 @@ en:
     reopened_condition: "Only submitted or verified deals can be reopened"
     approved_condition: "Only verified deals can be approved"
     live_condition: "Only approved deals can be live"
+    not_found: "Deal not found"
+    no_usps: "Startup deals don't have usps"
+    cannot_update: "Can't update %{status} deals"
   invite:
-      invite_update_condition: "Only pending invites can be updated"
+    invite_update_condition: "Only pending invites can be updated"
+    not_updatable: "Invite can't be updated"
+    group_invited: "successfully sent an invite to all group members"
+    not_found: "Invite not found"
+    invalid_status: "Not a valid status"
+  comment:
+    not_found: "Comment not found"
+  investment:
+    not_found: "Investment not found"
+    zero_amount_limit: "should be greater than zero"
+    deal_target_limit: "can't exceed the deal target"
+    pending_amount_limit: "exceedes the target amount, you can invest %{pending_amount} at max"
+    check_size_limit: "can't be less than minimum check size"
+    once: "You can invest once!"
+    try_again: "invest again in same deal"
+  syndicate:
+    not_found: "Syndicate not found"
+  syndicate_member:
+    not_found: "Syndicate member not found"
+    removed_from_group: "successfully removed from group"
+    added: "successfully added to group"
