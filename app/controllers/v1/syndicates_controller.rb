@@ -11,12 +11,10 @@ module V1
     def index
       deal = Deal.find_by(id: params[:deal_id])
       syndicates = Syndicate.approved.where.not(id: deal.invites.pluck(:invitee_id)).ransack(params[:search]).result
-      # pagy, syndicates = pagy syndicates
-      filters = { params: { investor: false }}
 
       success(
         I18n.t('syndicate.get.success.show'),
-        SyndicateSerializer.new(syndicates, filters).serializable_hash[:data].map{ |sy| sy[:attributes] }
+        SyndicateSerializer.new(syndicates).serializable_hash[:data].map{ |sy| sy[:attributes] }
       )
     end
 
@@ -38,21 +36,16 @@ module V1
     end
 
     def show
-      syndicate_data = SyndicateSerializer.new(
-        @syndicate,
-        {
-          params: {
-            investor_detail_view: current_user.investor?
-          }
-        }
-      ).serializable_hash[:data][:attributes]
+      syndicate_data = SyndicateDetailSerializer.new(@syndicate).serializable_hash[:data][:attributes]
+
       if current_user.investor?
-        syndicate_data = syndicate_data[:detail]
         membership = @syndicate.membership(current_user.id)
         syndicate_data[:following] = membership.present?
         syndicate_data[:membership_id] = membership&.id
+      else
+        syndicate_data = additional_attributes(syndicate_data) if params[:deal_id].present?
       end
-      syndicate_data = additional_attributes(syndicate_data) if params[:deal_id].present?
+
       success(I18n.t('syndicate.get.success.show'), syndicate_data)
     end
 

@@ -20,10 +20,10 @@ class SyndicateProfileSerializer
   end
 
   attribute :regions do |profile|
-    profile.regions&.pluck(:name)
+    I18n.locale == :en ? profile.regions&.pluck(:name) : profile.regions&.pluck(:name_ar)
   end
 
   attribute :industries do |profile|
-    profile.industries&.pluck(:name)
+    I18n.locale == :en ? profile.industries&.pluck(:name) : profile.industries&.pluck(:name_ar)
   end
 end
