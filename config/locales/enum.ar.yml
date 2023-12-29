@@ -23,6 +23,7 @@ ar:
       invested: 'استثمرت'
       syndication: 'تعاونية'
       investment: 'استثمار'
+      syndicate_membership: 'عضوية النقابة'
     investment:
       committed_amount: 'ملتزم'
       completed: 'مكتمل'

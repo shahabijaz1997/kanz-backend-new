@@ -23,6 +23,7 @@ en:
       invested: 'invested'
       syndication: 'syndication'
       investment: 'investment'
+      syndicate_membership: 'syndicate_membership'
     investment:
       committed_amount: 'committed'
       completed: 'completed'

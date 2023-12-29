@@ -22,7 +22,6 @@ module V1
 
     def all
       pagy, @syndicates = pagy @syndicates.ransack(params[:search]).result
-
       syndicates = SyndicateListSerializer.new(@syndicates).serializable_hash[:data].map do |sy|
         sy[:attributes][:invite_status] = invite_status(sy[:attributes][:id])
         sy[:attributes]
@@ -158,9 +157,16 @@ module V1
 
     def extract_syndicates
       @syndicates = Syndicate.approved
-      @syndicates = @syndicates.joins(:syndicate_members).where(
-        syndicate_members: { member_id: current_user.id }
-      ) if params[:followed].present?
+      @syndicates = my_syndicates if params[:mine].present?
+      @syndicates = applied_or_received_invitation if params[:pending_invite]
+    end
+
+    def my_syndicates
+      @syndicates.joins(syndicate_group: :syndicate_members).where(syndicate_members: { member_id: current_user.id })
+    end
+
+    def applied_or_received_invitation
+      @syndicates.joins(syndicate_group: :invites).where("invites.invitee_id = ? or invites.user_id =?", current_user.id, current_user.id)
     end
 
     def simplify_attributes(attributes)
