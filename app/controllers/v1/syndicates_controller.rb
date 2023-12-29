@@ -189,7 +189,7 @@ module V1
 
     def membership_status(syndicate_id)
       syndicate_group = SyndicateGroup.find_by(syndicate_id: syndicate_id)
-      return I18n.t('statuses.member') if syndicate.syndicate_members.exists?(member_id: current_user.id)
+      return I18n.t('statuses.member') if syndicate_group.syndicate_members.exists?(member_id: current_user.id)
       if Invite.exists?(user_id: syndicate_id, invitee_id: current_user.id, eventable: syndicate_group)
         I18n.t('statuses.invited')
       elsif Invite.exists?(user_id: current_user.id, invitee_id: syndicate_id, eventable: syndicate_group)
