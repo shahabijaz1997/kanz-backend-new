@@ -97,7 +97,7 @@ module V1
       return if params[:deal_id].blank?
 
       @deal = Deal.live.find_by(id: params[:deal_id])
-      failure('Deal not found') if @deal.blank?
+      failure(I18n.t('deal.not_found')) if @deal.blank?
     end
 
     def fetch_investors

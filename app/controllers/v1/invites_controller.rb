@@ -61,7 +61,7 @@ module V1
           }.merge(eventable))
         end
       end
-      success('successfuly sent an invite to all group members')
+      success(I18n.t('invite.group_invited'))
     end
 
     private
@@ -76,13 +76,13 @@ module V1
 
     def set_deal
       @deal = Deal.find_by(id: params[:deal_id])
-      failure('Unable to find deal', 404) if @deal.blank?
+      failure(I18n.t('deal.not_found'), 404) if @deal.blank?
     end
 
     # current user can update the invites he received
     def find_invite
       @invite = @deal.invites.find_by(id: params[:id], invitee_id: current_user.id)
-      failure('Unable to find invite', 404) if  @invite.blank?
+      failure(I18n.t('invite.not_found'), 404) if  @invite.blank?
     end
 
     def invites
@@ -99,7 +99,7 @@ module V1
       status = invite_update_params[:status]
       return if Invite::statuses[status].present? && status == 'accepted'
 
-      failure('invalid status', 400)
+      failure(I18n.t('invite.invalid_status'), 400)
     end
 
     def upload_attachments

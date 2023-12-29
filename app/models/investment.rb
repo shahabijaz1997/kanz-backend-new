@@ -6,7 +6,7 @@ class Investment < ApplicationRecord
   belongs_to :deal
 
   validate :invested_amount_limit
-  validates :user_id, uniqueness: { scope: [:deal_id], message: "invest again in same deal" }
+  validates :user_id, uniqueness: { scope: [:deal_id], message: I18n.t('investment.try_again') }
 
   before_save :check_account_balance
   after_create :update_invite
@@ -20,16 +20,16 @@ class Investment < ApplicationRecord
   end
 
   def invested_amount_limit
-    return errors.add(:amount, 'should be greator that zero') if amount <= 0
-    return errors.add(:investment_amount, "can't exceed the deal target") if amount > deal.target
+    return errors.add(:amount, I18n.t('investment.zero_amount_limit')) if amount <= 0
+    return errors.add(:investment_amount, I18n.t('investment.deal_target_limit')) if amount > deal.target
     pending_amount = deal.target - deal.raised
-    return errors.add(:investment_amount, "exceedes the target amount, you can invest #{pending_amount} at max") if amount > pending_amount
-    return errors.add(:investment_amount, "can't be less than minimum check size" ) if amount < deal.minimum_check_size
+    return errors.add(:investment_amount, I18n.t('investment.pending_amount_limit', pending_amount)) if amount > pending_amount
+    return errors.add(:investment_amount, I18n.t('investment.check_size_limit')) if amount < deal.minimum_check_size
   end
 
   def dublicate_investment
     if Investment.exists?(user_id: user_id, deal_id: deal_id)
-      errors.add(:base, 'You can invest once!')
+      errors.add(:base, I18n.t('investment.once'))
     end
   end
 
