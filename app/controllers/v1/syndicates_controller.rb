@@ -41,8 +41,11 @@ module V1
 
       if current_user.investor?
         membership = @syndicate.membership(current_user.id)
-        syndicate_data[:following] = membership.present?
+        invite = invite(syndicate_data[:id])
+        syndicate_data[:is_member] = membership.present?
         syndicate_data[:membership_id] = membership&.id
+        syndicate_data[:is_invited] = (invite == {})
+        syndicate_data[:invite] = invite(syndicate_data[:id])
       else
         syndicate_data = additional_attributes(syndicate_data) if params[:deal_id].present?
       end
