@@ -114,6 +114,7 @@ Rails.application.routes.draw do
   end
   resources :deals, only: %i[update] do
     collection do
+      get :spv
       resources :start_up, only: %i[index show], controller: 'deals', type: 'start_up'
       resources :property, only: %i[index show], controller: 'deals', type: 'property'
     end
