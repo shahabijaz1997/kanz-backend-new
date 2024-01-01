@@ -127,6 +127,7 @@ Rails.application.routes.draw do
   resources :syndicates, only: %i[index show update]
   resources :deals, only: %i[update] do
     collection do
+      get :spv
       resources :start_up, only: %i[index show], controller: 'deals', type: 'start_up'
       resources :property, only: %i[index show], controller: 'deals', type: 'property'
     end

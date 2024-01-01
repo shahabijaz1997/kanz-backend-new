@@ -3,7 +3,7 @@
 class DealsController < ApplicationController
   include Informer
 
-  before_action :set_deal, only: %i[show update]
+  before_action :set_deal, only: %i[show update spv]
   before_action :authorize_role!
 
   def index
@@ -23,6 +23,10 @@ class DealsController < ApplicationController
         format.html { redirect_to deal_path(@deal), alert: @deal.errors.full_messages.to_sentence }
       end
     end
+  end
+
+  def spv
+    render :spv_modal 
   end
 
   private
