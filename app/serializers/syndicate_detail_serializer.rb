@@ -39,7 +39,6 @@ class SyndicateDetailSerializer < SyndicateSerializer
       pic: nil,
       name: syndicate.name
     }
-    syndicate.profile&.attachment&.url
   end
 
   attribute :portfolio_stats do |syndicate|
