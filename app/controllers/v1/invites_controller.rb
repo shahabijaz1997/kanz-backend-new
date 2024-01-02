@@ -66,7 +66,7 @@ module V1
     private
 
     def invite_params
-      params.require(:invite).permit(%i[message invitee_id])
+      params.require(:invite).permit(%i[message invitee_id discovery_method])
     end
 
     def invite_update_params
