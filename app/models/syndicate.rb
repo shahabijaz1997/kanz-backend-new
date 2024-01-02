@@ -5,8 +5,6 @@ class Syndicate < User
   has_many :deals
   has_one :syndicate_group
 
-  after_create :create_group
-
   def self.ransackable_attributes(_auth_object = nil)
     %w[email name status]
   end
@@ -21,9 +19,5 @@ class Syndicate < User
 
   def membership(member_id)
     syndicate_members.find_by(member_id: member_id)
-  end
-
-  def create_group
-    SyndicateGroup.create!(title: name, syndicate_id: id)
   end
 end
