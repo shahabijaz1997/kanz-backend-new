@@ -3,7 +3,7 @@
 # Syndicate Member Apis
 module V1
   class SyndicateMembersController < ApiController
-    before_action :find_syndicate, only: %i[create destroy]
+    before_action :find_invite, only: %i[create destroy]
     before_action :find_syndicate_member, only: %i[destroy]
     before_action :search_params, only: %i[index]
 
@@ -22,7 +22,7 @@ module V1
     end
 
     def create
-      member = @syndicate.syndicate_members.build(membership_params)
+      member = @invite.eventable.syndicate_members.build(member_params)
       member.save ? success(I18n.t("syndicate_member.added")) : failure(member.errors.full_messages.to_sentence)
     end
 
@@ -34,14 +34,15 @@ module V1
 
     private
 
-    def membership_params
-      params.require(:syndicate_member).permit(:member_id)
+    def find_invite
+      @invite = Invite.syndicate_membership.find_by(id: params[:invite_id], invitee_id: current_user.id)
+      failure(I18n.t("invite.not_found")) if @invite.blank?
     end
 
-    def find_syndicate
-      @syndicate = Syndicate.find_by(id: params[:syndicate_id])
-
-      failure(I18n.t("syndicate.not_found")) if @syndicate.blank?
+    def member_params
+      { 
+        member_id: current_user.syndicate? ? @invite.user_id : @invite.invitee_id
+      }
     end
 
     def find_syndicate_member
