@@ -48,4 +48,35 @@ class SyndicateDetailSerializer < SyndicateSerializer
       regions: I18n.locale == :en ? profile.regions&.pluck(:name) : profile.regions&.pluck(:name_ar)
     }
   end
+
+  attribute :deal_closing_bar_chart_data do |syndicate|
+    results = monthly_closed_deals(syndicate)
+    {
+      labels: results.keys
+      values: results.values
+    }
+  end
+
+  private
+
+  class << self
+    def monthly_closed_deals(syndicate)
+      starting_date = DateTime.current.beginning_of_month - 11.months
+      deals = syndicate.deals.where("deals.end_at < ? AND deals.end_at > ?", DateTime.now, starting_date)
+      monthly_closed_deals = deals.group_by {|t| t.end_at.strftime('%B')}
+
+      months_hash = last_tweleve_months(starting_date)
+      monthly_closed_deals.each do |key, value|
+        months_hash[key] = value.size
+      end
+
+      months_hash
+    end
+
+    def last_tweleve_months(starting_date)
+      months_list = (starting_date.month..12).map { |mn| mn } + (1..(starting_date.month - 1)).map {|mn| mn}
+      month_names = months_list.map {|month| Date::MONTHNAMES[month]}
+      month_names.map {|month| [month, 0]}.to_h
+    end
+  end
 end
