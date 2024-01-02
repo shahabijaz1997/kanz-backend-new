@@ -97,6 +97,10 @@ Rails.application.routes.draw do
     resources :invitees, model_name: 'User' do
       resources :invites, only: %i[index]
     end
+
+    resources :invites do
+      resources :syndicate_groups, only: %i[index create destroy]
+    end
   end
 
   # Admin routes
@@ -110,9 +114,7 @@ Rails.application.routes.draw do
     end
   end
   resources :fund_raisers, only: %i[index show update]
-  resources :syndicates, only: %i[index show update] do
-    resources :syndicate_groups, only: %i[index create destroy]
-  end
+  resources :syndicates, only: %i[index show update]
   resources :deals, only: %i[update] do
     collection do
       resources :start_up, only: %i[index show], controller: 'deals', type: 'start_up'
