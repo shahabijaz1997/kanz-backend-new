@@ -4,6 +4,10 @@
 class SyndicateDetailSerializer < SyndicateSerializer
   attributes :id
 
+  attribute :logo do |syndicate|
+    syndicate.profile.attachment&.url
+  end
+
   attribute :syndicate_name do |syndicate|
     syndicate.profile.name
   end
@@ -36,8 +40,8 @@ class SyndicateDetailSerializer < SyndicateSerializer
 
   attribute :lead do |syndicate|
     {
-      pic: nil,
-      name: syndicate.name
+      name: syndicate.name,
+      profile_pic: nil
     }
   end
 
@@ -72,13 +76,43 @@ class SyndicateDetailSerializer < SyndicateSerializer
     }
   end
 
+  attributes :investments do |syndicate|
+    fundraiser_ids = Deal.live_or_closed.joins(investments: :user).where(investments: { user_id: syndicate.id }).or(Deal.live_or_closed.where(syndicate_id: syndicate.id)).pluck(:author_id)
+    companies = FundRaiser.where(id: fundraiser_ids.uniq)
+
+    companies.map do |company|
+      {
+        name: company.name,
+        profile_pic: company.profile.attachment&.url
+      }
+    end
+  end
+
+  attribute :general_partners do |syndicate|
+    syndicate.syndicate_members.gp.map do |member|
+      {
+        name: member.name,
+        profile_pic: nil # member.profile_pic
+      }
+    end
+  end
+
+  attribute :limited_partners do |syndicate|
+    syndicate.syndicate_members.lp.map do |member|
+      {
+        name: member.name,
+        profile_pic: nil # member.profile_pic
+      }
+    end
+  end
+
   private
 
   class << self
     def monthly_closed_deals(syndicate)
       starting_date = DateTime.current.beginning_of_month - 11.months
       deals = syndicate.deals.where("deals.end_at < ? AND deals.end_at > ?", DateTime.now, starting_date)
-      monthly_closed_deals = deals.group_by {|t| t.end_at.strftime('%B')}
+      monthly_closed_deals = deals.group_by {|t| t.end_at.strftime('%b')}
 
       months_hash = last_tweleve_months(starting_date)
       monthly_closed_deals.each do |key, value|
@@ -90,7 +124,7 @@ class SyndicateDetailSerializer < SyndicateSerializer
 
     def last_tweleve_months(starting_date)
       months_list = (starting_date.month..12).map { |mn| mn } + (1..(starting_date.month - 1)).map {|mn| mn}
-      month_names = months_list.map {|month| Date::MONTHNAMES[month]}
+      month_names = months_list.map {|month| Date::ABBR_MONTHNAMES[month]}
       month_names.map {|month| [month, 0]}.to_h
     end
   end
