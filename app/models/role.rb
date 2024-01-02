@@ -8,11 +8,11 @@ class Role < ApplicationRecord
 
   class << self
     def syndicate_lp
-      Role.find_by(name: 'Limited Partner')
+      Role.find_by(title: 'Limited Partner')
     end
 
     def syndicate_gp
-      Role.find_by(name: 'General Partner')
+      Role.find_by(title: 'General Partner')
     end
   end
 end
