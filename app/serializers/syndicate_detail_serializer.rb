@@ -2,58 +2,74 @@
 
 # Fast json serializer
 class SyndicateDetailSerializer < SyndicateSerializer
-  attributes :id, :name
+  attributes :id,
 
-  attribute :logo do |syndicate|
-    syndicate.profile&.attachment&.url
+  attribute :syndicate_name do |syndicate|
+    syndicate.profile.name
   end
 
   attribute :created_at do |syndicate|
     DateTime.parse(syndicate.created_at.to_s).strftime('%d/%m/%Y')
   end
 
-  attribute :total_deals do |syndicate|
-    syndicate.total_deals
-  end
-
-  attribute :active_deals do |syndicate|
-    syndicate.no_active_deals
-  end
-
   attribute :raising_fund do |syndicate|
     !syndicate.no_active_deals.zero?
+  end
+
+  attribute :tagline do |syndicate|
+    syndicate.profile.tagline
+  end
+
+  attribute :industries do |syndicate|
+    profile = syndicate.profile
+    I18n.locale == :en ? profile.industries&.pluck(:name) : profile.industries&.pluck(:name_ar)
+  end
+
+  attribute :regions do |syndicate|
+    profile = syndicate.profile
+    I18n.locale == :en ? profile.regions&.pluck(:name) : profile.regions&.pluck(:name_ar)
+  end
+
+  attribute :about do |syndicate|
+    syndicate.profile.about
+  end
+
+  attribute :lead do |syndicate|
+    {
+      pic: nil,
+      name: syndicate.name
+    }
+    syndicate.profile&.attachment&.url
+  end
+
+  attribute :portfolio_stats do |syndicate|
+    results = monthly_closed_deals(syndicate)
+    {
+      labels: results.keys,
+      values: results.values,
+      total_deals_closed_in_12_months: results.values.reduce(0, :+),
+      active_deals_count: syndicate.no_active_deals,
+      total_raised: syndicate.invested_amount
+    }
+  end
+
+  attribute :total_deals do |syndicate|
+    syndicate.total_deals
   end
 
   attribute :no_times_raised do |syndicate|
     syndicate.no_investments
   end
 
-  attribute :raised_amount do |syndicate|
-    syndicate.invested_amount
-  end
-
   attribute :profile do |syndicate|
     profile = syndicate.profile
 
     {
-      syndicate_name: profile.name,
-      tagline: profile.tagline,
-      about: profile.about,
       have_you_ever_raised_before: profile.have_you_ever_raised,
       raised_amount_before_joining_kanz: profile.raised_amount,
       no_times_raised_before_joining_kanz: profile.no_times_raised,
       profile_link: profile.profile_link,
       dealflow: profile.dealflow,
-      industries: I18n.locale == :en ? profile.industries&.pluck(:name) : profile.industries&.pluck(:name_ar),
-      regions: I18n.locale == :en ? profile.regions&.pluck(:name) : profile.regions&.pluck(:name_ar)
-    }
-  end
-
-  attribute :deal_closing_bar_chart_data do |syndicate|
-    results = monthly_closed_deals(syndicate)
-    {
-      labels: results.keys,
-      values: results.values
     }
   end
 
