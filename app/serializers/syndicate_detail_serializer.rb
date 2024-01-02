@@ -52,7 +52,7 @@ class SyndicateDetailSerializer < SyndicateSerializer
   attribute :deal_closing_bar_chart_data do |syndicate|
     results = monthly_closed_deals(syndicate)
     {
-      labels: results.keys
+      labels: results.keys,
       values: results.values
     }
   end

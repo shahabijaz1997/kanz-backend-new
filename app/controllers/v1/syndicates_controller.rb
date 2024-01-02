@@ -37,9 +37,8 @@ module V1
     end
 
     def show
-      syndicate_data = SyndicateDetailSerializer.new(@syndicate).serializable_hash[:data][:attributes]
-
       if current_user.investor?
+        syndicate_data = SyndicateDetailSerializer.new(@syndicate).serializable_hash[:data][:attributes]
         membership = @syndicate.membership(current_user.id)
         invite = invite(syndicate_data[:id])
         syndicate_data[:is_member] = membership.present?
@@ -47,6 +46,7 @@ module V1
         syndicate_data[:is_invited] = invite.present?
         syndicate_data[:invite] = invite(syndicate_data[:id])
       else
+        syndicate_data = SyndicateSerializer.new(@syndicate).serializable_hash[:data][:attributes]
         syndicate_data = additional_attributes(syndicate_data) if params[:deal_id].present?
       end
 
