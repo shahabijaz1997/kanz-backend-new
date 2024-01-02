@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_02_103515) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_02_120207) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -517,9 +517,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_02_103515) do
   create_table "syndicate_members", force: :cascade do |t|
     t.bigint "syndicate_group_id"
     t.bigint "member_id", null: false
-    t.integer "connection", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "role_id"
+    t.index ["role_id"], name: "index_syndicate_members_on_role_id"
     t.index ["syndicate_group_id"], name: "index_syndicate_members_on_syndicate_group_id"
   end
 

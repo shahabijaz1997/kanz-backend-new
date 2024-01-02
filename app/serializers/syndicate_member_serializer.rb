@@ -4,10 +4,14 @@
 class SyndicateMemberSerializer
   include JSONAPI::Serializer
 
-  attributes :id, :syndicate_id
+  attributes :id
 
-  attribute :connection do |syndicate_member|
-    syndicate_member.humanized_enum(syndicate_member.connection)
+  attribute :syndicate_id do |syndicate_member|
+    syndicate_member.syndicate_group.syndicate_id
+  end
+  
+  attribute :syndicate_group_id do |syndicate_member|
+    syndicate_member.syndicate_group_id
   end
 
   attribute :joining_date do |syndicate_member|
@@ -23,7 +27,7 @@ class SyndicateMemberSerializer
   end
 
   attribute :member_id do |syndicate_member|
-    syndicate_member.member&.id
+    syndicate_member.member_id
   end
 
   attribute :invested_amount do |syndicate_member|

@@ -90,7 +90,7 @@ module V1
 
     def syndicate_member_ids
       need_members = params[:filter].present? && params[:filter] == 'not_a_member'
-      need_members ? SyndicateMember.by_syndicate(current_user.syndicate_group.id).pluck(:member_id) : []
+      need_members ? SyndicateMember.by_syndicate(current_user.id).pluck(:member_id) : []
     end
 
     def find_deal
