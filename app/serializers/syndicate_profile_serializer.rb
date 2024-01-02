@@ -5,7 +5,7 @@ class SyndicateProfileSerializer
   include JSONAPI::Serializer
 
   attributes :have_you_ever_raised, :raised_amount, :no_times_raised,
-             :profile_link, :dealflow, :name, :tagline
+             :profile_link, :dealflow, :name, :tagline, :about
 
   attribute :logo do |profile|
     profile.attachment&.url

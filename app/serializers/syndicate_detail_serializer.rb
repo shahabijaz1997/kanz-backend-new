@@ -33,6 +33,19 @@ class SyndicateDetailSerializer < SyndicateSerializer
   end
 
   attribute :profile do |syndicate|
-    SyndicateProfileSerializer.new( syndicate.profile).serializable_hash[:data]&.fetch(:attributes)
+    profile = syndicate.profile
+
+    {
+      syndicate_name: profile.name,
+      tagline: profile.tagline,
+      about: profile.about,
+      have_you_ever_raised_before: profile.have_you_ever_raised,
+      raised_amount_before_joining_kanz: profile.raised_amount,
+      no_times_raised_before_joining_kanz: profile.no_times_raised,
+      profile_link: profile.profile_link,
+      dealflow: profile.dealflow,
+      industries: I18n.locale == :en ? profile.industries&.pluck(:name) : profile.industries&.pluck(:name_ar),
+      regions: I18n.locale == :en ? profile.regions&.pluck(:name) : profile.regions&.pluck(:name_ar)
+    }
   end
 end
