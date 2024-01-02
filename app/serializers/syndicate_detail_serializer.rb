@@ -2,7 +2,7 @@
 
 # Fast json serializer
 class SyndicateDetailSerializer < SyndicateSerializer
-  attributes :id,
+  attributes :id
 
   attribute :syndicate_name do |syndicate|
     syndicate.profile.name
