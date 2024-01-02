@@ -24,6 +24,10 @@ ar:
       syndication: 'تعاونية'
       investment: 'استثمار'
       syndicate_membership: 'عضوية النقابة'
+      news: 'أخبار'
+      social_media: 'وسائل التواصل الاجتماعي'
+      website: 'موقع الويب'
+      other: 'آخر'
     investment:
       committed_amount: 'ملتزم'
       completed: 'مكتمل'

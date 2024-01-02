@@ -5,10 +5,11 @@ class Invite < ApplicationRecord
   belongs_to :user
   belongs_to :invitee, class_name: 'User'
 
-  validates_uniqueness_of :invitee_id, scope: %i[eventable_type eventable_id]
+  validates_uniqueness_of :invitee_id, scope: %i[eventable_type eventable_id user_id]
 
   enum status: { pending: 0, interested: 1, accepted: 2, approved: 3, expired: 4, invested: 5 }
   enum purpose: { syndication: 0, investment: 1, syndicate_membership: 2 }
+  enum discovery_method: { news: 0, social_media: 1, website: 2, other: 3 }
 
   before_update :validate_status_change
   # after_create :send_invite_email

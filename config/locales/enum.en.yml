@@ -24,6 +24,10 @@ en:
       syndication: 'syndication'
       investment: 'investment'
       syndicate_membership: 'syndicate_membership'
+      news: 'news'
+      social_media: 'social media'
+      website: 'website'
+      other: 'other'
     investment:
       committed_amount: 'committed'
       completed: 'completed'
