@@ -10,7 +10,7 @@ module V1
     def index
       @syndicate_members = current_user.syndicate_members.ransack(params[:search]).result
       stats = stats_by_connection
-      pagy, @syndicate_members = pagy @syndicate_members.filter_by_connection(connection).latest_first
+      pagy, @syndicate_members = pagy @syndicate_members.filter_by_connection(connection).latest_first, max_items: 8
       success(
         'success',
         {
