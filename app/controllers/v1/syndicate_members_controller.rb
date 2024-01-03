@@ -21,6 +21,45 @@ module V1
       )
     end
 
+    def investors
+      member_ids = SyndicateMember.by_syndicate(current_user.id).pluck(:member_id)
+      pagy, investors = pagy Investor.approved.where.not(id: member_ids).ransack(params[:search]).result
+      investors = InvestorListSerializer.new(investors).serializable_hash[:data].map {|d| d[:attributes]}
+
+      success('success',
+        {
+          records: investors,
+          pagy: pagy
+        }
+      )
+    end
+
+    def applications
+      invites = current_user.syndicate_group.invites.where(invitee_id: current_user.id).pending
+      pagy, invites = pagy invites.ransack(params[:search]).result.latest_first
+      invites = SyndicateMemberApplicationSerializer.new(invites).serializable_hash[:data].map {|d| d[:attributes]}
+
+      success('success',
+        {
+          records: invites,
+          pagy: pagy
+        }
+      )
+    end
+
+    def invites
+      invites = current_user.syndicate_group.invites.where(user_id: current_user.id).pending
+      pagy, invites = pagy invites.ransack(params[:search]).result.latest_first
+      invites = SyndicateMemberInviteSerializer.new(invites).serializable_hash[:data].map {|d| d[:attributes]}
+
+      success('success',
+        {
+          records: invites,
+          pagy: pagy
+        }
+      )
+    end
+
     def create
       member = @invite.eventable.syndicate_members.build(member_params)
       member.save ? success(I18n.t("syndicate_member.added")) : failure(member.errors.full_messages.to_sentence)
@@ -54,8 +93,8 @@ module V1
     def stats_by_role
       {
         all: @syndicate_members.count,
-        lps: @syndicate_members.where(role_id: Role.find_by(name: 'Limited Partner')).count,
-        gps: @syndicate_members.where(role_id: Role.find_by(name: 'General Partner')).count
+        lps: @syndicate_members.where(role_id: Role.syndicate_lp).count,
+        gps: @syndicate_members.where(role_id: Role.syndicate_gp).count
       }
     end
   end

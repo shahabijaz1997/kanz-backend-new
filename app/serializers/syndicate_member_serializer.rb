@@ -3,7 +3,6 @@
 # Fast json serializer
 class SyndicateMemberSerializer
   include JSONAPI::Serializer
-
   attributes :id
 
   attribute :syndicate_id do |syndicate_member|
@@ -14,20 +13,24 @@ class SyndicateMemberSerializer
     syndicate_member.syndicate_group_id
   end
 
-  attribute :joining_date do |syndicate_member|
-    DateTime.parse(syndicate_member.created_at.to_s).strftime('%d/%m/%Y')
-  end
-
-  attribute :member_name do |syndicate_member|
-    syndicate_member.member&.name
-  end
-
-  attribute :member_type do |syndicate_member|
-    syndicate_member.member&.type
-  end
-
   attribute :member_id do |syndicate_member|
     syndicate_member.member_id
+  end
+
+  attribute :member_name do |group|
+    group.member.name
+  end
+
+  attribute :profile_pic do |group|
+    group.member.profile_pic
+  end
+
+  attribute :role do |syndicate_member|
+    I18n.locale == :en ? syndicate_member.role_title : syndicate_member.role_title_ar
+  end
+
+  attribute :joining_date do |syndicate_member|
+    DateTime.parse(syndicate_member.created_at.to_s).strftime('%d/%m/%Y')
   end
 
   attribute :invested_amount do |syndicate_member|
