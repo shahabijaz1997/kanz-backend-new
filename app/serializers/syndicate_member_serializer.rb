@@ -10,7 +10,7 @@ class SyndicateMemberSerializer
   end
 
   attribute :syndicate_id do |syndicate_member|
-    syndicate_member.syndicate_group.syndicate_id
+    syndicate_member.syndicate_group&.syndicate_id
   end
 
   attribute :is_member do |syndicate_member|

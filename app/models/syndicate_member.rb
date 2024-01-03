@@ -21,10 +21,4 @@ class SyndicateMember < ApplicationRecord
   def self.ransackable_associations(_auth_object = nil)
     %w[member syndicate_group]
   end
-
-  private
-
-  def set_default_role
-    self.role = Role.syndicate_lp
-  end
 end

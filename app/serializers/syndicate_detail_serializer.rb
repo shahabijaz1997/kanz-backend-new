@@ -91,7 +91,7 @@ class SyndicateDetailSerializer < SyndicateSerializer
   attribute :general_partners do |syndicate|
     syndicate.syndicate_members.gp.map do |member|
       {
-        name: member.name,
+        name: member.member.name,
         profile_pic: nil # member.profile_pic
       }
     end
@@ -100,7 +100,7 @@ class SyndicateDetailSerializer < SyndicateSerializer
   attribute :limited_partners do |syndicate|
     syndicate.syndicate_members.lp.map do |member|
       {
-        name: member.name,
+        name: member.member.name,
         profile_pic: nil # member.profile_pic
       }
     end
