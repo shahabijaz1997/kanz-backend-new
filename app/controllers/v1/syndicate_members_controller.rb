@@ -66,6 +66,7 @@ module V1
     def accept_invite
       @member = @invite.eventable.syndicate_members.build(member_params)
       Invite.transaction do
+        @member.role = Role.syndicate_lp
         @member.save!
         @invite.update!(status: Invite::statuses[:accepted])
       end
@@ -90,7 +91,8 @@ module V1
     end
 
     def update
-      @syndicate_member.update(member_role_params) ? success('success') :failure(@syndicate_member.errors.full_messages.to_sentence)
+      @syndicate_member.role = Role.find_by(title: member_role_params[:role])
+      @syndicate_member.save ? success('success') :failure(@syndicate_member.errors.full_messages.to_sentence)
     end
 
     private
@@ -105,7 +107,7 @@ module V1
     end
 
     def member_params
-      { member_id: current_user.syndicate? ? @invite.user_id : @invite.invitee_id }
+      { member_id: (current_user.syndicate? ? @invite.user_id : @invite.invitee_id) }
     end
 
     def member_role_params
