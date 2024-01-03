@@ -22,7 +22,7 @@ module V1
     end
 
     def investors
-      member_ids = SyndicateMember.by_syndicate(current_user.id).pluck(:member_id)
+      member_ids = current_user.syndicate_group.syndicate_members.pluck(:member_id)
       pagy, investors = pagy Investor.approved.where.not(id: member_ids).ransack(params[:search]).result
       investors = InvestorListSerializer.new(investors).serializable_hash[:data].map {|d| d[:attributes]}
 
