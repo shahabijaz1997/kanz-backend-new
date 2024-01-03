@@ -40,7 +40,7 @@ class SyndicateMemberSerializer
   end
 
   attribute :role do |syndicate_member|
-    I18n.locale == :en ? syndicate_member.member.role_title : syndicate_member.member.role_title_ar
+    I18n.locale == :en ? syndicate_member.role.title : syndicate_member.role.title_ar
   end
 
   attribute :joining_date do |syndicate_member|
