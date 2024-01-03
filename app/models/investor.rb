@@ -29,4 +29,8 @@ class Investor < User
   def following?(syndicate_id)
     syndicate_members.exists?(syndicate_id: syndicate_id)
   end
+
+  def profile_pic
+    nil
+  end
 end

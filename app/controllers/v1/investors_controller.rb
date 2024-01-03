@@ -4,11 +4,17 @@
 module V1
   class InvestorsController < ApiController
     before_action :validate_persona, except: %i[index]
-    before_action :find_deal, :fetch_investors, only: %i[index]
     before_action :search_params, only: %i[deals index]
 
     def index
-      success('success', @investors)
+      pagy, investors = pagy Investor.approved.ransack(params[:search]).result
+      investors = InvestorSerializer.new(investors).serializable_hash[:data].map
+      success('success', 
+        {
+          records: investors,
+          pagy: pagy
+        }
+      )
     end
 
     def show
@@ -86,30 +92,6 @@ module V1
       profile_states = @investor.profile_states
       profile_states[:investor_type] = @investor.role_title
       @investor.update(profile_states: profile_states)
-    end
-
-    def syndicate_member_ids
-      need_members = params[:filter].present? && params[:filter] == 'not_a_member'
-      need_members ? SyndicateMember.by_syndicate(current_user.id).pluck(:member_id) : []
-    end
-
-    def find_deal
-      return if params[:deal_id].blank?
-
-      @deal = Deal.live.find_by(id: params[:deal_id])
-      failure(I18n.t('deal.not_found')) if @deal.blank?
-    end
-
-    def fetch_investors
-      investors = User.approved.where(type: 'Investor').where.not(id: syndicate_member_ids)
-      investors = investors.or(User.approved.where(type: 'Syndicate')) if @deal&.classic?
-      investors = investors.ransack(params[:search]).result
-
-      invitees_ids = @deal.present? ? @deal.invites.pluck(:invitee_id) : []
-      @investors = InvestorSerializer.new(investors).serializable_hash[:data].map do |d|
-        d[:attributes][:already_invited] = d[:attributes][:id].in?(invitees_ids)
-        d[:attributes].select { |key,_| %i[id name invested_amount no_investments already_invited].include? key }
-      end
     end
 
     def stats_by_deal_type

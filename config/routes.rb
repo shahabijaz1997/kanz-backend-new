@@ -35,7 +35,13 @@ Rails.application.routes.draw do
       resources :invites, only: %i[create]
       resources :syndicate_members, only: %i[index create destroy]
     end
-    resources :syndicate_members, only: %i[index create destroy]
+    resources :syndicate_members, only: %i[index create destroy] do
+      collection do
+        get :investors
+        get :applications
+        get :invites
+      end
+    end
     resources :fund_raisers do
       collection do
         get :investors
@@ -67,6 +73,7 @@ Rails.application.routes.draw do
         get :activities
         post :sign_off
         get :unique_selling_points
+        get :investors
       end
       collection do
         get :live
@@ -80,7 +87,6 @@ Rails.application.routes.draw do
       resources :comments
       resources :syndicates, only: %i[show index]
       resources :investments, only: %i[index create]
-      resources :investors, only: %i[index]
     end
     resources :deals, param: :token, only: %i[show]
     post 'deals/:id/submit' => 'deals#submit'

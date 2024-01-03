@@ -24,10 +24,10 @@ module SearchHelper
   def search_hash
     {
       investors: { index: 'name_i_cont', deals: 'title_or_syndicate_name_i_cont' },
-      deals: { index: 'title_i_cont' },
+      deals: { index: 'title_i_cont', investors: 'name_i_cont' },
       syndicates: { index: 'name_i_cont', deals: 'title_i_cont', all: 'name_i_cont' },
       invites: { index: 'eventable_of_Deal_type_title_or_invitee_name_i_cont' },
-      syndicate_members: { index: 'member_name_i_cont' }
+      syndicate_members: { index: 'member_name_i_cont', investors: 'name_i_cont', applications: 'user_name_i_cont', invites: 'invitee_name_i_cont' }
     }
   end
 end

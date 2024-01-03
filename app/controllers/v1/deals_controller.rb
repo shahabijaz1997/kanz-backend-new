@@ -3,7 +3,7 @@
 # Deals api's
 module V1
   class DealsController < ApiController
-    before_action :find_deal, only: %i[review submit documents comments sign_off]
+    before_action :find_deal, only: %i[review submit documents comments sign_off investors]
     before_action :set_deal, only: %i[create]
     before_action :get_deal, only: %i[show]
     before_action :set_invite, only: %i[sign_off]
@@ -120,10 +120,23 @@ module V1
       success('Success', @deal)
     end
 
+    def investors
+      investors = User.approved.where(type: 'Investor')
+      investors = investors.or(User.approved.where(type: 'Syndicate')) if @deal&.classic?
+      investors = investors.ransack(params[:search]).result
+
+      invitees_ids = @deal.present? ? @deal.invites.pluck(:invitee_id) : []
+      @investors = InvestorSerializer.new(investors).serializable_hash[:data].map do |d|
+        d[:attributes][:already_invited] = d[:attributes][:id].in?(invitees_ids)
+        d[:attributes].select { |key,_| %i[id name invested_amount no_investments already_invited].include? key }
+      end
+      success('success', @investors)
+    end
+
     private
 
     def find_deal
-      @deal = current_user.deals.find_by(id: params[:id])
+      @deal = current_user.deals.or(Deal.where(syndicate_id: current_user.id)).find_by(id: params[:id])
       failure(I18n.t('deal.not_found'), 404) if @deal.blank?
     end
 
