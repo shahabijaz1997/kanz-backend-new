@@ -44,7 +44,7 @@ class SyndicateMemberSerializer
   end
 
   attribute :joining_date do |syndicate_member|
-    DateTime.parse(syndicate_member.created_at.to_s).strftime('%d/%m/%Y')
+    syndicate_member.created_at.present? ? DateTime.parse(syndicate_member.created_at.to_s).strftime('%d/%m/%Y') : nil
   end
 
   attribute :invested_amount do |syndicate_member|
