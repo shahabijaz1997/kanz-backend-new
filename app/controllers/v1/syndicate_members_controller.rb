@@ -54,8 +54,8 @@ module V1
     def stats_by_role
       {
         all: @syndicate_members.count,
-        lps: @syndicate_members.where(role_id: Role.find_by(name: 'Limited Partner')).count,
-        gps: @syndicate_members.where(role_id: Role.find_by(name: 'General Partner')).count
+        lps: @syndicate_members.where(role_id: Role.syndicate_lp).count,
+        gps: @syndicate_members.where(role_id: Role.syndicate_gp).count
       }
     end
   end

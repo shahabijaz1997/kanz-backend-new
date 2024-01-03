@@ -14,27 +14,27 @@ class SyndicateMemberSerializer
     syndicate_member.syndicate_group_id
   end
 
-  attribute :joining_date do |syndicate_member|
-    DateTime.parse(syndicate_member.created_at.to_s).strftime('%d/%m/%Y')
-  end
-
-  attribute :member_name do |syndicate_member|
-    syndicate_member.member&.name
-  end
-
-  attribute :member_type do |syndicate_member|
-    syndicate_member.member&.type
-  end
-
   attribute :member_id do |syndicate_member|
     syndicate_member.member_id
   end
 
-  attribute :invested_amount do |syndicate_member|
-    syndicate_member.member.invested_amount
+  attribute :member_name do |group|
+    group.member.name
   end
 
-  attribute :no_investments do |syndicate_member|
-    syndicate_member.member.no_investments
+  attribute :role do |syndicate_member|
+    I18n.locale == :en ? syndicate_member.role.title : syndicate_member.role.title_ar
   end
+
+  attribute :joining_date do |syndicate_member|
+    DateTime.parse(syndicate_member.created_at.to_s).strftime('%d/%m/%Y')
+  end
+
+  # attribute :invested_amount do |syndicate_member|
+  #   syndicate_member.member.invested_amount
+  # end
+
+  # attribute :no_investments do |syndicate_member|
+  #   syndicate_member.member.no_investments
+  # end
 end
