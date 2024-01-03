@@ -64,7 +64,7 @@ module V1
     end
 
     def show
-      invite = current_user.invites.pending.find_by(id: params[:id])
+      invite = current_user.syndicate_group.invites.pending.find_by(id: params[:id])
       return failure(I18n.t('invite.not_found')) if invite.blank?
 
       member_id = current_user.syndicate? ? invite.user_id : invite.invitee_id

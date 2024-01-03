@@ -104,7 +104,7 @@ module V1
     end
 
     def find_investor
-      @investor = Investor.approved.find_by(params[:id])
+      @investor = Investor.approved.find_by(id: params[:id])
       failure(I18n.t('investor.not_found')) if @investor.blank?
     end
 
