@@ -5,6 +5,7 @@ module V1
   class InvestorsController < ApiController
     before_action :validate_persona, except: %i[index]
     before_action :search_params, only: %i[deals index]
+    before_action :find_investor, only: %i[show]
 
     def index
       pagy, investors = pagy Investor.approved.ransack(params[:search]).result
@@ -67,6 +68,14 @@ module V1
       )
     end
 
+    def show
+      syndicate_member = current_user.syndicate_members.build(member_id: @investor.id)
+      success(
+        'success',
+        SyndicateMemberSerializer.new(syndicate_member).serializable_hash[:data][:attributes]
+      )
+    end
+
     private
 
     def validate_persona
@@ -92,6 +101,11 @@ module V1
       profile_states = @investor.profile_states
       profile_states[:investor_type] = @investor.role_title
       @investor.update(profile_states: profile_states)
+    end
+
+    def find_investor
+      @investor = Investor.approved.find_by(params[:id])
+      failure(I18n.t('investor.not_found')) if @investor.blank?
     end
 
     def stats_by_deal_type

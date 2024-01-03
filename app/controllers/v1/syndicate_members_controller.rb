@@ -90,9 +90,6 @@ module V1
       @syndicate_member.update(member_role_params) ? success('success') :failure(@syndicate_member.errors.full_messages.to_sentence)
     end
 
-    # [membership_id, invite_id, name, profile_pic, is_member, role, invite_status, investor_type, accreditation, invested, no_investments, inivte_message]
-    # [Accept[Done], Invite[Done], ChangeRole[Done] ]
-
     private
 
     # current user is syndicate, gp or invited investor
@@ -113,7 +110,7 @@ module V1
     end
 
     def find_syndicate_member
-      @syndicate_member = @syndicate.syndicate_members.find_by(id: params[:id])
+      @syndicate_member = current_user.syndicate_members.find_by(id: params[:id])
       failure(I18n.t("syndicate_member.not_found")) if @syndicate_member.blank?
     end
 
