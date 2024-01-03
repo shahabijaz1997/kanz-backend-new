@@ -15,7 +15,7 @@ class InvestorListSerializer
   end
 
   attribute :accreditation do |investor|
-    investor.profile.accreditation
+    investor.profile&.accreditation
   end
 
   attribute :invested_amount do |investor|
