@@ -104,8 +104,10 @@ Rails.application.routes.draw do
       resources :invites, only: %i[index]
     end
 
-    resources :invites do
-      resources :syndicate_groups, only: %i[index create destroy]
+    resources :invites, param: :invite_id do
+      member do
+        put 'syndicate_members/accept_membership' => 'syndicate_members#accept_membership'
+      end
     end
   end
 
