@@ -30,6 +30,7 @@ module V1
         d[:attributes][:invite_id] = invite&.id
         d[:attributes][:invite_status] = invite&.status
         d[:attributes][:invite_type] = invite.present? ? (invite.user_id == current_user ? 'Invite' : 'Application') : nil
+        d[:attributes]
       end
 
       success('success',
