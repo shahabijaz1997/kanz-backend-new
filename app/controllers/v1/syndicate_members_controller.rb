@@ -29,7 +29,7 @@ module V1
         invite = current_user.syndicate_group.invites.find_by(invitee_id: attributes[:member_id])
         invite ||= current_user.syndicate_group.invites.find_by(user_id: attributes[:member_id])
         attributes[:invite_id] = invite&.id
-        attributes[:invite_status] = invite.status
+        attributes[:invite_status] = invite&.status
         attributes[:invite_type] = invite.present? ? (invite.user_id == current_user ? 'Invite' : 'Application') : nil
         attributes
       end
