@@ -67,7 +67,7 @@ module V1
       invite = current_user.syndicate_group.invites.pending.find_by(id: params[:id])
       return failure(I18n.t('invite.not_found')) if invite.blank?
 
-      member_id = current_user.syndicate? ? invite.user_id : invite.invitee_id
+      member_id = current_user.id == invite.user_id ? invite.invitee_id : invite.user_id
       syndicate_member = current_user.syndicate_members.build(member_id: member_id)
 
       syndicate_member = SyndicateMemberSerializer.new(syndicate_member).serializable_hash[:data][:attributes]
