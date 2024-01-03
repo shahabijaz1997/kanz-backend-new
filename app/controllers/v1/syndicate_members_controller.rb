@@ -60,7 +60,7 @@ module V1
       )
     end
 
-    def accept_membership
+    def accept_invite
       @member = @invite.eventable.syndicate_members.build(member_params)
       Invite.transaction do
         @member.save!
