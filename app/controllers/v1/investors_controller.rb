@@ -3,7 +3,7 @@
 # Investor persona
 module V1
   class InvestorsController < ApiController
-    before_action :validate_persona, except: %i[index]
+    before_action :validate_persona, except: %i[index show]
     before_action :search_params, only: %i[deals index]
     before_action :find_investor, only: %i[show]
 
