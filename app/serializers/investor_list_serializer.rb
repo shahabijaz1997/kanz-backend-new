@@ -27,7 +27,7 @@ class InvestorListSerializer
   end
 
   attribute :legal_name do |investor|
-    investor.legal_name
+    investor.profile&.legal_name
   end
 end
  
