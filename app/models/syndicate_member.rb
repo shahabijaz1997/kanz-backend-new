@@ -5,6 +5,8 @@ class SyndicateMember < ApplicationRecord
   belongs_to :member, class_name: 'User'
   belongs_to :role
 
+  validates :role, inclusion: { in: [ROLES['General Partner'], ROLES['Limited Partner']] }
+
   before_create :set_default_role
 
   scope :by_syndicate, -> (syndicate_id) { joins(:syndicate_group).where(

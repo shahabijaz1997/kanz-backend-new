@@ -3,8 +3,8 @@
 # Syndicate Member Apis
 module V1
   class SyndicateMembersController < ApiController
-    before_action :find_invite, only: %i[create destroy]
-    before_action :find_syndicate_member, only: %i[destroy]
+    before_action :find_invite, only: %i[destroy]
+    before_action :find_syndicate_member, only: %i[show update destroy]
     before_action :search_params, only: %i[index]
 
     def index
@@ -79,10 +79,24 @@ module V1
       failure(@syndicate_member.errors.full_messages.to_sentence)
     end
 
+    def show
+      success(
+        'success',
+        SyndicateMemberSerializer.new(@syndicate_member).serializable_hash[:data][:attributes]
+      )
+    end
+
+    def update
+      @syndicate_member.update(member_role_params) ? success('success') :failure(@syndicate_member.errors.full_messages.to_sentence)
+    end
+
+    # [membership_id, invite_id, name, profile_pic, is_member, role, invite_status, investor_type, accreditation, invested, no_investments, inivte_message]
+    # [Accept[Done], Invite[Done], ChangeRole[Done] ]
+
     private
 
+    # current user is syndicate, gp or invited investor
     def find_invite
-      # current user is syndicate, gp or invited investor
       @invite = Invite.syndicate_membership.where(eventable: current_user).or(
         Invite.syndicate_membership.where(eventable_type: 'Syndicate', invitee_id: current_user)
       ).find_by(id: params[:invite_id])
@@ -91,14 +105,15 @@ module V1
     end
 
     def member_params
-      { 
-        member_id: current_user.syndicate? ? @invite.user_id : @invite.invitee_id
-      }
+      { member_id: current_user.syndicate? ? @invite.user_id : @invite.invitee_id }
+    end
+
+    def member_role_params
+      params.require(:syndicate_member).permit(:role)
     end
 
     def find_syndicate_member
       @syndicate_member = @syndicate.syndicate_members.find_by(id: params[:id])
-
       failure(I18n.t("syndicate_member.not_found")) if @syndicate_member.blank?
     end
 
