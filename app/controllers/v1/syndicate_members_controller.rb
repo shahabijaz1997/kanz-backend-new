@@ -97,8 +97,8 @@ module V1
 
     # current user is syndicate, gp or invited investor
     def find_invite
-      @invite = Invite.syndicate_membership.where(eventable: current_user).or(
-        Invite.syndicate_membership.where(eventable_type: 'Syndicate', invitee_id: current_user)
+      @invite = Invite.syndicate_membership.where(eventable: current_user.syndicate_group).or(
+        Invite.syndicate_membership.where(eventable_type: 'Syndicate', invitee_id: current_user.syndicate_group)
       ).find_by(id: params[:id])
 
       failure(I18n.t("invite.not_found")) if @invite.blank?
