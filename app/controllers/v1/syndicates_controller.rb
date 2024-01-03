@@ -207,7 +207,8 @@ module V1
       {
         id: invite.id,
         created_at: DateTime.parse(invite.created_at.to_s).strftime('%d/%m/%Y %I:%M:%S %p'),
-        status: invite.humanized_enum(invite.status)
+        status: invite.humanized_enum(invite.status),
+        invite_type: (invite.user_id == current_user ? 'Application' : 'Invite')
       }
     end
   end
