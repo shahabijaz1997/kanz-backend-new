@@ -60,9 +60,17 @@ module V1
       )
     end
 
-    def create
-      member = @invite.eventable.syndicate_members.build(member_params)
-      member.save ? success(I18n.t("syndicate_member.added")) : failure(member.errors.full_messages.to_sentence)
+    def accept_membership
+      @member = @invite.eventable.syndicate_members.build(member_params)
+      Invite.transaction do
+        @member.save!
+        @invite.update!(status: Invite::statuses[:accepted])
+      end
+      success(I18n.t("syndicate_member.added"))
+    rescue StandardError => error
+      errors = @invite.errors.full_messages.to_sentence if @invite.errors.present?
+      errors = @member.errors.full_messages.to_sentence if @member.errors.present?
+      failure(errors)
     end
 
     def destroy
@@ -74,7 +82,11 @@ module V1
     private
 
     def find_invite
-      @invite = Invite.syndicate_membership.find_by(id: params[:invite_id], invitee_id: current_user.id)
+      # current user is syndicate, gp or invited investor
+      @invite = Invite.syndicate_membership.where(eventable: current_user).or(
+        Invite.syndicate_membership.where(eventable_type: 'Syndicate', invitee_id: current_user)
+      ).find_by(id: params[:invite_id])
+
       failure(I18n.t("invite.not_found")) if @invite.blank?
     end
 
