@@ -3,7 +3,7 @@
 # Syndicate Member Apis
 module V1
   class SyndicateMembersController < ApiController
-    before_action :find_invite, only: %i[destroy]
+    before_action :find_invite, only: %i[destroy accept_invite]
     before_action :find_syndicate_member, only: %i[show update destroy]
     before_action :search_params, only: %i[index]
 
