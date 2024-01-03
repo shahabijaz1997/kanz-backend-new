@@ -103,7 +103,7 @@ Rails.application.routes.draw do
       resources :invites, only: %i[index]
     end
 
-    resources :invites, param: :invite_id do
+    resources :invites do
       member do
         put 'syndicate_members/accept_invite' => 'syndicate_members#accept_invite'
       end

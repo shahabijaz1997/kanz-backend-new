@@ -63,6 +63,22 @@ module V1
       success(I18n.t('invite.group_invited'))
     end
 
+    def show
+      invite = current_user.invites.pending.find_by(id: params[:id])
+      return failure(I18n.t('invite.not_found')) if invite.blank?
+
+      member_id = current_user.syndicate? ? invite.user_id : invite.invitee_id
+      syndicate_member = current_user.syndicate_members.build(member_id: member_id)
+
+      syndicate_member = SyndicateMemberSerializer.new(syndicate_member).serializable_hash[:data][:attributes]
+      syndicate_member[:invite_id] = invite.id
+      syndicate_member[:invite_status] = invite.status
+      syndicate_member[:personal_note] = invite.message
+      syndicate_member[:invite_type] = invite.user_id == current_user ? 'Invite' : 'Application'
+
+      success('success', syndicate_member)
+    end
+
     private
 
     def invite_params

@@ -14,7 +14,7 @@ class SyndicateMemberSerializer
   end
 
   attribute :is_member do |syndicate_member|
-    true
+    syndicate_member.persisted?
   end
 
   attribute :member_id do |syndicate_member|
