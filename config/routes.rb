@@ -106,7 +106,7 @@ Rails.application.routes.draw do
 
     resources :invites, param: :invite_id do
       member do
-        put 'syndicate_members/accept_membership' => 'syndicate_members#accept_membership'
+        put 'syndicate_members/accept_invite' => 'syndicate_members#accept_invite'
       end
     end
   end
