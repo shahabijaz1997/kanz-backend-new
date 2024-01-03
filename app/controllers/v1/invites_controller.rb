@@ -3,7 +3,7 @@
 # Investor persona
 module V1
   class InvitesController < ApiController
-    before_action :set_deal, except: %i[index create]
+    before_action :set_deal, except: %i[index create show]
     before_action :find_invite, :validate_invite_status, only: %i[update]
     before_action :search_params, :invites, only: %i[index]
     before_action :eventable_and_purpose, only: %i[create]
