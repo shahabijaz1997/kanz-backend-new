@@ -24,7 +24,15 @@ module V1
     def investors
       member_ids = current_user.syndicate_group.syndicate_members.pluck(:member_id)
       pagy, investors = pagy Investor.approved.where.not(id: member_ids).ransack(params[:search]).result
-      investors = InvestorListSerializer.new(investors).serializable_hash[:data].map {|d| d[:attributes]}
+      investors = InvestorListSerializer.new(investors).serializable_hash[:data].map do |d|
+        attributes = d[:attributes]
+        invite = current_user.syndicate_group.invites.find_by(invitee_id: attributes[:member_id])
+        invite ||= current_user.syndicate_group.invites.find_by(user_id: attributes[:member_id])
+        attributes[:invite_id] = invite&.id
+        attributes[:invite_status] = invite.status
+        attributes[:invite_type] = invite.present? ? (invite.user_id == current_user ? 'Invite' : 'Application')
+        attributes
+      end
 
       success('success',
         {
