@@ -74,7 +74,7 @@ module V1
       syndicate_member[:invite_id] = invite.id
       syndicate_member[:invite_status] = invite.status
       syndicate_member[:personal_note] = invite.message
-      syndicate_member[:invite_type] = invite.user_id == current_user ? 'Invite' : 'Application'
+      syndicate_member[:invite_type] = invite.user_id == current_user.id ? 'Invite' : 'Application'
 
       success('success', syndicate_member)
     end
