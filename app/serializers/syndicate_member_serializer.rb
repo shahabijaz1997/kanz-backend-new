@@ -5,12 +5,16 @@ class SyndicateMemberSerializer
   include JSONAPI::Serializer
   attributes :id
 
+  attribute :syndicate_group_id do |syndicate_member|
+    syndicate_member.syndicate_group_id
+  end
+
   attribute :syndicate_id do |syndicate_member|
     syndicate_member.syndicate_group.syndicate_id
   end
-  
-  attribute :syndicate_group_id do |syndicate_member|
-    syndicate_member.syndicate_group_id
+
+  attribute :is_member do |syndicate_member|
+    true
   end
 
   attribute :member_id do |syndicate_member|
@@ -23,6 +27,16 @@ class SyndicateMemberSerializer
 
   attribute :profile_pic do |group|
     group.member.profile_pic
+  end
+
+  attribute :investor_type do |group|
+    investor = group.member
+    I18n.locale == :en ? investor.role_title : investor.role_title_ar
+  end
+
+  attribute :accreditation do |group|
+    profile = group.member.profile
+    profile&.accreditation
   end
 
   attribute :role do |syndicate_member|
@@ -39,5 +53,13 @@ class SyndicateMemberSerializer
 
   attribute :no_investments do |syndicate_member|
     syndicate_member.member.no_investments
+  end
+
+  attribute :invite_id do |syndicate_member|
+    nil
+  end
+
+  attribute :invite_status do |syndicate_member|
+    nil
   end
 end
