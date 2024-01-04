@@ -6,7 +6,7 @@ class SyndicateMemberApplicationSerializer
   attributes :id
 
   attribute :invitee_name do |invite|
-    invite.invitee.name
+    invite.user.name
   end
 
   attribute :profile_pic do |invite|
