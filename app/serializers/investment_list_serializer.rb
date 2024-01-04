@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Fast json serializer
-class InvestorListSerializer
+class InvestmentListSerializer
   include JSONAPI::Serializer
 
   attribute :investor_id do |investment|

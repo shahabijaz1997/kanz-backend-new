@@ -28,7 +28,7 @@ module V1
       success(
         'success',
         {
-          records: InvestorListSerializer.new(investments).serializable_hash[:data].map { |d| d[:attributes] },
+          records: InvestmentListSerializer.new(investments).serializable_hash[:data].map { |d| d[:attributes] },
           stats: {},
           pagy: pagy
         }
