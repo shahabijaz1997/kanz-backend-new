@@ -102,7 +102,7 @@ module V1
       if current_user.syndicate?
         @invite = Invite.syndicate_membership.where(eventable: current_user.syndicate_group).find_by(id: params[:id])
       else
-        @invite = Invite.syndicate_membership.where(eventable_type: 'Syndicate', invitee_id: current_user.id).find_by(id: params[:id])
+        @invite = Invite.syndicate_membership.where(eventable_type: 'SyndicateGroup', invitee_id: current_user.id).find_by(id: params[:id])
       end
       failure(I18n.t("invite.not_found")) if @invite.blank?
     end
