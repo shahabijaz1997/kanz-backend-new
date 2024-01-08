@@ -14,6 +14,7 @@ class SyndicateMember < ApplicationRecord
   scope :lp, -> { where(role: Role.syndicate_lp) }
   scope :gp, -> { where(role: Role.syndicate_gp) }
   scope :latest_first, -> { order(created_at: :desc) }
+  scope :filter_by_role, -> (title) { where(role: Role.find_by(title: title))}
 
   def self.ransackable_attributes(auth_object = nil)
     %w[id]

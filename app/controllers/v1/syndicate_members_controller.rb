@@ -6,32 +6,37 @@ module V1
     before_action :find_invite, only: %i[destroy accept_invite]
     before_action :find_syndicate_member, only: %i[show update destroy]
     before_action :search_params, only: %i[index investors applications invites]
+    before_action :set_filter, only: %i[index]
 
     def index
-      @syndicate_members = current_user.syndicate_members.ransack(params[:search]).result.latest_first
+      @syndicate_members = current_user.syndicate_members.ransack(params[:search]).result
+      @syndicate_members = @syndicate_members.filter_by_role(params[:role])
       stats = stats_by_role
-      pagy, @syndicate_members = pagy @syndicate_members, max_items: 8
+      pagy, @syndicate_members = pagy @syndicate_members.latest_first, max_items: 8
       success(
         'success',
         {
           records: SyndicateMemberSerializer.new(@syndicate_members).serializable_hash[:data].map {|d| d[:attributes]},
-          stats: stats_by_role,
+          stats: stats,
           pagy: pagy
         }
       )
     end
 
     def investors
-      invite_ids = current_user.syndicate_group.invites.pluck(:user_id) + current_user.syndicate_group.invites.pluck(:invitee_id)
-      invite_ids = Investor.where(id: invite_ids).pluck(:id)
-      member_ids = current_user.syndicate_group.syndicate_members.pluck(:member_id) + invite_ids
-      investors = Investor.approved.where.not(id: member_ids)
-      pagy, investors = pagy Investor.approved.where.not(id: member_ids).ransack(params[:search]).result
-      investors = InvestorListSerializer.new(investors).serializable_hash[:data].map { |d| d[:attributes] }
+      invitee_ids = current_user.syndicate_group.invites.pluck(:user_id,:invitee_id).flatten
+      member_ids = current_user.syndicate_group.syndicate_members.pluck(:member_id) + Investor.where(id: invitee_ids).pluck(:id)
+      @investors = Investor.approved.where.not(id: member_ids).ransack(params[:search]).result
+      @investors = @investors.filter_by_role(params[:role] || [INDIVIDUAL_INVESTOR, INVESTMENT_FIRM])
+
+      stats_by_role = stats_by_investor_type()
+      pagy, paginated_investors = pagy @investors
+      paginated_investors = InvestorListSerializer.new(paginated_investors).serializable_hash[:data].map { |d| d[:attributes] }
 
       success('success',
         {
-          records: investors,
+          records: paginated_investors,
+          stats: stats_by_role,
           pagy: pagy
         }
       )
@@ -120,11 +125,24 @@ module V1
       failure(I18n.t("syndicate_member.not_found")) if @syndicate_member.blank?
     end
 
+    def set_filter
+      roles = { lp: LIMITED_PARTNER, gp: GENERAL_PARTNER }
+      params[:role] = roles[params[:role].to_sym] || roles.values
+    end
+
     def stats_by_role
       {
         all: @syndicate_members.count,
-        lps: @syndicate_members.where(role_id: Role.syndicate_lp).count,
-        gps: @syndicate_members.where(role_id: Role.syndicate_gp).count
+        lp: @syndicate_members.where(role_id: Role.syndicate_lp).count,
+        gp: @syndicate_members.where(role_id: Role.syndicate_gp).count
+      }
+    end
+
+    def stats_by_investor_type
+      {
+        all: @investors.count,
+        individual: @investors.individuals.count,
+        firm: @investors.firms.count
       }
     end
   end
