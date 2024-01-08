@@ -20,6 +20,11 @@ ROLES = {
   'Limited Partner' => 3
 }.freeze
 
+INDIVIDUAL_INVESTOR = 'Individual Investor'
+INVESTMENT_FIRM = 'Investment Firm'
+GENERAL_PARTNER = 'General Partner'
+LIMITED_PARTNER = 'Limited Partner'
+
 STATUSES = {
   opened: 0,
   submitted: 1,

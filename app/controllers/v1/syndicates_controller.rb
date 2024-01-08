@@ -19,8 +19,12 @@ module V1
     end
 
     def all
-      pagy, @syndicates = pagy @syndicates.ransack(params[:search]).result
-      syndicates = SyndicateListSerializer.new(@syndicates).serializable_hash[:data].map do |sy|
+      @syndicates.ransack(params[:search]).result
+      @syndicates = filter_by_status(params[:status]) if params[:status].present?
+      stats = stats_by_status()
+      pagy, paginated_records = pagy @syndicates
+
+      paginated_records = SyndicateListSerializer.new(paginated_records).serializable_hash[:data].map do |sy|
         sy[:attributes][:invite] = invite(sy[:attributes][:id])
         sy[:attributes][:membership_status] = membership_status(sy[:attributes][:id])
         sy[:attributes]
@@ -29,9 +33,9 @@ module V1
       success(
         I18n.t('syndicate.get.success.show'),
         {
-          records: syndicates,
+          records: paginated_records,
           pagy: pagy,
-          stats: {}
+          stats: stats
         }
       )
     end
@@ -209,6 +213,42 @@ module V1
         created_at: DateTime.parse(invite.created_at.to_s).strftime('%d/%m/%Y %I:%M:%S %p'),
         status: invite.humanized_enum(invite.status),
         invite_type: (invite.user_id == current_user.id ? 'Application' : 'Invite')
+      }
+    end
+
+    def filter_by_status(status)
+      return @syndicates if params[:pending_invite].present?
+
+      case status
+      when 'applied'
+        @syndicates.applied(current_user.id)
+      when 'invite_received'
+        @syndicates.invite_received(current_user.id)
+      when 'not_invited'
+        @syndicates.not_invited(current_user.id)
+      when 'raising_fund'
+        @syndicates.applied(current_user.id)
+      when 'has_active_deal'
+        @syndicates.applied(current_user.id)
+      else
+        @syndicates
+      end
+    end
+
+    def stats_by_status
+      return {} if params[:pending_invite].present?
+
+      return {
+        all: @syndicates.count,
+        raising_fund: @syndicates.applied(current_user.id).count,
+        has_active_deal: @syndicates.invite_received(current_user.id).count,
+      } if params[:mine].present?
+
+      {
+        all: @syndicates.count,
+        applied: @syndicates.applied(current_user.id).count,
+        invite_received: @syndicates.invite_received(current_user.id).count,
+        not_invited: @syndicates.not_invited(current_user.id).count
       }
     end
   end
