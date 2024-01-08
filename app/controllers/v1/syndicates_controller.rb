@@ -226,22 +226,26 @@ module V1
         @syndicates.invite_received(current_user.id)
       when 'not_invited'
         @syndicates.not_invited(current_user.id)
-      when 'raising_fund'
-        @syndicates.applied(current_user.id)
+      when 'no_active_deal'
+        @syndicates.has_active_deal
       when 'has_active_deal'
-        @syndicates.applied(current_user.id)
+        @syndicates.no_active_deal
       else
         @syndicates
       end
     end
 
     def stats_by_status
-      return {} if params[:pending_invite].present?
+      return {
+        all: @syndicates.count,
+        applied: @syndicates.applied(current_user.id).count,
+        invite_received: @syndicates.invite_received(current_user.id).count
+      } if params[:pending_invite].present?
 
       return {
         all: @syndicates.count,
-        raising_fund: @syndicates.applied(current_user.id).count,
-        has_active_deal: @syndicates.invite_received(current_user.id).count,
+        has_active_deal: @syndicates.has_active_deal.count,
+        no_active_deal: @syndicates.no_active_deal.count,
       } if params[:mine].present?
 
       {
