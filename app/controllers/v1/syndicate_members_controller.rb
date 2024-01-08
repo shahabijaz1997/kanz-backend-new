@@ -6,7 +6,8 @@ module V1
     before_action :find_invite, only: %i[destroy accept_invite]
     before_action :find_syndicate_member, only: %i[show update destroy]
     before_action :search_params, only: %i[index investors applications invites]
-    before_action :set_filter, only: %i[index]
+    before_action :set_member_filter, only: %i[index]
+    before_action :set_investor_role_filter, only: %i[investors]
 
     def index
       @syndicate_members = current_user.syndicate_members.ransack(params[:search]).result
@@ -125,9 +126,14 @@ module V1
       failure(I18n.t("syndicate_member.not_found")) if @syndicate_member.blank?
     end
 
-    def set_filter
+    def set_member_filter
       roles = { lp: LIMITED_PARTNER, gp: GENERAL_PARTNER }
-      params[:role] = roles[params[:role].to_sym] || roles.values
+      params[:role] = params[:role].present? ? roles[params[:role].to_sym] : roles.values
+    end
+
+    def set_investor_role_filter
+      roles = { lp: LIMITED_PARTNER, gp: GENERAL_PARTNER }
+      params[:role] = params[:role].present? ? roles[params[:role].to_sym] : roles.values
     end
 
     def stats_by_role

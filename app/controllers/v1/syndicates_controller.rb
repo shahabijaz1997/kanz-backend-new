@@ -19,7 +19,7 @@ module V1
     end
 
     def all
-      @syndicates.ransack(params[:search]).result
+      @syndicates = @syndicates.ransack(params[:search]).result
       @syndicates = filter_by_status(params[:status]) if params[:status].present?
       stats = stats_by_status()
       pagy, paginated_records = pagy @syndicates
