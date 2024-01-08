@@ -49,6 +49,9 @@ Rails.application.routes.draw do
     resources :investors, only: %i[index show] do
       post :accreditation
       post :investor_type
+      member do 
+        get :details
+      end
       collection do
         get :deals
       end

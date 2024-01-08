@@ -3,9 +3,9 @@
 # Investor persona
 module V1
   class InvestorsController < ApiController
-    before_action :validate_persona, except: %i[index show]
+    before_action :validate_persona, except: %i[index details]
     before_action :search_params, only: %i[deals index]
-    before_action :find_investor, only: %i[show]
+    before_action :find_investor, only: %i[details]
 
     def index
       pagy, investors = pagy Investor.approved.ransack(params[:search]).result
@@ -68,7 +68,7 @@ module V1
       )
     end
 
-    def show
+    def details
       syndicate_member = current_user.syndicate_members.build(member_id: @investor.id)
       success(
         'success',
