@@ -6,6 +6,7 @@ class SyndicateMember < ApplicationRecord
   belongs_to :role, optional: true
 
   validates :role_id, inclusion: { in: [Role.syndicate_lp.id, Role.syndicate_gp.id] }
+  validates_uniqueness_of :member_id, scope: %i[syndicate_group_id]
 
   scope :by_syndicate, -> (syndicate_id) { joins(:syndicate_group).where(
                                            syndicate_group: { syndicate_id: syndicate_id }

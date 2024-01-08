@@ -5,12 +5,12 @@ module V1
   class SyndicateMembersController < ApiController
     before_action :find_invite, only: %i[destroy accept_invite]
     before_action :find_syndicate_member, only: %i[show update destroy]
-    before_action :search_params, only: %i[index]
+    before_action :search_params, only: %i[index investors applications invites]
 
     def index
-      @syndicate_members = current_user.syndicate_members.ransack(params[:search]).result
+      @syndicate_members = current_user.syndicate_members.ransack(params[:search]).result.latest_first
       stats = stats_by_role
-      pagy, @syndicate_members = pagy @syndicate_members.latest_first, max_items: 8
+      pagy, @syndicate_members = pagy @syndicate_members, max_items: 8
       success(
         'success',
         {
