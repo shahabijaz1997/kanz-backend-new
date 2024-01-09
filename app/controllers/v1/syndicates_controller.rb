@@ -261,4 +261,3 @@ module V1
     end
   end
 end
-@syndicates.joins(:deals).where(deals: { id: nil }).or(@syndicates.joins(:deals).where.not(deals: { status: Deal::statuses[:live] }))
