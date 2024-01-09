@@ -220,8 +220,6 @@ module V1
     end
 
     def filter_by_status(status)
-      return @syndicates if params[:pending_invite].present?
-
       case status
       when 'applied'
         @syndicates.applied(current_user.id)
@@ -230,9 +228,9 @@ module V1
       when 'not_invited'
         @syndicates.not_invited(current_user.id)
       when 'no_active_deal'
-        @syndicates.has_active_deal
-      when 'has_active_deal'
         @syndicates.no_active_deal
+      when 'has_active_deal'
+        @syndicates.has_active_deal
       else
         @syndicates
       end
