@@ -11,14 +11,15 @@ module V1
 
     def index
       @syndicate_members = current_user.syndicate_members.ransack(params[:search]).result
-      @syndicate_members = @syndicate_members.filter_by_role(params[:role])
       stats = stats_by_role
-      pagy, @syndicate_members = pagy @syndicate_members.latest_first, max_items: 8
+      @syndicate_members = @syndicate_members.filter_by_role(params[:role])
+      pagy, members_paginated = pagy @syndicate_members.latest_first
+
       success(
         'success',
         {
-          records: SyndicateMemberSerializer.new(@syndicate_members).serializable_hash[:data].map {|d| d[:attributes]},
-          stats: stats,
+          records: SyndicateMemberSerializer.new(members_paginated).serializable_hash[:data].map {|d| d[:attributes]},
+          stats: stats_by_role,
           pagy: pagy
         }
       )
@@ -26,18 +27,16 @@ module V1
 
     def investors
       invitee_ids = current_user.syndicate_group.invites.pluck(:user_id,:invitee_id).flatten
-      member_ids = current_user.syndicate_group.syndicate_members.pluck(:member_id) + Investor.where(id: invitee_ids).pluck(:id)
+      member_ids = current_user.syndicate_members.pluck(:member_id) + Investor.where(id: invitee_ids).pluck(:id)
       @investors = Investor.approved.where.not(id: member_ids).ransack(params[:search]).result
+      stats = stats_by_investor_type
       @investors = @investors.filter_by_role(params[:role])
-
-      stats_by_role = stats_by_investor_type()
       pagy, paginated_investors = pagy @investors
-      paginated_investors = InvestorListSerializer.new(paginated_investors).serializable_hash[:data].map { |d| d[:attributes] }
 
       success('success',
         {
-          records: paginated_investors,
-          stats: stats_by_role,
+          records: InvestorListSerializer.new(paginated_investors).serializable_hash[:data].map { |d| d[:attributes] },
+          stats: stats,
           pagy: pagy
         }
       )
