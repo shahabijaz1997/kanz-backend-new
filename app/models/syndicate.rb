@@ -12,8 +12,8 @@ class Syndicate < User
                                       where("invites.status = ? and invites.invitee_id = ? or invites.user_id =?",
                                       Invite::statuses[:pending], user_id, user_id).pluck(:id)))
                                    }
-  scope :has_active_deal, -> { joins(:deals).where.not(deals: { id: nil }).where(deals: { status: Deal::statuses[:live] }) }
-  scope :no_active_deal, -> { joins(:deals).where(deals: { id: nil, status: Deal::statuses[:live] }) }
+  scope :has_active_deal, -> { joins(:deals).where.not(deals: { id: nil }).where(deals: { status: Deal::statuses[:live] }).uniq }
+  scope :no_active_deal, -> { where.not(id: has_active_deal.pluck(:id)).uniq }
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[email name status]
