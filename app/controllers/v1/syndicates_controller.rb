@@ -157,13 +157,14 @@ module V1
     end
 
     def extract_syndicates
-      @syndicates = Syndicate.approved
+      syndicate_ids = SyndicateGroup.joins(:syndicate_members).where(syndicate_members: {member_id: current_user.id}).pluck(:syndicate_id)
+      @syndicates = Syndicate.approved.where.not(id: syndicate_ids)
       @syndicates = my_syndicates if params[:mine].present?
       @syndicates = applied_or_received_invitation if params[:pending_invite]
     end
 
     def my_syndicates
-      @syndicates.joins(syndicate_group: :syndicate_members).where(syndicate_members: { member_id: current_user.id })
+      Syndicate.approved.joins(syndicate_group: :syndicate_members).where(syndicate_members: { member_id: current_user.id })
     end
 
     def applied_or_received_invitation

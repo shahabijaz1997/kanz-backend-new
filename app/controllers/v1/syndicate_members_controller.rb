@@ -28,7 +28,7 @@ module V1
       invitee_ids = current_user.syndicate_group.invites.pluck(:user_id,:invitee_id).flatten
       member_ids = current_user.syndicate_group.syndicate_members.pluck(:member_id) + Investor.where(id: invitee_ids).pluck(:id)
       @investors = Investor.approved.where.not(id: member_ids).ransack(params[:search]).result
-      @investors = @investors.filter_by_role(params[:role] || [INDIVIDUAL_INVESTOR, INVESTMENT_FIRM])
+      @investors = @investors.filter_by_role(params[:role])
 
       stats_by_role = stats_by_investor_type()
       pagy, paginated_investors = pagy @investors
@@ -132,7 +132,7 @@ module V1
     end
 
     def set_investor_role_filter
-      roles = { lp: LIMITED_PARTNER, gp: GENERAL_PARTNER }
+      roles = { individual: INDIVIDUAL_INVESTOR, firm: INVESTMENT_FIRM }
       params[:role] = params[:role].present? ? roles[params[:role].to_sym] : roles.values
     end
 
