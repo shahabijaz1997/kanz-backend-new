@@ -18,4 +18,16 @@ class InvestorProfile < ApplicationRecord
   def self.ransackable_associations(_auth_object = nil)
     %w[country residence]
   end
+
+  def accreditation
+    I18n.locale == :en ? accreditation_option&.statement : accreditation_option&.statement_ar
+  end
+
+  def country_of_residence
+    I18n.locale == :en ? residence&.name : residence&.name_ar
+  end
+
+  def nationality
+    I18n.locale == :en ? country&.name : country&.name_ar
+  end
 end

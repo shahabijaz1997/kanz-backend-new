@@ -17,6 +17,7 @@ class SyndicateProfile < ApplicationRecord
   validates :name, :tagline, :logo, presence: true, if: :second_step?
 
   after_save :update_profile_industries, :update_profile_regions
+  after_create :create_group
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[region_id industry_id]
@@ -52,5 +53,9 @@ class SyndicateProfile < ApplicationRecord
     region_ids.each do |region_id|
       profiles_regions.create(region_id:)
     end
+  end
+
+  def create_group
+    SyndicateGroup.create!(title: name, syndicate_id: syndicate_id)
   end
 end

@@ -11,45 +11,49 @@ module V1
     def index
       deal = Deal.find_by(id: params[:deal_id])
       syndicates = Syndicate.approved.where.not(id: deal.invites.pluck(:invitee_id)).ransack(params[:search]).result
-      # pagy, syndicates = pagy syndicates
-      filters = { params: { investor: false }}
 
       success(
         I18n.t('syndicate.get.success.show'),
-        SyndicateSerializer.new(syndicates, filters).serializable_hash[:data].map{ |sy| sy[:attributes] }
+        SyndicateSerializer.new(syndicates).serializable_hash[:data].map{ |sy| sy[:attributes] }
       )
     end
 
     def all
-      pagy, @syndicates = pagy @syndicates.ransack(params[:search]).result
-      filters = { params: { investor_list_view: current_user.investor? }}
+      @syndicates = @syndicates.ransack(params[:search]).result.distinct
+      stats = stats_by_status
+      @syndicates = filter_by_status(params[:status]) if params[:status].present?
+      pagy, paginated_records = pagy @syndicates
+
+      paginated_records = SyndicateListSerializer.new(paginated_records).serializable_hash[:data].map do |sy|
+        sy[:attributes][:invite] = invite(sy[:attributes][:id])
+        sy[:attributes][:membership_status] = membership_status(sy[:attributes][:id])
+        sy[:attributes]
+      end
 
       success(
         I18n.t('syndicate.get.success.show'),
         {
-          records: SyndicateSerializer.new(@syndicates, filters).serializable_hash[:data].map { |sy| sy[:attributes][:syndicate_list] },
+          records: paginated_records,
           pagy: pagy,
-          stats: {}
+          stats: stats
         }
       )
     end
 
     def show
-      syndicate_data = SyndicateSerializer.new(
-        @syndicate,
-        {
-          params: {
-            investor_detail_view: current_user.investor?
-          }
-        }
-      ).serializable_hash[:data][:attributes]
       if current_user.investor?
-        syndicate_data = syndicate_data[:detail]
+        syndicate_data = SyndicateDetailSerializer.new(@syndicate).serializable_hash[:data][:attributes]
         membership = @syndicate.membership(current_user.id)
-        syndicate_data[:following] = membership.present?
+        invite = invite(syndicate_data[:id])
+        syndicate_data[:is_member] = membership.present?
         syndicate_data[:membership_id] = membership&.id
+        syndicate_data[:is_invited] = invite.present?
+        syndicate_data[:invite] = invite(syndicate_data[:id])
+      else
+        syndicate_data = SyndicateSerializer.new(@syndicate).serializable_hash[:data][:attributes]
+        syndicate_data = additional_attributes(syndicate_data) if params[:deal_id].present?
       end
-      syndicate_data = additional_attributes(syndicate_data) if params[:deal_id].present?
+
       success(I18n.t('syndicate.get.success.show'), syndicate_data)
     end
 
@@ -90,7 +94,7 @@ module V1
           :dealflow, region_ids: [], industry_ids: []
         )
       else
-        params.require(:syndicate_profile).permit(:step, :name, :tagline, :logo)
+        params.require(:syndicate_profile).permit(:step, :name, :about, :tagline, :logo)
       end
     end
 
@@ -153,10 +157,21 @@ module V1
     end
 
     def extract_syndicates
-      @syndicates = Syndicate.approved
-      @syndicates = @syndicates.joins(:syndicate_members).where(
-        syndicate_members: { member_id: current_user.id }
-      ) if params[:followed].present?
+      if params[:mine].present?
+        @syndicates = my_syndicates
+      else
+        syndicate_ids = SyndicateGroup.joins(:syndicate_members).where(syndicate_members: {member_id: current_user.id}).pluck(:syndicate_id)
+        @syndicates = Syndicate.approved.where.not(id: syndicate_ids)
+        @syndicates = applied_or_received_invitation if params[:pending_invite]
+      end
+    end
+
+    def my_syndicates
+      Syndicate.approved.includes(syndicate_group: :syndicate_members).where(syndicate_members: { member_id: current_user.id })
+    end
+
+    def applied_or_received_invitation
+      @syndicates.joins(syndicate_group: :invites).where('invites.status = ? and invites.invitee_id = ? or invites.user_id =?', Invite::statuses[:pending], current_user.id, current_user.id)
     end
 
     def simplify_attributes(attributes)
@@ -177,6 +192,69 @@ module V1
 
     def thread_id
       @deal.syndicate_comment(@syndicate.id)&.id || @deal.syndicate_and_creator_discussion(@syndicate.id)&.first&.id
+    end
+
+    def membership_status(syndicate_id)
+      syndicate_group = SyndicateGroup.find_by(syndicate_id: syndicate_id)
+      return I18n.t('statuses.member') if syndicate_group.syndicate_members.exists?(member_id: current_user.id)
+      if Invite.exists?(user_id: syndicate_id, invitee_id: current_user.id, eventable: syndicate_group)
+        I18n.t('statuses.invited')
+      elsif Invite.exists?(user_id: current_user.id, invitee_id: syndicate_id, eventable: syndicate_group)
+        I18n.t('statuses.invited')
+      else
+        I18n.t('statuses.not_invited')
+      end
+    end
+
+    def invite(syndicate_id)
+      syndicate_group = SyndicateGroup.find_by(syndicate_id: syndicate_id)
+      invite = Invite.find_by(user_id: syndicate_id, invitee_id: current_user.id, eventable: syndicate_group)
+      invite ||= Invite.find_by(user_id: current_user.id, invitee_id: syndicate_id, eventable: syndicate_group)
+      return nil if invite.blank?
+      {
+        id: invite.id,
+        created_at: DateTime.parse(invite.created_at.to_s).strftime('%d/%m/%Y %I:%M:%S %p'),
+        status: invite.humanized_enum(invite.status),
+        invite_type: (invite.user_id == current_user.id ? 'Applied' : 'Invite Received')
+      }
+    end
+
+    def filter_by_status(status)
+      case status
+      when 'applied'
+        @syndicates.applied(current_user.id)
+      when 'invite_received'
+        @syndicates.invite_received(current_user.id)
+      when 'not_invited'
+        @syndicates.not_invited(current_user.id)
+      when 'no_active_deal'
+        @syndicates.no_active_deal
+      when 'has_active_deal'
+        @syndicates.has_active_deal
+      else
+        @syndicates
+      end
+    end
+
+    def stats_by_status
+      return {
+        all: @syndicates.count,
+        applied: @syndicates.applied(current_user.id).count,
+        invite_received: @syndicates.invite_received(current_user.id).count
+      } if params[:pending_invite].present?
+
+      return {
+        all: @syndicates.count,
+        has_active_deal: @syndicates.has_active_deal.count,
+        no_active_deal: @syndicates.no_active_deal.count,
+      } if params[:mine].present?
+
+      {
+        all: @syndicates.count,
+        applied: @syndicates.applied(current_user.id).count,
+        invite_received: @syndicates.invite_received(current_user.id).count,
+        not_invited: @syndicates.not_invited(current_user.id).count
+      }
     end
   end
 end

@@ -3,9 +3,10 @@
 # Investor persona
 module V1
   class InvitesController < ApiController
-    before_action :set_deal, except: %i[index]
+    before_action :set_deal, except: %i[index create show]
     before_action :find_invite, :validate_invite_status, only: %i[update]
     before_action :search_params, :invites, only: %i[index]
+    before_action :eventable_and_purpose, only: %i[create]
 
     # GET
     # /1.0/deals/:deal_id/invites
@@ -22,10 +23,8 @@ module V1
 
     #POST /1.0/deals/:deal_id/invites
     def create
-      purpose = current_user.syndicate? || @deal.classic? ? Invite::purposes[:investment] : Invite::purposes[:syndication]
-      invite = current_user.invites.new(invite_params.merge(purpose: purpose))
-      invite.eventable = @deal
-
+      invite = current_user.invites.new(invite_params.merge(purpose: @purpose))
+      invite.eventable = @eventable
       if invite.save
         success('success', invite)
       else
@@ -64,10 +63,26 @@ module V1
       success(I18n.t('invite.group_invited'))
     end
 
+    def show
+      invite = current_user.syndicate_group.invites.pending.find_by(id: params[:id])
+      return failure(I18n.t('invite.not_found')) if invite.blank?
+
+      member_id = current_user.id == invite.user_id ? invite.invitee_id : invite.user_id
+      syndicate_member = current_user.syndicate_members.build(member_id: member_id)
+
+      syndicate_member = SyndicateMemberSerializer.new(syndicate_member).serializable_hash[:data][:attributes]
+      syndicate_member[:invite_id] = invite.id
+      syndicate_member[:invite_status] = invite.status
+      syndicate_member[:personal_note] = invite.message
+      syndicate_member[:invite_type] = invite.user_id == current_user.id ? 'Invite' : 'Application'
+
+      success('success', syndicate_member)
+    end
+
     private
 
     def invite_params
-      params.require(:invite).permit(%i[message invitee_id])
+      params.require(:invite).permit(%i[message invitee_id discovery_method])
     end
 
     def invite_update_params
@@ -128,6 +143,18 @@ module V1
 
     def invite_type_params
       params[:invite_type] ||= [Invite.purposes.keys]
+    end
+
+    def eventable_and_purpose
+      if params[:deal_id].present?
+        @eventable = Deal.approved_or_live.find_by(id: params[:deal_id])
+        failure(I18n.t('deal.not_found'), 404) if @eventable.blank?
+        @purpose = (current_user.syndicate? || @deal.classic?) ? Invite::purposes[:investment] : Invite::purposes[:syndication]
+      elsif params[:syndicate_id].present?
+        @eventable =  Syndicate.approved.find_by(id: params[:syndicate_id])&.syndicate_group
+        failure(I18n.t('syndicate.not_found'), 404) if @eventable.blank?
+        @purpose = Invite::purposes[:syndicate_membership]
+      end
     end
   end
 end

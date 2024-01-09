@@ -44,3 +44,8 @@ ar:
     countries_list: 'إليك قائمة الدول'
     invalid: 'رمز غير صالح!'
     get_user: 'معلومات المستخدمين!'
+  statuses:
+    invited: مدعو
+    applied: مُطبَّق
+    not_invited: غير مدعو
+    member: عضو

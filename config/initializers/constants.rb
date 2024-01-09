@@ -15,8 +15,15 @@ ROLES = {
   'Individual Investor' => 0,
   'Investment Firm' => 1,
   'Syndicate' => 2,
-  'FundRaiser' => 3
+  'FundRaiser' => 3,
+  'General Partner' => 4,
+  'Limited Partner' => 3
 }.freeze
+
+INDIVIDUAL_INVESTOR = 'Individual Investor'
+INVESTMENT_FIRM = 'Investment Firm'
+GENERAL_PARTNER = 'General Partner'
+LIMITED_PARTNER = 'Limited Partner'
 
 STATUSES = {
   opened: 0,
