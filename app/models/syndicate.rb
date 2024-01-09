@@ -5,8 +5,8 @@ class Syndicate < User
   has_many :deals
   has_one :syndicate_group
 
-  scope :applied, -> (user_id) { joins(syndicate_group: :invites).where(invites: {status: Invite::statuses[:pending], user_id: user_id }) }
-  scope :invite_received, -> (user_id) { joins(syndicate_group: :invites).where(invites: {status: Invite::statuses[:pending], invitee_id: user_id }) }
+  scope :applied, -> (user_id) { joins(syndicate_group: :invites).where(invites: {status: Invite::statuses[:pending], user_id: user_id }).distinct }
+  scope :invite_received, -> (user_id) { joins(syndicate_group: :invites).where(invites: {status: Invite::statuses[:pending], invitee_id: user_id }).distinct }
   scope :not_invited, -> (user_id) {
                                       where.not(id: (joins(syndicate_group: :invites).
                                       where("invites.status = ? and invites.invitee_id = ? or invites.user_id =?",
