@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_01_025337) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_02_120207) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -158,6 +158,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_01_025337) do
     t.jsonb "current_state", default: {}
     t.integer "model", default: 0
     t.bigint "syndicate_id"
+    t.datetime "closing_date"
     t.index ["author_id"], name: "index_deals_on_author_id"
     t.index ["syndicate_id"], name: "index_deals_on_syndicate_id"
   end
@@ -299,6 +300,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_01_025337) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "purpose", default: 0
+    t.integer "discovery_method", default: 0
     t.index ["eventable_type", "eventable_id"], name: "index_invites_on_eventable"
     t.index ["invitee_id"], name: "index_invites_on_invitee_id"
     t.index ["user_id"], name: "index_invites_on_user_id"
@@ -515,9 +517,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_01_025337) do
   create_table "syndicate_members", force: :cascade do |t|
     t.bigint "syndicate_group_id"
     t.bigint "member_id", null: false
-    t.integer "connection", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "role_id"
+    t.index ["role_id"], name: "index_syndicate_members_on_role_id"
     t.index ["syndicate_group_id"], name: "index_syndicate_members_on_syndicate_group_id"
   end
 

@@ -4,27 +4,30 @@
 class InvestorListSerializer
   include JSONAPI::Serializer
 
-  attribute :investor_id do |investment|
-    investment.user.id
+  attributes :id, :name
+
+  attribute :profile_pic do |investor|
+    investor.profile_pic
   end
 
-  attribute :name do |investment|
-    investment.user.name
+  attribute :investor_type do |investor|
+    I18n.locale == :en ? investor.role_title : investor.role_title_ar
   end
 
-  attribute :deal_title do |investment|
-    investment.deal.title
+  attribute :accreditation do |investor|
+    investor.profile&.accreditation
   end
 
-  attribute :investment_status do |investment|
-    investment.humanized_enum(investment.status)
+  attribute :invested_amount do |investor|
+    investor.invested_amount
   end
 
-  attribute :invested_amount do |investment|
-    investment.amount
+  attribute :no_investments do |investor|
+    investor.no_investments
   end
 
-  attribute :investment_date do |investment|
-    DateTime.parse(investment.created_at.to_s).strftime('%d/%m/%Y %I:%M:%S %p')
+  attribute :legal_name do |investor|
+    investor.profile&.legal_name
   end
 end
+ 

@@ -7,15 +7,16 @@ class Investor < User
   has_one :profile, class_name: 'InvestorProfile', dependent: :destroy
   has_many :syndicate_members, class_name: 'SyndicateMember', foreign_key: :member_id, dependent: :destroy
 
-  scope :individuals, -> { where(user_role: Role.find_by(title: 'Individual Investor')) }
-  scope :firms, -> { where(user_role: Role.find_by(title: 'Investment Firm')) }
+  scope :individuals, -> { where(user_role: Role.individual_investor) }
+  scope :firms, -> { where(user_role: Role.firm_investor) }
+  scope :filter_by_role, -> (title) { where(role_id: Role.where(title: title).pluck(:id))}
 
   def individual_investor?
-    role_title == 'Individual Investor'
+    role_title == INDIVIDUAL_INVESTOR
   end
 
   def investment_firm?
-    role_title == 'Investment Firm'
+    role_title == INVESTMENT_FIRM
   end
 
   def self.ransackable_attributes(_auth_object = nil)
@@ -28,5 +29,9 @@ class Investor < User
 
   def following?(syndicate_id)
     syndicate_members.exists?(syndicate_id: syndicate_id)
+  end
+
+  def profile_pic
+    nil
   end
 end

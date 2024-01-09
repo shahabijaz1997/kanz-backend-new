@@ -32,9 +32,15 @@ Rails.application.routes.draw do
         get :all
         get :deals
       end
-      resources :syndicate_members, only: %i[index create destroy]
+      resources :invites, only: %i[create]
     end
-    resources :syndicate_members, only: %i[index create destroy]
+    resources :syndicate_members, only: %i[index show update destroy] do
+      collection do
+        get :investors
+        get :applications
+        get :invites
+      end
+    end
     resources :fund_raisers do
       collection do
         get :investors
@@ -43,6 +49,9 @@ Rails.application.routes.draw do
     resources :investors, only: %i[index show] do
       post :accreditation
       post :investor_type
+      member do 
+        get :details
+      end
       collection do
         get :deals
       end
@@ -66,6 +75,7 @@ Rails.application.routes.draw do
         get :activities
         post :sign_off
         get :unique_selling_points
+        get :investors
       end
       collection do
         get :live
@@ -79,7 +89,6 @@ Rails.application.routes.draw do
       resources :comments
       resources :syndicates, only: %i[show index]
       resources :investments, only: %i[index create]
-      resources :investors, only: %i[index]
     end
     resources :deals, param: :token, only: %i[show]
     post 'deals/:id/submit' => 'deals#submit'
@@ -96,6 +105,12 @@ Rails.application.routes.draw do
     resources :invitees, model_name: 'User' do
       resources :invites, only: %i[index]
     end
+
+    resources :invites do
+      member do
+        put 'syndicate_members/accept_invite' => 'syndicate_members#accept_invite'
+      end
+    end
   end
 
   # Admin routes
@@ -109,9 +124,7 @@ Rails.application.routes.draw do
     end
   end
   resources :fund_raisers, only: %i[index show update]
-  resources :syndicates, only: %i[index show update] do
-    resources :syndicate_groups, only: %i[index create destroy]
-  end
+  resources :syndicates, only: %i[index show update]
   resources :deals, only: %i[update] do
     collection do
       get :spv
