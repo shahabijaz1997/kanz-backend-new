@@ -19,7 +19,7 @@ module V1
         'success',
         {
           records: SyndicateMemberSerializer.new(members_paginated).serializable_hash[:data].map {|d| d[:attributes]},
-          stats: stats_by_role,
+          stats: stats,
           pagy: pagy
         }
       )
