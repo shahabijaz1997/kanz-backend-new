@@ -20,8 +20,8 @@ module V1
 
     def all
       @syndicates = @syndicates.ransack(params[:search]).result
+      stats = stats_by_status
       @syndicates = filter_by_status(params[:status]) if params[:status].present?
-      stats = stats_by_status()
       pagy, paginated_records = pagy @syndicates
 
       paginated_records = SyndicateListSerializer.new(paginated_records).serializable_hash[:data].map do |sy|
@@ -167,12 +167,12 @@ module V1
     end
 
     def my_syndicates
-      Syndicate.approved.joins(syndicate_group: :syndicate_members).where(syndicate_members: { member_id: current_user.id })
+      Syndicate.approved.includes(syndicate_group: :syndicate_members).where(syndicate_members: { member_id: current_user.id }).uniq
     end
 
     def applied_or_received_invitation
-      @syndicates.joins(syndicate_group: :invites).where("invites.status = ? and invites.invitee_id = ? or invites.user_id =?",
-                                                         Invite::statuses[:pending], current_user.id, current_user.id)
+      @syndicates.includes(syndicate_group: :invites).where("invites.status = ? and invites.invitee_id = ? or invites.user_id =?",
+                                                         Invite::statuses[:pending], current_user.id, current_user.id).uniq
     end
 
     def simplify_attributes(attributes)
