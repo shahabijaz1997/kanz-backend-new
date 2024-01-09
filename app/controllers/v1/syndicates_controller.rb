@@ -157,10 +157,13 @@ module V1
     end
 
     def extract_syndicates
-      syndicate_ids = SyndicateGroup.joins(:syndicate_members).where(syndicate_members: {member_id: current_user.id}).pluck(:syndicate_id)
-      @syndicates = Syndicate.approved.where.not(id: syndicate_ids)
-      @syndicates = my_syndicates if params[:mine].present?
-      @syndicates = applied_or_received_invitation if params[:pending_invite]
+      if params[:mine].present?
+        @syndicates = my_syndicates
+      else
+        syndicate_ids = SyndicateGroup.joins(:syndicate_members).where(syndicate_members: {member_id: current_user.id}).pluck(:syndicate_id)
+        @syndicates = Syndicate.approved.where.not(id: syndicate_ids)
+        @syndicates = applied_or_received_invitation if params[:pending_invite]
+      end
     end
 
     def my_syndicates
@@ -213,7 +216,7 @@ module V1
         id: invite.id,
         created_at: DateTime.parse(invite.created_at.to_s).strftime('%d/%m/%Y %I:%M:%S %p'),
         status: invite.humanized_enum(invite.status),
-        invite_type: (invite.user_id == current_user.id ? 'Application' : 'Invite')
+        invite_type: (invite.user_id == current_user.id ? 'Applied' : 'Invite Received')
       }
     end
 
@@ -258,3 +261,4 @@ module V1
     end
   end
 end
+@syndicates.joins(:deals).where(deals: { id: nil }).or(@syndicates.joins(:deals).where.not(deals: { status: Deal::statuses[:live] }))
