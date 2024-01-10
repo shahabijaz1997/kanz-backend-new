@@ -1,0 +1,29 @@
+= render 'shared/section_card', section_title: 'Action', editable: false do
+  - if can_close_deal?(resource)
+    li.list-group-item
+      .col-3
+        .form-check
+          input#flexRadioDefault1.form-check-input[type="radio" name="flexRadioDefault"]
+          label.form-check-label[for="flexRadioDefault1"]
+            |  FIFS
+      .col-3
+        .form-check
+          input#flexRadioDefault2.form-check-input[type="radio" name="flexRadioDefault" checked]
+          label.form-check-label[for="flexRadioDefault2"]
+            |  Adjust Pro Rata
+      .col-3
+        .form-check
+          input#flexRadioDefault2.form-check-input[type="radio" name="flexRadioDefault" checked]
+          label.form-check-label[for="flexRadioDefault2"]
+            |  Extend Date
+      .col-3
+        button.btn.btn-primary  Create SPV
+    li.list-group-item
+      .col-2
+        label End Date
+      .col-5[data-controller="datepicker"]
+        input#datepicker[data-date-format="mm/dd/yyyy"]
+      .col-3
+        button.btn.btn-primary  Save Changes
+  - else
+    div.not_found = info_message(resource.status)
