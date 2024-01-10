@@ -1,2 +1,2 @@
-module SpvsHelper
+module SpvHelper
 end
