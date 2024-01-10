@@ -53,4 +53,8 @@ module ApprovalHelper
   def verified_classic_deal?(resource)
     resource.is_a?(Deal) && resource.verified? && resource.classic?
   end
+
+  def can_close_deal?(resource)
+    current_admin_user.customer_support_rep? || current_admin_user.compliance_officer?
+  end
 end
