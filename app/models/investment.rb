@@ -18,7 +18,7 @@ class Investment < ApplicationRecord
   end
 
   def self.ransackable_associations(_auth_object = nil)
-    %w[eventable user]
+    %w[deal user]
   end
 
   private
