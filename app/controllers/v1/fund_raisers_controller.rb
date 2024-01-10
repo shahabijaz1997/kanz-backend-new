@@ -23,12 +23,12 @@ module V1
     end
 
     def investors
-      pagy, investors = pagy User.joins(investments: :deal).where(deal: {author_id: current_user.id})
+      pagy, investments = pagy Investment.includes(:deal, :user).where(deal: {author_id: current_user.id})
 
       success(
         'success',
         {
-          records: InvestorSerializer.new(investors).serializable_hash[:data].map { |d| d[:attributes] },
+          records: InvestmentListSerializer.new(investments).serializable_hash[:data].map { |d| d[:attributes] },
           stats: {},
           pagy: pagy
         }
