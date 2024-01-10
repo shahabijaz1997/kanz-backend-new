@@ -149,7 +149,7 @@ module V1
       if params[:deal_id].present?
         @eventable = Deal.approved_or_live.find_by(id: params[:deal_id])
         failure(I18n.t('deal.not_found'), 404) if @eventable.blank?
-        @purpose = (current_user.syndicate? || @deal.classic?) ? Invite::purposes[:investment] : Invite::purposes[:syndication]
+        @purpose = (current_user.syndicate? || @eventable.classic?) ? Invite::purposes[:investment] : Invite::purposes[:syndication]
       elsif params[:syndicate_id].present?
         @eventable =  Syndicate.approved.find_by(id: params[:syndicate_id])&.syndicate_group
         failure(I18n.t('syndicate.not_found'), 404) if @eventable.blank?
