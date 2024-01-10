@@ -5,6 +5,7 @@ module V1
   class FundRaisersController < ApiController
     before_action :validate_fund_raiser
     before_action :check_file_presence, only: %i[create]
+    before_action :search_params, only: %i[investors]
 
     def show
       fund_raiser_attributes = FundRaiserSerializer.new(@fund_raiser).serializable_hash[:data][:attributes]
@@ -23,7 +24,8 @@ module V1
     end
 
     def investors
-      pagy, investments = pagy Investment.includes(:deal, :user).where(deal: {author_id: current_user.id})
+      investments = Investment.includes(:deal, :user).where(deal: {author_id: current_user.id})
+      pagy, investments = pagy investments.ransack(params[:search]).result.distinct
 
       success(
         'success',
