@@ -27,7 +27,7 @@ module SearchHelper
       deals: { index: 'title_i_cont', investors: 'name_i_cont' },
       syndicates: { index: 'name_i_cont', deals: 'title_i_cont', all: 'name_i_cont' },
       invites: { index: 'eventable_of_Deal_type_title_or_invitee_name_i_cont' },
-      syndicate_members: { index: 'member_name_i_cont', investors: 'name_i_cont', applications: 'user_name_i_cont', invites: 'invitee_name_i_cont' }
+      syndicate_members: { index: 'member_name_i_cont', investors: 'name_i_cont', applications: 'user_name_i_cont', invites: 'invitee_name_i_cont' },
       fund_raisers: { investors: 'eventable_of_Deal_type_title_or_user_name_i_cont'}
     }
   end
