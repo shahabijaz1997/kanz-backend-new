@@ -39,7 +39,7 @@ module Deals
 
     def pitch_deck
       field = FieldAttribute.find_by(statement: 'Investor Presentation or Pitch Deck')
-      deal.attachments.find_by(uploaded_by_id: deal.author_id, configurable: field)
+      deal.attachments.find_by(uploaded_by_id: deal.user_id, configurable: field)
     end
 
   end

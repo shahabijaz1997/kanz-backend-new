@@ -13,6 +13,14 @@ class Investment < ApplicationRecord
 
   scope :latest_first, -> { order(created_at: :desc) }
 
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[amount]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[deal user]
+  end
+
   private
 
   def check_account_balance
