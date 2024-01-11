@@ -16,7 +16,7 @@ class User < ApplicationRecord
   validate :check_email_uniqueness
 
   has_many :attachments, as: :parent, dependent: :destroy
-  has_many :deals, class_name: 'Deal', foreign_key: 'author_id'
+  has_many :deals
   belongs_to :user_role, class_name: 'Role', foreign_key: :role_id
   has_many :invites, dependent: :destroy
   has_many :comments, class_name: 'Comment', foreign_key: 'author_id'
