@@ -77,7 +77,7 @@ class SyndicateDetailSerializer < SyndicateSerializer
   end
 
   attributes :investments do |syndicate|
-    fundraiser_ids = Deal.live_or_closed.joins(investments: :user).where(investments: { user_id: syndicate.id }).or(Deal.live_or_closed.where(syndicate_id: syndicate.id)).pluck(:author_id)
+    fundraiser_ids = Deal.live_or_closed.joins(investments: :user).where(investments: { user_id: syndicate.id }).or(Deal.live_or_closed.where(syndicate_id: syndicate.id)).pluck(:user_id)
     companies = FundRaiser.where(id: fundraiser_ids.uniq)
 
     companies.map do |company|

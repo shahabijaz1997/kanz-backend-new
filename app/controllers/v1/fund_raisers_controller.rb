@@ -24,7 +24,7 @@ module V1
     end
 
     def investors
-      investments = Investment.includes(:deal, :user).where(deal: {author_id: current_user.id})
+      investments = Investment.joins(:deal, :user).where(deal: {user_id: current_user.id})
       pagy, investments = pagy investments.ransack(params[:search]).result.distinct
 
       success(
