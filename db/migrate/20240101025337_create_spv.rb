@@ -65,7 +65,8 @@ class CreateSpv < ActiveRecord::Migration[7.0]
 
       t.bigint :created_by
       t.integer :status, default: 0
-      t.integer :step
+      t.bigint :deal_id
+      t.integer :closing_model, default: 0
 
       t.timestamps
     end

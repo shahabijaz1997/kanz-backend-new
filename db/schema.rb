@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_02_120207) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_11_063037) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -146,7 +146,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_02_120207) do
     t.datetime "start_at"
     t.datetime "end_at"
     t.datetime "submitted_at"
-    t.bigint "author_id", null: false
+    t.bigint "user_id", null: false
     t.integer "success_benchmark"
     t.float "how_much_funded"
     t.boolean "agreed_with_kanz_terms", default: false
@@ -159,8 +159,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_02_120207) do
     t.integer "model", default: 0
     t.bigint "syndicate_id"
     t.datetime "closing_date"
-    t.index ["author_id"], name: "index_deals_on_author_id"
     t.index ["syndicate_id"], name: "index_deals_on_syndicate_id"
+    t.index ["user_id"], name: "index_deals_on_user_id"
   end
 
   create_table "dependency_trees", force: :cascade do |t|
@@ -472,6 +472,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_02_120207) do
     t.text "investor_queries"
     t.bigint "created_by"
     t.integer "status", default: 0
+    t.bigint "deal_id"
+    t.integer "closing_model", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["aml_kyc_document_id"], name: "index_spvs_on_aml_kyc_document_id"
@@ -601,6 +603,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_02_120207) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_users", "admin_roles"
-  add_foreign_key "deals", "users", column: "author_id"
+  add_foreign_key "deals", "users"
   add_foreign_key "invites", "users", column: "invitee_id"
 end

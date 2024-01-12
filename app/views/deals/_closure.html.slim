@@ -17,7 +17,7 @@
           label.form-check-label[for="flexRadioDefault2"]
             |  Extend Date
       .col-3
-        button.btn.btn-primary  Create SPV
+        = link_to "Create SPV", spv_deals_path, data: { turbo_frame: "spv-modal" }
     li.list-group-item
       .col-2
         label End Date

@@ -1,5 +1,6 @@
 class Spv < ApplicationRecord
   # include SpvStepper
+  enum closing_model: { fifs: 0, adjust_pro_rata: 1 }
 
   validates :legal_name, :date_of_incorporation, :place_of_incorporation, :legal_structure,
             :jurisdiction, :registered_office_address, presence: true # Step 1
@@ -10,6 +11,7 @@ class Spv < ApplicationRecord
   validates :bank_name, :branch_name, :account_no, :account_title, :capital_requirements, presence: true #step 5
   validates :exit_options, presence: true #step 9
 
+  belongs_to :deal
   belongs_to :created_by, class_name: 'AdminUser', optional: true
   belongs_to :registration_certificate, class_name: 'Attachment', optional: true #1
   belongs_to :governance_structure, class_name: 'attachment', optional: true #2

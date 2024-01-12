@@ -14,6 +14,7 @@ class Deal < ApplicationRecord
   has_many :comments
   belongs_to :syndicate, class_name: 'Syndicate', optional: true
   has_many :investments
+  has_one :spv
 
   accepts_nested_attributes_for :features, :external_links, allow_destroy: true
   accepts_nested_attributes_for :terms
