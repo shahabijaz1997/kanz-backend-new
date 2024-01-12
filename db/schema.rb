@@ -472,6 +472,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_11_063037) do
     t.text "investor_queries"
     t.bigint "created_by"
     t.integer "status", default: 0
+    t.bigint "deal_id"
+    t.integer "closing_model", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["aml_kyc_document_id"], name: "index_spvs_on_aml_kyc_document_id"

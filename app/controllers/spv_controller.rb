@@ -3,6 +3,10 @@ class SpvController < ApplicationController
     @pagy, @spvs = pagy Spv.all
   end
 
+  def new
+    @spv = Spv.new(deal_id: @deal.id, closing_model: params[:closing_model])
+  end
+
   def create
     @spv = current_user.spvs.new(spv_params)    
     return redirect_to spvs_path, notice: 'SPV created successfuly!' if @spv.save
