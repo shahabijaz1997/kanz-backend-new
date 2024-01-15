@@ -3,7 +3,7 @@
 class Deal < ApplicationRecord
   attr_accessor :step
 
-  belongs_to :user, foreign_key: 'author_id'
+  belongs_to :user
   has_many :features, dependent: :destroy
   has_many :terms, dependent: :destroy
   has_one :funding_round
