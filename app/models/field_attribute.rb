@@ -17,7 +17,7 @@ class FieldAttribute < ApplicationRecord
   end
 
   def self.minimum_check_size
-    find_by(field_mapping: 'terms_attributes.custom_input', statement: 'Minimum Check Size')
+    where(field_mapping: 'terms_attributes.custom_input', statement: 'Minimum Check Size').pluck(:id)
   end
 
   def self.ransackable_attributes(_auth_object = nil)
