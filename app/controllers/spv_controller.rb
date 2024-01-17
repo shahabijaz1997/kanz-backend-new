@@ -1,19 +1,22 @@
 class SpvController < ApplicationController
+  before_action :find_deal, only: %i[new]
+
   def index
     @pagy, @spvs = pagy Spv.all
   end
 
   def new
     @spv = Spv.new(deal_id: @deal.id, closing_model: params[:closing_model])
+    render turbo_stream: turbo_stream.append('spv-modal', partial: 'spv/new')
   end
 
   def create
     @spv = current_user.spvs.new(spv_params)    
     return redirect_to spvs_path, notice: 'SPV created successfuly!' if @spv.save
 
-    respond_to do |format|
-      format.json { render json {errors: @spv.errors.full_messages }.to_json }
-    end
+    # respond_to do |format|
+    #   format.json { render json {errors: @spv.errors.full_messages }.to_json }
+    # end
   end
 
   private
@@ -63,5 +66,9 @@ class SpvController < ApplicationController
       :communication_channels_id,
       :investor_queries
     )
+  end
+
+  def find_deal
+    @deal = Deal.find_by(id: params[:deal_id])
   end
 end

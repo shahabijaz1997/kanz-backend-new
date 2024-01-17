@@ -1,0 +1,28 @@
+= form_for spv do |f|
+  .form-group data-controller='image-preview'
+    label Business Plan
+    span.value
+      = f.label :business_plan do
+        div.upload
+          i.fa.fa-upload.fa-s
+          span Upload Document
+        = f.file_field :business_plan, include_hidden: false, multiple: true, data: { 'image-preview-target': "input", action: "image-preview#preview" }
+      div.previews data-image-preview-target='preview'
+  .form-group data-controller='image-preview'
+    label Service Providers
+    span.value
+      = f.label :service_providers do
+        div.upload
+          i.fa.fa-upload.fa-s
+          span Upload Document
+        = f.file_field :service_providers, include_hidden: false, multiple: true, data: { 'image-preview-target': "input", action: "image-preview#preview" }
+      div.previews data-image-preview-target='preview'
+  .form-group data-controller='image-preview'
+    label Insurance Policies
+    span.value
+      = f.label :insurance_policies do
+        div.upload
+          i.fa.fa-upload.fa-s
+          span Upload Document
+        = f.file_field :insurance_policies, include_hidden: false, multiple: true, data: { 'image-preview-target': "input", action: "image-preview#preview" }
+      div.previews data-image-preview-target='preview'

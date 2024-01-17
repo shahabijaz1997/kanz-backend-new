@@ -1,0 +1,34 @@
+= form_for spv do |f|
+  .form-group.mt-3
+    = f.label :bank_name
+    = f.text_field :bank_name, class: "form-control", required:  true
+  .form-group.mt-3
+    = f.label :branch_name
+    = f.text_field :branch_name, class: "form-control", required:  true
+  .form-group.mt-3
+    = f.label :account_no
+    = f.text_field :account_no, class: "form-control", required:  true
+  .form-group.mt-3
+    = f.label :account_title
+    = f.text_field :account_title, class: "form-control", required:  true
+  .form-group.mt-3
+    = f.label :capital_requirements
+    = f.text_area :capital_requirements, class: "form-control", rows: 6
+  .form-group data-controller='image-preview'
+    label Audited Financial Statements
+    span.value
+      = f.label :audited_financial_statements do
+        div.upload
+          i.fa.fa-upload.fa-s
+          span Upload Document
+        = f.file_field :audited_financial_statements, include_hidden: false, multiple: true, data: { 'image-preview-target': "input", action: "image-preview#preview" }
+      div.previews data-image-preview-target='preview'
+  .form-group data-controller='image-preview'
+    label Financial Projections
+    span.value
+      = f.label :financial_projections do
+        div.upload
+          i.fa.fa-upload.fa-s
+          span Upload Document
+        = f.file_field :financial_projections, include_hidden: false, multiple: true, data: { 'image-preview-target': "input", action: "image-preview#preview" }
+      div.previews data-image-preview-target='preview'
