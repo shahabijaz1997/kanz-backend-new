@@ -68,4 +68,14 @@ export default class {
   static reloadWithTurbolinks() {
     Turbolinks.visit(window.location.toString())
   }
+
+  static openModal(element) {
+    element.style.display = 'block'
+    this.addClass(element, 'show')
+  }
+
+  static hideModal(element) {
+    element.style.display = 'none'
+    this.removeClass(element, 'hide')
+  }
 }

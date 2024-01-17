@@ -44,22 +44,22 @@ class CreateSpv < ActiveRecord::Migration[7.0]
       t.references :investor_reporting #: Annual report to investors.
       t.references :performance_metrics #: Yearly assessment of development progress and financial performance.
       
-      # Contractual Documents:
+      # Step 7 Contractual Documents:
       t.references :shareholder_agreements #: Primary agreement between Ahmed and other investors.
       t.references :property_deeds #: Title for the plot in Business Bay, Dubai.
       t.references :loan_agreement #: Personal investment by Ahmed,; no loan.
       t.references :service_provider_contracts #: Construction contract with LMN Developers.
       
-      # Operational Details:
+      # Step 8 Operational Details:
       t.references :business_plan #: To develop a high-end mixed-use complex within 5 years.
       t.references :service_providers #: Architectural services by ABC Architects; Legal by DEF Law.
       t.references :insurance_policies #: Comprehensive construction and property insurance.
       
-      # Exit Strategy:
+      # Step 9 Exit Strategy:
       t.text :exit_options #: Sell the developed property after 7 years or attract anchor tenants.
       t.references :divestment_process #: Managed by Ahmed in consultation with other investors.
       
-      # Investor Relations:
+      # Step 10 Investor Relations:
       t.references :communication_channels #: Direct line to Ahmed for major investors, email updates for others.
       t.text :investor_queries #: Managed personally by Ahmed and the CFO.
 

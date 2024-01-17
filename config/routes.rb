@@ -127,10 +127,10 @@ Rails.application.routes.draw do
   resources :syndicates, only: %i[index show update]
   resources :deals, only: %i[update] do
     collection do
-      get :spv
       resources :start_up, only: %i[index show], controller: 'deals', type: 'start_up'
       resources :property, only: %i[index show], controller: 'deals', type: 'property'
     end
+    resources :spv, only: %i[new]
   end
   resources :profile, only: %i[index] do
     collection do
@@ -141,6 +141,7 @@ Rails.application.routes.draw do
   resources :dashboard, only: %i[index]
   resources :field_attributes
   resources :steppers
+  resources :spvs, only: %i[show index create update]
 
   root to: "dashboard#index"
 end

@@ -1,0 +1,26 @@
+= turbo_frame_tag "spv-modal" do
+  #spvModal.modal.fade.modal-xl[tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-controller='spv']
+    .modal-dialog[role="document"]
+      .modal-content.content_card
+        .modal-header.card-header
+          = render 'shared/page_title', title: 'Create SPV'
+          button.close.px-3[aria-label="Close"]
+            span[aria-hidden="true"]
+              | ×
+        .modal-body
+          .container
+            .row
+              .col-4
+                span controls
+              .col-8.mx-3
+                = render "spv/step#{@step || 10}", spv: @spv
+        .modal-footer
+          .container
+            .row
+              .col-4
+                span controls
+              .col-8.mx-3
+                button.btn.btn-secondary.me-auto[type="button"]
+                  | Back
+                button.btn.btn-primary[type="button"]
+                  | Continue
