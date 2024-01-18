@@ -117,11 +117,12 @@ Rails.application.routes.draw do
   resources :admin_users do
     get :reactivate, on: :member
   end
-  resources :investors, only: %i[update] do
+  resources :investors, only: %i[update destroy] do
     collection do
       resources :individuals, only: %i[index show], controller: 'investors', type: 'individuals'
       resources :firms, only: %i[index show], controller: 'investors', type: 'firms'
     end
+    get :reactivate, on: :member
   end
   resources :fund_raisers, only: %i[index show update]
   resources :syndicates, only: %i[index show update]
