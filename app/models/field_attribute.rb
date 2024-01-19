@@ -16,15 +16,21 @@ class FieldAttribute < ApplicationRecord
     self.class.find_by(id: dependent_id)
   end
 
-  def self.minimum_check_size
-    find_by(field_mapping: 'terms_attributes.custom_input', statement: 'Minimum Check Size')
-  end
+  class << self
+    def minimum_check_size
+      find_by(field_mapping: 'terms_attributes.custom_input', statement: 'Minimum Check Size')
+    end
 
-  def self.ransackable_attributes(_auth_object = nil)
-    %w[statement lable field_type input_type]
-  end
+    def investment_round
+      find_by(field_mapping: 'funding_round_attributes.round_id')
+    end
 
-  def self.ransackable_associations(_auth_object = nil)
-    %w[options section]
+    def self.ransackable_attributes(_auth_object = nil)
+      %w[statement lable field_type input_type]
+    end
+
+    def self.ransackable_associations(_auth_object = nil)
+      %w[options section]
+    end
   end
 end

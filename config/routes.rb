@@ -111,6 +111,17 @@ Rails.application.routes.draw do
         put 'syndicate_members/accept_invite' => 'syndicate_members#accept_invite'
       end
     end
+
+    namespace :analytics do
+      resources :investors, only: %i[index] do
+        collection do
+          get :investments
+          get :funding_round_investments
+          get :property_investments
+          get :investments_chart
+        end
+      end
+    end
   end
 
   # Admin routes

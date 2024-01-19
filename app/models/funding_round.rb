@@ -9,6 +9,8 @@ class FundingRound < ApplicationRecord
   belongs_to :equity_type, class_name: 'Option', optional: true
   belongs_to :valuation_phase, class_name: 'Option', optional: true
 
+  scope :equity, -> { where.not(equity_type_id: nil) }
+
   def stage
     I18n.locale == :en ? round&.statement : round&.statement_ar
   end
