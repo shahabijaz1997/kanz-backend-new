@@ -8,7 +8,8 @@ module SearchHelper
   def search_params
     return if params[:search].blank?
 
-    controller_actions = search_hash[controller_name.to_sym]
+    controller_full_name = controller_path.gsub('/', '_')
+    controller_actions = search_hash[controller_full_name.to_sym]
     return if controller_actions.blank?
 
     search_filter = controller_actions[action_name.to_sym]
@@ -23,12 +24,13 @@ module SearchHelper
    # { controller_name: { action_name: ransackable_key }}
   def search_hash
     {
-      investors: { index: 'name_i_cont', deals: 'title_or_syndicate_name_i_cont' },
-      deals: { index: 'title_i_cont', investors: 'name_i_cont' },
-      syndicates: { index: 'name_i_cont', deals: 'title_i_cont', all: 'name_i_cont' },
-      invites: { index: 'eventable_of_Deal_type_title_or_invitee_name_i_cont' },
-      syndicate_members: { index: 'member_name_i_cont', investors: 'name_i_cont', applications: 'user_name_i_cont', invites: 'invitee_name_i_cont' },
-      fund_raisers: { investors: 'user_name_i_cont'}
+      v1_investors: { index: 'name_i_cont', deals: 'title_or_syndicate_name_i_cont' },
+      v1_deals: { index: 'title_i_cont', investors: 'name_i_cont' },
+      v1_syndicates: { index: 'name_i_cont', deals: 'title_i_cont', all: 'name_i_cont' },
+      v1_invites: { index: 'eventable_of_Deal_type_title_or_invitee_name_i_cont' },
+      v1_syndicate_members: { index: 'member_name_i_cont', investors: 'name_i_cont', applications: 'user_name_i_cont', invites: 'invitee_name_i_cont' },
+      v1_fund_raisers: { investors: 'user_name_i_cont' },
+      v1_analytics_investors: { investments: 'deal_title_i_cont' }
     }
   end
 end

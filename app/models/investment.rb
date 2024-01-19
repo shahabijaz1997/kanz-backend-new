@@ -12,13 +12,20 @@ class Investment < ApplicationRecord
   after_create :update_invite
 
   scope :latest_first, -> { order(created_at: :desc) }
+  scope :by_property, -> { joins(:deal).where(deal: { deal_type: Deal::deal_types[:property] }) }
+  scope :by_startup, -> { joins(:deal).where(deal: { deal_type: Deal::deal_types[:startup] }) }
+  scope :filter_by_deal_type, ->(deal_type) { joins(:deal).where(deal: { deal_type: deal_type }) }
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[amount]
   end
 
   def self.ransackable_associations(_auth_object = nil)
-    %w[deal user]
+    %w[deals user]
+  end
+
+  def net_value
+    (deal.current_valuation / deal.previous_valuation) * amount.to_f
   end
 
   private
