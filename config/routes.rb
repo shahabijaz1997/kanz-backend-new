@@ -122,6 +122,7 @@ Rails.application.routes.draw do
         end
       end
     end
+    resource :profile, only: %i[show update]
   end
 
   # Admin routes
@@ -143,12 +144,7 @@ Rails.application.routes.draw do
       resources :property, only: %i[index show], controller: 'deals', type: 'property'
     end
   end
-  resources :profile, only: %i[index] do
-    collection do
-      get :edit
-      put :update
-    end
-  end
+  resource :profile, only: %i[show edit update]
   resources :dashboard, only: %i[index]
   resources :field_attributes
   resources :steppers
