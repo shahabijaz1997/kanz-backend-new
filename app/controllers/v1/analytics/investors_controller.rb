@@ -24,16 +24,16 @@ module V1
     class InvestorsController < ApiController
       before_action :set_deal_type_filter, :search_params, only: %i[investments]
 
+      # /1.0/analytics/investors/investments_chart
       def investments_chart
-        investment_stats = Analytics::MonthlyInvestment.call(current_user)
+        investment_stats = DashboardAnalytics::MonthlyInvestment.call(current_user)
         success(
           'success',
           {
             records: investment_stats,
-            stats: investments_by_deal_type,
+            stats: investments_by_deal_type
           }
         )
-        # chart: { feb: [[10,10][11,12]], march: [[10,10][11,12]]}
       end
 
       # /1.0/investors/analytics/investments
