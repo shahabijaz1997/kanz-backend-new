@@ -7,29 +7,5 @@
           button.close.px-3[aria-label="Close" data-action="click->modal#hideModal"]
             span[aria-hidden="true"]
               | ×
-        .modal-body
-          .container
-            .row
-              .col-4
-                span Left Section
-              .col-8.mx-3
-                = turbo_frame_tag "stepper" do
-                  = render "spv/step#{@step}", spv: @spv, step: @step
-        .modal-footer
-          .container
-            .row
-              .col-4
-                span Left Section
-              .col-8.mx-3
-                - if @step == SPV_FIRST_STEP
-                  button.btn.btn-secondary.me-auto[type="button" data-action="click->modal#hideModal"]
-                    | Cancel
-                - else
-                  button.btn.btn-secondary.me-auto[data-controller="spv" data-action="click->spv#previousStep" data-step="#{@step}"]
-                    | Back
-                - if @step == SPV_LAST_STEP
-                  button.btn.btn-primary[data-controller="spv" data-action="click->spv#submit" data-step="#{@step}"]
-                    | Finish
-                - else
-                  button.btn.btn-primary[data-controller="spv" data-action="click->spv#submit" data-step="#{@step}"]
-                    | Continue
+        = turbo_frame_tag "stepper" do
+          = render "spv/modal_body"
