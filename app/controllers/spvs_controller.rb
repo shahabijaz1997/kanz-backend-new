@@ -19,16 +19,16 @@ class SpvsController < ApplicationController
     else
       @errors = @spv.errors.full_messages
     end
-    render turbo_stream: turbo_stream.update('stepper', partial: "spv/step#{@step}")
+    render turbo_stream: turbo_stream.update('stepper', partial: "spv/modal_body")
   end
 
-  def update 
+  def update
     if @spv.update(spv_params)
       next_step
     else
       @errors = @spv.errors.full_messages
     end
-    render turbo_stream: turbo_stream.update('stepper', partial: "spv/step#{@step}")
+    render turbo_stream: turbo_stream.update('stepper', partial: "spv/modal_body")
   end
 
   private
@@ -98,6 +98,7 @@ class SpvsController < ApplicationController
   end
 
   def next_step
+    @completed = @step == SPV_LAST_STEP
     @step += 1 if @step < SPV_LAST_STEP
   end
 
