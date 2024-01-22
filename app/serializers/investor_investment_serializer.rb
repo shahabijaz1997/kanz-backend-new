@@ -18,11 +18,11 @@ class InvestorInvestmentSerializer
   end
 
   attribute :deal_category do |investment|
-    investment.humanized_enum(investment.deal.deal_type)
+    investment.deal.humanized_enum(investment.deal.deal_type)
   end
 
   attribute :deal_status do |investment|
-    investment.humanized_enum(investment.deal.status)
+    investment.deal.humanized_enum(investment.deal.status)
   end
 
   attribute :investment_date do |investment|
