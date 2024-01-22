@@ -4,7 +4,7 @@ module AdminUsers
   class SessionsController < Devise::SessionsController
     def create
       resource = AdminUser.find_by(permitted_params)
-      if resource&.deactivated?
+      if resource&.deactivated? && resource.valid_password?(params[:user].dig(:password))
         flash[:alert] = I18n.t('devise.failure.is_deactivated')
         redirect_to root_path
       else

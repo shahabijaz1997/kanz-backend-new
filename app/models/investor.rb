@@ -19,6 +19,18 @@ class Investor < User
     role_title == INVESTMENT_FIRM
   end
 
+  def destroy
+    update(deactivated: true) unless deactivated
+  end
+
+  def reactivate
+    update(deactivated: false) if deactivated
+  end
+
+  def active_for_authentication?
+    super && !deactivated
+  end
+
   def self.ransackable_attributes(_auth_object = nil)
     %w[email name status]
   end
