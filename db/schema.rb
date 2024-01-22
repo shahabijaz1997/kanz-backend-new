@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_11_063037) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_18_075317) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -470,7 +470,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_11_063037) do
     t.bigint "divestment_process_id"
     t.bigint "communication_channels_id"
     t.text "investor_queries"
-    t.bigint "created_by"
+    t.bigint "created_by_id"
     t.integer "status", default: 0
     t.bigint "deal_id"
     t.integer "closing_model", default: 0
@@ -583,6 +583,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_11_063037) do
     t.string "provider"
     t.string "uid"
     t.string "language", limit: 5, default: "en"
+    t.boolean "deactivated", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true

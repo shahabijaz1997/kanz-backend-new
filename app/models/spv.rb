@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 class Spv < ApplicationRecord
-  # include SpvStepper
   attr_accessor :step
-  enum closing_model: { fifs: 0, adjust_pro_rata: 1 }
+
+  enum closing_model: { fifs: 0, adjust_pro_rata: 1, refund_and_close: 2 }
 
   validates :legal_name, :date_of_incorporation, :place_of_incorporation, :legal_structure,
-            :jurisdiction, :registered_office_address, presence: true # Step 1
-  validates :directors, presence: true # step 2
-  validates :investment_nature, :capital_raised, :terms, presence: true #step 3
-  validates :capital_raised, :investment_thresholds, numericality: { greater_than_or_equal_to: 0 } # step 3
-  validates :risk_disclosures, presence: true # step 4
-  validates :bank_name, :branch_name, :account_no, :account_title, :capital_requirements, presence: true #step 5
-  validates :exit_options, presence: true #step 9
+            :jurisdiction, :registered_office_address, presence: true, if: Proc.new { |spv| spv.step == 1 } # Step 1
+  validates :directors, presence: true, if: Proc.new { |spv| spv.step == 2 } # step 2
+  validates :investment_nature, :capital_raised, :terms, presence: true, if: Proc.new { |spv| spv.step == 3 } #step 3
+  validates :capital_raised, :investment_thresholds, numericality: { greater_than_or_equal_to: 0 }, if: Proc.new { |spv| spv.step == 3 } # step 3
+  validates :risk_disclosures, presence: true, if: Proc.new { |spv| spv.step == 4 } # step 4
+  validates :bank_name, :branch_name, :account_no, :account_title, :capital_requirements, presence: true, if: Proc.new { |spv| spv.step == 5 } #step 5
+  validates :exit_options, presence: true, if: Proc.new { |spv| spv.step == 9 } #step 9
 
   belongs_to :deal
   belongs_to :created_by, class_name: 'AdminUser', optional: true

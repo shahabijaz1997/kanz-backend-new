@@ -78,4 +78,12 @@ export default class {
     element.style.display = 'none'
     this.removeClass(element, 'hide')
   }
+
+  static addHiddenFormElement(form, fieldName, value) {
+    let inputField = document.createElement('input')
+    inputField.type = 'hidden';
+    inputField.name = fieldName;
+    inputField.value = value;
+    form.appendChild(inputField)
+  }
 }
