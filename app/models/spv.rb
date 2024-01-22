@@ -1,5 +1,6 @@
 class Spv < ApplicationRecord
   # include SpvStepper
+  attr_accessor :step
   enum closing_model: { fifs: 0, adjust_pro_rata: 1 }
 
   validates :legal_name, :date_of_incorporation, :place_of_incorporation, :legal_structure,

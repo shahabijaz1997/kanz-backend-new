@@ -1,4 +1,5 @@
 class SpvController < ApplicationController
+  before_action :setup_step, only: %i[new create]
   before_action :find_deal, only: %i[new]
 
   def index
@@ -11,18 +12,19 @@ class SpvController < ApplicationController
   end
 
   def create
-    @spv = current_user.spvs.new(spv_params)    
-    return redirect_to spvs_path, notice: 'SPV created successfuly!' if @spv.save
-
-    # respond_to do |format|
-    #   format.json { render json {errors: @spv.errors.full_messages }.to_json }
-    # end
+    @spv = current_user.spvs.new(spv_params)
+    if @step
+      render turbo_stream: turbo_stream.append('spv-modal', partial: 'spv/new')
+    else
+      return redirect_to spvs_path, notice: 'SPV created successfuly!' if @spv.save
+    end
   end
 
   private
 
   def spv_params
     params.permit(:spv).require(
+      :step,
       :legal_name,
       :date_of_incorporation,
       :place_of_incorporation,
@@ -70,5 +72,22 @@ class SpvController < ApplicationController
 
   def find_deal
     @deal = Deal.find_by(id: params[:deal_id])
+  end
+
+  def setup_step
+    return @step = 1 if params[:step].blank?
+    @step = steps_in_range? ? params[:step] : 1
+  end
+
+  def next_step
+    @step += 1 if @step < SPV_LAST_STEP
+  end
+
+  def previous_step
+    @step -= 1 if @step > SPV_FIRST_STEP
+  end
+
+  def steps_in_range?
+    params[:step] >= SPV_FIRST_STEP && params[:step] <= SPV_LAST_STEP
   end
 end
