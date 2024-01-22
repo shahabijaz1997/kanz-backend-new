@@ -18,4 +18,12 @@ class InvestorPolicy < ApplicationPolicy
   def update?
     user_context.customer_support_rep? || user_context.compliance_officer?
   end
+
+  def destroy?
+    user_context.customer_support_rep? || user_context.compliance_officer?
+  end
+
+  def reactivate?
+    user_context.customer_support_rep? || user_context.compliance_officer?
+  end
 end
