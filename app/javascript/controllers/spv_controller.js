@@ -1,16 +1,14 @@
 import { Controller } from "@hotwired/stimulus"
-import Dom from '../dom/manipulator'
-
 export default class extends Controller {
-  connect() {
-    this.openModal()
+  submit() {
+    var form = document.getElementById('new_spv')
+    if(form == undefined) {
+      var form = document.querySelectorAll('[id^="edit_spv_"]')[0];
+    }
+    form.requestSubmit()
   }
 
-  openModal() {    
-    Dom.openModal(this.element, 'show')
-  }
-
-  hideModal() {
-    Dom.hideModal(this.element, 'hide')
+  previousStep() {
+    console.log("Previous Step");
   }
 }

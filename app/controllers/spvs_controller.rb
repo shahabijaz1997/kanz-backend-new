@@ -1,29 +1,40 @@
-class SpvController < ApplicationController
-  before_action :setup_step, only: %i[new create]
+class SpvsController < ApplicationController
+  before_action :setup_step, only: %i[new create update]
   before_action :find_deal, only: %i[new]
+  before_action :find_spv, only: %i[show update]
 
   def index
     @pagy, @spvs = pagy Spv.all
   end
 
   def new
-    @spv = Spv.new(deal_id: @deal.id, closing_model: params[:closing_model])
+    @spv = Spv.new(deal_id: @deal.id, closing_model: params[:closing_model], step: params[:step])
     render turbo_stream: turbo_stream.append('spv-modal', partial: 'spv/new')
   end
 
   def create
     @spv = current_user.spvs.new(spv_params)
-    if @step
-      render turbo_stream: turbo_stream.append('spv-modal', partial: 'spv/new')
+    if @spv.save
+      next_step
     else
-      return redirect_to spvs_path, notice: 'SPV created successfuly!' if @spv.save
+      @errors = @spv.errors.full_messages
     end
+    render turbo_stream: turbo_stream.update('stepper', partial: "spv/step#{@step}")
+  end
+
+  def update 
+    if @spv.update(spv_params)
+      next_step
+    else
+      @errors = @spv.errors.full_messages
+    end
+    render turbo_stream: turbo_stream.update('stepper', partial: "spv/step#{@step}")
   end
 
   private
 
   def spv_params
-    params.permit(:spv).require(
+    params.require(:spv).permit(
       :step,
       :legal_name,
       :date_of_incorporation,
@@ -66,7 +77,9 @@ class SpvController < ApplicationController
       :exit_options,
       :divestment_process_id,
       :communication_channels_id,
-      :investor_queries
+      :investor_queries,
+      :deal_id,
+      :closing_model
     )
   end
 
@@ -74,8 +87,13 @@ class SpvController < ApplicationController
     @deal = Deal.find_by(id: params[:deal_id])
   end
 
+  def find_spv
+    @spv = Spv.find_by(id: params[:id])
+  end
+
   def setup_step
     return @step = 1 if params[:step].blank?
+    params[:step] = params[:step].to_i
     @step = steps_in_range? ? params[:step] : 1
   end
 

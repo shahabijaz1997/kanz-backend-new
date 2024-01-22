@@ -63,7 +63,7 @@ class CreateSpv < ActiveRecord::Migration[7.0]
       t.references :communication_channels #: Direct line to Ahmed for major investors, email updates for others.
       t.text :investor_queries #: Managed personally by Ahmed and the CFO.
 
-      t.bigint :created_by
+      t.bigint :created_by_id
       t.integer :status, default: 0
       t.bigint :deal_id
       t.integer :closing_model, default: 0
