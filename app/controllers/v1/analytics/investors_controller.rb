@@ -129,8 +129,8 @@ module V1
       def no_deals_by_type
         {
           all: @investments.count,
-          startup: @investments.by_property.count,
-          property: @investments.by_startup.count
+          startup: @investments.by_startup.count,
+          property: @investments.by_property.count
         }
       end
 

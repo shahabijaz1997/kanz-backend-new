@@ -13,13 +13,19 @@ module DashboardAnalytics
     private
 
     def monthly_investments(starting_date)
+      results = stack_chart_skelton
       year_month_investment = DashboardAnalytics::YearMonthGenerator.call(starting_date)
 
       year_month_investment.each do |key, value|
         investments = investments_till_month(key)
-        year_month_investment[key] = investmen_and_return_by_deal_type(investments)
+        result = investmen_and_return_by_deal_type(investments)
+        results[:labels] << month_name_and_year(key)
+        results[:property_investment] << result[:property_investment]
+        results[:startup_investment] << result[:startup_investment]
+        results[:property_net_value] << result[:property_net_value]
+        results[:startup_net_value] << result[:startup_net_value]
       end
-      year_month_investment
+      results
     end
 
     def oldest_investment_date
@@ -46,6 +52,23 @@ module DashboardAnalytics
     def parse_date(month_and_year_string)
       year, month = month_and_year_string.split('/')
       "#{year}-#{month.to_s.rjust(2, '0')}-01"
+    end
+
+    def stack_chart_skelton
+      {
+        labels: [],
+        property_investment: [],
+        startup_investment: [],
+        property_net_value: [],
+        startup_net_value: []
+      }
+    end
+
+    def month_name_and_year(m_y)
+      year, month = m_y.split('/')
+      month = Date::ABBR_MONTHNAMES[month.to_i]
+      year = year.to_i % 100
+      "#{month} #{year}"
     end
   end
 end
