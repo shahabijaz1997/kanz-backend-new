@@ -427,6 +427,78 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_18_075317) do
     t.index ["stepper_id"], name: "index_sections_on_stepper_id"
   end
 
+  create_table "spvs", force: :cascade do |t|
+    t.string "legal_name", null: false
+    t.date "date_of_incorporation", null: false
+    t.string "place_of_incorporation", null: false
+    t.bigint "registration_certificate_id"
+    t.string "legal_structure"
+    t.string "jurisdiction"
+    t.string "registered_office_address"
+    t.jsonb "directors", default: {}
+    t.bigint "governance_structure_id"
+    t.string "management_agreements", default: "None, as management is internal."
+    t.string "parent_company", default: "Not applicable, independent entity."
+    t.string "investment_nature"
+    t.bigint "investment_strategy_id"
+    t.decimal "capital_raised"
+    t.decimal "investment_thresholds"
+    t.bigint "valuation_report_id"
+    t.text "terms"
+    t.bigint "aml_kyc_document_id"
+    t.bigint "dfsa_compliance_regulations_id"
+    t.text "risk_disclosures"
+    t.bigint "data_protection_compliance_id"
+    t.string "bank_name"
+    t.string "branch_name"
+    t.string "account_no"
+    t.string "account_title"
+    t.text "capital_requirements"
+    t.bigint "audited_financial_statements_id"
+    t.bigint "financial_projections_id"
+    t.bigint "financial_reporting_id"
+    t.bigint "investor_reporting_id"
+    t.bigint "performance_metrics_id"
+    t.bigint "shareholder_agreements_id"
+    t.bigint "property_deeds_id"
+    t.bigint "loan_agreement_id"
+    t.bigint "service_provider_contracts_id"
+    t.bigint "business_plan_id"
+    t.bigint "service_providers_id"
+    t.bigint "insurance_policies_id"
+    t.text "exit_options"
+    t.bigint "divestment_process_id"
+    t.bigint "communication_channels_id"
+    t.text "investor_queries"
+    t.bigint "created_by"
+    t.integer "status", default: 0
+    t.bigint "deal_id"
+    t.integer "closing_model", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["aml_kyc_document_id"], name: "index_spvs_on_aml_kyc_document_id"
+    t.index ["audited_financial_statements_id"], name: "index_spvs_on_audited_financial_statements_id"
+    t.index ["business_plan_id"], name: "index_spvs_on_business_plan_id"
+    t.index ["communication_channels_id"], name: "index_spvs_on_communication_channels_id"
+    t.index ["data_protection_compliance_id"], name: "index_spvs_on_data_protection_compliance_id"
+    t.index ["dfsa_compliance_regulations_id"], name: "index_spvs_on_dfsa_compliance_regulations_id"
+    t.index ["divestment_process_id"], name: "index_spvs_on_divestment_process_id"
+    t.index ["financial_projections_id"], name: "index_spvs_on_financial_projections_id"
+    t.index ["financial_reporting_id"], name: "index_spvs_on_financial_reporting_id"
+    t.index ["governance_structure_id"], name: "index_spvs_on_governance_structure_id"
+    t.index ["insurance_policies_id"], name: "index_spvs_on_insurance_policies_id"
+    t.index ["investment_strategy_id"], name: "index_spvs_on_investment_strategy_id"
+    t.index ["investor_reporting_id"], name: "index_spvs_on_investor_reporting_id"
+    t.index ["loan_agreement_id"], name: "index_spvs_on_loan_agreement_id"
+    t.index ["performance_metrics_id"], name: "index_spvs_on_performance_metrics_id"
+    t.index ["property_deeds_id"], name: "index_spvs_on_property_deeds_id"
+    t.index ["registration_certificate_id"], name: "index_spvs_on_registration_certificate_id"
+    t.index ["service_provider_contracts_id"], name: "index_spvs_on_service_provider_contracts_id"
+    t.index ["service_providers_id"], name: "index_spvs_on_service_providers_id"
+    t.index ["shareholder_agreements_id"], name: "index_spvs_on_shareholder_agreements_id"
+    t.index ["valuation_report_id"], name: "index_spvs_on_valuation_report_id"
+  end
+
   create_table "steppers", force: :cascade do |t|
     t.integer "index"
     t.integer "stepper_type", default: 0

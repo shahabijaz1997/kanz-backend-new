@@ -1,4 +1,4 @@
-module Analytics
+module DashboardAnalytics
   class YearMonthGenerator < ApplicationService
     attr_reader :start_date
 

@@ -1,4 +1,4 @@
-module Analytics
+module DashboardAnalytics
   class MonthlyInvestment < ApplicationService
     attr_reader :user
 
@@ -13,7 +13,7 @@ module Analytics
     private
 
     def monthly_investments(starting_date)
-      year_month_investment = Analytics::YearMonthGenerator.call(starting_date)
+      year_month_investment = DashboardAnalytics::YearMonthGenerator.call(starting_date)
 
       year_month_investment.each do |key, value|
         investments = investments_till_month(key)
@@ -35,12 +35,12 @@ module Analytics
     end
 
     def investmen_and_return_by_deal_type(investments)
-      [
-        { property_investment: investments.by_property.sum(:amount).to_f },
-        { startup_investment: investments.by_startup.sum(:amount).to_f },
-        { property_net_value: investments.by_property.sum(:amount).to_f },
-        { startup_net_value: investments.by_startup.sum(:amount).to_f }
-      ]
+      {
+        property_investment: investments.by_property.sum(:amount).to_f,
+        startup_investment: investments.by_startup.sum(:amount).to_f,
+        property_net_value: investments.by_property.sum(:amount).to_f,
+        startup_net_value: investments.by_startup.sum(:amount).to_f
+      }
     end
 
     def parse_date(month_and_year_string)
