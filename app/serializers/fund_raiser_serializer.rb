@@ -4,7 +4,7 @@
 class FundRaiserSerializer
   include JSONAPI::Serializer
 
-  attributes :id, :name, :email, :type, :status, :language, :profile_states
+  attributes :id, :name, :email, :type, :status, :language, :profile_states, :profile_picture_url
 
   attribute :profile do |fund_raiser|
     FundRaiserProfileSerializer.new(

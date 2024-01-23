@@ -32,11 +32,11 @@ module V1
 
     def permitted_params
       if current_user.investor?
-        [:name]
+        [:name, :profile_picture]
       elsif current_user.syndicate?
-        [:name, profile_attributes: [:name, :tagline, :have_you_ever_raised, :raised_amount, :no_times_raised, :profile_link, :dealflow, region_ids: [], industry_ids: []]]
+        [:name, :profile_picture, profile_attributes: [:name, :tagline, :have_you_ever_raised, :raised_amount, :no_times_raised, :profile_link, :dealflow, region_ids: [], industry_ids: []]]
       elsif current_user.fund_raiser?
-        [:name, profile_attributes: [:company_name, :legal_name, :website, :address, :description, :ceo_name, :ceo_email, :total_capital_raised, :current_round_capital_target, industry_ids: []]]
+        [:name, :profile_picture, profile_attributes: [:company_name, :legal_name, :website, :address, :description, :ceo_name, :ceo_email, :total_capital_raised, :current_round_capital_target, industry_ids: []]]
       end
     end
   end

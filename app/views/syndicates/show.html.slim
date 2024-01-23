@@ -3,6 +3,7 @@
 
 div.w-75
   = render 'shared/section_card', section_title: 'Syndicate User', editable: false do
+    = render 'shared/profile_picture_list_item', user: @syndicate
     = render 'shared/section_list_item', title: 'Name', value: @syndicate.name
     = render 'shared/section_list_item', title: 'Email', value: @syndicate.email
     li.list-group-item

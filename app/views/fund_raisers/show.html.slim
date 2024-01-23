@@ -3,6 +3,7 @@
 
 div.w-75
   = render 'shared/section_card', section_title: 'Fund Raiser User', editable: false do
+    = render 'shared/profile_picture_list_item', user: @fund_raiser
     = render 'shared/section_list_item', title: 'Name', value: @fund_raiser.name
     = render 'shared/section_list_item', title: 'Email', value: @fund_raiser.email
     li.list-group-item
