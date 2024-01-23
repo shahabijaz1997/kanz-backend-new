@@ -1,7 +1,7 @@
 .stepper {
   .line {
     width: 2px;
-    background-color: rgba(var(--bs-primary-rgb)) !important;
+    background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
   }
   .lead {
     font-size: 1.1rem;
