@@ -9,7 +9,7 @@
         div.upload
           i.fa.fa-upload.fa-s
           span Upload Document
-        = f.file_field :shareholder_agreements, include_hidden: false, multiple: true, data: { 'image-preview-target': "input", action: "image-preview#preview" }
+        = f.file_field :shareholder_agreements, include_hidden: false, data: { 'image-preview-target': "input", action: "image-preview#preview" }
       div.previews data-image-preview-target='preview'
   .form-group data-controller='image-preview'
     label Property Deeds
@@ -18,7 +18,7 @@
         div.upload
           i.fa.fa-upload.fa-s
           span Upload Document
-        = f.file_field :property_deeds, include_hidden: false, multiple: true, data: { 'image-preview-target': "input", action: "image-preview#preview" }
+        = f.file_field :property_deeds, include_hidden: false, data: { 'image-preview-target': "input", action: "image-preview#preview" }
       div.previews data-image-preview-target='preview'
   .form-group data-controller='image-preview'
     label Loan Agreement
@@ -27,7 +27,7 @@
         div.upload
           i.fa.fa-upload.fa-s
           span Upload Document
-        = f.file_field :loan_agreement, include_hidden: false, multiple: true, data: { 'image-preview-target': "input", action: "image-preview#preview" }
+        = f.file_field :loan_agreement, include_hidden: false, data: { 'image-preview-target': "input", action: "image-preview#preview" }
       div.previews data-image-preview-target='preview'
   .form-group data-controller='image-preview'
     label Service Provider Contracts
@@ -36,5 +36,5 @@
         div.upload
           i.fa.fa-upload.fa-s
           span Upload Document
-        = f.file_field :service_provider_contracts, include_hidden: false, multiple: true, data: { 'image-preview-target': "input", action: "image-preview#preview" }
+        = f.file_field :service_provider_contracts, include_hidden: false, data: { 'image-preview-target': "input", action: "image-preview#preview" }
       div.previews data-image-preview-target='preview'

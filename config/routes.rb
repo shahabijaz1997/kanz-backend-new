@@ -141,7 +141,9 @@ Rails.application.routes.draw do
   resources :dashboard, only: %i[index]
   resources :field_attributes
   resources :steppers
-  resources :spvs, only: %i[show index create update]
+  resources :spvs, only: %i[show index create update] do
+    get :back
+  end
 
   root to: "dashboard#index"
 end

@@ -14,25 +14,29 @@ class Spv < ApplicationRecord
 
   belongs_to :deal
   belongs_to :created_by, class_name: 'AdminUser', optional: true
-  belongs_to :registration_certificate, class_name: 'Attachment', optional: true #1
-  belongs_to :governance_structure, class_name: 'Attachment', optional: true #2
-  belongs_to :investment_strategy, class_name: 'Attachment', optional: true #3
-  belongs_to :valuation_report, class_name: 'Attachment', optional: true #3
-  belongs_to :aml_kyc_document, class_name: 'Attachment', optional: true #4
-  belongs_to :dfsa_compliance_regulations, class_name: 'Attachment', optional: true #4
-  belongs_to :data_protection_compliance, class_name: 'Attachment', optional: true #4
-  belongs_to :audited_financial_statements, class_name: 'Attachment', optional: true #5
-  belongs_to :financial_projections, class_name: 'Attachment', optional: true #5
-  belongs_to :financial_reporting, class_name: 'Attachment', optional: true #6
-  belongs_to :investor_reporting, class_name: 'Attachment', optional: true #6
-  belongs_to :performance_metrics, class_name: 'Attachment', optional: true #6
-  belongs_to :shareholder_agreements, class_name: 'Attachment', optional: true #7
-  belongs_to :property_deeds, class_name: 'Attachment', optional: true #7
-  belongs_to :loan_agreement, class_name: 'Attachment', optional: true #7
-  belongs_to :service_provider_contracts, class_name: 'Attachment', optional: true #7
-  belongs_to :business_plan, class_name: 'Attachment', optional: true #8
-  belongs_to :service_providers, class_name: 'Attachment', optional: true #8
-  belongs_to :insurance_policies, class_name: 'Attachment', optional: true #8
-  belongs_to :divestment_process, class_name: 'Attachment', optional: true #9
-  belongs_to :communication_channels, class_name: 'Attachment', optional: true #10
+  has_one_attached :registration_certificate #1
+  has_one_attached :governance_structure #2
+  has_one_attached :investment_strategy #3
+  has_one_attached :valuation_report #3
+  has_one_attached :aml_kyc_document #4
+  has_one_attached :dfsa_compliance_regulations #4
+  has_one_attached :data_protection_compliance #4
+  has_one_attached :audited_financial_statements #5
+  has_one_attached :financial_projections #5
+  has_one_attached :financial_reporting #6
+  has_one_attached :investor_reporting #6
+  has_one_attached :performance_metrics #6
+  has_one_attached :shareholder_agreements #7
+  has_one_attached :property_deeds #7
+  has_one_attached :loan_agreement #7
+  has_one_attached :service_provider_contracts #7
+  has_one_attached :business_plan #8
+  has_one_attached :service_providers #8
+  has_one_attached :insurance_policies #8
+  has_one_attached :divestment_process #9
+  has_one_attached :communication_channels #10
+
+  def registration_certificate_url
+    Rails.env.development? ? ActiveStorage::Blob.service.path_for(registration_certificate.key) : registration_certificate.url if registration_certificate.attached?
+  end
 end

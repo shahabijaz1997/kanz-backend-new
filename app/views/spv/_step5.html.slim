@@ -24,7 +24,7 @@
         div.upload
           i.fa.fa-upload.fa-s
           span Upload Document
-        = f.file_field :audited_financial_statements, include_hidden: false, multiple: true, data: { 'image-preview-target': "input", action: "image-preview#preview" }
+        = f.file_field :audited_financial_statements, include_hidden: false, data: { 'image-preview-target': "input", action: "image-preview#preview" }
       div.previews data-image-preview-target='preview'
   .form-group data-controller='image-preview'
     label Financial Projections
@@ -33,5 +33,5 @@
         div.upload
           i.fa.fa-upload.fa-s
           span Upload Document
-        = f.file_field :financial_projections, include_hidden: false, multiple: true, data: { 'image-preview-target': "input", action: "image-preview#preview" }
+        = f.file_field :financial_projections, include_hidden: false, data: { 'image-preview-target': "input", action: "image-preview#preview" }
       div.previews data-image-preview-target='preview'

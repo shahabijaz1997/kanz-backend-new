@@ -9,7 +9,7 @@
         div.upload
           i.fa.fa-upload.fa-s
           span Upload Document
-        = f.file_field :business_plan, include_hidden: false, multiple: true, data: { 'image-preview-target': "input", action: "image-preview#preview" }
+        = f.file_field :business_plan, include_hidden: false, data: { 'image-preview-target': "input", action: "image-preview#preview" }
       div.previews data-image-preview-target='preview'
   .form-group data-controller='image-preview'
     label Service Providers
@@ -18,7 +18,7 @@
         div.upload
           i.fa.fa-upload.fa-s
           span Upload Document
-        = f.file_field :service_providers, include_hidden: false, multiple: true, data: { 'image-preview-target': "input", action: "image-preview#preview" }
+        = f.file_field :service_providers, include_hidden: false, data: { 'image-preview-target': "input", action: "image-preview#preview" }
       div.previews data-image-preview-target='preview'
   .form-group data-controller='image-preview'
     label Insurance Policies
@@ -27,5 +27,5 @@
         div.upload
           i.fa.fa-upload.fa-s
           span Upload Document
-        = f.file_field :insurance_policies, include_hidden: false, multiple: true, data: { 'image-preview-target': "input", action: "image-preview#preview" }
+        = f.file_field :insurance_policies, include_hidden: false, data: { 'image-preview-target': "input", action: "image-preview#preview" }
       div.previews data-image-preview-target='preview'
