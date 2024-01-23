@@ -4,33 +4,7 @@
 class SyndicateSerializer
   include JSONAPI::Serializer
 
-  attribute :id do |syndicate|
-    syndicate.id
-  end
-
-  attribute :name do |syndicate|
-    syndicate.name
-  end
-
-  attribute :email do |syndicate|
-    syndicate.email
-  end
-
-  attribute :type do |syndicate|
-    syndicate.type
-  end
-
-  attribute :status do |syndicate|
-    syndicate.status
-  end
-
-  attribute :language do |syndicate|
-    syndicate.language
-  end
-
-  attribute :profile_states do |syndicate|
-    syndicate.profile_states
-  end
+  attributes :id, :name, :email, :type, :status, :language, :profile_states, :profile_picture_url
 
   attribute :profile do |syndicate|
     SyndicateProfileSerializer.new(

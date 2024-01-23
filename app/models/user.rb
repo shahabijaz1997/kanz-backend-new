@@ -22,6 +22,8 @@ class User < ApplicationRecord
   has_many :comments, class_name: 'Comment', foreign_key: 'author_id'
   has_many :investments, dependent: :destroy
 
+  has_one_attached :profile_picture
+
   delegate :title, :title_ar, to: :user_role, prefix: :role
 
   before_validation :update_role, on: :create
@@ -111,6 +113,10 @@ class User < ApplicationRecord
 
   def no_active_deals
     deals.live.count
+  end
+
+  def profile_picture_url
+    Rails.env.development? ? ActiveStorage::Blob.service.path_for(profile_picture.key) : profile_picture.url if profile_picture.attached?
   end
 
   private
