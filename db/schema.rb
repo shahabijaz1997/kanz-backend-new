@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_18_075317) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_23_062957) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -159,6 +159,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_18_075317) do
     t.integer "model", default: 0
     t.bigint "syndicate_id"
     t.datetime "closing_date"
+    t.integer "closing_model", default: 0
     t.index ["syndicate_id"], name: "index_deals_on_syndicate_id"
     t.index ["user_id"], name: "index_deals_on_user_id"
   end

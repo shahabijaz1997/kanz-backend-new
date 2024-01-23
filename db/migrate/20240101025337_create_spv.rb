@@ -49,7 +49,7 @@ class CreateSpv < ActiveRecord::Migration[7.0]
       t.references :property_deeds #: Title for the plot in Business Bay, Dubai.
       t.references :loan_agreement #: Personal investment by Ahmed,; no loan.
       t.references :service_provider_contracts #: Construction contract with LMN Developers.
-      
+
       # Step 8 Operational Details:
       t.references :business_plan #: To develop a high-end mixed-use complex within 5 years.
       t.references :service_providers #: Architectural services by ABC Architects; Legal by DEF Law.

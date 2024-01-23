@@ -14,24 +14,42 @@ class SpvsController < ApplicationController
 
   def create
     @spv = current_user.spvs.new(spv_params)
-    if @spv.save
+    Spv.transaction do
+      @spv.save!
+      @spv.deal.update!(closing_model: @spv.closing_model, status: 'closed')
       next_step
-    else
-      @errors = @spv.errors.full_messages
     end
+    render turbo_stream: turbo_stream.update('stepper', partial: "spv/modal_body")
+  rescue StandardError => e
+    @errors = [e.message]
     render turbo_stream: turbo_stream.update('stepper', partial: "spv/modal_body")
   end
 
   def update
-    if @spv.update(spv_params)
-      next_step
-    else
-      @errors = @spv.errors.full_messages
-    end
+    next_step if @spv.update(spv_params)
+    @errors = @spv.errors.full_messages
     render turbo_stream: turbo_stream.update('stepper', partial: "spv/modal_body")
   end
 
   private
+
+  def find_deal
+    @deal = Deal.find_by(id: params[:deal_id])
+  end
+
+  def find_spv
+    @spv = Spv.find_by(id: params[:id])
+  end
+
+  def setup_step
+    return @step = 1 if params[:step].blank?
+    params[:step] = params[:step].to_i
+    @step = steps_in_range? ? params[:step] : 1
+  end
+
+  def upload_file
+    Attachment.upload_file(@spv, spv_params[:logo], uploaded_by: current_user)
+  end
 
   def spv_params
     params.require(:spv).permit(
@@ -81,20 +99,6 @@ class SpvsController < ApplicationController
       :deal_id,
       :closing_model
     )
-  end
-
-  def find_deal
-    @deal = Deal.find_by(id: params[:deal_id])
-  end
-
-  def find_spv
-    @spv = Spv.find_by(id: params[:id])
-  end
-
-  def setup_step
-    return @step = 1 if params[:step].blank?
-    params[:step] = params[:step].to_i
-    @step = steps_in_range? ? params[:step] : 1
   end
 
   def next_step

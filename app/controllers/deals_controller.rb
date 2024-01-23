@@ -42,7 +42,7 @@ class DealsController < ApplicationController
   end
 
   def update_status_params
-    params.require(:deal).permit(:audit_comment, :model, :status)
+    params.require(:deal).permit(:audit_comment, :model, :status, :closing_model, :end_at)
   end
 
   def attachment_attributes
