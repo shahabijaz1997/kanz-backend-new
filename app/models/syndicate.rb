@@ -15,8 +15,6 @@ class Syndicate < User
   scope :has_active_deal, -> { joins(:deals).where.not(deals: { id: nil }).where(deals: { status: Deal::statuses[:live] }).distinct }
   scope :no_active_deal, -> { where.not(id: has_active_deal.pluck(:id)).distinct }
 
-  accepts_nested_attributes_for :profile, update_only: true
-
   def self.ransackable_attributes(_auth_object = nil)
     %w[email name status]
   end

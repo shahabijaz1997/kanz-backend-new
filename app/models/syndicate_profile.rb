@@ -19,6 +19,8 @@ class SyndicateProfile < ApplicationRecord
   after_save :update_profile_industries, :update_profile_regions
   after_create :create_group
 
+  accepts_nested_attributes_for :syndicate, update_only: true
+
   def self.ransackable_attributes(_auth_object = nil)
     %w[region_id industry_id]
   end

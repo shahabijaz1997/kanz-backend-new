@@ -3,8 +3,6 @@
 class FundRaiser < User
   has_one :profile, class_name: 'FundRaiserProfile', dependent: :destroy
 
-  accepts_nested_attributes_for :profile, update_only: true
-
   def self.ransackable_attributes(_auth_object = nil)
     %w[email name status]
   end
