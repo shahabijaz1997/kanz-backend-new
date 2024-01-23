@@ -1,0 +1,12 @@
+.stepper {
+  .line {
+    width: 2px;
+    background-color: rgba(var(--bs-primary-rgb)) !important;
+  }
+  .lead {
+    font-size: 1.1rem;
+  }
+  .border-primary{
+    border: 1px solid rgba(var(--bs-primary-rgb));
+  }
+}

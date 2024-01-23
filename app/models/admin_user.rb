@@ -6,6 +6,7 @@ class AdminUser < ApplicationRecord
   devise :database_authenticatable, :recoverable, :rememberable, :validatable
 
   belongs_to :admin_role, class_name: 'AdminRole'
+  has_many :spvs, foreign_key: :created_by
 
   validates :email, :first_name, :last_name, presence: true
   validates :email, uniqueness: true

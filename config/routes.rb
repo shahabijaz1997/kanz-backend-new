@@ -143,11 +143,15 @@ Rails.application.routes.draw do
       resources :start_up, only: %i[index show], controller: 'deals', type: 'start_up'
       resources :property, only: %i[index show], controller: 'deals', type: 'property'
     end
+    resources :spvs, only: %i[new]
   end
   resource :profile, only: %i[show edit update]
   resources :dashboard, only: %i[index]
   resources :field_attributes
   resources :steppers
+  resources :spvs, only: %i[show index create update edit] do
+    get :back
+  end
 
   root to: "dashboard#index"
 end

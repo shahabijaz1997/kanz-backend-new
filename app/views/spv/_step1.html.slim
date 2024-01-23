@@ -1,0 +1,34 @@
+- spv ||= @spv
+= render 'spv/errors'
+= form_for spv, html: { "data-step" => @step } do |f|
+  = f.hidden_field :deal_id
+  = f.hidden_field :closing_model
+  = f.hidden_field :step, value: @step
+  = hidden_field_tag :step, @step
+  .form-group.mt-3
+    = f.label :legal_name
+    = f.text_field :legal_name, class: "form-control", required:  true
+  .form-group.mt-3
+    = f.label :date_of_incorporation
+    = f.date_field :date_of_incorporation, class: "form-control", required: true
+  .form-group.mt-3
+    = f.label :place_of_incorporation
+    = f.text_field :place_of_incorporation, class: "form-control", required:  true
+  .form-group data-controller='image-preview'
+    label Registration Certificate
+    span.value
+      = f.label :registration_certificate do
+        div.upload
+          i.fa.fa-upload.fa-s
+          span Upload Document
+        = f.file_field :registration_certificate, include_hidden: false, data: { 'image-preview-target': "input", action: "image-preview#preview" }
+      div.previews data-image-preview-target='preview'
+  .form-group.mt-3
+    = f.label :legal_structure
+    = f.text_field :legal_structure, class: "form-control"
+  .form-group.mt-3
+    = f.label :jurisdiction
+    = f.text_field :jurisdiction, class: "form-control"
+  .form-group.mt-3
+    = f.label :registered_office_address
+    = f.text_field :registered_office_address, class: "form-control"

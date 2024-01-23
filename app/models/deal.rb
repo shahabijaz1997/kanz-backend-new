@@ -13,6 +13,7 @@ class Deal < ApplicationRecord
   has_many :invites, as: :eventable, dependent: :destroy
   has_many :comments, dependent: :destroy
   belongs_to :syndicate, class_name: 'Syndicate', optional: true
+  has_one :spv
   has_many :investments, dependent: :destroy
 
   accepts_nested_attributes_for :features, :external_links, allow_destroy: true
@@ -23,6 +24,7 @@ class Deal < ApplicationRecord
   enum deal_type: DEAL_TYPES
   enum status: { draft: 0, submitted: 1, reopened: 2, verified: 3, rejected: 4, approved: 5, live: 6, closed: 7 }
   enum model: { _: 0, classic: 1, syndicate: 2 }
+  enum closing_model: { fifs: 0, adjust_pro_rata: 1, refund_and_close: 2 }
 
   validates_numericality_of(:target, greater_than: 0, allow_nil: true)
   validate :start_and_end_date_presence, :start_date_and_end_date

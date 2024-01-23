@@ -9,9 +9,15 @@ import TabsController from "./tabs_controller"
 import ToastController from "./toast_controller"
 import MenuController from "./menu_controller"
 import ImagePreviewController from "./image_preview_controller"
+import SpvController from "./spv_controller"
+import ModalController from "./modal_controller"
+import DealsController from "./deals_controller"
 
 application.register("dashboard", DashboardController)
 application.register("tabs", TabsController)
 application.register("toast", ToastController)
 application.register("menu", MenuController)
 application.register("image-preview", ImagePreviewController)
+application.register("spv", SpvController)
+application.register("modal", ModalController)
+application.register("deal-closing", DealsController)

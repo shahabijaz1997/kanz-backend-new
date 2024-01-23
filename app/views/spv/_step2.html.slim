@@ -1,0 +1,22 @@
+= render 'spv/errors'
+= form_for @spv, html: { "data-step" => @step } do |f|
+  = f.hidden_field :step, value: @step
+  = hidden_field_tag :step, @step
+  .form-group.mt-3
+    = f.label :directors
+    = f.text_field :directors, class: "form-control", required:  true
+  .form-group data-controller='image-preview'
+    label Registration Certificate
+    span.value
+      = f.label :governance_structure do
+        div.upload
+          i.fa.fa-upload.fa-s
+          span Upload Documents
+        = f.file_field :governance_structure, include_hidden: false, data: { 'image-preview-target': "input", action: "image-preview#preview" }
+      div.previews data-image-preview-target='preview'
+  .form-group.mt-3
+    = f.label :management_agreements
+    = f.text_field :management_agreements, class: "form-control", required:  true
+  .form-group.mt-3
+    = f.label :parent_company
+    = f.text_field :parent_company, class: "form-control"

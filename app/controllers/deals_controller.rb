@@ -3,7 +3,7 @@
 class DealsController < ApplicationController
   include Informer
 
-  before_action :set_deal, only: %i[show update]
+  before_action :set_deal, only: %i[show update spv]
   before_action :authorize_role!
 
   def index
@@ -25,6 +25,10 @@ class DealsController < ApplicationController
     end
   end
 
+  def spv
+    render :spv_modal 
+  end
+
   private
 
   def upload_attachments
@@ -38,7 +42,7 @@ class DealsController < ApplicationController
   end
 
   def update_status_params
-    params.require(:deal).permit(:audit_comment, :model, :status)
+    params.require(:deal).permit(:audit_comment, :model, :status, :closing_model, :end_at)
   end
 
   def attachment_attributes

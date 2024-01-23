@@ -1,0 +1,39 @@
+- steps = ["Entity Information", "Governance and Management", "Investment Details", "Regulatory Compliance", "Financial Information", "Reporting Requirements", "Contractual Documents", "Operational Details", "Exit Strategy", "Investor Relations"]
+.modal-body
+  .container
+    .d-flex
+      .col-4
+        .stepper.d-flex.flex-column.mt-5.ml-2
+          - steps.each_with_index do |title, index|
+            - index += 1
+            .d-flex.mb-1
+              .d-flex.flex-column.pr-4.align-items-center
+                div class=(["rounded-circle", "py-2", "px-3", "mb-1", @step > index ? "bg-primary text-white" : (@step == index) ? "bg-light text-primary border-primary" : "bg-light text-primary"].compact.join(' '))
+                  = index
+                .line.h-100
+              div
+                span = title
+      .col-8.mx-3
+        = render "spv/step#{@step}", spv: @spv, step: @step
+.modal-footer
+  .container
+    .d-flex
+      span.col-4
+      .col-8.mx-3
+        .d-flex
+          .col-6
+            - if @step == SPV_FIRST_STEP
+              button.btn.btn-secondary.me-auto[type="button" data-action="click->modal#hideModal"]
+                | Cancel
+            - else
+              = link_to spv_back_path(@spv)
+                button.btn.btn-secondary.me-auto
+                  | Back
+          .col-6.text-center
+            - if @step == 2
+              = link_to spvs_path
+                button.btn.btn-primary
+                  | Finish
+            - else
+              button.btn.btn-primary[data-controller="spv" data-action="click->spv#submit" data-step="#{@step}"]
+                | Continue

@@ -1,0 +1,49 @@
+= render 'shared/section_card', section_title: 'Action', editable: false do
+  - if can_close_deal?(resource)
+    li.list-group-item[data-controller="deal-closing"]
+      .col-2
+        .form-check
+          input#fifs.form-check-input[type="radio" value="fifs" name="closing_model" data-action="deal-closing#createSpv"]
+          label.form-check-label[for="fifs"]
+            |  FIFS
+      .col-2
+        .form-check
+          input#adjustProRata.form-check-input[type="radio" value="adjust_pro_rata" name="closing_model" data-action="deal-closing#createSpv"]
+          label.form-check-label[for="adjustProRata"]
+            |  Adjust Pro Rata
+      .col-2
+        .form-check
+          input#extendDate.form-check-input[type="radio" value="extend_date" name="closing_model" data-action="deal-closing#extendDate"]
+          label.form-check-label[for="extendDate"]
+            |  Extend Date
+      .col-2
+        .form-check
+          input#returnAndClose.form-check-input[type="radio" value="refund_and_close"  name="closing_model" data-action="deal-closing#refundAndClose"]
+          label.form-check-label[for="returnAndClose"]
+            | Refund and Close
+      .col-4
+        = turbo_frame_tag 'spv-modal' do
+          = link_to new_deal_spv_path(resource), id: 'spvLink', class: 'btn btn-primary' do
+            | Create SPV
+    .d-none#dateSelector
+      = form_for resource, method: :put do |form|
+        li.list-group-item
+          span.col-3.title End Date
+          span.col-5.value
+            = form.date_field :end_at, class: "form-control"
+          .col
+            = form.submit "Save", class: 'btn btn-primary'
+    #dealRefundForm.d-none
+      = form_for resource, method: :put do |form|
+        li.list-group-item
+          span.col-3.title Reason
+          span.col.value
+            = form.hidden_field :closing_model, value: 'refund_and_close'
+            = form.hidden_field :status, value: 'closed'
+            = form.text_area :audit_comment, rows: 3, class: "form-control", placeholder: 'Reason', required: true
+        li.list-group-item
+          span.col-3.title
+          span.col.value
+            = form.submit "Save", class: 'btn btn-primary'
+  - else
+    div.not_found = info_message(resource.status)

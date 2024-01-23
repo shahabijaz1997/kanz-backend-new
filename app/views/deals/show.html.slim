@@ -3,6 +3,8 @@
 
 div.w-75
   = render "#{@deal.deal_type}"
+  - if can_close_deal?(@deal)
+    = render 'closure', resource: @deal
   = render 'shared/attachments_section', attachments: @deal.attachments_by_creator
   = render 'admin_attachments_section', attachments: customer_support_rep_attachments(@deal), title: 'Attachments by Customer Support Representative'
   = render 'admin_attachments_section', attachments: compliance_officer_attachments(@deal), title: 'Attachments by Compliance Officer'
