@@ -11,10 +11,10 @@ class Deal < ApplicationRecord
   has_many :attachments, as: :parent, dependent: :destroy
   has_many :external_links, dependent: :destroy
   has_many :invites, as: :eventable, dependent: :destroy
-  has_many :comments
+  has_many :comments, dependent: :destroy
   belongs_to :syndicate, class_name: 'Syndicate', optional: true
-  has_many :investments
   has_one :spv
+  has_many :investments, dependent: :destroy
 
   accepts_nested_attributes_for :features, :external_links, allow_destroy: true
   accepts_nested_attributes_for :terms
@@ -46,6 +46,9 @@ class Deal < ApplicationRecord
   scope :by_type, -> (type) { where(deal_type: type) }
   scope :live_or_closed, -> { where(status: [Deal::statuses[:closed], Deal::statuses[:live]]) }
   scope :user_invested, -> (user_id) { joins(:investments).where(investments: {user_id: user_id}) }
+  scope :equity, -> { joins(:funding_round).where.not(funding_round: { equity_type_id: nil, round_id: nil }) }
+  scope :rental, -> { joins(:property_detail).where( property_detail: { is_rental: true })}
+  scope :non_rental, -> { joins(:property_detail).where( property_detail: { is_rental: [false, nil] })}
 
   def attachments_by_creator
     attachments.where(uploaded_by: user)
@@ -87,6 +90,18 @@ class Deal < ApplicationRecord
 
   def activities
     invites.where.not(invitee_id: investments.pluck(:user_id)).latest_first + investments.latest_first
+  end
+
+  def investment_round
+    funding_round&.stage
+  end
+
+  def current_valuation
+    target.to_f
+  end
+
+  def previous_valuation
+    target.to_f
   end
 
   private

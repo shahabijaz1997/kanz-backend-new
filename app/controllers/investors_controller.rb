@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class InvestorsController < ApplicationController
-  before_action :set_investor, only: %i[show update]
+  before_action :set_investor, only: %i[show update destroy reactivate]
   before_action :authorize_role!
 
   def index
@@ -20,6 +20,22 @@ class InvestorsController < ApplicationController
       else
         format.html { render :show, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def destroy
+    @investor.destroy
+    respond_to do |format|
+      format.html { redirect_to @investor, notice: 'Investor deactivated.' }
+    end
+  end
+
+  def reactivate
+    @investor.reactivate
+    respond_to do |format|
+      format.html { 
+        redirect_to @investor.individual_investor? ? individual_path(@investor) : firm_path(@investor), notice: 'Investor reactivated.'
+      }
     end
   end
 

@@ -111,17 +111,30 @@ Rails.application.routes.draw do
         put 'syndicate_members/accept_invite' => 'syndicate_members#accept_invite'
       end
     end
+
+    namespace :analytics do
+      resources :investors, only: %i[index] do
+        collection do
+          get :investments
+          get :funding_round_investments
+          get :property_investments
+          get :investments_chart
+        end
+      end
+    end
+    resource :profile, only: %i[show update]
   end
 
   # Admin routes
   resources :admin_users do
     get :reactivate, on: :member
   end
-  resources :investors, only: %i[update] do
+  resources :investors, only: %i[update destroy] do
     collection do
       resources :individuals, only: %i[index show], controller: 'investors', type: 'individuals'
       resources :firms, only: %i[index show], controller: 'investors', type: 'firms'
     end
+    get :reactivate, on: :member
   end
   resources :fund_raisers, only: %i[index show update]
   resources :syndicates, only: %i[index show update]
@@ -132,12 +145,7 @@ Rails.application.routes.draw do
     end
     resources :spvs, only: %i[new]
   end
-  resources :profile, only: %i[index] do
-    collection do
-      get :edit
-      put :update
-    end
-  end
+  resource :profile, only: %i[show edit update]
   resources :dashboard, only: %i[index]
   resources :field_attributes
   resources :steppers

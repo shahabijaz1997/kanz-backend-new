@@ -43,24 +43,16 @@ class AdminUsersController < ApplicationController
   end
 
   def destroy
+    @admin_user.destroy
     respond_to do |format|
-      if @admin_user.destroy
-        format.html { redirect_to admin_users_path, notice: 'Successfully updated.' }
-      else
-        flash[:alert] = @admin_user.errors.full_messages.join('<br>')
-        format.html { redirect_to edit_admin_user_path(@admin_user) }
-      end
+      format.html { redirect_to @admin_user, notice: 'Admin Deactivated.' }
     end
   end
 
   def reactivate
+    @admin_user.reactivate
     respond_to do |format|
-      if @admin_user.reactivate
-        format.html { redirect_to admin_users_path, notice: 'Successfully updated.' }
-      else
-        flash[:alert] = @admin_user.errors.full_messages.join('<br>')
-        format.html { redirect_to admin_user_path(@admin_user) }
-      end
+      format.html { redirect_to @admin_user, notice: 'Admin Reactivated.' }
     end
   end
 
