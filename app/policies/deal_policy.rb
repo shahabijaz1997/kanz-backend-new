@@ -18,4 +18,12 @@ class DealPolicy < ApplicationPolicy
   def update?
     index?
   end
+
+  def extend?
+    index?
+  end
+
+  def close?
+    index?
+  end
 end

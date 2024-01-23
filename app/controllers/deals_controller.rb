@@ -3,7 +3,7 @@
 class DealsController < ApplicationController
   include Informer
 
-  before_action :set_deal, only: %i[show update spv]
+  before_action :set_deal, only: %i[show update spv close extend]
   before_action :authorize_role!
 
   def index
@@ -25,6 +25,27 @@ class DealsController < ApplicationController
     end
   end
 
+  def close
+    respond_to do |format|
+      if @deal.update(deal_close_params)
+        inform_deal_creator
+        format.html { redirect_to deals_path, notice: 'Successfully updated.' }
+      else
+        format.html { redirect_to deal_path(@deal), alert: @deal.errors.full_messages.to_sentence }
+      end
+    end
+  end
+
+  def extend
+    respond_to do |format|
+      if @deal.update(deal_extend_params)
+        format.html { redirect_to @deal, notice: 'Successfully updated.' }
+      else
+        format.html { redirect_to deal_path(@deal), alert: @deal.errors.full_messages.to_sentence }
+      end
+    end
+  end
+
   def spv
     render :spv_modal 
   end
@@ -38,6 +59,7 @@ class DealsController < ApplicationController
   end
 
   def set_deal
+    params[:id] ||= params[:deal_id]
     @deal = policy_scope(Deal).find(params[:id])
   end
 
@@ -47,5 +69,17 @@ class DealsController < ApplicationController
 
   def attachment_attributes
     params.require(:deal).permit(attachments: [])[:attachments]
+  end
+
+  def deal_close_params
+    params.require(:deal).permit(:audit_comment, :status, :closing_model)
+  end
+
+  def deal_extend_params
+    params.require(:deal).permit(:audit_comment, :end_at)
+  end
+
+  def deals_path
+    @deal.startup? ? start_up_index_path : property_index_path
   end
 end

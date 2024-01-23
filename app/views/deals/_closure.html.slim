@@ -23,10 +23,10 @@
             | Refund and Close
       .col-4
         = turbo_frame_tag 'spv-modal' do
-          = link_to new_deal_spv_path(resource), id: 'spvLink', class: 'btn btn-primary' do
+          = link_to new_deal_spv_path(resource), id: 'spvLink', class: 'btn btn-primary disabled' do
             | Create SPV
     .d-none#dateSelector
-      = form_for resource, method: :put do |form|
+      = form_for resource, url: deal_extend_path(resource), method: :put do |form|
         li.list-group-item
           span.col-3.title End Date
           span.col-5.value
@@ -34,7 +34,7 @@
           .col
             = form.submit "Save", class: 'btn btn-primary'
     #dealRefundForm.d-none
-      = form_for resource, method: :put do |form|
+      = form_for resource, url: deal_close_path(resource), method: :put do |form|
         li.list-group-item
           span.col-3.title Reason
           span.col.value
