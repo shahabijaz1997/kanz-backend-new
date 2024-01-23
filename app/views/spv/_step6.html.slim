@@ -9,7 +9,7 @@
         div.upload
           i.fa.fa-upload.fa-s
           span Upload Document
-        = f.file_field :financial_reporting, include_hidden: false, multiple: true, data: { 'image-preview-target': "input", action: "image-preview#preview" }
+        = f.file_field :financial_reporting, include_hidden: false, data: { 'image-preview-target': "input", action: "image-preview#preview" }
       div.previews data-image-preview-target='preview'
   .form-group data-controller='image-preview'
     label Investor Reporting
@@ -18,7 +18,7 @@
         div.upload
           i.fa.fa-upload.fa-s
           span Upload Document
-        = f.file_field :investor_reporting, include_hidden: false, multiple: true, data: { 'image-preview-target': "input", action: "image-preview#preview" }
+        = f.file_field :investor_reporting, include_hidden: false, data: { 'image-preview-target': "input", action: "image-preview#preview" }
       div.previews data-image-preview-target='preview'
   .form-group data-controller='image-preview'
     label Performance Metrics
@@ -27,5 +27,5 @@
         div.upload
           i.fa.fa-upload.fa-s
           span Upload Document
-        = f.file_field :performance_metrics, include_hidden: false, multiple: true, data: { 'image-preview-target': "input", action: "image-preview#preview" }
+        = f.file_field :performance_metrics, include_hidden: false, data: { 'image-preview-target': "input", action: "image-preview#preview" }
       div.previews data-image-preview-target='preview'

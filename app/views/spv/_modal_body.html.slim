@@ -20,15 +20,19 @@
     .d-flex
       span.col-4
       .col-8.mx-3
-        - if @step == SPV_FIRST_STEP
-          button.btn.btn-secondary.me-auto[type="button" data-action="click->modal#hideModal"]
-            | Cancel
-        - else
-          button.btn.btn-secondary.me-auto[data-controller="spv" data-action="click->spv#previousStep" data-step="#{@step}"]
-            | Back
-        - if @step == SPV_LAST_STEP
-          button.btn.btn-primary[data-controller="spv" data-action="click->spv#submit" data-step="#{@step}"]
-            | Finish
-        - else
-          button.btn.btn-primary[data-controller="spv" data-action="click->spv#submit" data-step="#{@step}"]
-            | Continue
+        .d-flex
+          .col-6
+            - if @step == SPV_FIRST_STEP
+              button.btn.btn-secondary.me-auto[type="button" data-action="click->modal#hideModal"]
+                | Cancel
+            - else
+              = link_to spv_back_path(@spv)
+                button.btn.btn-secondary.me-auto
+                  | Back
+          .col-6.text-center
+            - if @step == SPV_LAST_STEP
+              button.btn.btn-primary[data-controller="spv" data-action="click->spv#submit" data-step="#{@step}"]
+                | Finish
+            - else
+              button.btn.btn-primary[data-controller="spv" data-action="click->spv#submit" data-step="#{@step}"]
+                | Continue

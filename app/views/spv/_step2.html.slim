@@ -8,11 +8,11 @@
   .form-group data-controller='image-preview'
     label Registration Certificate
     span.value
-      = f.label :registration_certificate do
+      = f.label :governance_structure do
         div.upload
           i.fa.fa-upload.fa-s
           span Upload Documents
-        = f.file_field :registration_certificate, include_hidden: false, multiple: true, data: { 'image-preview-target': "input", action: "image-preview#preview" }
+        = f.file_field :governance_structure, include_hidden: false, data: { 'image-preview-target': "input", action: "image-preview#preview" }
       div.previews data-image-preview-target='preview'
   .form-group.mt-3
     = f.label :management_agreements

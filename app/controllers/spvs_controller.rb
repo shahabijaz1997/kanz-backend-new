@@ -1,7 +1,7 @@
 class SpvsController < ApplicationController
-  before_action :setup_step, only: %i[new create update]
+  before_action :setup_step, only: %i[back new create update]
   before_action :find_deal, only: %i[new]
-  before_action :find_spv, only: %i[show update]
+  before_action :find_spv, only: %i[show update back]
 
   def index
     @pagy, @spvs = pagy Spv.all
@@ -28,6 +28,14 @@ class SpvsController < ApplicationController
   def update
     next_step if @spv.update(spv_params)
     @errors = @spv.errors.full_messages
+    respond_to do |format|
+      format.html { redirect_to spvs_path }
+      format.turbo_stream { render turbo_stream: turbo_stream.update('stepper', partial: "spv/modal_body") }
+    end
+  end
+
+  def back
+    previous_step
     render turbo_stream: turbo_stream.update('stepper', partial: "spv/modal_body")
   end
 
@@ -38,7 +46,7 @@ class SpvsController < ApplicationController
   end
 
   def find_spv
-    @spv = Spv.find_by(id: params[:id])
+    @spv = Spv.find_by(id: params[:id]) || Spv.find_by(id: params[:spv_id])
   end
 
   def setup_step
@@ -47,54 +55,50 @@ class SpvsController < ApplicationController
     @step = steps_in_range? ? params[:step] : 1
   end
 
-  def upload_file
-    Attachment.upload_file(@spv, spv_params[:logo], uploaded_by: current_user)
-  end
-
   def spv_params
     params.require(:spv).permit(
       :step,
       :legal_name,
       :date_of_incorporation,
       :place_of_incorporation,
-      :registration_certificate_id,
+      :registration_certificate,
       :legal_structure,
       :jurisdiction,
       :registered_office_address,
       :directors,
-      :governance_structure_id,
+      :governance_structure,
       :management_agreements,
       :parent_company,
       :investment_nature,
-      :investment_strategy_id,
+      :investment_strategy,
       :capital_raised,
       :investment_thresholds,
-      :valuation_report_id,
+      :valuation_report,
       :terms,
-      :aml_kyc_document_id,
-      :dfsa_compliance_regulations_id,
+      :aml_kyc_document,
+      :dfsa_compliance_regulations,
       :risk_disclosures,
-      :data_protection_compliance_id,
+      :data_protection_compliance,
       :bank_name,
       :branch_name,
       :account_no,
       :account_title,
       :capital_requirements,
-      :audited_financial_statements_id,
-      :financial_projections_id,
-      :financial_reporting_id,
-      :investor_reporting_id,
-      :performance_metrics_id,
-      :shareholder_agreements_id,
-      :property_deeds_id,
-      :loan_agreement_id,
-      :service_provider_contracts_id,
-      :business_plan_id,
-      :service_providers_id,
-      :insurance_policies_id,
+      :audited_financial_statements,
+      :financial_projections,
+      :financial_reporting,
+      :investor_reporting,
+      :performance_metrics,
+      :shareholder_agreements,
+      :property_deeds,
+      :loan_agreement,
+      :service_provider_contracts,
+      :business_plan,
+      :service_providers,
+      :insurance_policies,
       :exit_options,
-      :divestment_process_id,
-      :communication_channels_id,
+      :divestment_process,
+      :communication_channels,
       :investor_queries,
       :deal_id,
       :closing_model
