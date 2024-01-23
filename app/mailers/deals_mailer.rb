@@ -23,7 +23,7 @@ class DealsMailer < ApplicationMailer
     @user = @deal.user
     @syndicate = @deal.syndicate
     mail.subject = 'Wooho! Deal is Live now'
-    mail.to = [@user.email, @syndicate.email]
+    mail.to = [@user.email, @syndicate&.email]
     mail
   end
 

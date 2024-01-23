@@ -30,8 +30,8 @@
                 button.btn.btn-secondary.me-auto
                   | Back
           .col-6.text-center
-            - if @step == 2
-              = link_to spvs_path
+            - if @step == SPV_LAST_STEP
+              = link_to spvs_path, data: {turbo: false} do
                 button.btn.btn-primary
                   | Finish
             - else

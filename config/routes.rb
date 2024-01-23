@@ -130,6 +130,8 @@ Rails.application.routes.draw do
       resources :start_up, only: %i[index show], controller: 'deals', type: 'start_up'
       resources :property, only: %i[index show], controller: 'deals', type: 'property'
     end
+    put :close
+    put :extend
     resources :spvs, only: %i[new]
   end
   resources :profile, only: %i[index] do

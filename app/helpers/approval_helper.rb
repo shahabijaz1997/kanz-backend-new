@@ -3,8 +3,7 @@
 module ApprovalHelper
   def user_can_approve(resource)
     (current_admin_user.customer_support_rep? && resource.submitted?) ||
-      (current_admin_user.compliance_officer? && resource.verified?) ||
-      (current_admin_user.customer_support_rep? || current_admin_user.compliance_officer? && resource.closed?)
+      (current_admin_user.compliance_officer? && resource.verified?)
   end
 
   def info_message(status)
