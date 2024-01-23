@@ -90,6 +90,11 @@ ROUTES = {
           path: "property"
         }
       ]
+    },
+    {
+      name: "Spvs",
+      path: "spvs",
+      icon: "fa fa-briefcase"
     }
   ]
 }.freeze
