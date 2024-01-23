@@ -26,7 +26,7 @@
               button.btn.btn-secondary.me-auto[type="button" data-action="click->modal#hideModal"]
                 | Cancel
             - else
-              = link_to spv_back_path(@spv)
+              = link_to spv_back_path(@spv, step: @step)
                 button.btn.btn-secondary.me-auto
                   | Back
           .col-6.text-center
