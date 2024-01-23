@@ -1,5 +1,6 @@
 div.table
   div.header
+    span.col Deal Title
     span.col Legal Name
     span.col Date of Incorporation
     span.col Place of Incorporation
@@ -11,6 +12,7 @@ div.table
       - spvs.each do |spv|
         div.card.position-relative.shadow-sm
           div.card-body.d-flex
+            span.col = spv.deal&.title
             span.col = spv.legal_name
             span.col = spv.date_of_incorporation
             span.col = spv.place_of_incorporation
