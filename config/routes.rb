@@ -149,7 +149,7 @@ Rails.application.routes.draw do
   resources :dashboard, only: %i[index]
   resources :field_attributes
   resources :steppers
-  resources :spvs, only: %i[show index create update] do
+  resources :spvs, only: %i[show index create update edit] do
     get :back
   end
 

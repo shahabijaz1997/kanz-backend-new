@@ -1,10 +1,10 @@
 class SpvsController < ApplicationController
   before_action :setup_step, only: %i[back new create update]
   before_action :find_deal, only: %i[new]
-  before_action :find_spv, only: %i[show update back]
+  before_action :find_spv, only: %i[show update back edit]
 
   def index
-    @pagy, @spvs = pagy Spv.all
+    @pagy, @spvs = pagy Spv.all 
   end
 
   def new
@@ -23,6 +23,11 @@ class SpvsController < ApplicationController
   rescue StandardError => e
     @errors = [e.message]
     render turbo_stream: turbo_stream.update('stepper', partial: "spv/modal_body")
+  end
+
+  def edit
+    @step = SPV_FIRST_STEP
+    render turbo_stream: turbo_stream.append('spv-modal', partial: 'spv/new')
   end
 
   def update
