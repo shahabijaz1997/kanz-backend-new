@@ -31,6 +31,5 @@
       div.previews data-image-preview-target='preview'
   .form-group.mt-3
     = f.label :terms
-    input#terms[type="hidden" name="spv[terms]"]
+    input#terms[type="hidden" name="spv[terms]" value="#{@spv.terms}"]
     trix-editor[input="terms"]
-

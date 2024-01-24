@@ -13,4 +13,5 @@
       div.previews data-image-preview-target='preview'
   .form-group.mt-3
     = f.label :investor_queries
-    = f.text_area :investor_queries, class: "form-control", rows: 6
+    input#investor_queries[type="hidden" name="spv[investor_queries]" value="#{@spv.investor_queries}"]
+    trix-editor[input="investor_queries"]

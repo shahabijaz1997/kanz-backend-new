@@ -4,7 +4,8 @@
   = hidden_field_tag :step, @step
   .form-group.mt-3
     = f.label :exit_options
-    = f.text_area :exit_options, class: "form-control", rows: 6
+    input#exit_options[type="hidden" name="spv[exit_options]" value="#{@spv.exit_options}"]
+    trix-editor[input="exit_options"]
   .form-group data-controller='image-preview'
     label Divestment Process
     span.value
