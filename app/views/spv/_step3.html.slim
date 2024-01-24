@@ -5,30 +5,16 @@
   .form-group.mt-3
     = f.label :investment_nature
     = f.text_field :investment_nature, class: "form-control", required:  true
-  .form-group data-controller='image-preview'
-    label Investment Strategy
-    span.value
-      = f.label :investment_strategy do
-        div.upload
-          i.fa.fa-upload.fa-s
-          span Upload Document
-        = f.file_field :investment_strategy, include_hidden: false, data: { 'image-preview-target': "input", action: "image-preview#preview" }
-      div.previews data-image-preview-target='preview'
+  .form-group.mt-3 data-controller='image-preview'
+    = render "spv/file_field", form: f, field: 'investment_strategy'
   .form-group.mt-3
     = f.label :capital_raised
     = f.number_field :capital_raised, class: "form-control", required:  true
   .form-group.mt-3
     = f.label :investment_thresholds
     = f.number_field :investment_thresholds, class: "form-control", required:  true
-  .form-group data-controller='image-preview'
-    label Valuation Report
-    span.value
-      = f.label :valuation_report do
-        div.upload
-          i.fa.fa-upload.fa-s
-          span Upload Document
-        = f.file_field :valuation_report, include_hidden: false, data: { 'image-preview-target': "input", action: "image-preview#preview" }
-      div.previews data-image-preview-target='preview'
+  .form-group.mt-3 data-controller='image-preview'
+    = render "spv/file_field", form: f, field: 'valuation_report'
   .form-group.mt-3
     = f.label :terms
     input#terms[type="hidden" name="spv[terms]" value="#{@spv.terms}"]

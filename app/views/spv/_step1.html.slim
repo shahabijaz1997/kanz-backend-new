@@ -15,15 +15,7 @@
     = f.label :place_of_incorporation
     = f.text_field :place_of_incorporation, class: "form-control", required:  true
   .form-group.mt-3 data-controller='image-preview'
-    = f.label :registration_certificate
-    = f.file_field :registration_certificate, class: "form-control", data: { 'image-preview-target': "input", action: "image-preview#preview" } do
-      div.upload
-        i.fa.fa-upload.fa-s
-        span Upload Document
-    ul.list-group.list-group-flush
-      li.list-group-item
-        .col.value
-          div.previews data-image-preview-target='preview'
+    = render "spv/file_field", form: f, field: 'registration_certificate'
   .form-group.mt-3
     = f.label :legal_structure
     = f.text_field :legal_structure, class: "form-control"

@@ -8,7 +8,8 @@ class SpvsController < ApplicationController
   end
 
   def new
-    @spv = Spv.new(deal_id: @deal.id, closing_model: params[:closing_model], step: params[:step])
+    @spv = @deal.spv || Spv.new(deal_id: @deal.id, closing_model: params[:closing_model])
+    @spv.step = params[:step]
     render turbo_stream: turbo_stream.append('spv-modal', partial: 'spv/new')
   end
 
