@@ -120,9 +120,9 @@ module V1
       def investments_by_deal_type
         investments = current_user.investments
         {
-          all: investments.sum(:amount).to_f,
-          startup: investments.by_property.sum(:amount).to_f,
-          property: investments.by_startup.sum(:amount).to_f
+          all: investment_count_and_amount(investments),
+          startup: investment_count_and_amount(investments.by_startup),
+          property: investment_count_and_amount(investments.by_property)
         }
       end
 
@@ -136,6 +136,13 @@ module V1
 
       def set_deal_type_filter
         params[:deal_type] ||= Deal.deal_types.keys
+      end
+
+      def investment_count_and_amount(investments)
+        {
+          no_investments: investments.count,
+          invested_amount: investments.sum(:amount).to_f
+        }
       end
     end
   end
