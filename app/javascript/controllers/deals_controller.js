@@ -1,27 +1,23 @@
 import { Controller } from "@hotwired/stimulus"
 import Dom from '../dom/manipulator'
-
-const spvButton = document.getElementById('spvLink');
-const dateSelector = document.getElementById('dateSelector');
-const reasonBtn = document.getElementById('reasonBtn');
-const dealRefundForm = document.getElementById('dealRefundForm');
-
 export default class extends Controller {
+  static targets = ['spvButton', 'dateSelector', 'dealRefundForm']
+
   createSpv(){
-    Dom.addClass(dateSelector, 'd-none')
-    Dom.addClass(dealRefundForm, 'd-none')
-    Dom.removeClass(spvButton, 'disabled')
+    Dom.addClass(this.dateSelectorTarget, 'd-none')
+    Dom.addClass(this.dealRefundFormTarget, 'd-none')
+    Dom.removeClass(this.spvButtonTarget, 'disabled')
   }
 
   extendDate(){
-    Dom.removeClass(dateSelector, 'd-none')
-    Dom.addClass(spvButton, 'disabled')
-    Dom.addClass(dealRefundForm, 'd-none')
+    Dom.removeClass(this.dateSelectorTarget, 'd-none')
+    Dom.addClass(this.spvButtonTarget, 'disabled')
+    Dom.addClass(this.dealRefundFormTarget, 'd-none')
   }
 
   refundAndClose(){
-    Dom.removeClass(dealRefundForm, 'd-none')
-    Dom.addClass(spvButton, 'disabled')
-    Dom.addClass(dateSelector, 'd-none')
+    Dom.removeClass(this.dealRefundFormTarget, 'd-none')
+    Dom.addClass(this.spvButtonTarget, 'disabled')
+    Dom.addClass(this.dateSelectorTarget, 'd-none')
   }
 }
