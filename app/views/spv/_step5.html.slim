@@ -16,7 +16,8 @@
     = f.text_field :account_title, class: "form-control", required:  true
   .form-group.mt-3
     = f.label :capital_requirements
-    = f.text_area :capital_requirements, class: "form-control", rows: 6
+    input#capital_requirements[type="hidden" name="spv[capital_requirements]" value="#{@spv.capital_requirements}"]
+    trix-editor[input="capital_requirements"]
   .form-group data-controller='image-preview'
     label Audited Financial Statements
     span.value

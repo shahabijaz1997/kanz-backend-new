@@ -22,7 +22,8 @@
       div.previews data-image-preview-target='preview'
   .form-group.mt-3
     = f.label :risk_disclosures
-    = f.text_area :risk_disclosures, class: "form-control", rows: 6
+    input#risk_disclosures[type="hidden" name="spv[risk_disclosures]" value="#{@spv.risk_disclosures}"]
+    trix-editor[input="risk_disclosures"]
   .form-group data-controller='image-preview'
     label Data Protection Compliance
     span.value
