@@ -11,9 +11,9 @@
                 div class=(["rounded-circle", "py-2", "px-3", "mb-1", @step > index ? "bg-primary text-white" : (@step == index) ? "bg-light text-primary border-primary" : "bg-light text-primary"].compact.join(' '))
                   = index
                 .line.h-100
-              div.my-auto
+              div.my-auto.px-2
                 span = title
-      .col-7.mx-3
+      .col-7.mx-3.stepper
         = render "spv/step#{@step}", spv: @spv, step: @step
 .modal-footer
   .container
