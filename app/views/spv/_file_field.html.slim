@@ -1,0 +1,6 @@
+= form.label field.to_sym
+= form.file_field field.to_sym, class: "form-control", data: { 'image-preview-target': "input", action: "image-preview#preview" }
+ul.list-group.list-group-flush
+  li.list-group-item
+    .col.value
+      div.previews data-image-preview-target='preview'

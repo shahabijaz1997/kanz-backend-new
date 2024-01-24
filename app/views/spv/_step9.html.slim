@@ -4,13 +4,7 @@
   = hidden_field_tag :step, @step
   .form-group.mt-3
     = f.label :exit_options
-    = f.text_area :exit_options, class: "form-control", rows: 6
-  .form-group data-controller='image-preview'
-    label Divestment Process
-    span.value
-      = f.label :divestment_process do
-        div.upload
-          i.fa.fa-upload.fa-s
-          span Upload Documents
-        = f.file_field :divestment_process, include_hidden: false, data: { 'image-preview-target': "input", action: "image-preview#preview" }
-      div.previews data-image-preview-target='preview'
+    input#exit_options[type="hidden" name="spv[exit_options]" value="#{@spv.exit_options}"]
+    trix-editor[input="exit_options"]
+  .form-group.mt-3 data-controller='image-preview'
+    = render "spv/file_field", form: f, field: 'divestment_process'

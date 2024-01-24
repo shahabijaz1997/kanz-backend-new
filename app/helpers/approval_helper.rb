@@ -13,6 +13,8 @@ module ApprovalHelper
       'Approval pending from the Customer Support Rep.'
     elsif %w[reopened rejected submitted approved].include?(status)
       "Application has been #{status}"
+    elsif status.eql?('closed')
+      "Application has already been #{status}"
     else
       'Application is in progress'
     end

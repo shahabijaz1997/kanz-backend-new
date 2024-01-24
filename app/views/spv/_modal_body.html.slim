@@ -11,9 +11,9 @@
                 div class=(["rounded-circle", "py-2", "px-3", "mb-1", @step > index ? "bg-primary text-white" : (@step == index) ? "bg-light text-primary border-primary" : "bg-light text-primary"].compact.join(' '))
                   = index
                 .line.h-100
-              div
+              div.my-auto.px-2
                 span = title
-      .col-8.mx-3
+      .col-7.mx-3.stepper
         = render "spv/step#{@step}", spv: @spv, step: @step
 .modal-footer
   .container
@@ -21,7 +21,7 @@
       span.col-4
       .col-8.mx-3
         .d-flex
-          .col-6
+          .col-6.text-center
             - if @step == SPV_FIRST_STEP
               button.btn.btn-secondary.me-auto[type="button" data-action="click->modal#hideModal"]
                 | Cancel
@@ -29,7 +29,7 @@
               = link_to spv_back_path(@spv, step: @step)
                 button.btn.btn-secondary.me-auto
                   | Back
-          .col-6.text-center
+          .col-6.text-end
             - if @step == SPV_LAST_STEP
               = link_to spvs_path, data: {turbo: false} do
                 button.btn.btn-primary
