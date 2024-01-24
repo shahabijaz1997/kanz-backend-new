@@ -31,7 +31,8 @@
     "sass": "^1.63.6",
     "sass-loader": "^13.0.0",
     "stimulus-use": "^0.52.0",
-    "toastr": "^2.1.4"
+    "toastr": "^2.1.4",
+    "trix": "^2.0.8"
   },
   "browserslist": [
     "defaults"
