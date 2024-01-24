@@ -19,9 +19,9 @@
   .container
     .d-flex
       span.col-4
-      .col-7.mx-3
+      .col-8.mx-3
         .d-flex
-          .col-6
+          .col-6.text-center
             - if @step == SPV_FIRST_STEP
               button.btn.btn-secondary.me-auto[type="button" data-action="click->modal#hideModal"]
                 | Cancel
@@ -29,7 +29,7 @@
               = link_to spv_back_path(@spv, step: @step)
                 button.btn.btn-secondary.me-auto
                   | Back
-          .col-6.text-center
+          .col-6.text-end
             - if @step == SPV_LAST_STEP
               = link_to spvs_path, data: {turbo: false} do
                 button.btn.btn-primary
