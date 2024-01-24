@@ -1,5 +1,5 @@
 = render 'shared/section_card', section_title: 'Action', editable: false do
-  - if can_close_deal?(resource)
+  - unless resource.closed?
     li.list-group-item[data-controller="deal-closing"]
       .col-2
         .form-check

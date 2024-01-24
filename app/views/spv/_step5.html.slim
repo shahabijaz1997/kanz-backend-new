@@ -18,21 +18,7 @@
     = f.label :capital_requirements
     input#capital_requirements[type="hidden" name="spv[capital_requirements]" value="#{@spv.capital_requirements}"]
     trix-editor[input="capital_requirements"]
-  .form-group data-controller='image-preview'
-    label Audited Financial Statements
-    span.value
-      = f.label :audited_financial_statements do
-        div.upload
-          i.fa.fa-upload.fa-s
-          span Upload Document
-        = f.file_field :audited_financial_statements, include_hidden: false, data: { 'image-preview-target': "input", action: "image-preview#preview" }
-      div.previews data-image-preview-target='preview'
-  .form-group data-controller='image-preview'
-    label Financial Projections
-    span.value
-      = f.label :financial_projections do
-        div.upload
-          i.fa.fa-upload.fa-s
-          span Upload Document
-        = f.file_field :financial_projections, include_hidden: false, data: { 'image-preview-target': "input", action: "image-preview#preview" }
-      div.previews data-image-preview-target='preview'
+  .form-group.mt-3 data-controller='image-preview'
+    = render "spv/file_field", form: f, field: 'audited_financial_statements'
+  .form-group.mt-3 data-controller='image-preview'
+    = render "spv/file_field", form: f, field: 'financial_projections'  
