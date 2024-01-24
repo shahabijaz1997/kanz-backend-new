@@ -123,6 +123,8 @@ Rails.application.routes.draw do
       end
     end
     resource :profile, only: %i[show update]
+    resource :wallet
+    resources :transactions
   end
 
   # Admin routes

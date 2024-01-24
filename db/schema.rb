@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_23_062957) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_23_135555) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -512,6 +512,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_23_062957) do
     t.index ["field_attribute_id"], name: "index_terms_on_field_attribute_id"
   end
 
+  create_table "transactions", force: :cascade do |t|
+    t.decimal "amount", precision: 10, scale: 2
+    t.integer "transaction_type"
+    t.integer "status", default: 0
+    t.integer "method", default: 0
+    t.string "description"
+    t.datetime "timestamp"
+    t.bigint "wallet_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["wallet_id"], name: "index_transactions_on_wallet_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name", default: "", null: false
     t.string "email", default: "", null: false
@@ -560,9 +573,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_23_062957) do
     t.index ["question_id", "user_id"], name: "index_users_responses_on_question_id_and_user_id"
   end
 
+  create_table "wallets", force: :cascade do |t|
+    t.decimal "balance", precision: 10, scale: 2, default: "0.0"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_wallets_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_users", "admin_roles"
   add_foreign_key "deals", "users"
   add_foreign_key "invites", "users", column: "invitee_id"
+  add_foreign_key "transactions", "wallets"
+  add_foreign_key "wallets", "users"
 end

@@ -15,6 +15,8 @@ class User < ApplicationRecord
   validate :password_strength, if: :password_validation_needed?
   validate :check_email_uniqueness
 
+  has_one :wallet
+
   has_many :attachments, as: :parent, dependent: :destroy
   has_many :deals, dependent: :destroy
   belongs_to :user_role, class_name: 'Role', foreign_key: :role_id
@@ -27,7 +29,7 @@ class User < ApplicationRecord
   delegate :title, :title_ar, to: :user_role, prefix: :role
 
   before_validation :update_role, on: :create
-  after_create :update_profile_state
+  after_create :update_profile_state, :create_wallet
   after_save :update_profile_state, if: :profile_reopened?
   after_update :inform_applicant, if: :saved_change_to_status?
 
@@ -120,6 +122,10 @@ class User < ApplicationRecord
   end
 
   private
+
+  def create_wallet
+    Wallet.create(user: self, balance: 0.0)
+  end
 
   def profile_reopened?
     saved_change_to_status && saved_change_to_status.last == 'reopened'
