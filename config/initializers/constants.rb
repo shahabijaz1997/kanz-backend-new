@@ -145,3 +145,13 @@ INSTRUMENT_TYPES = ['SAFE', 'Equity Financing'].freeze
 SPV_LAST_STEP = 10.freeze
 SPV_FIRST_STEP = 1.freeze
 
+AUDIT_STATUSES = {
+  opened: 0,
+  submitted: 1,
+  reopened: 2,
+  verified: 3,
+  rejected: 4,
+  approved: 5,
+  live: 6,
+  closed: 7
+}.freeze
