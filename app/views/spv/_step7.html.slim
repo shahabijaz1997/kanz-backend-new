@@ -3,10 +3,10 @@
   = f.hidden_field :step, value: @step
   = hidden_field_tag :step, @step
   .form-group.mt-3 data-controller='image-preview'
-    = render "spv/file_field", form: f, field: 'shareholder_agreements'
+    = render "spv/file_field", form: f, field: 'shareholder_agreements', file: spv.shareholder_agreements
   .form-group.mt-3 data-controller='image-preview'
-    = render "spv/file_field", form: f, field: 'property_deeds'
+    = render "spv/file_field", form: f, field: 'property_deeds', file: spv.property_deeds
   .form-group.mt-3 data-controller='image-preview'
-    = render "spv/file_field", form: f, field: 'loan_agreement'
+    = render "spv/file_field", form: f, field: 'loan_agreement', file: spv.loan_agreement
   .form-group.mt-3 data-controller='image-preview'
-    = render "spv/file_field", form: f, field: 'service_provider_contracts'
+    = render "spv/file_field", form: f, field: 'service_provider_contracts', file: spv.service_provider_contracts

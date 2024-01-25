@@ -7,4 +7,4 @@
     input#exit_options[type="hidden" name="spv[exit_options]" value="#{@spv.exit_options}"]
     trix-editor[input="exit_options"]
   .form-group.mt-3 data-controller='image-preview'
-    = render "spv/file_field", form: f, field: 'divestment_process'
+    = render "spv/file_field", form: f, field: 'divestment_process', file: spv.divestment_process
