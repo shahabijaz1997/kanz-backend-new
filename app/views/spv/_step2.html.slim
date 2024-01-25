@@ -6,7 +6,7 @@
     = f.label :directors
     = f.text_field :directors, class: "form-control", required:  true
   .form-group.mt-3 data-controller='image-preview'
-    = render "spv/file_field", form: f, field: 'governance_structure'
+    = render "spv/file_field", form: f, field: 'governance_structure', file: spv.governance_structure
   .form-group.mt-3
     = f.label :management_agreements
     = f.text_field :management_agreements, class: "form-control", required:  true

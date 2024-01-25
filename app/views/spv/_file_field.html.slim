@@ -1,5 +1,5 @@
+= form.label field.to_sym
 div class="#{file.present? ? 'd-none' : ''}" data-image-preview-target='field'
-  = form.label field.to_sym
   = form.file_field field.to_sym, class: "form-control", data: { 'image-preview-target': "input", action: "image-preview#updatePreview" }
 ul.list-group.list-group-flush
   li.list-group-item
