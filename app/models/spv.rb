@@ -36,6 +36,8 @@ class Spv < ApplicationRecord
   has_one_attached :divestment_process #9
   has_one_attached :communication_channels #10
 
+  scope :latest_first, -> { order(created_at: :desc) }
+
   def registration_certificate_url
     Rails.env.development? ? ActiveStorage::Blob.service.path_for(registration_certificate.key) : registration_certificate.url if registration_certificate.attached?
   end

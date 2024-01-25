@@ -4,7 +4,7 @@ class SpvsController < ApplicationController
   before_action :find_spv, only: %i[show update back edit]
 
   def index
-    @pagy, @spvs = pagy Spv.all 
+    @pagy, @spvs = pagy Spv.all.latest_first
   end
 
   def new
