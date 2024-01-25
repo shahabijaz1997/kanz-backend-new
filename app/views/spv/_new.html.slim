@@ -4,7 +4,7 @@
       .modal-content.content_card
         .modal-header.card-header
           = render 'shared/page_title', title: 'Create SPV'
-          button.close.px-3[aria-label="Close" data-action="click->modal#hideModal"]
+          button.btn.button-close.close.px-3[aria-label="Close" data-action="click->modal#hideModal"]
             span[aria-hidden="true"]
               | ×
         = turbo_frame_tag "stepper" do
