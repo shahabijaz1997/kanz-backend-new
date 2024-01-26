@@ -92,9 +92,14 @@ ROUTES = {
       ]
     },
     {
-      name: "Spvs",
+      name: "SPVs",
       path: "spvs",
-      icon: "fa fa-briefcase"
+      icon: "fa-solid fa-file-contract"
+    },
+    {
+      name: "Transactions",
+      path: "transactions",
+      icon: "fa-solid fa-money-bill-transfer",
     }
   ]
 }.freeze

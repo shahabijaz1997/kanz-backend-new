@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 module V1
   class TransactionsController < ApiController
+    include PagyHelper
     before_action :set_wallet
 
     def index
+      @pagy, @transactions = pagy(@wallet.transactions)
       render json: {
-        transactions: TransactionSerializer.new(@wallet.transactions).serializable_hash[:data].map{ |object| object[:attributes]}
+        transactions: TransactionSerializer.new(@transactions).serializable_hash[:data].map{ |object| object[:attributes]},
+        pagination: pagy_attributes(@pagy)
       }
     end
 

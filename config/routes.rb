@@ -156,6 +156,7 @@ Rails.application.routes.draw do
   resources :spvs, only: %i[show index create update edit] do
     get :back
   end
+  resources :transactions, only: %i[index show update]
 
   root to: "dashboard#index"
 end
