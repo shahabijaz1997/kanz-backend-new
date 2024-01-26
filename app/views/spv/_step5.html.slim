@@ -19,6 +19,6 @@
     input#capital_requirements[type="hidden" name="spv[capital_requirements]" value="#{@spv.capital_requirements}"]
     trix-editor[input="capital_requirements"]
   .form-group.mt-3 data-controller='image-preview'
-    = render "spv/file_field", form: f, field: 'audited_financial_statements'
+    = render "spv/file_field", form: f, field: 'audited_financial_statements', file: spv.audited_financial_statements
   .form-group.mt-3 data-controller='image-preview'
-    = render "spv/file_field", form: f, field: 'financial_projections'  
+    = render "spv/file_field", form: f, field: 'financial_projections', file: spv.financial_projections

@@ -1,6 +1,21 @@
 = form.label field.to_sym
-= form.file_field field.to_sym, class: "form-control", data: { 'image-preview-target': "input", action: "image-preview#preview" }
+div class="#{file.present? ? 'd-none' : ''}" data-image-preview-target='field'
+  = form.file_field field.to_sym, class: "form-control", data: { 'image-preview-target': "input", action: "image-preview#updatePreview" }
 ul.list-group.list-group-flush
   li.list-group-item
     .col.value
       div.previews data-image-preview-target='preview'
+        - if file.present?
+          .preview
+            .details
+              .title
+                = file_name_and_extension(file.name, file.content_type)
+              .title
+                = file_size_with_unit(file.byte_size)
+            .actions
+              a.preview-button[href="#{@spv.file_url(file.name)}" type="button" target="_blank"]
+                i.fa.fa-vector-square.fa-s
+                span
+                  | Preview
+              button.remove[type="button" data-action="click->image-preview#removeAndEnableInput" data-name="${file.name}"]
+                i.fa.fa-trash.fa-s
