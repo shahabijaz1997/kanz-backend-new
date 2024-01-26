@@ -125,6 +125,7 @@ Rails.application.routes.draw do
     resource :profile, only: %i[show update]
     resource :wallet
     resources :transactions
+    resource :exchange_rate, only: %i[show]
   end
 
   # Admin routes
@@ -157,6 +158,7 @@ Rails.application.routes.draw do
     get :back
   end
   resources :transactions, only: %i[index show update]
+  resource :exchange_rate, only: %i[create]
 
   root to: "dashboard#index"
 end

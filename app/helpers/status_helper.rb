@@ -13,6 +13,7 @@ module StatusHelper
       when :rejected then 'danger'
       when :verified then 'info'
       when :closed then 'info'
+      when :invested then 'info'
       when :reopened then 'warning'
       else 'secondary'
       end

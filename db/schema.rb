@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_23_135555) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_26_130240) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -176,6 +176,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_23_135555) do
     t.datetime "updated_at", null: false
     t.index ["dependable_type", "dependable_id"], name: "index_dependency_trees_on_dependable"
     t.index ["dependent_type", "dependent_id"], name: "index_dependency_trees_on_dependent"
+  end
+
+  create_table "exchange_rates", force: :cascade do |t|
+    t.decimal "rate", precision: 10, scale: 4, null: false
+    t.boolean "current", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "external_links", force: :cascade do |t|
