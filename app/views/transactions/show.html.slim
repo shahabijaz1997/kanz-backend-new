@@ -12,14 +12,14 @@ div.w-75
       li.list-group-item
         span.col-3.title Receipt
         div.card.attachment
-          - if ['pdf', 'application/pdf'].include?(@transaction.receipt.attachment_kind)
-            object data=attachment.file.url width=250
+          - if ['pdf', 'application/pdf'].include?(@transaction.receipt.content_type)
+            object data=@transaction.receipt.url width=250
           - else
-            = image_tag(attachment.file.url)
+            = image_tag(@transaction.receipt.url)
           div.card-img-overlay
-            a.btn.btn-outline-light href=attachment.file.url target="_blank"
+            a.btn.btn-outline-light href=@transaction.receipt.url target="_blank"
               i.bi.bi-arrows-angle-expand
-            = link_to rails_blob_path(attachment.file, disposition: 'attachment'), class: 'ms-3 btn btn-outline-light' do
+            = link_to rails_blob_path(@transaction.receipt, disposition: 'attachment'), class: 'ms-3 btn btn-outline-light' do
               i.bi.bi-cloud-arrow-down
     = render 'shared/section_list_item', title: 'Amount', value: number_to_currency(@transaction.amount, unit: 'AED')
     = render 'shared/section_list_item', title: 'Transaction Type', value: @transaction.transaction_type.titleize
