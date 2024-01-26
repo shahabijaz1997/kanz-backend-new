@@ -38,7 +38,14 @@ class Spv < ApplicationRecord
 
   scope :latest_first, -> { order(created_at: :desc) }
 
-  def registration_certificate_url
-    Rails.env.development? ? ActiveStorage::Blob.service.path_for(registration_certificate.key) : registration_certificate.url if registration_certificate.attached?
+  def file_url(attachment_name)
+    file_object = send(attachment_name)
+    Rails.env.development? ? local_storage_path(file_object) : file_object.url(expires_in: 30.minutes) if file_object.attached?
+  end
+
+  def local_storage_path(file)
+    ActiveStorage::Blob.service.path_for(file.key)
+  rescue StandardError => error
+    ''
   end
 end
