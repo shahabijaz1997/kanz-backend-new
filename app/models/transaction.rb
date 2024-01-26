@@ -11,6 +11,10 @@ class Transaction < ApplicationRecord
 
   audited only: :status, on: %i[update]
 
+  def receipt_url
+    Rails.env.development? ? ActiveStorage::Blob.service.path_for(receipt.key) : receipt.url if receipt.attached?
+  end
+
   def self.ransackable_attributes(_auth_object = nil)
     %w[amount transaction_type method status]
   end

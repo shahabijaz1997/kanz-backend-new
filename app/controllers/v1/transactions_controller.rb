@@ -32,7 +32,8 @@ module V1
     end
 
     def permitted_params
-      params.require(:transaction).permit(:amount, :method, :timestamp, :receipt)
+    params.require(:transaction).require(%i[amount method timestamp receipt])
+    params.require(:transaction).permit(%i[amount method timestamp receipt])
     end
   end
 end
