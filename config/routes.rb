@@ -88,7 +88,9 @@ Rails.application.routes.draw do
       end
       resources :comments
       resources :syndicates, only: %i[show index]
-      resources :investments, only: %i[index create]
+      resources :investments, only: %i[index create] do
+        get :revert, on: :collection
+      end
     end
     resources :deals, param: :token, only: %i[show]
     post 'deals/:id/submit' => 'deals#submit'
@@ -99,7 +101,7 @@ Rails.application.routes.draw do
 
     resources :users do
       resources :invites, only: %i[index]
-      resources :investments, only: %i[index show revert]
+      resources :investments, only: %i[index show]
     end
     get :check_session, to: 'users#check_session'
     resources :invitees, model_name: 'User' do

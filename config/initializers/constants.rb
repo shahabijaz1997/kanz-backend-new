@@ -162,3 +162,5 @@ AUDIT_STATUSES = {
   live: 6,
   closed: 7
 }.freeze
+
+DEFAULT_EXCHANGE_RATE = 3.67

@@ -1,13 +1,14 @@
 class Transaction < ApplicationRecord
   belongs_to :wallet
+  belongs_to :transactable, polymorphic: true, optional: true
 
   has_one_attached :receipt
   
   enum transaction_type: %i[credit debit fee]
-  enum status: %i[pending confirmed rejected invested refunded deducted]
+  enum status: %i[pending invested confirmed rejected refunded deducted]
   enum method: %i[offline online]
 
-  after_update :update_wallet, if: :saved_change_to_status?
+  after_save :update_wallet
 
   audited only: :status, on: %i[update]
 
@@ -26,8 +27,8 @@ class Transaction < ApplicationRecord
   private
 
   def update_wallet
-    unless rejected?
-      self.deposit? ? wallet.deposit(amount) : wallet.withdraw(amount)
+    if [:invested, :confirmed, :refunded, :deducted].include?(status.to_sym)
+      self.debit? ? wallet.withdraw(amount) : wallet.deposit(amount)
     end
   end
 end
