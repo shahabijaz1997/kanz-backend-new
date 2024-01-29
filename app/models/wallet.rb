@@ -8,6 +8,8 @@ class Wallet < ApplicationRecord
   end
   
   def withdraw(amount)
+    raise I18n.t('wallet.low_balance') if amount > self.balance
+
     self.balance -= amount
     self.save
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_26_130240) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_29_070243) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -529,6 +529,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_26_130240) do
     t.bigint "wallet_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "transactable_type"
+    t.bigint "transactable_id"
+    t.index ["transactable_type", "transactable_id"], name: "index_transactions_on_transactable"
     t.index ["wallet_id"], name: "index_transactions_on_wallet_id"
   end
 
