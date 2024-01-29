@@ -17,6 +17,10 @@ class InvestorInvestmentSerializer
     investment.deal.title
   end
 
+  attribute :deal_token do |investment|
+    investment.deal.token
+  end
+
   attribute :deal_category do |investment|
     investment.deal.humanized_enum(investment.deal.deal_type)
   end
