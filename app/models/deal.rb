@@ -104,6 +104,10 @@ class Deal < ApplicationRecord
     target.to_f
   end
 
+  def investment_multiple
+    current_valuation / previous_valuation
+  end
+
   private
 
   def start_date_in_future

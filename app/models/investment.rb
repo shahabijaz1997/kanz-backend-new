@@ -24,8 +24,8 @@ class Investment < ApplicationRecord
     %w[deals user]
   end
 
-  def net_value
-    (deal.current_valuation / deal.previous_valuation) * amount.to_f
+  def net_value(invested_amount)
+    deal.investment_multiple * invested_amount.to_f
   end
 
   private

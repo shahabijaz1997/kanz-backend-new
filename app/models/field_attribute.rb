@@ -16,6 +16,10 @@ class FieldAttribute < ApplicationRecord
     self.class.find_by(id: dependent_id)
   end
 
+  def localized_statement
+    I18n.locale == :en ? statement : statement_ar
+  end
+
   class << self
     def minimum_check_size
       where(field_mapping: 'terms_attributes.custom_input', statement: 'Minimum Check Size').pluck(:id)

@@ -103,14 +103,6 @@ module V1
         # Top Markets by Investment Return
       end
 
-      def seed
-        # Deal Basic Information variable for 3 types of deal [Startup with equity, startup with safe, property]
-      end
-
-      def sd
-        # Deals performance month by month [Invested amount, Net Value, X]
-      end
-
       def saf
         # investment History [TBD]
       end

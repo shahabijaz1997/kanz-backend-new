@@ -139,7 +139,9 @@ INPUT_TYPES = {
   currency: 0,
   percent: 1,
   sqft: 2,
-  numeric: 4
+  numeric: 4,
+  _text: 5,
+  boolean: 6
 }.freeze
 
 DEAL_STEPPER_DATE_FIELDS = ['start_at', 'end_at'].freeze
