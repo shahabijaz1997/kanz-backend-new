@@ -16,7 +16,7 @@ module V1
           'success',
           { 
             stats: investment_stats,
-            charts: chart_data
+            charts: DashboardAnalytics::MonthlyDealReturns.call(current_user, @deal)
           }
         )
       end
@@ -25,7 +25,7 @@ module V1
       private
       
       def investment_stats
-        invested_amount = current_user.investments.where(deal_id: @deal.id).sum(:amount).to_f
+        invested_amount = current_user.investments.find_by(deal_id: @deal.id).amount.to_f
         {
           invested_amount: invested_amount,
           net_value: (@deal.investment_multiple * invested_amount),
@@ -36,14 +36,6 @@ module V1
       def find_deal
         @deal = Deal.live_or_closed.find_by(token: params[:token])
         failure(I18n.t('deal.not_found')) if @deal.blank?
-      end
-
-      def chart_data
-        {
-          months: ,
-          investments: [],
-          net_values: []
-        }
       end
     end
   end
