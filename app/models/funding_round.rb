@@ -31,6 +31,10 @@ class FundingRound < ApplicationRecord
     I18n.locale == :en ? valuation_phase&.statement : valuation_phase&.statement_ar
   end
 
+  def equity?
+    equity_type_id.present? && safe_type_id.blank?
+  end
+
   def self.ransackable_attributes(_auth_object = nil)
     %w[instrument_type_id round_id]
   end

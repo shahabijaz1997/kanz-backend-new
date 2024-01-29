@@ -121,6 +121,11 @@ Rails.application.routes.draw do
           get :investments_chart
         end
       end
+      resources :deals, param: :token, only: %i[show] do
+        member do
+          get :stats
+        end
+      end
     end
     resource :profile, only: %i[show update]
     resource :wallet
