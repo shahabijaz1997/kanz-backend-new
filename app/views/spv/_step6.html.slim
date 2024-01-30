@@ -1,8 +1,8 @@
 = f.hidden_field :step, value: step
 = hidden_field_tag :step, step
-.form-group.mt-3 data-controller='image-preview'
+.form-group data-controller='image-preview'
   = render "spv/file_field", form: f, field: 'financial_reporting', file: spv.financial_reporting
-.form-group.mt-3 data-controller='image-preview'
+.form-group data-controller='image-preview'
   = render "spv/file_field", form: f, field: 'investor_reporting', file: spv.investor_reporting
-.form-group.mt-3 data-controller='image-preview'
+.form-group data-controller='image-preview'
   = render "spv/file_field", form: f, field: 'performance_metrics', file: spv.performance_metrics
