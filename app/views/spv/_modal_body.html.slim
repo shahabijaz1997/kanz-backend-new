@@ -19,8 +19,8 @@
           = render "spv/step#{@step}", spv: @spv, step: @step, f: f
     .d-flex.px-4
       .col-4
-      .col-7
-        .d-flex.pr-4.mx-3.py-5
+      .col-7.mx-3
+        .d-flex.pr-4.py-5
           .col-6
             - if @step == SPV_FIRST_STEP
               button.btn.button-close.me-auto.px-5[type="button" data-action="click->modal#hideModal"]
