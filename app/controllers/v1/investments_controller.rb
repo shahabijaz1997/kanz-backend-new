@@ -40,9 +40,9 @@ module V1
       @investment = @deal.investments.find_by(user: current_user)
       
       if @investment.blank?
-        failure(I18n.t('investment.not_found'), 401)
+        failure(I18n.t('investment.not_found'), 404)
       else
-        @investment.refunded!
+        @investment.refund
       end
     end
 

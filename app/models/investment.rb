@@ -10,7 +10,6 @@ class Investment < ApplicationRecord
   has_many :transactions, as: :transactable
 
   validate :invested_amount_limit
-  validates :user_id, uniqueness: { scope: [:deal_id], message: I18n.t('investment.try_again') }
 
   after_create :update_invite, :create_invested_transaction
   before_update :create_refunded_transaction
@@ -33,6 +32,12 @@ class Investment < ApplicationRecord
     deal.investment_multiple * amount.to_f
   end
 
+  def refund
+    raise I18n.t('wallet.low_balance') unless refundable?
+
+    self.refunded!
+  end
+
   private
 
   def invested_amount_limit
@@ -41,6 +46,15 @@ class Investment < ApplicationRecord
     pending_amount = deal.target - deal.raised
     return errors.add(:investment_amount, I18n.t('investment.pending_amount_limit', pending_amount)) if amount > pending_amount
     return errors.add(:investment_amount, I18n.t('investment.check_size_limit')) if amount < deal.minimum_check_size
+    return errors.add(:user, I18n.t('investment.try_again')) if can_user_invest?
+  end
+
+  def refundable?
+    created_at > REFUND_ALLOWED_FOR_DAYS.days.ago
+  end
+
+  def can_user_invest?
+    user.investments.where(deal_id: self.deal_id).where.not(id: self.id).present?
   end
 
   def dublicate_investment
