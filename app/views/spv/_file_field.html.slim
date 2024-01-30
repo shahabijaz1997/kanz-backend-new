@@ -1,6 +1,7 @@
+- accepted_types = "image/jpeg,image/png,application/pdf,image/x-eps,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 = form.label field.to_sym
 div class="#{file.present? ? 'd-none' : ''}" data-image-preview-target='field'
-  = form.file_field field.to_sym, class: "form-control", data: { 'image-preview-target': "input", action: "image-preview#updatePreview" }
+  = form.file_field field.to_sym, accept: accepted_types, class: "form-control", data: { 'image-preview-target': "input", action: "image-preview#updatePreview" }
 ul.list-group.list-group-flush
   li.list-group-item
     .col.value
