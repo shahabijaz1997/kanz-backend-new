@@ -27,9 +27,17 @@
 }
 
 #stepper {
+  .form-group{
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
   label{
     padding-bottom: 7px;
     color: #333;
+    font-size: large;
+  }
+  .form-control{
+    color: #666;
   }
 }
 .modal-backdrop{
