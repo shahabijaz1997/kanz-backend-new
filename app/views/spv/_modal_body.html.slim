@@ -3,15 +3,23 @@
   .container
     .d-flex.px-4
       .col-4.pl-4
-        .stepper.d-flex.flex-column.mt-4.ml-2.pt-3
+        .stepper.d-flex.flex-column.mt-4.ml-2
           - steps.each_with_index do |title, index|
             - index += 1
-            .d-flex.mb-1
+            .d-flex
               .d-flex.flex-column.pr-4.align-items-center
-                div class=(["rounded-circle", "py-2", "px-3", "mb-1", @step > index ? "bg-primary text-white" : (@step == index) ? "bg-light text-primary border-primary" : "bg-light text-primary"].compact.join(' '))
-                  = index
-                .line.h-100
-              div.my-auto.px-2
+                - if @step > index
+                  i.bi.bi-check-circle-fill.filled
+                  .line.bg-primary
+                - elsif @step == index
+                  i.bi.bi-record-circle.current
+                  - if index < SPV_LAST_STEP
+                    .line.bg-gray
+                - else
+                  i.bi.bi-circle.pending
+                  - if index < SPV_LAST_STEP
+                    .line.bg-gray
+              div.px-2.pt-2
                 span = title
       .col-7.pr-4.mx-3.stepper
         = render 'spv/errors'

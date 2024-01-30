@@ -1,16 +1,29 @@
 .stepper {
   .line {
     width: 2px;
-    background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
+    height: 30px;
+  }
+  .bg-primary{
+    background-color: $primary !important;
+  }
+  .bg-gray{
+    background-color: darkgray !important;
   }
   .lead {
     font-size: 1.1rem;
   }
-  .border-primary{
-    border: 1px solid rgba(var(--bs-primary-rgb), var(--bs-bg-opacity));
-  }
   .form-control{
     max-width: 100% !important;
+  }
+  .filled, .current{
+    color: $primary;
+    font-size: 35px;
+    line-height: 35px;
+  }
+  .pending{
+    color: darkgray;
+    font-size: 35px;
+    line-height: 35px;
   }
 }
 .button-close {
@@ -39,6 +52,24 @@
   }
   .form-control{
     color: #666;
+  }
+
+  trix-editor {
+    min-height: 10em;
+    max-height: 20em;
+    overflow: auto;
+  }
+
+  .trix-button-group--text-tools,
+  .trix-button-group--block-tools,
+  .trix-button-group--file-tools,
+  .trix-button-group--history-tools {
+   margin: 0 0 0;
+   border-bottom: none; 
+  }
+  .trix-button-group--block-tools,
+  .trix-button-group--file-tools{
+    margin-left: 5px;
   }
 }
 .modal-backdrop{
