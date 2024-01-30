@@ -1,0 +1,33 @@
+= link_to '< Back', transactions_path, class: 'mb-2'
+= render 'shared/page_title', title: "Transaction Details"
+
+div.w-75
+  = render 'shared/section_card', section_title: 'User', editable: false do
+    = render 'shared/section_list_item', title: 'Name', value: @user.name
+    = render 'shared/section_list_item', title: 'Email', value: @user.email
+    = render 'shared/section_list_item', title: 'Type', value: @user.type
+
+  = render 'shared/section_card', section_title: 'Transaction', editable: false do
+    - if @transaction.receipt.attached?
+      li.list-group-item
+        span.col-3.title Receipt
+        div.card.attachment
+          - if ['pdf', 'application/pdf'].include?(@transaction.receipt.content_type)
+            object data=@transaction.receipt.url width=250
+          - else
+            = image_tag(@transaction.receipt.url)
+          div.card-img-overlay
+            a.btn.btn-outline-light href=@transaction.receipt.url target="_blank"
+              i.bi.bi-arrows-angle-expand
+            = link_to rails_blob_path(@transaction.receipt, disposition: 'attachment'), class: 'ms-3 btn btn-outline-light' do
+              i.bi.bi-cloud-arrow-down
+    = render 'shared/section_list_item', title: 'Amount', value: number_to_currency(@transaction.amount, unit: 'AED')
+    = render 'shared/section_list_item', title: 'Transaction Type', value: @transaction.transaction_type.titleize
+    = render 'shared/section_list_item', title: 'Method', value: @transaction.method.titleize
+    = render 'shared/section_list_item', title: 'Time of Transaction', value: DatesHelper.standard_format(@transaction.timestamp)
+    li.list-group-item
+      span.col-3.title Status
+      span.col = render 'shared/user_status', status: @transaction.status
+
+  = render 'approval_section', resource: @transaction
+  = render 'shared/history_section', resource: @transaction

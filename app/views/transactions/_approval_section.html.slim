@@ -1,0 +1,18 @@
+- if resource.pending?
+  = render 'shared/section_card', section_title: 'Transaction Approval', editable: false do
+    = form_for resource, method: :put do |form|
+      li.list-group-item
+        span.col-3.title Comment
+        span.col.value
+          = form.text_area :audit_comment, rows: 3, class: "form-control", placeholder: 'Transaction Comment', required: true
+
+      li.list-group-item
+        span.col-3.title Action
+        span.col.value
+          div.checkboxes
+            = form.collection_radio_buttons :status, [['Confirm', :confirmed, {:checked => true}], ['Reject', :rejected]], :second, :first
+      
+      li.list-group-item
+        span.col-3.title
+        span.col.value
+            = form.submit "Submit", class: 'btn btn-primary'

@@ -92,9 +92,14 @@ ROUTES = {
       ]
     },
     {
-      name: "Spvs",
+      name: "SPVs",
       path: "spvs",
-      icon: "fa fa-briefcase"
+      icon: "fa-solid fa-file-contract"
+    },
+    {
+      name: "Transactions",
+      path: "transactions",
+      icon: "fa-solid fa-money-bill-transfer",
     }
   ]
 }.freeze
@@ -134,7 +139,9 @@ INPUT_TYPES = {
   currency: 0,
   percent: 1,
   sqft: 2,
-  numeric: 4
+  numeric: 4,
+  _text: 5,
+  boolean: 6
 }.freeze
 
 DEAL_STEPPER_DATE_FIELDS = ['start_at', 'end_at'].freeze
@@ -155,3 +162,6 @@ AUDIT_STATUSES = {
   live: 6,
   closed: 7
 }.freeze
+
+DEFAULT_EXCHANGE_RATE = 3.67
+REFUND_ALLOWED_FOR_DAYS = 3

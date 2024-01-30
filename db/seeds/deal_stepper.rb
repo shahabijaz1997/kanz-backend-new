@@ -866,7 +866,7 @@
             size_constraints: {},
             suggestions: [],
             field_mapping: 'terms_attributes.enabled',
-            input_type: 'currency',
+            input_type: 'boolean',
             options_attributes: []
           },
           {
@@ -883,7 +883,7 @@
             size_constraints: {},
             suggestions: [],
             field_mapping: 'terms_attributes.enabled',
-            input_type: 'currency',
+            input_type: '_text',
             options_attributes: []
           },
           {
@@ -917,7 +917,7 @@
             size_constraints: {},
             suggestions: [],
             field_mapping: 'terms_attributes.enabled',
-            input_type: 'currency',
+            input_type: 'percent',
             options_attributes: []
           },
           {
@@ -985,7 +985,7 @@
             size_constraints: {},
             suggestions: [],
             field_mapping: 'terms_attributes.enabled',
-            input_type: 'currency',
+            input_type: 'boolean',
             options_attributes: []
           },
           {
@@ -1033,7 +1033,7 @@
             size_constraints: {},
             suggestions: [],
             field_mapping: 'terms_attributes.enabled',
-            input_type: 'currency',
+            input_type: '_text',
             options_attributes: []
           },
           {
@@ -1084,7 +1084,7 @@
             size_constraints: {},
             suggestions: [],
             field_mapping: 'terms_attributes.enabled',
-            input_type: 'currency',
+            input_type: 'boolean',
             options_attributes: []
           },
           {
@@ -1101,7 +1101,7 @@
             size_constraints: {},
             suggestions: [],
             field_mapping: 'terms_attributes.custom_input',
-            input_type: 'currency',
+            input_type: '_text',
             options_attributes: []
           }
         ]

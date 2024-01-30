@@ -49,3 +49,5 @@ ar:
     applied: مُطبَّق
     not_invited: غير مدعو
     member: عضو
+  wallet:
+    low_balance: رصيد غير كاف

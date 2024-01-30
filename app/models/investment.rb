@@ -1,16 +1,20 @@
 # frozen_string_literal: true
 
 class Investment < ApplicationRecord
-  enum status: { committed_amount: 0, completed: 1 }
+  include Investments
+
+  enum status: { committed_amount: 0, completed: 1, refunded: 2 }
   belongs_to :user
   belongs_to :deal
 
+  has_many :transactions, as: :transactable
+
   validate :invested_amount_limit
-  validates :user_id, uniqueness: { scope: [:deal_id], message: I18n.t('investment.try_again') }
 
-  before_save :check_account_balance
-  after_create :update_invite
+  after_create :update_invite, :create_invested_transaction
+  before_update :create_refunded_transaction
 
+  default_scope { self.not_refunded }
   scope :latest_first, -> { order(created_at: :desc) }
   scope :by_property, -> { joins(:deal).where(deal: { deal_type: Deal::deal_types[:property] }) }
   scope :by_startup, -> { joins(:deal).where(deal: { deal_type: Deal::deal_types[:startup] }) }
@@ -25,14 +29,20 @@ class Investment < ApplicationRecord
   end
 
   def net_value
-    (deal.current_valuation / deal.previous_valuation) * amount.to_f
+    deal.investment_multiple * amount.to_f
+  end
+
+  def refund
+    raise I18n.t('wallet.low_balance') unless refundable?
+
+    self.refunded!
+  end
+
+  def refundable?
+    created_at > REFUND_ALLOWED_FOR_DAYS.days.ago
   end
 
   private
-
-  def check_account_balance
-    # Pending Implementation
-  end
 
   def invested_amount_limit
     return errors.add(:amount, I18n.t('investment.zero_amount_limit')) if amount <= 0
@@ -40,6 +50,11 @@ class Investment < ApplicationRecord
     pending_amount = deal.target - deal.raised
     return errors.add(:investment_amount, I18n.t('investment.pending_amount_limit', pending_amount)) if amount > pending_amount
     return errors.add(:investment_amount, I18n.t('investment.check_size_limit')) if amount < deal.minimum_check_size
+    return errors.add(:user, I18n.t('investment.try_again')) if can_user_invest?
+  end
+
+  def can_user_invest?
+    user.investments.where(deal_id: self.deal_id).where.not(id: self.id).present?
   end
 
   def dublicate_investment

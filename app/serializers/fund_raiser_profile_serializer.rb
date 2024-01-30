@@ -16,6 +16,10 @@ class FundRaiserProfileSerializer
     profile.industries&.pluck(:id)
   end
 
+  attribute :industries do |profile|
+    I18n.locale == :en ? profile.industries&.pluck(:name) : profile.industries&.pluck(:name_ar)
+  end
+
   attribute :en do |profile|
     {
       residence: profile.residence&.name,
