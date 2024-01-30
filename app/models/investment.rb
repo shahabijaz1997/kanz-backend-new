@@ -38,6 +38,10 @@ class Investment < ApplicationRecord
     self.refunded!
   end
 
+  def refundable?
+    created_at > REFUND_ALLOWED_FOR_DAYS.days.ago
+  end
+
   private
 
   def invested_amount_limit
@@ -47,10 +51,6 @@ class Investment < ApplicationRecord
     return errors.add(:investment_amount, I18n.t('investment.pending_amount_limit', pending_amount)) if amount > pending_amount
     return errors.add(:investment_amount, I18n.t('investment.check_size_limit')) if amount < deal.minimum_check_size
     return errors.add(:user, I18n.t('investment.try_again')) if can_user_invest?
-  end
-
-  def refundable?
-    created_at > REFUND_ALLOWED_FOR_DAYS.days.ago
   end
 
   def can_user_invest?
