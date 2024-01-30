@@ -17,7 +17,10 @@
         = render 'spv/errors'
         = form_for @spv, html: { "data-step": @step, "data-spv-target": "spvForm" } do |f|
           = render "spv/step#{@step}", spv: @spv, step: @step, f: f
-        .d-flex.py-5
+    .d-flex.px-4
+      .col-4
+      .col-7
+        .d-flex.pr-4.mx-3.py-5
           .col-6
             - if @step == SPV_FIRST_STEP
               button.btn.button-close.me-auto.px-5[type="button" data-action="click->modal#hideModal"]

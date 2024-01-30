@@ -1,22 +1,22 @@
 = f.hidden_field :step, value: step
 = hidden_field_tag :step, step
-.form-group.mt-3
+.form-group
   = f.label :bank_name
   = f.text_field :bank_name, class: "form-control", required:  true
-.form-group.mt-3
+.form-group
   = f.label :branch_name
   = f.text_field :branch_name, class: "form-control", required:  true
-.form-group.mt-3
+.form-group
   = f.label :account_no
   = f.text_field :account_no, class: "form-control", required:  true
-.form-group.mt-3
+.form-group
   = f.label :account_title
   = f.text_field :account_title, class: "form-control", required:  true
-.form-group.mt-3
+.form-group
   = f.label :capital_requirements
   input#capital_requirements[type="hidden" name="spv[capital_requirements]" value="#{spv.capital_requirements}"]
   trix-editor[input="capital_requirements"]
-.form-group.mt-3 data-controller='image-preview'
+.form-group data-controller='image-preview'
   = render "spv/file_field", form: f, field: 'audited_financial_statements', file: spv.audited_financial_statements
-.form-group.mt-3 data-controller='image-preview'
+.form-group data-controller='image-preview'
   = render "spv/file_field", form: f, field: 'financial_projections', file: spv.financial_projections
