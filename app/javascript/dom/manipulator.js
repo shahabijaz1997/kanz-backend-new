@@ -72,11 +72,17 @@ export default class {
   static openModal(element) {
     element.style.display = 'block'
     this.addClass(element, 'show')
+    var modalBackdrop = document.createElement('div')
+    modalBackdrop.classList.add('modal-backdrop')
+    document.body.appendChild(modalBackdrop)
   }
 
   static hideModal(element) {
     element.style.display = 'none'
     this.removeClass(element, 'hide')
+    document.querySelectorAll('.modal-backdrop').forEach(function(element) {
+      element.remove()
+    })
   }
 
   static addHiddenFormElement(form, fieldName, value) {

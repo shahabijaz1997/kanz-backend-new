@@ -3,7 +3,7 @@ import Dom from '../dom/manipulator'
 
 
 export default class extends Controller {
-  static targets = [ "input", "preview", "field", ]
+  static targets = [ "input", "preview", "field" ]
 
   preview() {
     var output = this.previewTarget
