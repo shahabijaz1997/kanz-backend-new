@@ -15,7 +15,7 @@ module V1
     def create
       @transaction = @wallet.transactions.new(
         **permitted_params,
-        transaction_type: :deposit,
+        transaction_type: :credit,
         description: 'User deposited the amount in Kanz Bank Account'
       )
       if @transaction.save!
