@@ -104,6 +104,10 @@ class Deal < ApplicationRecord
     target.to_f
   end
 
+  def waiting_closure?
+    live? && end_at <= Date.today
+  end
+
   private
 
   def start_date_in_future
