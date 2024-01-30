@@ -1,5 +1,5 @@
 - steps = ["Entity Information", "Governance and Management", "Investment Details", "Regulatory Compliance", "Financial Information", "Reporting Requirements", "Contractual Documents", "Operational Details", "Exit Strategy", "Investor Relations"]
-.modal-body
+.modal-body[data-controller="spv"]
   .container
     .d-flex.px-4
       .col-4.pl-4
@@ -14,26 +14,22 @@
               div.my-auto.px-2
                 span = title
       .col-7.pr-4.mx-3.stepper
-        = render "spv/step#{@step}", spv: @spv, step: @step
-.modal-footer
-  .container
-    .d-flex
-      span.col-4
-      .col-8.mx-3
-        .d-flex
-          .col-6.text-center
+        = render 'spv/errors'
+        = form_for @spv, html: { "data-step": @step, "data-spv-target": "spvForm" } do |f|
+          = render "spv/step#{@step}", spv: @spv, step: @step, f: f
+        .d-flex.py-5
+          .col-6
             - if @step == SPV_FIRST_STEP
-              button.btn.button-close.me-auto[type="button" data-action="click->modal#hideModal"]
+              button.btn.button-close.me-auto.px-5[type="button" data-action="click->modal#hideModal"]
                 | Cancel
             - else
               = link_to spv_back_path(@spv, step: @step)
-                button.btn.button-close.me-auto
+                button.btn.button-close.me-auto.px-5
                   | Back
           .col-6.text-end
             - if @step == SPV_LAST_STEP
-              = link_to spvs_path, data: {turbo: false} do
-                button.btn.btn-primary
-                  | Finish
+              button.btn.btn-primary.px-5[data-action="click->spv#submitAndReload"]
+                | Finish
             - else
-              button.btn.btn-primary[data-controller="spv" data-action="click->spv#submit" data-step="#{@step}"]
+              button.btn.btn-primary.px-5[data-action="click->spv#submit" data-step="#{@step}"]
                 | Continue

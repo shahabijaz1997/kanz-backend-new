@@ -1,14 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
+  static targets = [ "spvForm" ]
+
   submit() {
-    var form = document.getElementById('new_spv')
-    if(form == undefined) {
-      var form = document.querySelectorAll('[id^="edit_spv_"]')[0];
-    }
-    form.requestSubmit()
+    this.spvFormTarget.requestSubmit()
   }
 
-  previousStep() {
-    console.log("Previous Step");
+  submitAndReload() {
+    this.spvFormTarget.submit()
   }
 }
