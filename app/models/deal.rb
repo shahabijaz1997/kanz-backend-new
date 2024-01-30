@@ -89,6 +89,23 @@ class Deal < ApplicationRecord
     invites.where.not(invitee_id: investments.pluck(:user_id)).latest_first + investments.latest_first
   end
 
+  def investment_round
+    funding_round&.stage
+  end
+
+  def current_valuation
+    target.to_f
+  end
+
+  def previous_valuation
+    target.to_f
+  end
+
+  def waiting_closure?
+    live? && end_at <= Date.today
+  end
+
+
   private
 
   def start_date_in_future
