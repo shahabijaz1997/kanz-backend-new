@@ -108,6 +108,10 @@ class Deal < ApplicationRecord
     live? && end_at <= Date.today
   end
 
+  def investment_multiple
+    current_valuation / previous_valuation
+  end
+
   private
 
   def start_date_in_future

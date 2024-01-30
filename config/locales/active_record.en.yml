@@ -26,7 +26,7 @@ en:
     pending_amount_limit: "exceedes the target amount, you can invest %{pending_amount} at max"
     check_size_limit: "can't be less than minimum check size"
     once: "You can invest once!"
-    try_again: "invest again in same deal"
+    try_again: "can't invest again in same deal"
   syndicate:
     not_found: "Syndicate not found"
   syndicate_member:
