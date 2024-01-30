@@ -34,7 +34,7 @@ export default class extends Controller {
       `
         <div class='preview'>
           <div class='details'>
-            <div class='title'>${file.name}.${file.extension} </div>
+            <div class='title'>${file.name} </div>
             <div class='title'>${this.fileSize(file.size)}</div>
           </div>
           <div class='actions'>
@@ -64,7 +64,6 @@ export default class extends Controller {
 
   updatePreview() {
     var output = this.previewTarget
-
     if (this.inputTarget.files) {
       [...this.inputTarget.files].forEach(file => {
         output.innerHTML = this.addPreview(file)
