@@ -1,7 +1,7 @@
 = f.hidden_field :step, value: @step
 = hidden_field_tag :step, @step
 .form-group data-controller='image-preview'
-  = render "spv/file_field", form: f, field: 'communication_channels', file: spv.communication_channels
+  = render "file_field", form: f, field: 'communication_channels', file: spv.communication_channels
 .form-group
   = f.label :investor_queries
   input#investor_queries[type="hidden" name="spv[investor_queries]" value="#{@spv.investor_queries}"]

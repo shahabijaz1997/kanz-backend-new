@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_23_062957) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_31_134605) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -436,8 +436,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_23_062957) do
     t.string "jurisdiction"
     t.string "registered_office_address"
     t.jsonb "directors", default: {}
-    t.string "management_agreements", default: "None, as management is internal."
-    t.string "parent_company", default: "Not applicable, independent entity."
+    t.string "management_agreements", default: ""
+    t.string "parent_company", default: ""
     t.string "investment_nature"
     t.decimal "capital_raised"
     t.decimal "investment_thresholds"
