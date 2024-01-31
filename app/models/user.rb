@@ -21,6 +21,7 @@ class User < ApplicationRecord
   has_many :invites, dependent: :destroy
   has_many :comments, class_name: 'Comment', foreign_key: 'author_id'
   has_many :investments
+  has_many :deal_updates, foreign_key: 'added_by_id'
 
   delegate :title, :title_ar, to: :user_role, prefix: :role
 

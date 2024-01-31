@@ -111,6 +111,8 @@ Rails.application.routes.draw do
         put 'syndicate_members/accept_invite' => 'syndicate_members#accept_invite'
       end
     end
+
+    resources :deal_updates, only: [:create, :update]
   end
 
   # Admin routes
