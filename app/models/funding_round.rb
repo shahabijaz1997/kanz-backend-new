@@ -9,6 +9,8 @@ class FundingRound < ApplicationRecord
   belongs_to :equity_type, class_name: 'Option', optional: true
   belongs_to :valuation_phase, class_name: 'Option', optional: true
 
+  scope :equity, -> { where.not(equity_type_id: nil) }
+
   def stage
     I18n.locale == :en ? round&.statement : round&.statement_ar
   end
@@ -27,6 +29,10 @@ class FundingRound < ApplicationRecord
 
   def valuation_type
     I18n.locale == :en ? valuation_phase&.statement : valuation_phase&.statement_ar
+  end
+
+  def equity?
+    equity_type_id.present? && safe_type_id.blank?
   end
 
   def self.ransackable_attributes(_auth_object = nil)

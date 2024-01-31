@@ -11,10 +11,11 @@ class Deal < ApplicationRecord
   has_many :attachments, as: :parent, dependent: :destroy
   has_many :external_links, dependent: :destroy
   has_many :invites, as: :eventable, dependent: :destroy
-  has_many :comments
+  has_many :comments, dependent: :destroy
   belongs_to :syndicate, class_name: 'Syndicate', optional: true
-  has_many :investments
   has_many :deal_updates
+  has_one :spv
+  has_many :investments, dependent: :destroy
 
   accepts_nested_attributes_for :features, :external_links, allow_destroy: true
   accepts_nested_attributes_for :terms
@@ -24,6 +25,7 @@ class Deal < ApplicationRecord
   enum deal_type: DEAL_TYPES
   enum status: { draft: 0, submitted: 1, reopened: 2, verified: 3, rejected: 4, approved: 5, live: 6, closed: 7 }
   enum model: { _: 0, classic: 1, syndicate: 2 }
+  enum closing_model: { fifs: 0, adjust_pro_rata: 1, refund_and_close: 2 }
 
   validates_numericality_of(:target, greater_than: 0, allow_nil: true)
   validate :start_and_end_date_presence, :start_date_and_end_date
@@ -45,6 +47,9 @@ class Deal < ApplicationRecord
   scope :by_type, -> (type) { where(deal_type: type) }
   scope :live_or_closed, -> { where(status: [Deal::statuses[:closed], Deal::statuses[:live]]) }
   scope :user_invested, -> (user_id) { joins(:investments).where(investments: {user_id: user_id}) }
+  scope :equity, -> { joins(:funding_round).where.not(funding_round: { equity_type_id: nil, round_id: nil }) }
+  scope :rental, -> { joins(:property_detail).where( property_detail: { is_rental: true })}
+  scope :non_rental, -> { joins(:property_detail).where( property_detail: { is_rental: [false, nil] })}
 
   def attachments_by_creator
     attachments.where(uploaded_by: user)
@@ -86,6 +91,26 @@ class Deal < ApplicationRecord
 
   def activities
     invites.where.not(invitee_id: investments.pluck(:user_id)).latest_first + investments.latest_first
+  end
+
+  def investment_round
+    funding_round&.stage
+  end
+
+  def current_valuation
+    target.to_f
+  end
+
+  def previous_valuation
+    target.to_f
+  end
+
+  def waiting_closure?
+    live? && end_at <= Date.today
+  end
+
+  def investment_multiple
+    current_valuation / previous_valuation
   end
 
   private

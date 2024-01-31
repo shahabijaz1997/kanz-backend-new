@@ -18,6 +18,7 @@ ar:
       timeout: "انتهت صلاحية جلستك. يرجى تسجيل الدخول مرة أخرى للمتابعة."
       unauthenticated: "يجب عليك تسجيل الدخول أو الاشتراك قبل المتابعة."
       unconfirmed: "يجب تأكيد عنوان بريدك الإلكتروني قبل المتابعة."
+      is_deactivated: "تم تعطيل حسابك"
     mailer:
       confirmation_instructions:
         subject: "Confirmation instructions"

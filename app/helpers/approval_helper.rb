@@ -13,6 +13,8 @@ module ApprovalHelper
       'Approval pending from the Customer Support Rep.'
     elsif %w[reopened rejected submitted approved].include?(status)
       "Application has been #{status}"
+    elsif status.eql?('closed')
+      "Application has already been #{status}"
     else
       'Application is in progress'
     end
@@ -52,5 +54,9 @@ module ApprovalHelper
 
   def verified_classic_deal?(resource)
     resource.is_a?(Deal) && resource.verified? && resource.classic?
+  end
+
+  def can_close_deal?(resource)
+    current_admin_user.customer_support_rep? || current_admin_user.compliance_officer?
   end
 end

@@ -74,6 +74,10 @@
                 display: flex;
                 align-items: center;
                 gap: 5px;
+                width: auto;
+                span {
+                  padding: 0 !important;
+                }
               }
 
               .remove {

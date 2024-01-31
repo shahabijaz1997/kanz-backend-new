@@ -88,7 +88,9 @@ Rails.application.routes.draw do
       end
       resources :comments
       resources :syndicates, only: %i[show index]
-      resources :investments, only: %i[index create]
+      resources :investments, only: %i[index create] do
+        get :revert, on: :collection
+      end
     end
     resources :deals, param: :token, only: %i[show]
     post 'deals/:id/submit' => 'deals#submit'
@@ -99,7 +101,7 @@ Rails.application.routes.draw do
 
     resources :users do
       resources :invites, only: %i[index]
-      resources :investments, only: %i[index show revert]
+      resources :investments, only: %i[index show]
     end
     get :check_session, to: 'users#check_session'
     resources :invitees, model_name: 'User' do
@@ -113,17 +115,37 @@ Rails.application.routes.draw do
     end
 
     resources :deal_updates, only: [:create, :update]
+    namespace :analytics do
+      resources :investors, only: %i[index] do
+        collection do
+          get :investments
+          get :funding_round_investments
+          get :property_investments
+          get :investments_chart
+        end
+      end
+      resources :deals, param: :token, only: %i[show] do
+        member do
+          get :stats
+        end
+      end
+    end
+    resource :profile, only: %i[show update]
+    resource :wallet
+    resources :transactions
+    resource :exchange_rate, only: %i[show]
   end
 
   # Admin routes
   resources :admin_users do
     get :reactivate, on: :member
   end
-  resources :investors, only: %i[update] do
+  resources :investors, only: %i[update destroy] do
     collection do
       resources :individuals, only: %i[index show], controller: 'investors', type: 'individuals'
       resources :firms, only: %i[index show], controller: 'investors', type: 'firms'
     end
+    get :reactivate, on: :member
   end
   resources :fund_raisers, only: %i[index show update]
   resources :syndicates, only: %i[index show update]
@@ -132,16 +154,20 @@ Rails.application.routes.draw do
       resources :start_up, only: %i[index show], controller: 'deals', type: 'start_up'
       resources :property, only: %i[index show], controller: 'deals', type: 'property'
     end
+    put :close
+    put :extend
+    resources :spvs, only: %i[new]
   end
-  resources :profile, only: %i[index] do
-    collection do
-      get :edit
-      put :update
-    end
-  end
+  resource :profile, only: %i[show edit update]
   resources :dashboard, only: %i[index]
   resources :field_attributes
   resources :steppers
+  resources :spvs, only: %i[show index create update edit] do
+    get :back
+  end
+  resources :trix_attachments, only: %i[create]
+  resources :transactions, only: %i[index show update]
+  resource :exchange_rate, only: %i[create]
 
   root to: "dashboard#index"
 end

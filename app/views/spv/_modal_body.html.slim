@@ -1,0 +1,46 @@
+- steps = ["Entity Information", "Governance and Management", "Investment Details", "Regulatory Compliance", "Financial Information", "Reporting Requirements", "Contractual Documents", "Operational Details", "Exit Strategy", "Investor Relations"]
+.modal-body[data-controller="spv"]
+  .container
+    .d-flex.px-4
+      .col-4.pl-4
+        .stepper.d-flex.flex-column.mt-4.ml-2
+          - steps.each_with_index do |title, index|
+            - index += 1
+            .d-flex
+              .d-flex.flex-column.pr-4.align-items-center
+                - if @step > index
+                  i.bi.bi-check-circle-fill.filled
+                  .line.bg-primary
+                - elsif @step == index
+                  i.bi.bi-record-circle.current
+                  - if index < SPV_LAST_STEP
+                    .line.bg-gray
+                - else
+                  i.bi.bi-circle.pending
+                  - if index < SPV_LAST_STEP
+                    .line.bg-gray
+              div.px-2.pt-2
+                span = title
+      .col-7.pr-4.mx-3.stepper
+        = render 'spv/errors'
+        = form_for @spv, html: { "data-step": @step, "data-spv-target": "spvForm" } do |f|
+          = render "spv/step#{@step}", spv: @spv, step: @step, f: f
+    .d-flex.px-4
+      .col-4
+      .col-7.mx-3
+        .d-flex.pr-4.py-5
+          .col-6
+            - if @step == SPV_FIRST_STEP
+              button.btn.button-close.me-auto.px-5[type="button" data-action="click->modal#hideModal"]
+                | Cancel
+            - else
+              = link_to spv_back_path(@spv, step: @step)
+                button.btn.button-close.me-auto.px-5
+                  | Back
+          .col-6.text-end
+            - if @step == SPV_LAST_STEP
+              button.btn.btn-primary.px-5[data-action="click->spv#submitAndReload"]
+                | Finish
+            - else
+              button.btn.btn-primary.px-5[data-action="click->spv#submit" data-step="#{@step}"]
+                | Continue

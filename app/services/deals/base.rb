@@ -9,6 +9,7 @@ module Deals
 
     def call
       english = I18n.locale == :en
+      investment = user.investments.find_by(deal_id: deal.id)
 
       {
         id: deal.id,
@@ -24,7 +25,8 @@ module Deals
         end_at: deal.end_at.blank? ? '' : Date.parse(deal.end_at.to_s).strftime('%d/%m/%Y'),
         token: deal.token,
         is_invested: user.investments.exists?(deal_id: deal.id),
-        my_invested_amount: user.investments.find_by(deal_id: deal.id)&.amount,
+        is_refundable: investment.present? && investment.refundable?,
+        my_invested_amount: investment&.amount,
         current_deal_syndicate: deal.syndicate_id == user.id && deal.syndicate?,
         syndicate_id: deal.syndicate_id,
         model: deal.humanized_enum(deal.model)

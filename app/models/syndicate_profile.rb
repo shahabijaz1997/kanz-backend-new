@@ -14,10 +14,12 @@ class SyndicateProfile < ApplicationRecord
 
   validates :profile_link, :dealflow, presence: true
   validates :raised_amount, :no_times_raised, presence: true, if: :raised_before?
-  validates :name, :tagline, :logo, presence: true, if: :second_step?
+  validates :name, :tagline, presence: true, if: :second_step?
 
   after_save :update_profile_industries, :update_profile_regions
   after_create :create_group
+
+  accepts_nested_attributes_for :syndicate, update_only: true
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[region_id industry_id]

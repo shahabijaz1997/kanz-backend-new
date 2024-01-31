@@ -11,6 +11,8 @@ class InvestorProfile < ApplicationRecord
   validates :residence, presence: { if: -> { investor.individual_investor? } }
   validates :legal_name, presence: { if: -> { investor.investment_firm? } }
 
+  accepts_nested_attributes_for :investor, update_only: true
+
   def self.ransackable_attributes(_auth_object = nil)
     %w[residence_id country_id]
   end

@@ -1,0 +1,19 @@
+= f.hidden_field :step, value: step
+= hidden_field_tag :step, step
+.form-group
+  = f.label :investment_nature
+  = f.text_field :investment_nature, class: "form-control", required:  true
+.form-group data-controller='image-preview'
+  = render "spv/file_field", form: f, field: 'investment_strategy', file: spv.investment_strategy
+.form-group
+  = f.label :capital_raised
+  = f.number_field :capital_raised, min: 0, class: "form-control", required:  true
+.form-group
+  = f.label :investment_thresholds
+  = f.number_field :investment_thresholds, min: 0, class: "form-control", required:  true
+.form-group data-controller='image-preview'
+  = render "spv/file_field", form: f, field: 'valuation_report', file: spv.valuation_report
+.form-group
+  = f.label :terms
+  input#terms[type="hidden" name="spv[terms]" value="#{spv.terms}"]
+  trix-editor[input="terms"]

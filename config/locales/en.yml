@@ -60,6 +60,7 @@ en:
       approved:  The deal you submitted has been approved.
       reopened:  The deal you submitted has some requested changes.
       access: You can access the deal using the link below.
+      closed: Your deal has been closed!
     onboarding:
       submitted: Your application has been submitted.
       verified: Your application has been verified by Customer Support Representative. Approval is now pending from Compliance Office.
@@ -72,3 +73,5 @@ en:
     applied: Applied
     not_invited: Not Invited
     member: Member
+  wallet:
+    low_balance: Insufficient Balance

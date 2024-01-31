@@ -1,0 +1,24 @@
+= f.hidden_field :deal_id
+= f.hidden_field :closing_model
+= f.hidden_field :step, value: step
+= hidden_field_tag :step, step
+.form-group
+  = f.label :legal_name
+  = f.text_field :legal_name, class: "form-control", required:  true
+.form-group
+  = f.label :date_of_incorporation
+  = f.date_field :date_of_incorporation, class: "form-control", required: true, min: spv.deal.created_at
+.form-group
+  = f.label :place_of_incorporation
+  = f.text_field :place_of_incorporation, class: "form-control", required:  true
+.form-group data-controller='image-preview'
+  = render "spv/file_field", form: f, field: 'registration_certificate', file: spv.registration_certificate
+.form-group
+  = f.label :legal_structure
+  = f.text_field :legal_structure, class: "form-control"
+.form-group
+  = f.label :jurisdiction
+  = f.text_field :jurisdiction, class: "form-control"
+.form-group
+  = f.label :registered_office_address
+  = f.text_field :registered_office_address, class: "form-control"

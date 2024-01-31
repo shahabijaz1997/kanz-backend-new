@@ -1,0 +1,10 @@
+- if user.profile_picture.attached?
+  li.list-group-item
+    span.col-3.title Profile Picture
+    div.card.attachment
+      = image_tag(user.profile_picture.url)
+      div.card-img-overlay
+        a.btn.btn-outline-light href=user.profile_picture.url target="_blank"
+          i.bi.bi-arrows-angle-expand
+        = link_to rails_blob_path(user.profile_picture, disposition: 'attachment'), class: 'ms-3 btn btn-outline-light' do
+          i.bi.bi-cloud-arrow-down

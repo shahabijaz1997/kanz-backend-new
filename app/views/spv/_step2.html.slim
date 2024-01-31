@@ -1,0 +1,13 @@
+= f.hidden_field :step, value: step
+= hidden_field_tag :step, step
+.form-group
+  = f.label :directors
+  = f.text_field :directors, class: "form-control", required:  true
+.form-group data-controller='image-preview'
+  = render "spv/file_field", form: f, field: 'governance_structure', file: spv.governance_structure
+.form-group
+  = f.label :management_agreements
+  = f.text_field :management_agreements, class: "form-control", required:  true
+.form-group
+  = f.label :parent_company
+  = f.text_field :parent_company, class: "form-control"

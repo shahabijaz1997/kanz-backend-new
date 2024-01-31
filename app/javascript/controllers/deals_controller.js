@@ -1,0 +1,23 @@
+import { Controller } from "@hotwired/stimulus"
+import Dom from '../dom/manipulator'
+export default class extends Controller {
+  static targets = ['spvButton', 'dateSelector', 'dealRefundForm']
+
+  createSpv(){
+    Dom.addClass(this.dateSelectorTarget, 'd-none')
+    Dom.addClass(this.dealRefundFormTarget, 'd-none')
+    Dom.removeClass(this.spvButtonTarget, 'disabled')
+  }
+
+  extendDate(){
+    Dom.removeClass(this.dateSelectorTarget, 'd-none')
+    Dom.addClass(this.spvButtonTarget, 'disabled')
+    Dom.addClass(this.dealRefundFormTarget, 'd-none')
+  }
+
+  refundAndClose(){
+    Dom.removeClass(this.dealRefundFormTarget, 'd-none')
+    Dom.addClass(this.spvButtonTarget, 'disabled')
+    Dom.addClass(this.dateSelectorTarget, 'd-none')
+  }
+}

@@ -3,6 +3,7 @@
 
 div.w-75
   = render 'shared/section_card', section_title: 'Investor User', editable: false do
+    = render 'shared/profile_picture_list_item', user: @investor
     = render 'shared/section_list_item', title: 'Name', value: @investor.name
     = render 'shared/section_list_item', title: 'Email', value: @investor.email
     li.list-group-item
@@ -13,7 +14,13 @@ div.w-75
       = render 'shared/section_list_item', title: 'Residence', value: @investor.profile&.residence&.name
     = render 'shared/section_list_item', title: 'Nationality', value: @investor.profile&.country&.name
     = render 'shared/section_list_item', title: 'Accreditation', value: @investor.profile&.accreditation_option&.statement
-
+    li.list-group-item
+      - if @investor.deactivated
+        span.offset-3.value.text-danger This investor is deactivated
+        = link_to '(reactivate)', reactivate_investor_path(@investor), class: 'ms-2'
+      - else
+        = link_to 'Deactivate Investor', investor_path(@investor),
+          data: { turbo_method: :delete}, class: 'offset-3 value text-danger'
 
   = render 'investment_philosophies', resource: @investor
   = render 'shared/attachments_section', attachments: @investor.attachments

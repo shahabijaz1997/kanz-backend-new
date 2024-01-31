@@ -102,12 +102,11 @@ module V1
 
     def invites
       @invites = Invite.where(eventable_type: 'Deal').where(
-        'eventable_id= ? OR invitee_id= ? OR user_id= ?',
+        'eventable_id= ? OR invitee_id= ? OR invites.user_id= ?',
         params[:deal_id], params[:invitee_id], params[:user_id]
-      ).active.ransack(params[:search]).result.latest_first
-
+      ).where(purpose: invite_type_params).active.ransack(params[:search]).result.latest_first
       @stats = stats_by_status
-      @pagy, @invites = pagy @invites.by_status(status_params).where(purpose: invite_type_params)
+      @pagy, @invites = pagy @invites.by_status(status_params)
     end
 
     def validate_invite_status

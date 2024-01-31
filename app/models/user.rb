@@ -15,18 +15,21 @@ class User < ApplicationRecord
   validate :password_strength, if: :password_validation_needed?
   validate :check_email_uniqueness
 
+  has_one :wallet
+
   has_many :attachments, as: :parent, dependent: :destroy
-  has_many :deals
+  has_many :deals, dependent: :destroy
   belongs_to :user_role, class_name: 'Role', foreign_key: :role_id
   has_many :invites, dependent: :destroy
   has_many :comments, class_name: 'Comment', foreign_key: 'author_id'
-  has_many :investments
   has_many :deal_updates, foreign_key: 'added_by_id'
+  has_many :investments, dependent: :destroy
+  has_one_attached :profile_picture
 
   delegate :title, :title_ar, to: :user_role, prefix: :role
 
   before_validation :update_role, on: :create
-  after_create :update_profile_state
+  after_create :update_profile_state, :create_wallet
   after_save :update_profile_state, if: :profile_reopened?
   after_update :inform_applicant, if: :saved_change_to_status?
 
@@ -114,7 +117,15 @@ class User < ApplicationRecord
     deals.live.count
   end
 
+  def profile_picture_url
+    Rails.env.development? ? ActiveStorage::Blob.service.path_for(profile_picture.key) : profile_picture.url if profile_picture.attached?
+  end
+
   private
+
+  def create_wallet
+    Wallet.create(user: self, balance: 0.0)
+  end
 
   def profile_reopened?
     saved_change_to_status && saved_change_to_status.last == 'reopened'
