@@ -5,6 +5,10 @@ div.w-75.blog
       span.col.value
         = form.text_field :title, required: true, class: "form-control", label: false, autofocus: true
     li.list-group-item
+      span.col-3.title Introduction
+      span.col.value
+        = form.text_area :introduction, required: true, class: "form-control", label: false, autofocus: true
+    li.list-group-item
       span.col-3.title Content
       span.col.value
         input#content type="hidden" name="blog[content]" value="#{@blog.content}" required=true
