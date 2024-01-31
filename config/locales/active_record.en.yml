@@ -38,4 +38,6 @@ en:
   deal_update:
     success: success
     not_found: record not found
+    deal_not_closed: is not closed
+    not_allowed: not allowed to update
 
