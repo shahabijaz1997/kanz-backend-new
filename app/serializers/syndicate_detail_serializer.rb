@@ -41,7 +41,7 @@ class SyndicateDetailSerializer < SyndicateSerializer
   attribute :lead do |syndicate|
     {
       name: syndicate.name,
-      profile_pic: nil
+      profile_pic: syndicate.profile_picture_url
     }
   end
 
@@ -92,7 +92,7 @@ class SyndicateDetailSerializer < SyndicateSerializer
     syndicate.syndicate_members.gp.map do |member|
       {
         name: member.member.name,
-        profile_pic: nil # member.profile_pic
+        profile_pic: member.member.profile_picture_url # member.profile_pic
       }
     end
   end
@@ -101,7 +101,7 @@ class SyndicateDetailSerializer < SyndicateSerializer
     syndicate.syndicate_members.lp.map do |member|
       {
         name: member.member.name,
-        profile_pic: nil # member.profile_pic
+        profile_pic: member.member.profile_picture_url # member.profile_pic
       }
     end
   end

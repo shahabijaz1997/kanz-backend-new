@@ -26,7 +26,7 @@ class SyndicateMemberSerializer
   end
 
   attribute :profile_pic do |group|
-    group.member.profile_pic
+    group.member.profile_picture_url
   end
 
   attribute :investor_type do |group|
