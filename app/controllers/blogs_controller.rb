@@ -1,9 +1,10 @@
 class BlogsController < ApplicationController
-  before_action :set_blog
+  before_action :set_blog, except: %i[index new create]
+  before_action :authorize_role!
 
   def index
     @filtered_blogs = Blog.ransack(params[:search])
-    @pagy, @blogs = pagy(policy_scope(@filtered_blogs.result(distinct: true).order(created_at: :desc)))
+    @pagy, @blogs = pagy(policy_scope(@filtered_blogs.result.order(created_at: :desc)))
   end
 
   def show; end
@@ -45,6 +46,6 @@ class BlogsController < ApplicationController
   end
 
   def set_blog
-    @blog = policy_scope(Blog).find_by(id: params[:id])
+    @blog = policy_scope(Blog).friendly.find(params[:id])
   end
 end

@@ -11,7 +11,6 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2024_01_31_134605) do
-  # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -124,6 +123,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_31_134605) do
     t.bigint "approved_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "slug"
     t.index ["approved_by_id"], name: "index_blogs_on_approved_by_id"
     t.index ["author_id"], name: "index_blogs_on_author_id"
   end

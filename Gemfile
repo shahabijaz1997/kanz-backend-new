@@ -99,3 +99,6 @@ group :development do
   # gem "spring"
   gem 'letter_opener'
 end
+
+# To use slugs for blogs, instead of IDs.
+gem 'friendly_id'
