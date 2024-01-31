@@ -6,18 +6,18 @@ export default class extends Controller {
   createSpv(){
     Dom.addClass(this.dateSelectorTarget, 'd-none')
     Dom.addClass(this.dealRefundFormTarget, 'd-none')
-    Dom.removeClass(this.spvButtonTarget, 'disabled')
+    Dom.removeClass(this.spvButtonTarget, 'd-none')
   }
 
   extendDate(){
     Dom.removeClass(this.dateSelectorTarget, 'd-none')
-    Dom.addClass(this.spvButtonTarget, 'disabled')
+    Dom.addClass(this.spvButtonTarget, 'd-none')
     Dom.addClass(this.dealRefundFormTarget, 'd-none')
   }
 
   refundAndClose(){
     Dom.removeClass(this.dealRefundFormTarget, 'd-none')
-    Dom.addClass(this.spvButtonTarget, 'disabled')
+    Dom.addClass(this.spvButtonTarget, 'd-none')
     Dom.addClass(this.dateSelectorTarget, 'd-none')
   }
 }

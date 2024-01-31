@@ -25,7 +25,7 @@
                 | Refund and Close
           .col-4
             = turbo_frame_tag 'spv-modal' do
-              = link_to new_deal_spv_path(resource), class: 'btn btn-primary disabled', data: { deal_closing_target: 'spvButton', turbo_method: :get, turbo_confirm: "This action will close the deal! Are you sure you want to continue?" } do
+              = link_to new_deal_spv_path(resource), class: 'btn btn-primary d-none', data: { deal_closing_target: 'spvButton', turbo_method: :get, turbo_confirm: "This action will close the deal! Are you sure you want to continue?" } do
                 | Create SPV
         .d-none[data-deal-closing-target = "dateSelector"]
           = form_for resource, url: deal_extend_path(resource), method: :put do |form|
