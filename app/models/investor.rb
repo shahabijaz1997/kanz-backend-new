@@ -44,6 +44,6 @@ class Investor < User
   end
 
   def profile_pic
-    nil
+    profile_picture_url
   end
 end
