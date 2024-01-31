@@ -35,3 +35,8 @@ ar:
     added: "تمت الإضافة بنجاح إلى المجموعة"
   investor:
     not_found: "لم يتم العثور على المستثمر"
+  deal_update:
+    success: نجاح
+    not_found: لم يتم العثور على السجل
+    deal_not_closed: ليست مغلقة
+    not_allowed: غير مسموح بالتحديث

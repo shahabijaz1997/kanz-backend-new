@@ -3,8 +3,12 @@ en:
     attributes:
       investment:
         user_id: "You can't"
-        amount: "Amount"
-        investment_amount: "Investment Amount"
+        amount: "amount"
+        investment_amount: "investment_amount"
+    attributes:
+      deal_update:
+        user: "User"
+        deal: "Deal"
     errors:
       models:
         investment:

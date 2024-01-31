@@ -38,3 +38,7 @@ ar:
     syndicate_member:
       added: 'وأضاف'
       follower: 'تابع'
+    deal_update:
+      pending: 'قيد الانتظار'
+      published: 'نشرت'
+

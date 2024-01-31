@@ -114,6 +114,7 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :deal_updates, only: [:create, :update]
     namespace :analytics do
       resources :investors, only: %i[index] do
         collection do

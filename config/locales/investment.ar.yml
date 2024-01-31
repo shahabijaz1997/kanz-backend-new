@@ -5,6 +5,10 @@ ar:
         user_id: "لا يمكنك"
         amount: "كمية"
         investment_amount: "مبلغ الاستثمار"
+    attributes:
+      deal_update:
+        user: "مستخدم"
+        deal: "اتفاق"
     errors:
       models:
         investment:

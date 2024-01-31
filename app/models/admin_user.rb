@@ -6,6 +6,7 @@ class AdminUser < ApplicationRecord
   devise :database_authenticatable, :recoverable, :rememberable, :validatable
 
   belongs_to :admin_role, class_name: 'AdminRole'
+  has_many :deal_updates, foreign_key: 'published_by_id'
   has_many :spvs, foreign_key: :created_by
   has_many :attachments, as: :parent, dependent: :destroy
 

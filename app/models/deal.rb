@@ -13,6 +13,7 @@ class Deal < ApplicationRecord
   has_many :invites, as: :eventable, dependent: :destroy
   has_many :comments, dependent: :destroy
   belongs_to :syndicate, class_name: 'Syndicate', optional: true
+  has_many :deal_updates
   has_one :spv
   has_many :investments, dependent: :destroy
 

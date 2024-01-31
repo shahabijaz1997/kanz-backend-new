@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_29_070243) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_31_100442) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -137,6 +137,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_29_070243) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name_ar"
+  end
+
+  create_table "deal_updates", force: :cascade do |t|
+    t.text "description"
+    t.bigint "deal_id", null: false
+    t.bigint "added_by_id", null: false
+    t.bigint "published_by_id"
+    t.integer "status", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["added_by_id"], name: "index_deal_updates_on_added_by_id"
+    t.index ["deal_id"], name: "index_deal_updates_on_deal_id"
+    t.index ["published_by_id"], name: "index_deal_updates_on_published_by_id"
   end
 
   create_table "deals", force: :cascade do |t|
@@ -594,6 +607,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_29_070243) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_users", "admin_roles"
+  add_foreign_key "deal_updates", "admin_users", column: "published_by_id"
+  add_foreign_key "deal_updates", "deals"
+  add_foreign_key "deal_updates", "users", column: "added_by_id"
   add_foreign_key "deals", "users"
   add_foreign_key "invites", "users", column: "invitee_id"
   add_foreign_key "transactions", "wallets"
