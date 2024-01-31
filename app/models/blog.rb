@@ -1,8 +1,12 @@
 class Blog < ApplicationRecord
+  extend FriendlyId
+
   belongs_to :author, class_name: "AdminUser"
   belongs_to :approved_by, class_name: "AdminUser", optional: true
 
   enum status: %i[draft completed published archived]
+
+  friendly_id :title, use: :slugged
 
   validates :title, :content, presence: true
 
