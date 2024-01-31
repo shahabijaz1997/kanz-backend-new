@@ -10,7 +10,7 @@ class SpvsController < ApplicationController
   def new
     @spv = @deal.spv || Spv.new(deal_id: @deal.id, closing_model: params[:closing_model])
     @spv.step = params[:step]
-    render turbo_stream: turbo_stream.append('spv-modal', partial: 'spv/new')
+    render turbo_stream: turbo_stream.append('spv-modal', partial: 'new')
   end
 
   def create
@@ -20,29 +20,29 @@ class SpvsController < ApplicationController
       @spv.deal.update!(closing_model: @spv.closing_model, status: 'closed')
       next_step
     end
-    render turbo_stream: turbo_stream.update('stepper', partial: "spv/modal_body")
+    render turbo_stream: turbo_stream.update('stepper', partial: "modal_body")
   rescue StandardError => e
     @errors = [e.message]
-    render turbo_stream: turbo_stream.update('stepper', partial: "spv/modal_body")
+    render turbo_stream: turbo_stream.update('stepper', partial: "modal_body")
   end
 
   def edit
     @step = SPV_FIRST_STEP
-    render turbo_stream: turbo_stream.append('spv-modal', partial: 'spv/new')
+    render turbo_stream: turbo_stream.append('spv-modal', partial: 'new')
   end
 
   def update
     next_step if @spv.update(spv_params)
     @errors = @spv.errors.full_messages
     respond_to do |format|
-      format.html { redirect_to spvs_path }
-      format.turbo_stream { render turbo_stream: turbo_stream.update('stepper', partial: "spv/modal_body") }
+      format.html { redirect_to spvs_path, notice: 'Spv create successfully!' }
+      format.turbo_stream { render turbo_stream: turbo_stream.update('stepper', partial: "modal_body") }
     end
   end
 
   def back
     previous_step
-    render turbo_stream: turbo_stream.update('stepper', partial: "spv/modal_body")
+    render turbo_stream: turbo_stream.update('stepper', partial: "modal_body")
   end
 
   private
