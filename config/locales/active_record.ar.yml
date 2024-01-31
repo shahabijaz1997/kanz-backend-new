@@ -40,3 +40,5 @@ ar:
     not_found: لم يتم العثور على السجل
     deal_not_closed: ليست مغلقة
     not_allowed: غير مسموح بالتحديث
+  blog:
+    not_found: لم يتم العثور على السجل

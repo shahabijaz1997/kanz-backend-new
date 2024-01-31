@@ -5,7 +5,7 @@ module V1
     before_action :set_wallet
 
     def index
-      @pagy, @transactions = pagy(@wallet.transactions)
+      @pagy, @transactions = pagy(@wallet.transactions.order(created_at: :desc))
       render json: {
         transactions: TransactionSerializer.new(@transactions).serializable_hash[:data].map{ |object| object[:attributes]},
         pagination: pagy_attributes(@pagy)
@@ -32,8 +32,8 @@ module V1
     end
 
     def permitted_params
-    params.require(:transaction).require(%i[amount method timestamp receipt])
-    params.require(:transaction).permit(%i[amount method timestamp receipt])
+      params.require(:transaction).require(%i[amount method timestamp receipt])
+      params.require(:transaction).permit(%i[amount method timestamp receipt])
     end
   end
 end

@@ -8,7 +8,9 @@ ADMIN_ROLES = {
   'Admin': 'admin',
   'Super Admin': 'super_admin',
   'Customer Support Rep': 'customer_support_rep',
-  'Compliance Officer': 'compliance_officer'
+  'Compliance Officer': 'compliance_officer',
+  'Content Creator': 'content_creator',
+  'Content Manager': 'content_manager'
 }.freeze
 
 ROLES = {
@@ -101,7 +103,14 @@ ROUTES = {
       path: "transactions",
       icon: "fa-solid fa-money-bill-transfer",
     }
-  ]
+  ],
+  content_manager: [
+    {
+      name: "Blogs",
+      path: "blogs",
+      icon: "fa-regular fa-newspaper"
+    }
+  ],
 }.freeze
 
 MAX_STEPS = {

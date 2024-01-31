@@ -1,0 +1,12 @@
+= link_to '< Back', blogs_path, class: 'mb-2'
+= render 'shared/page_title', title: "Blog Details"
+
+div.w-75
+  = render 'shared/section_card', section_title: 'Blog', editable: true, editable_path: edit_blog_path do
+    = render 'shared/section_list_item', title: 'Title', value: @blog.title
+    = render 'shared/section_list_item', title: 'Content', value: @blog.content
+    = render 'shared/section_list_item', title: 'Author', value: @blog.author.fullname
+    li.list-group-item
+      span.col-3.title Status
+      span.col = render 'shared/user_status', status: @blog.status
+

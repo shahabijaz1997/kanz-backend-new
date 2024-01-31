@@ -40,8 +40,22 @@ class AdminUser < ApplicationRecord
     admin_role&.Compliance_Officer?
   end
 
+  def content_manager?
+    admin_role&.Content_Manager?
+  end
+
+  def content_creator?
+    admin_role&.Content_Creator?
+  end
+
   def role
-    admin? || super_admin? ? :admin : :customer_user
+    if admin? || super_admin?
+      :admin
+    elsif content_manager? || content_creator?
+      :content_manager
+    else
+      :customer_user
+    end
   end
 
   def self.ransackable_attributes(_auth_object = nil)

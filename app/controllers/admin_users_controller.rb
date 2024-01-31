@@ -69,10 +69,12 @@ class AdminUsersController < ApplicationController
   def load_admin_roles
     @admin_roles = {
       'Customer Support Rep': 3,
-      'Compliance Officer': 4
+      'Compliance Officer': 4,
+      'Content Creator': 5,
+      'Content Manager': 6,
     }
     return unless current_admin_user.super_admin?
 
-    @admin_roles = @admin_roles.merge({ 'Super Admin': 1, Admin: 2 })
+    @admin_roles = @admin_roles.merge({ 'Super Admin': 1, 'Admin': 2 })
   end
 end

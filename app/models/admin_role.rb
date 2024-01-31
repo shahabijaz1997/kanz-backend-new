@@ -9,4 +9,5 @@ class AdminRole < ApplicationRecord
 
   scope :admins, -> { where(title: ['Super Admin', 'Admin']) }
   scope :representatives, -> { where(title: ['Customer Support Rep', 'Compliance Officer']) }
+  scope :content_managers, -> { where(title: ['Content Creator', 'Content Manager']) }
 end
