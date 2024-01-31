@@ -5,7 +5,11 @@ class InvestorSerializer
   include JSONAPI::Serializer
   has_many :attachments
 
-  attributes :id, :name, :email, :type, :status, :language, :profile_states, :profile_picture_url
+  attributes :id, :name, :email, :type, :status, :language, :profile_states
+
+  attribute :profile_picture_url do |investor|
+    investor.profile_picture_url
+  end
 
   attribute :profile do |investor|
     if investor.syndicate?
