@@ -7,6 +7,7 @@ class AdminUser < ApplicationRecord
 
   belongs_to :admin_role, class_name: 'AdminRole'
   has_many :spvs, foreign_key: :created_by
+  has_many :attachments, as: :parent, dependent: :destroy
 
   validates :email, :first_name, :last_name, presence: true
   validates :email, uniqueness: true
