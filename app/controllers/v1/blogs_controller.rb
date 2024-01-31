@@ -7,13 +7,13 @@ module V1
     def index
       @pagy, @blogs = pagy(Blog.published)
       render json: {
-        blogs: BlogSerializer.new(@blogs).serializable_hash[:data].map{ |object| object[:attributes]},
+        blogs: BlogSerializer.new(@blogs, { params: { detailed: false }}).serializable_hash[:data].map{ |object| object[:attributes]},
         pagination: pagy_attributes(@pagy)
       }
     end
 
     def show
-      @blog = Blog.find_by(id: params[:id])
+      @blog = Blog.published.friendly.find_by(slug: params[:id])
       if @blog.present?
         render json: {
           transactions: BlogSerializer.new(@blog).serializable_hash[:data][:attributes]

@@ -4,7 +4,7 @@
 div.w-75
   = render 'shared/section_card', section_title: 'Blog', editable: true, editable_path: edit_blog_path do
     = render 'shared/section_list_item', title: 'Title', value: @blog.title
-    = render 'shared/section_list_item', title: 'Content', value: @blog.content
+    = render 'shared/section_list_item', title: 'Slug', value: @blog.slug
     = render 'shared/section_list_item', title: 'Author', value: @blog.author.fullname
     li.list-group-item
       span.col-3.title Status
