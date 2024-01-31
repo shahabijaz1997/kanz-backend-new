@@ -132,8 +132,9 @@ Rails.application.routes.draw do
     end
     resource :profile, only: %i[show update]
     resource :wallet
-    resources :transactions
+    resources :transactions, only: %i[index create]
     resource :exchange_rate, only: %i[show]
+    resources :blogs, only: %i[index show]
   end
 
   # Admin routes
@@ -168,6 +169,9 @@ Rails.application.routes.draw do
   resources :trix_attachments, only: %i[create]
   resources :transactions, only: %i[index show update]
   resource :exchange_rate, only: %i[create]
+
+  # CMS
+  resources :blogs
 
   root to: "dashboard#index"
 end

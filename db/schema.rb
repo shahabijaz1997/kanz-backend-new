@@ -116,6 +116,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_31_100442) do
     t.index ["user_id", "user_type"], name: "user_index"
   end
 
+  create_table "blogs", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.bigint "author_id"
+    t.integer "status", default: 0
+    t.bigint "approved_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["approved_by_id"], name: "index_blogs_on_approved_by_id"
+    t.index ["author_id"], name: "index_blogs_on_author_id"
+  end
+
   create_table "comments", force: :cascade do |t|
     t.text "message"
     t.bigint "author_id", null: false
