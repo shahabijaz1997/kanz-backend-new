@@ -147,5 +147,9 @@ Rails.application.routes.draw do
     get :back
   end
 
+  resources :trix_attachments, only: %i[create]
+  resources :transactions, only: %i[index show update]
+  resource :exchange_rate, only: %i[create]
+
   root to: "dashboard#index"
 end

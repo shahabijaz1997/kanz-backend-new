@@ -4,3 +4,4 @@ import "moment"
 import "./controllers"
 import './toastr'
 import 'trix'
+import './trix-upload'
