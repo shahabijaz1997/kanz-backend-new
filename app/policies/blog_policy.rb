@@ -20,15 +20,19 @@ class BlogPolicy < ApplicationPolicy
   end
 
   def edit?
-    index?
+    user_context.content_creator? ? !record.published? : index?
   end
 
   def update?
-    index?
+    edit?
+  end
+
+  def new?
+    user_context.content_creator?
   end
 
   def create?
-    index?
+    new?
   end
 
   def destroy?

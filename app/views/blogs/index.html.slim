@@ -1,7 +1,8 @@
 = render 'shared/page_title', title: "Blogs"
 
-div.clearfix
-  = link_to "Add Blog", new_blog_path, class: 'btn btn-outline-primary float-end'
+- unless current_admin_user.content_manager?
+  div.clearfix
+    = link_to "Add Blog", new_blog_path, class: 'btn btn-outline-primary float-end'
 
 = render 'filters'
 
@@ -26,9 +27,10 @@ div.table
               div.ms-2
                 a.btn.btn-outline-primary.btn-sm.stretched-link href=blog_path(blog)
                   i class="fa fa-info"
-              div.ms-2.position-relative
-                a.btn.btn-outline-primary.btn-sm.stretched-link href=edit_blog_path(blog)
-                  i class="fa fa-pen"
+              - unless current_admin_user.content_creator? && blog.published?
+                div.ms-2.position-relative
+                  a.btn.btn-outline-primary.btn-sm.stretched-link href=edit_blog_path(blog)
+                    i class="fa fa-pen"
       - if @pagy.pages > 1
         == pagy_nav(@pagy)
 
