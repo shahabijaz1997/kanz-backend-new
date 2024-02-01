@@ -1,0 +1,8 @@
+= f.hidden_field :step, value: @step
+= hidden_field_tag :step, @step
+.form-group
+  = f.label :exit_options
+  input#exit_options[type="hidden" name="spv[exit_options]" value="#{@spv.exit_options}"]
+  trix-editor[input="exit_options"]
+.form-group data-controller='image-preview'
+  = render "file_field", form: f, field: 'divestment_process', file: spv.divestment_process

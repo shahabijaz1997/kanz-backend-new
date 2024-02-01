@@ -1,0 +1,12 @@
+= f.hidden_field :step, value: step
+= hidden_field_tag :step, step
+.form-group data-controller='image-preview'
+  = render "file_field", form: f, field: 'aml_kyc_document', file: spv.aml_kyc_document
+.form-group data-controller='image-preview'
+  = render "file_field", form: f, field: 'dfsa_compliance_regulations', file: spv.dfsa_compliance_regulations
+.form-group
+  = f.label :risk_disclosures
+  input#risk_disclosures[type="hidden" name="spv[risk_disclosures]" value="#{spv.risk_disclosures}"]
+  trix-editor[input="risk_disclosures"]
+.form-group data-controller='image-preview'
+  = render "file_field", form: f, field: 'data_protection_compliance', file: spv.data_protection_compliance

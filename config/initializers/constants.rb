@@ -90,6 +90,11 @@ ROUTES = {
           path: "property"
         }
       ]
+    },
+    {
+      name: "Spvs",
+      path: "spvs",
+      icon: "fa fa-briefcase"
     }
   ]
 }.freeze
@@ -134,5 +139,19 @@ INPUT_TYPES = {
 
 DEAL_STEPPER_DATE_FIELDS = ['start_at', 'end_at'].freeze
 
-STAGES = ['Pre-seed', 'Seed / Angel', 'Series A', 'Series B', 'Series C', 'Series D', 'Mezzanine & bridge']
-INSTRUMENT_TYPES = ['SAFE', 'Equity Financing']
+STAGES = ['Pre-seed', 'Seed / Angel', 'Series A', 'Series B', 'Series C', 'Series D', 'Mezzanine & bridge'].freeze
+INSTRUMENT_TYPES = ['SAFE', 'Equity Financing'].freeze
+
+SPV_LAST_STEP = 10.freeze
+SPV_FIRST_STEP = 1.freeze
+
+AUDIT_STATUSES = {
+  opened: 0,
+  submitted: 1,
+  reopened: 2,
+  verified: 3,
+  rejected: 4,
+  approved: 5,
+  live: 6,
+  closed: 7
+}.freeze

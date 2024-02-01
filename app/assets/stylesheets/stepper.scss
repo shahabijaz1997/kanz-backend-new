@@ -1,0 +1,77 @@
+.stepper {
+  .line {
+    width: 2px;
+    height: 30px;
+  }
+  .bg-primary{
+    background-color: $primary !important;
+  }
+  .bg-gray{
+    background-color: darkgray !important;
+  }
+  .lead {
+    font-size: 1.1rem;
+  }
+  .form-control{
+    max-width: 100% !important;
+  }
+  .filled, .current{
+    color: $primary;
+    font-size: 35px;
+    line-height: 35px;
+  }
+  .pending{
+    color: darkgray;
+    font-size: 35px;
+    line-height: 35px;
+  }
+}
+.button-close {
+  border: 1px solid #444;
+  background: white;
+  padding: 8px 10px;
+  span{
+    font-size: 20px !important;
+    padding: 10px !important;
+  }
+}
+.button-close:hover {
+  border: 1px solid darkgray;
+  color: #155E75 !important;
+}
+
+#stepper {
+  .form-group{
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+  label{
+    padding-bottom: 7px;
+    color: #333;
+    font-size: large;
+  }
+  .form-control{
+    color: #666;
+  }
+
+  trix-editor {
+    min-height: 10em;
+    max-height: 20em;
+    overflow: auto;
+  }
+
+  .trix-button-group--text-tools,
+  .trix-button-group--block-tools,
+  .trix-button-group--file-tools,
+  .trix-button-group--history-tools {
+   margin: 0 0 0;
+   border-bottom: none; 
+  }
+  .trix-button-group--block-tools,
+  .trix-button-group--file-tools{
+    margin-left: 5px;
+  }
+}
+.modal-backdrop{
+  --bs-backdrop-bg: #fbfbfb3d;
+}

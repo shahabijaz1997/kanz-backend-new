@@ -130,6 +130,9 @@ Rails.application.routes.draw do
       resources :start_up, only: %i[index show], controller: 'deals', type: 'start_up'
       resources :property, only: %i[index show], controller: 'deals', type: 'property'
     end
+    put :close
+    put :extend
+    resources :spvs, only: %i[new]
   end
   resources :profile, only: %i[index] do
     collection do
@@ -140,6 +143,13 @@ Rails.application.routes.draw do
   resources :dashboard, only: %i[index]
   resources :field_attributes
   resources :steppers
+  resources :spvs, only: %i[show index create update edit] do
+    get :back
+  end
+
+  resources :trix_attachments, only: %i[create]
+  resources :transactions, only: %i[index show update]
+  resource :exchange_rate, only: %i[create]
 
   root to: "dashboard#index"
 end

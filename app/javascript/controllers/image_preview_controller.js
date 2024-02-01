@@ -3,7 +3,7 @@ import Dom from '../dom/manipulator'
 
 
 export default class extends Controller {
-  static targets = [ "input", "preview" ]
+  static targets = [ "input", "preview", "field" ]
 
   preview() {
     var output = this.previewTarget
@@ -34,7 +34,7 @@ export default class extends Controller {
       `
         <div class='preview'>
           <div class='details'>
-            <div class='title'>${file.name}.${file.extension} </div>
+            <div class='title'>${file.name} </div>
             <div class='title'>${this.fileSize(file.size)}</div>
           </div>
           <div class='actions'>
@@ -60,5 +60,19 @@ export default class extends Controller {
     }
     
     return(size.toFixed(size < 10 && length > 0 ? 1 : 0) + ' ' + unit)
+  }
+
+  updatePreview() {
+    var output = this.previewTarget
+    if (this.inputTarget.files) {
+      [...this.inputTarget.files].forEach(file => {
+        output.innerHTML = this.addPreview(file)
+      })
+    }
+  }
+
+  removeAndEnableInput(event) {
+    Dom.remove(event.currentTarget.parentNode.parentNode)
+    Dom.removeClass(this.fieldTarget, 'd-none')
   }
 }

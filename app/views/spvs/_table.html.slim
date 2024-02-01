@@ -1,0 +1,31 @@
+div.table
+  div.header
+    .col
+      span Deal Title
+    .col
+      span Legal Name
+    .col
+      span Date of Incorporation
+    .col
+      span Place of Incorporation
+    .col
+      span Registered Office Address
+    .col
+      span Actions
+  div.content
+    - if spvs.present?
+      - spvs.each do |spv|
+        div.card.position-relative.shadow-sm
+          div.card-body.d-flex
+            span.col = spv.deal&.title
+            span.col = spv.legal_name
+            span.col = spv.date_of_incorporation
+            span.col = spv.place_of_incorporation
+            span.col = spv.registered_office_address
+            span.col
+              = turbo_frame_tag "spv-modal" do
+                = link_to "Edit", edit_spv_path(spv), class: 'stretched-link'           
+      - if @pagy.pages > 1
+        == pagy_nav(@pagy)
+    - else
+      div.not_found No SPV Found
