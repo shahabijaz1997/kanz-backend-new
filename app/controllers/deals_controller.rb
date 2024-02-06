@@ -27,11 +27,14 @@ class DealsController < ApplicationController
 
   def close
     respond_to do |format|
-      if @deal.update(deal_close_params)
-        inform_deal_creator
-        format.html { redirect_to deals_path, notice: 'Successfully updated.' }
-      else
-        format.html { redirect_to deal_path(@deal), alert: @deal.errors.full_messages.to_sentence }
+      Deal.transaction do
+        if @deal.update(deal_close_params)
+          inform_deal_creator
+          DealClosingModel::Base.call(@deal)
+          format.html { redirect_to deals_path, notice: 'Successfully updated.' }
+        else
+          format.html { redirect_to deal_path(@deal), alert: @deal.errors.full_messages.to_sentence }
+        end
       end
     end
   end
