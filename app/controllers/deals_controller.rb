@@ -26,12 +26,16 @@ class DealsController < ApplicationController
   end
 
   def close
-    respond_to do |format|
-      if @deal.update(deal_close_params)
-        inform_deal_creator
-        format.html { redirect_to deals_path, notice: 'Successfully updated.' }
+    Deal.transaction do
+      @deal.update!(deal_close_params)
+      DealClosingModel::Base.call(@deal)
+
+      if @deal.adjust_pro_rata? || @deal.fifs?
+        @step = SPV_FIRST_STEP
+        @spv = @deal.spv || Spv.new(deal_id: @deal.id, closing_model:  @deal.closing_model, step: SPV_FIRST_STEP)
+        render turbo_stream: turbo_stream.append('spv-modal', partial: 'spvs/new')
       else
-        format.html { redirect_to deal_path(@deal), alert: @deal.errors.full_messages.to_sentence }
+        redirect_to deals_path, notice: 'Successfully updated.'
       end
     end
   end

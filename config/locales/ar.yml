@@ -51,3 +51,4 @@ ar:
     member: عضو
   wallet:
     low_balance: رصيد غير كاف
+    irrevertable: لا يمكن إرجاعها

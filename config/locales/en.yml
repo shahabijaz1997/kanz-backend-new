@@ -75,3 +75,4 @@ en:
     member: Member
   wallet:
     low_balance: Insufficient Balance
+    irrevertable: Can not be reverted

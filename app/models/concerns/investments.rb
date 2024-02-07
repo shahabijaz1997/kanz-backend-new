@@ -26,5 +26,17 @@ module Investments
         )
       end
     end
+
+    def refunded_investment_portion(amount)
+      self.transactions.create!(
+        transaction_type: :credit,
+        status: :refunded,
+        amount: amount,
+        timestamp: DateTime.now,
+        wallet: self.user.wallet,
+        description: 'Portion of investment amount refunded due to pro rata adjustment.'
+      )
+    end
   end
+
 end

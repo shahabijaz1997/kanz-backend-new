@@ -10,9 +10,9 @@ class Investment < ApplicationRecord
   has_many :transactions, as: :transactable
 
   validate :invested_amount_limit
+  after_update :create_refunded_transaction
 
   after_create :update_invite, :create_invested_transaction
-  before_update :create_refunded_transaction
 
   default_scope { self.not_refunded }
   scope :latest_first, -> { order(created_at: :desc) }
@@ -33,8 +33,6 @@ class Investment < ApplicationRecord
   end
 
   def refund
-    raise I18n.t('wallet.low_balance') unless refundable?
-
     self.refunded!
   end
 
