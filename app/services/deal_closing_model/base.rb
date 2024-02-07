@@ -14,7 +14,7 @@ module DealClosingModel
         AcceptEarlyInvestments.call()
       when 'adjust_pro_rata'
         AdjustProRata.call(deal)
-      when 'refund_and_close'
+      when 'refunded_and_closed'
         RefundInvestments.call(deal)
       end
     end

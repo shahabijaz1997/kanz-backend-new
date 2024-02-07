@@ -38,12 +38,10 @@ module V1
 
     def revert
       @investment = @deal.investments.find_by(user: current_user)
-      
-      if @investment.blank?
-        failure(I18n.t('investment.not_found'), 404)
-      else
-        @investment.refund
-      end
+      return failure(I18n.t('investment.not_found'), 404) if @investment.blank?
+      return failure(I18n.t('wallet.irrevertable'),404) unless @investment.refundable?
+
+      @investment.refund
     end
 
     private

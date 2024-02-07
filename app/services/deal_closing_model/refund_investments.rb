@@ -7,8 +7,7 @@ module DealClosingModel
     def call
       Investment.transaction do
         deal.investments.each do |investment|
-          investment.refunded!
-          create_refunded_transaction
+          investment.refund
         end
       end
     end

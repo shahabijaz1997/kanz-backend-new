@@ -10,6 +10,7 @@ class Investment < ApplicationRecord
   has_many :transactions, as: :transactable
 
   validate :invested_amount_limit
+  after_update :create_refunded_transaction
 
   after_create :update_invite, :create_invested_transaction
 
@@ -32,10 +33,7 @@ class Investment < ApplicationRecord
   end
 
   def refund
-    raise I18n.t('wallet.low_balance') unless refundable?
-
     self.refunded!
-    create_refunded_transaction
   end
 
   def refundable?

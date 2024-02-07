@@ -22,9 +22,9 @@
               div.px-2.pt-2
                 span = title
       .col-7.pr-4.mx-3.stepper
-        = render 'errors'
+        = render 'spvs/errors'
         = form_for @spv, html: { "data-step": @step, "data-spv-target": "spvForm" } do |f|
-          = render "step#{@step}", spv: @spv, step: @step, f: f
+          = render "spvs/step#{@step}", spv: @spv, step: @step, f: f
     .d-flex.px-4
       .col-4
       .col-7.mx-3
