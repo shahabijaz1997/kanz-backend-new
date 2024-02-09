@@ -27,7 +27,7 @@ class Deal < ApplicationRecord
   enum model: { _: 0, classic: 1, syndicate: 2 }
   enum closing_model: { fifs: 0, adjust_pro_rata: 1, refunded_and_closed: 2 }
 
-  validates_numericality_of(:target, greater_than_or_equal_to: 1, allow_nil: true)
+  validates_numericality_of(:target, greater_than_or_equal_to: 1, less_than: BIGINT_LIMIT, allow_nil: true)
   validate :start_and_end_date_presence, :start_date_and_end_date
 
   after_save :update_current_state

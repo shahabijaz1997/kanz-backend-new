@@ -9,6 +9,8 @@ class FundingRound < ApplicationRecord
   belongs_to :equity_type, class_name: 'Option', optional: true
   belongs_to :valuation_phase, class_name: 'Option', optional: true
 
+  validates_numericality_of(:valuation, greater_than: 0, less_than: BIGINT_LIMIT, allow_nil: true)
+
   scope :equity, -> { where.not(equity_type_id: nil) }
 
   def stage
