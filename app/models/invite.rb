@@ -12,7 +12,6 @@ class Invite < ApplicationRecord
   enum discovery_method: { news: 0, social_media: 1, website: 2, other: 3 }
 
   before_update :validate_status_change
-  # after_create :send_invite_email
   after_commit :send_invite_email, on: :create
   after_update :send_status_update_email
 
