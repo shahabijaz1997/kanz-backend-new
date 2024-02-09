@@ -8,9 +8,15 @@ ar:
       deal_update:
         user: "مستخدم"
         deal: "اتفاق"
+      deal:
+        target: هدف الصفقة
     errors:
       models:
         investment:
           attributes:
             user_id:
               uniqueness: "استثمر مرة أخرى في نفس الصفقة"
+        deal:
+          attributes:
+            target:
+              greater_than_or_equal_to: يجب أن يكون رقمًا موجبًا
