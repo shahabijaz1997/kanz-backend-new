@@ -41,8 +41,7 @@ module Settings
       return [] if questions.blank?
 
       QuestionSerializer.new(questions).serializable_hash[:data].map do |data|
-        users_answer = nil #user.investment_philosophies.find_by(question_id: data[:attributes][:id])
-
+        users_answer = user.investment_philosophies.find_by(question_id: data[:attributes][:id])
         data[:attributes] = data_with_answers(data[:attributes], users_answer) if users_answer.present?
         data[:attributes][:answer] = users_answer&.answer
         data[:attributes]
