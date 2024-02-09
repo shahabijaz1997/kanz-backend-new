@@ -10,6 +10,8 @@ en:
         deal: "Deal"
       deal:
         target: Deal Target
+      funding_round:
+        valuation: Valuation
     errors:
       models:
         investment:
@@ -20,3 +22,9 @@ en:
           attributes:
             target:
               greater_than_or_equal_to: should be a positive number
+              less_then: should be less than max number limit
+        funding_round:
+          attributes:
+            valuation:
+              greater_than: should be a positive number
+              less_then: should be less than max number limit

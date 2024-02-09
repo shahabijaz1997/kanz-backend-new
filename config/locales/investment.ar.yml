@@ -10,6 +10,8 @@ ar:
         deal: "اتفاق"
       deal:
         target: هدف الصفقة
+      funding_round:
+        valuation: تقييم
     errors:
       models:
         investment:
@@ -20,3 +22,9 @@ ar:
           attributes:
             target:
               greater_than_or_equal_to: يجب أن يكون رقمًا موجبًا
+              less_then: يجب أن يكون أقل من الحد الأقصى لعدد
+        funding_round:
+          attributes:
+            valuation:
+              greater_than: يجب أن يكون رقمًا موجبًا
+              less_then: يجب أن يكون أقل من الحد الأقصى لعدد
