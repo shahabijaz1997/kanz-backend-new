@@ -8,9 +8,15 @@ en:
       deal_update:
         user: "User"
         deal: "Deal"
+      deal:
+        target: Deal Target
     errors:
       models:
         investment:
           attributes:
             user_id:
               uniqueness: "invest again in same deal"
+        deal:
+          attributes:
+            target:
+              greater_than_or_equal_to: should be a positive number
