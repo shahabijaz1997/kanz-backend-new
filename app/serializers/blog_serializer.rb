@@ -3,7 +3,7 @@
 # Fast json serializer
 class BlogSerializer
   include JSONAPI::Serializer
-  attributes :title, :slug
+  attributes :title, :slug, :introduction
 
   attribute :updated_at do |object|
     object.updated_at.strftime('%d/%m/%Y %I:%M:%S %p')
