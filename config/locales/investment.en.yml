@@ -4,7 +4,7 @@ en:
       investment:
         user_id: "You can't"
         amount: "amount"
-        investment_amount: "investment_amount"
+        investment_amount: "Investment Amount"
       deal_update:
         user: "User"
         deal: "Deal"
