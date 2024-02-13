@@ -7,7 +7,7 @@ module DealClosingModel
     private
 
     def refund_late_investment
-      refund(late_investments)
+      # refund investments after target completion
     end
 
     def late_investments

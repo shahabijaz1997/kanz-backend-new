@@ -36,5 +36,13 @@ class FieldAttribute < ApplicationRecord
     def self.ransackable_associations(_auth_object = nil)
       %w[options section]
     end
+
+    def valuation_types
+      find_by(field_mapping: 'funding_round_attributes.valuation_phase_id').options
+    end
+
+    def rental_cycles
+      find_by(field_mapping: 'property_detail_attributes.rental_period_id').options
+    end
   end
 end

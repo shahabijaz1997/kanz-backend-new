@@ -31,6 +31,7 @@ class Deal < ApplicationRecord
   validate :start_and_end_date_presence, :start_date_and_end_date
 
   after_save :update_current_state
+  after_create :add_activity
   before_update :validate_status_change
   after_update :notify_deal_approval
 
@@ -41,7 +42,7 @@ class Deal < ApplicationRecord
   scope :approved_or_live, -> { where(status: [Deal::statuses[:approved], Deal::statuses[:live]]) }
   scope :syndicate_model, -> { where(model: Deal::models[:syndicate]) }
   scope :classic_model, -> { where(model: Deal::models[:classic]) }
-  scope :syndicate_deals, -> { approved_or_live.syndicate_model.or(Deal.live.classic_model) }
+  scope :syndicate_deals, -> { approved_or_live.syndicate_model.or(Deal.live_or_closed.classic_model) }
   scope :latest_first, -> { order(created_at: :desc) }
   scope :by_status, -> (status) { where(status: status) }
   scope :by_type, -> (type) { where(deal_type: type) }
@@ -50,6 +51,7 @@ class Deal < ApplicationRecord
   scope :equity, -> { joins(:funding_round).where.not(funding_round: { equity_type_id: nil, round_id: nil }) }
   scope :rental, -> { joins(:property_detail).where( property_detail: { is_rental: true })}
   scope :non_rental, -> { joins(:property_detail).where( property_detail: { is_rental: [false, nil] })}
+  scope :approved_live_or_closed, -> { where(status: [Deal::statuses[:approved], Deal::statuses[:closed], Deal::statuses[:live]]) }
 
   def attachments_by_creator
     attachments.where(uploaded_by: user)
@@ -111,6 +113,9 @@ class Deal < ApplicationRecord
 
   def investment_multiple
     current_valuation / previous_valuation
+  end
+
+  def add_activity
   end
 
   private

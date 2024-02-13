@@ -36,5 +36,8 @@ module KanzApi
 
     # active storage url expiry
     config.active_storage.urls_expire_in = 30.minutes
+
+    config.time_zone = 'UTC'
+    config.active_record.default_timezone = :utc
   end
 end
