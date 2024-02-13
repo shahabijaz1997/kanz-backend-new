@@ -49,7 +49,7 @@
                 = form.submit "Save", class: 'btn btn-primary', data: { turbo_method: :submit, turbo_confirm: "This action will close the deal as unsuccessful! Are you sure you want to continue?" }
     - else
       div.not_found = info_message(resource.status)
-      - if resource.spv.blank? && resource.fifs? || resource.adjust_pro_rata
+      - if resource.spv.blank? && resource.fifs? || resource.adjust_pro_rata?
         div.pending-text SPV creation is Pending
         div.text-center.py-3
           = turbo_frame_tag 'spv-modal' do

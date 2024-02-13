@@ -31,6 +31,7 @@ class Deal < ApplicationRecord
   validate :start_and_end_date_presence, :start_date_and_end_date
 
   after_save :update_current_state
+  after_create :add_activity
   before_update :validate_status_change
   after_update :notify_deal_approval
 
@@ -111,6 +112,9 @@ class Deal < ApplicationRecord
 
   def investment_multiple
     current_valuation / previous_valuation
+  end
+
+  def add_activity
   end
 
   private

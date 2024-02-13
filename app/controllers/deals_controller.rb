@@ -3,7 +3,7 @@
 class DealsController < ApplicationController
   include Informer
 
-  before_action :set_deal, only: %i[show update spv close extend]
+  before_action :set_deal, except: %i[index]
   before_action :authorize_role!
 
   def index
@@ -50,8 +50,12 @@ class DealsController < ApplicationController
     end
   end
 
-  def spv
-    render :spv_modal 
+  def valuation_update
+    if @deal.update(deal_update_params)
+      redirect_to @deal, notice: 'Successfully updated.'
+    else
+      redirect_to deal_path(@deal), alert: @deal.errors.full_messages.to_sentence
+    end
   end
 
   private
@@ -81,6 +85,12 @@ class DealsController < ApplicationController
 
   def deal_extend_params
     params.require(:deal).permit(:audit_comment, :end_at)
+  end
+
+  def deal_update_params
+    params.require(:deal).permit(:target,
+                                 funding_round_attributes: %i[valuation valuation_phase],
+                                 property_detail_attributes: %i[rental_amount rental_duration])
   end
 
   def deals_path

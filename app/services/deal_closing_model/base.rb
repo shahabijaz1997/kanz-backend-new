@@ -11,7 +11,7 @@ module DealClosingModel
     def call
       case deal.closing_model
       when 'fifs'
-        AcceptEarlyInvestments.call()
+        AcceptEarlyInvestments.call(deal)
       when 'adjust_pro_rata'
         AdjustProRata.call(deal)
       when 'refunded_and_closed'

@@ -157,6 +157,7 @@ Rails.application.routes.draw do
     end
     put :close
     put :extend
+    put :valuation_update
     resources :spvs, only: %i[new]
   end
   resource :profile, only: %i[show edit update]
