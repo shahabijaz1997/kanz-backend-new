@@ -45,8 +45,6 @@ class Investment < ApplicationRecord
   def invested_amount_limit
     return errors.add(:amount, I18n.t('investment.zero_amount_limit')) if amount <= 0
     return errors.add(:investment_amount, I18n.t('investment.deal_target_limit')) if amount > deal.target
-    pending_amount = deal.target - deal.raised
-    return errors.add(:investment_amount, I18n.t('investment.pending_amount_limit', pending_amount)) if amount > pending_amount
     return errors.add(:investment_amount, I18n.t('investment.check_size_limit')) if amount < deal.minimum_check_size
     return errors.add(:user, I18n.t('investment.try_again')) if can_user_invest?
   end
