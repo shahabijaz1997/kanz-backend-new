@@ -7,7 +7,7 @@
   - else
     = render 'shared/section_list_item', title: 'Equity Type', value: @deal.funding_round.equity_kind
   = render 'shared/section_list_item', title: 'Deal Target', value: @deal.target
-  - if @deal.funding_round.instrument == 'SAFE'
+  - if @deal.funding_round.instrument == 'SAFE' || !@deal.closed?
     = render 'shared/section_list_item', title: 'Valuation', value: @deal.funding_round.valuation
   - else
     = render 'editable_field', title: 'Valuation', value: @deal.funding_round.valuation, unit: '$', key: 'deal[funding_round_attributes][valuation]', resource: @deal, field_type: 'number', f_name: 'valuation'
