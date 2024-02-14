@@ -3,9 +3,10 @@ module V1
   class BlogsController < ApiController
     include PagyHelper
     skip_before_action :authenticate_user!
+    before_action :search_params, only: %i[index]
 
     def index
-      @pagy, @blogs = pagy(Blog.published)
+      @pagy, @blogs = pagy(Blog.published.ransack(params[:search]).result)
       render json: {
         blogs: BlogSerializer.new(@blogs, { params: { detailed: false }}).serializable_hash[:data].map{ |object| object[:attributes]},
         pagination: pagy_attributes(@pagy)

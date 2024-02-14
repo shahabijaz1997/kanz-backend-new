@@ -30,7 +30,8 @@ module SearchHelper
       v1_invites: { index: 'eventable_of_Deal_type_title_or_invitee_name_i_cont' },
       v1_syndicate_members: { index: 'member_name_i_cont', investors: 'name_i_cont', applications: 'user_name_i_cont', invites: 'invitee_name_i_cont' },
       v1_fund_raisers: { investors: 'user_name_i_cont' },
-      v1_analytics_investors: { investments: 'deal_title_i_cont' }
+      v1_analytics_investors: { investments: 'deal_title_i_cont' },
+      v1_blogs: { index: 'slug_or_title_or_content_i_cont' }
     }
   end
 end
