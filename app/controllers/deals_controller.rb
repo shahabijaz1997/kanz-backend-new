@@ -51,10 +51,17 @@ class DealsController < ApplicationController
   end
 
   def valuation_update
+    path = @deal.startup? ? start_up_path(@deal) : property_path(@deal)
     if @deal.update(deal_update_params)
-      redirect_to @deal, notice: 'Successfully updated.'
+      #field_name = deal_update_params
+      # @deal.activities.create(user: current_user,
+      #                         field_name: field_name,
+      #                         old_value: old_value,
+      #                         new_value: new_value)
+      DealActivityRecorder.call()
+      redirect_to path, notice: 'Successfully updated.'
     else
-      redirect_to deal_path(@deal), alert: @deal.errors.full_messages.to_sentence
+      redirect_to path, alert: @deal.errors.full_messages.to_sentence
     end
   end
 

@@ -25,6 +25,7 @@ class User < ApplicationRecord
   has_many :deal_updates, foreign_key: 'added_by_id'
   has_many :investments, dependent: :destroy
   has_one_attached :profile_picture
+  has_many :activities, as: :user
 
   delegate :title, :title_ar, to: :user_role, prefix: :role
 

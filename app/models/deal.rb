@@ -16,6 +16,7 @@ class Deal < ApplicationRecord
   has_many :deal_updates
   has_one :spv
   has_many :investments, dependent: :destroy
+  has_many :activities, as: :record
 
   accepts_nested_attributes_for :features, :external_links, allow_destroy: true
   accepts_nested_attributes_for :terms
@@ -31,11 +32,10 @@ class Deal < ApplicationRecord
   validate :start_and_end_date_presence, :start_date_and_end_date
 
   after_save :update_current_state
-  after_create :add_activity
   before_update :validate_status_change
   after_update :notify_deal_approval
 
-  audited only: :status, on: %i[update]
+  audited only: %i[status target], on: %i[update]
 
   scope :approved, -> { where(status: Deal::statuses[:approved]) }
   scope :live, -> { where(status: Deal::statuses[:live]) }
@@ -113,9 +113,6 @@ class Deal < ApplicationRecord
 
   def investment_multiple
     current_valuation / previous_valuation
-  end
-
-  def add_activity
   end
 
   private

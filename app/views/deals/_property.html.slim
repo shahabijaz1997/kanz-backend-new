@@ -6,8 +6,8 @@
   = render 'shared/section_list_item', title: 'Expected Dividend Yield', value: ("#{@deal.property_detail.dividend_yield}%" if @deal.property_detail.dividend_yield.present?)
   = render 'shared/section_list_item', title: 'Expected Annual Appreciation', value: ("#{@deal.property_detail.yearly_appreciation}%" if @deal.property_detail.yearly_appreciation.present?)
   - if @deal.property_detail
-    = render 'editable_field', title: 'Rent', value: (@deal.property_detail.rental_amount || "Not Rented"), unit: 'AED', key: 'deal[property_detail][rental_amount]', resource: @deal, field_type: 'number', f_name: 'rental_amount'
-    = render 'editable_field', title: 'Rental Period', value: @deal.property_detail.rental_duration, unit: '', key: 'deal[property_detail][rental_period_id]', resource: @deal, field_type: 'dropdown', options: FieldAttribute.rental_cycles, selected: @deal.property_detail.rental_period_id, f_name: 'rental_period'
+    = render 'editable_field', title: 'Rent', value: (@deal.property_detail.rental_amount || "Not Rented"), unit: 'AED', key: 'deal[property_detail_attributes][rental_amount]', resource: @deal, field_type: 'number', f_name: 'rental_amount'
+    = render 'editable_field', title: 'Rental Period', value: @deal.property_detail.rental_duration, unit: '', key: 'deal[property_detail_attributes][rental_period_id]', resource: @deal, field_type: 'dropdown', options: FieldAttribute.rental_cycles, selected: @deal.property_detail.rental_period_id, f_name: 'rental_period'
   = render 'shared/section_list_item', title: 'Start Date', value: DatesHelper.date_only(@deal.start_at)
   = render 'shared/section_list_item', title: 'End Date', value: DatesHelper.date_only(@deal.end_at)
   li.list-group-item
