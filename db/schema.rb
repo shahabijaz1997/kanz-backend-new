@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_09_093608) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_14_072743) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -40,6 +40,21 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_09_093608) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "activities", force: :cascade do |t|
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.string "user_type", null: false
+    t.bigint "user_id", null: false
+    t.string "field_name", null: false
+    t.string "old_value", null: false
+    t.string "new_value", null: false
+    t.integer "action", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["record_type", "record_id"], name: "index_activities_on_record"
+    t.index ["user_type", "user_id"], name: "index_activities_on_user"
   end
 
   create_table "admin_roles", force: :cascade do |t|
@@ -187,6 +202,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_09_093608) do
     t.bigint "syndicate_id"
     t.datetime "closing_date"
     t.integer "closing_model", default: 0
+    t.float "valuation_multiple", default: 0.0
+    t.string "markets"
     t.index ["syndicate_id"], name: "index_deals_on_syndicate_id"
     t.index ["user_id"], name: "index_deals_on_user_id"
   end

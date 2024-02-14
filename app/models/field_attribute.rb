@@ -41,6 +41,10 @@ class FieldAttribute < ApplicationRecord
       find_by(field_mapping: 'funding_round_attributes.valuation_phase_id').options
     end
 
+    def post_money_valuation
+      find_by(field_mapping: 'funding_round_attributes.valuation_phase_id').options.find_by(statement: 'Post-Money Valuation')
+    end
+
     def rental_cycles
       find_by(field_mapping: 'property_detail_attributes.rental_period_id').options
     end

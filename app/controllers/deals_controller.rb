@@ -51,11 +51,14 @@ class DealsController < ApplicationController
   end
 
   def valuation_update
-    if @deal.update(deal_update_params)
-      redirect_to @deal, notice: 'Successfully updated.'
-    else
-      redirect_to deal_path(@deal), alert: @deal.errors.full_messages.to_sentence
+    Deal.transaction do
+      ActivityRecorder::Deal.call(deal_update_params, @deal, current_user)
+      @deal.update!(deal_update_params)
+      redirect_to deal_path, notice: 'Successfully updated.'
     end
+  rescue Exception => e
+    raise e
+    redirect_to deal_path, alert: e.message
   end
 
   private
@@ -89,11 +92,15 @@ class DealsController < ApplicationController
 
   def deal_update_params
     params.require(:deal).permit(:target,
-                                 funding_round_attributes: %i[valuation valuation_phase],
-                                 property_detail_attributes: %i[rental_amount rental_duration])
+                                 funding_round_attributes: %i[id valuation valuation_phase_id],
+                                 property_detail_attributes: %i[id rental_amount rental_period_id])
   end
 
   def deals_path
     @deal.startup? ? start_up_index_path : property_index_path
+  end
+
+  def deal_path
+    @deal.startup? ? start_up_path(@deal) : property_path(@deal)
   end
 end

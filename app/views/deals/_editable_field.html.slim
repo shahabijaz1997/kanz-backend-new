@@ -1,7 +1,7 @@
 div[data-controller="deal-updates"]
   li.list-group-item[data-deal-updates-target="saved#{f_name.camelize}"]
     span.col-3.title = title
-    - if key == 'deal[property_detail][rental_amount]'
+    - if key == 'deal[property_detail_attributes][rental_amount]'
       span.col.value = value ? "#{unit} #{value}" : 'Non Rented'
     - elsif value.present?
       span.col.value = (unit == '%' ? "#{value} #{unit}" : "#{unit} #{value}")
@@ -13,13 +13,18 @@ div[data-controller="deal-updates"]
   li.list-group-item.d-none[data-deal-updates-target="edit#{f_name.camelize}"]
     span.col-3.title = title
     span.col
-      = form_for resource, url: deal_valuation_update_path(resource), method: :put, html: { "data-deal-updates-target": "#{f_name.camelize}Form" } do |form|
+      = form_for resource, url: deal_valuation_update_path(resource), method: :put, html: { "data-deal-updates-target": "form#{f_name.camelize}" } do |form|
         .d-flex
           .col
+            - if key == 'deal[funding_round_attributes][valuation]'
+              = hidden_field_tag 'deal[funding_round_attributes][valuation_phase_id]', FieldAttribute.post_money_valuation.id
+              = hidden_field_tag 'deal[funding_round_attributes][id]', resource.funding_round.id
+            - if key == 'deal[property_detail_attributes][rental_amount]' || key == 'deal[property_detail_attributes][rental_period_id]'
+              = hidden_field_tag 'deal[property_detail_attributes][id]', resource.property_detail.id
             - if field_type == 'number'
               = number_field_tag key, value, class: "form-control"
             - elsif field_type == 'dropdown'
               = select_tag key, options_from_collection_for_select(options, "id", "statement", "#{selected}"), class: "form-control"
           .col
-            button.btn.btn-primary[type="button" data-action="click->deal-updates#savePrice"]
+            button.btn.btn-primary[type="button" data-action="click->deal-updates#save#{f_name.camelize}"]
               | Save

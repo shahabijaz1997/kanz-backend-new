@@ -29,7 +29,7 @@ div.table
             - else
               span.col = deal.title
               span.col = deal.user.email
-              span.col = "$#{deal.target}" if deal.target
+              span.col = "AED #{deal.target}" if deal.target
               span.col = deal.property_detail&.size
               span.col = deal.property_detail&.is_rental ? 'Rented' :  'Not Rented'
             span.col = render 'shared/user_status', status: deal.status
