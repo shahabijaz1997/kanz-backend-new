@@ -42,7 +42,7 @@ class Deal < ApplicationRecord
   scope :approved_or_live, -> { where(status: [Deal::statuses[:approved], Deal::statuses[:live]]) }
   scope :syndicate_model, -> { where(model: Deal::models[:syndicate]) }
   scope :classic_model, -> { where(model: Deal::models[:classic]) }
-  scope :syndicate_deals, ->(id) { approved_live.syndicate_model.or(Deal.live_or_closed.classic_model).or(Deal.closed.where(syndicate_id: id)) }
+  scope :syndicate_deals, ->(id) { approved_or_live.syndicate_model.or(Deal.live_or_closed.classic_model).or(Deal.closed.where(syndicate_id: id)) }
   scope :latest_first, -> { order(created_at: :desc) }
   scope :by_status, -> (status) { where(status: status) }
   scope :by_type, -> (type) { where(deal_type: type) }
