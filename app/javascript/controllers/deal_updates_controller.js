@@ -1,8 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
 import Dom from '../dom/manipulator'
 export default class extends Controller {
-  static targets = ['editPrice', 'savedPrice', 'savedValuation', 'editValuation', 'savedValuationTypes', 'editValuationTypes',
-                    'formPrice', 'formValuation', 'formValuationTypes']
+  static targets = ['editPrice', 'formPrice', 'savedPrice', 'editValuation', 'formValuation', 'savedValuation',
+                    'editRentalAmount', 'formRentalAmount', 'savedRentalAmount', 'editRentalPeriod', 'formRentalPeriod', 'savedRentalPeriod']
 
   editPrice(){
     Dom.addClass(this.savedPriceTarget, 'd-none')
@@ -14,11 +14,6 @@ export default class extends Controller {
     Dom.removeClass(this.editValuationTarget, 'd-none')
   }
 
-  editValuationTypes(){
-    Dom.addClass(this.savedValuationTypesTarget, 'd-none')
-    Dom.removeClass(this.editValuationTypesTarget, 'd-none')
-  }
-
   savePrice(){
     this.formPriceTarget.submit()
   }
@@ -27,7 +22,24 @@ export default class extends Controller {
     this.formValuationTarget.submit()
   }
 
-  saveValuationTypes(){
-    this.formValuationTypesTarget.submit()
+  editRentalAmount(){
+    console.log(this.savedRentalAmountTarget)
+    console.log(this.savedRentalAmountTarget)
+    Dom.addClass(this.savedRentalAmountTarget, 'd-none')
+    Dom.removeClass(this.editRentalAmountTarget, 'd-none')
   }
+
+  editRentalPeriod(){
+    Dom.addClass(this.savedRentalPeriodTarget, 'd-none')
+    Dom.removeClass(this.editRentalPeriodTarget, 'd-none')
+  }
+
+  saveRentalAmount(){
+    this.formRentalAmountTarget.submit()
+  }
+
+  saveRentalPeriod(){
+    this.formRentalPeriodTarget.submit()
+  }
+
 }

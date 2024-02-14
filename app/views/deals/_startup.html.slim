@@ -6,10 +6,12 @@
     = render 'shared/section_list_item', title: 'SAFE Type', value: @deal.funding_round.safe_kind
   - else
     = render 'shared/section_list_item', title: 'Equity Type', value: @deal.funding_round.equity_kind
-  = render 'editable_field', title: 'Deal Target', value: @deal.target, unit: '$', key: 'deal[target]', resource: @deal, field_type: 'number', f_name: 'price'
-  - if @deal.funding_round
+  = render 'shared/section_list_item', title: 'Deal Target', value: @deal.target
+  - if @deal.funding_round.instrument == 'SAFE'
+    = render 'shared/section_list_item', title: 'Valuation', value: @deal.funding_round.valuation
+  - else
     = render 'editable_field', title: 'Valuation', value: @deal.funding_round.valuation, unit: '$', key: 'deal[funding_round_attributes][valuation]', resource: @deal, field_type: 'number', f_name: 'valuation'
-    = render 'editable_field', title: 'Valuation Phase', value: @deal.funding_round.valuation_type, unit: '', key: 'deal[funding_round_attributes][valuation_phase_id]', resource: @deal, field_type: 'dropdown', options: FieldAttribute.valuation_types, selected: @deal.funding_round.valuation_phase_id, f_name: 'valuation_types'
+  = render 'shared/section_list_item', title: 'Valuation Phase', value: @deal.funding_round.valuation_type
   = render 'shared/section_list_item', title: 'Start Date', value: DatesHelper.date_only(@deal.start_at)
   = render 'shared/section_list_item', title: 'End Date', value: DatesHelper.date_only(@deal.end_at)
   li.list-group-item

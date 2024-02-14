@@ -6,7 +6,7 @@ class Activities < ActiveRecord::Migration[7.0]
       t.string :field_name, null: false
       t.string :old_value, null: false
       t.string :new_value, null: false
-      t.string :action
+      t.integer :action, default: 0
 
       t.timestamps
     end

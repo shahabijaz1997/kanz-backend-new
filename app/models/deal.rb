@@ -115,6 +115,14 @@ class Deal < ApplicationRecord
     current_valuation / previous_valuation
   end
 
+  def rental_duration
+    property_detail&.rental_duration
+  end
+
+  def valuation_phase
+    funding_round&.valuation_type
+  end
+
   private
 
   def start_date_in_future
