@@ -25,7 +25,7 @@ module Deals
         end_at: deal.end_at.blank? ? '' : Date.parse(deal.end_at.to_s).strftime('%d/%m/%Y'),
         token: deal.token,
         is_invested: user.investments.exists?(deal_id: deal.id),
-        is_refundable: investment.present? && investment.refundable?,
+        is_refundable: investment.present? && investment.refundable? && deal.live?,
         my_invested_amount: investment&.amount,
         current_deal_syndicate: deal.syndicate_id == user.id && deal.syndicate?,
         syndicate_id: deal.syndicate_id,
