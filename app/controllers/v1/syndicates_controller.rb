@@ -70,7 +70,7 @@ module V1
 
     def deals
       status = params[:status].in?(Deal::statuses.keys) ? params[:status] : Deal::statuses.keys
-      @deals = Deal.syndicate_deals.where(status: status).ransack(params[:search]).result
+      @deals = Deal.syndicate_deals(current_user.id).where(status: status).ransack(params[:search]).result
       stats = stats_by_deal_type
       pagy, @deals = pagy @deals.where(deal_type: (params[:deal_type] || Deal::deal_types.keys)).latest_first
       success(
