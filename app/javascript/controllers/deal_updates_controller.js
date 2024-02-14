@@ -23,8 +23,6 @@ export default class extends Controller {
   }
 
   editRentalAmount(){
-    console.log(this.savedRentalAmountTarget)
-    console.log(this.savedRentalAmountTarget)
     Dom.addClass(this.savedRentalAmountTarget, 'd-none')
     Dom.removeClass(this.editRentalAmountTarget, 'd-none')
   }
