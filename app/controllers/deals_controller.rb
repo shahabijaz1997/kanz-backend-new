@@ -3,11 +3,7 @@
 class DealsController < ApplicationController
   include Informer
 
-<<<<<<< HEAD
   before_action :set_deal, except: %i[index]
-=======
-  before_action :set_deal, only: %i[show update spv close extend]
->>>>>>> 7b575e38d89a8eab51b93c34da52a7718faba4cb
   before_action :authorize_role!
 
   def index
@@ -30,7 +26,6 @@ class DealsController < ApplicationController
   end
 
   def close
-<<<<<<< HEAD
     Deal.transaction do
       @deal.update!(deal_close_params)
       DealClosingModel::Base.call(@deal)
@@ -41,14 +36,6 @@ class DealsController < ApplicationController
         render turbo_stream: turbo_stream.append('spv-modal', partial: 'spvs/new')
       else
         redirect_to deals_path, notice: 'Successfully updated.'
-=======
-    respond_to do |format|
-      if @deal.update(deal_close_params)
-        inform_deal_creator
-        format.html { redirect_to deals_path, notice: 'Successfully updated.' }
-      else
-        format.html { redirect_to deal_path(@deal), alert: @deal.errors.full_messages.to_sentence }
->>>>>>> 7b575e38d89a8eab51b93c34da52a7718faba4cb
       end
     end
   end
@@ -63,7 +50,6 @@ class DealsController < ApplicationController
     end
   end
 
-<<<<<<< HEAD
   def valuation_update
     Deal.transaction do
       ActivityRecorder::Deal.call(deal_update_params, @deal, current_user)
@@ -73,10 +59,6 @@ class DealsController < ApplicationController
   rescue Exception => e
     raise e
     redirect_to deal_path, alert: e.message
-=======
-  def spv
-    render :spv_modal 
->>>>>>> 7b575e38d89a8eab51b93c34da52a7718faba4cb
   end
 
   private
@@ -108,7 +90,6 @@ class DealsController < ApplicationController
     params.require(:deal).permit(:audit_comment, :end_at)
   end
 
-<<<<<<< HEAD
   def deal_update_params
     params.require(:deal).permit(:target,
                                  funding_round_attributes: %i[id valuation valuation_phase_id],
@@ -122,9 +103,4 @@ class DealsController < ApplicationController
   def deal_path
     @deal.startup? ? start_up_path(@deal) : property_path(@deal)
   end
-=======
-  def deals_path
-    @deal.startup? ? start_up_index_path : property_index_path
-  end
->>>>>>> 7b575e38d89a8eab51b93c34da52a7718faba4cb
 end
