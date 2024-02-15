@@ -16,6 +16,7 @@ class Deal < ApplicationRecord
   has_many :deal_updates
   has_one :spv
   has_many :investments, dependent: :destroy
+  has_many :investors, through: :investments, source: 'user'
   has_many :activities, as: :record
 
   accepts_nested_attributes_for :features, :external_links, allow_destroy: true

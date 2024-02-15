@@ -1,0 +1,30 @@
+# frozen_string_literal: true
+
+# Deal json serializer
+class NotificationSerializer
+  include JSONAPI::Serializer
+  # added invited modified removed
+  attributes :id
+
+  attribute :profile_pic do |notification|
+    activity = notification.activity
+    activity.user_type == 'AdminUser' ? activity.user.fullname : activity.user.profile_picture_url
+  end
+
+  attribute :user_name do |notification|
+    activity = notification.activity
+    activity.user_type == 'AdminUser' ? activity.user.fullname : activity.user.name
+  end
+
+  attribute :message do |notification|
+    notification.localized_message
+  end
+
+  attribute :created_at do |notification|
+    DateTime.parse(notification.created_at.to_s).strftime('%d/%m/%Y %I:%M:%S %p')
+  end
+
+  attribute :created_at do |notification|
+    notification.kind # Need to be humanize
+  end
+end
