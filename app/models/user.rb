@@ -35,6 +35,7 @@ class User < ApplicationRecord
   after_update :inform_applicant, if: :saved_change_to_status?
 
   scope :approved, -> { where(status: User::statuses[:approved]) }
+  scope :active, -> { where(deactivated: false) }
 
   audited only: :status, on: %i[update]
 
