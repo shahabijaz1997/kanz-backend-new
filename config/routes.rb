@@ -143,6 +143,7 @@ Rails.application.routes.draw do
     resources :transactions, only: %i[index create]
     resource :exchange_rate, only: %i[show]
     resources :blogs, only: %i[index show]
+    resources :notifications, only: %i[index update]
   end
 
   # Admin routes

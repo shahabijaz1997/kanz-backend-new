@@ -26,6 +26,7 @@ class User < ApplicationRecord
   has_many :investments, dependent: :destroy
   has_one_attached :profile_picture
   has_many :activities, as: :user
+  has_many :notifications, foreign_key: :recipient_id
 
   delegate :title, :title_ar, to: :user_role, prefix: :role
 

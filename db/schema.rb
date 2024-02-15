@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_14_143516) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_15_103124) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -356,6 +356,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_14_143516) do
     t.index ["eventable_type", "eventable_id"], name: "index_invites_on_eventable"
     t.index ["invitee_id"], name: "index_invites_on_invitee_id"
     t.index ["user_id"], name: "index_invites_on_user_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.string "message", null: false
+    t.string "message_ar", null: false
+    t.bigint "recipient_id"
+    t.integer "status", default: 0
+    t.integer "kind", default: 0
+    t.bigint "activity_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_id"], name: "index_notifications_on_activity_id"
+    t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
   end
 
   create_table "options", force: :cascade do |t|
