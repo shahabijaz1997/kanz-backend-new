@@ -1,0 +1,28 @@
+div.w-75.blog
+  = simple_form_for(@blog, html: { class: 'blog' }) do |form|
+    li.list-group-item
+      span.col-3.title Title
+      span.col.value
+        = form.text_field :title, required: true, class: "form-control", label: false, autofocus: true
+    li.list-group-item
+      span.col-3.title Introduction
+      span.col.value
+        = form.text_area :introduction, required: true, class: "form-control", label: false, autofocus: true
+    li.list-group-item
+      span.col-3.title Content
+      span.col.value
+        input#content type="hidden" name="blog[content]" value="#{@blog.content}" required=true
+        trix-editor[input="content"]
+    li.list-group-item
+      span.col-3.title Status
+      span.col.value
+        - if current_admin_user.content_creator? && !@blog.published?
+          = form.select :status, [:draft, :completed], {}, { class: 'form-control w-25' }
+        - elsif current_admin_user.content_manager?
+          = form.select :status, [:published, :archived], {}, { class: 'form-control w-25' }
+        - else
+          div = render 'shared/user_status', status: @blog.status
+    li.list-group-item
+      span.col-3.title
+      span.col.value
+        = form.submit "Save", class: 'btn btn-primary'

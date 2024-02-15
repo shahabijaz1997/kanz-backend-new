@@ -12,7 +12,7 @@
   = f.label :place_of_incorporation
   = f.text_field :place_of_incorporation, class: "form-control", required:  true
 .form-group data-controller='image-preview'
-  = render "file_field", form: f, field: 'registration_certificate', file: spv.registration_certificate
+  = render "spvs/file_field", form: f, field: 'registration_certificate', file: spv.registration_certificate
 .form-group
   = f.label :legal_structure
   = f.text_field :legal_structure, class: "form-control"

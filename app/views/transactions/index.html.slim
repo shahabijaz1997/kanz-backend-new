@@ -1,0 +1,29 @@
+= render 'shared/page_title', title: "Transactions"
+
+- unless @pending_page
+  = render 'filters'
+
+div.table
+  div.header
+    div.col = sort_link(@filtered_transactions, :wallet_user_name)
+    div.col = sort_link(@filtered_transactions, :amount)
+    div.col = sort_link(@filtered_transactions, :transaction_type)
+    div.col = sort_link(@filtered_transactions, :method)
+    div.col = sort_link(@filtered_transactions, :status)
+    div.col 
+      span Actions
+  div.content
+    - if @transactions.present?
+      - @transactions.each do |transaction|
+        div.card.position-relative.shadow-sm
+          div.card-body.d-flex
+            span.col = transaction.wallet.user.name
+            span.col = number_to_currency(transaction.amount, unit: 'AED')
+            span.col = transaction.transaction_type.titleize
+            span.col = transaction.method.titleize
+            span.col = render 'shared/user_status', status: transaction.status
+            span.col = link_to "View", transaction_path(transaction), class: 'stretched-link'            
+      - if @pagy.pages > 1
+        == pagy_nav(@pagy)
+    - else
+      div.not_found No Transactions Found

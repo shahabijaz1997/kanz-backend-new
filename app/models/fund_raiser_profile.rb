@@ -18,6 +18,8 @@ class FundRaiserProfile < ApplicationRecord
 
   after_save :update_profile_industries
 
+  accepts_nested_attributes_for :fund_raiser, update_only: true
+
   def total_capital_raised_with_currency
     "#{total_capital_raised.to_i} #{currency}" if total_capital_raised.present?
   end
@@ -32,6 +34,10 @@ class FundRaiserProfile < ApplicationRecord
 
   def self.ransackable_associations(_auth_object = nil)
     ['industries']
+  end
+
+  def logo
+    attachment.url
   end
 
   private

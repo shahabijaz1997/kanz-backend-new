@@ -2,31 +2,31 @@
   = render 'shared/section_card', section_title: 'Action', editable: false do
     - unless resource.closed?
       div[data-controller="deal-closing"]
-        li.list-group-item
-          .col-2
-            .form-check
-              input#fifs.form-check-input[type="radio" value="fifs" name="closing_model" data-action="change->deal-closing#createSpv"]
-              label.form-check-label[for="fifs"]
-                |  FIFS
-          .col-2
-            .form-check
-              input#adjustProRata.form-check-input[type="radio" value="adjust_pro_rata" name="closing_model" data-action="change->deal-closing#createSpv"]
-              label.form-check-label[for="adjustProRata"]
-                |  Adjust Pro Rata
-          .col-2
-            .form-check
-              input#extendDate.form-check-input[type="radio" value="extend_date" name="closing_model" data-action="change->deal-closing#extendDate"]
-              label.form-check-label[for="extendDate"]
-                |  Extend Date
-          .col-2
-            .form-check
-              input#returnAndClose.form-check-input[type="radio" value="refund_and_close"  name="closing_model" data-action="change->deal-closing#refundAndClose"]
-              label.form-check-label[for="returnAndClose"]
-                | Refund and Close
-          .col-4
-            = turbo_frame_tag 'spv-modal' do
-              = link_to new_deal_spv_path(resource), class: 'btn btn-primary d-none', data: { deal_closing_target: 'spvButton', turbo_method: :get, turbo_confirm: "This action will close the deal! Are you sure you want to continue?" } do
-                | Create SPV
+        = turbo_frame_tag 'spv-modal' do
+          = form_for resource, url: deal_close_path(resource), html: { "data-deal-closing-target": "closingForm" }, method: :put do |form|
+            li.list-group-item
+              .col-2
+                .form-check
+                  input#fifs.form-check-input[type="radio" value="fifs" name="deal[closing_model]" data-action="change->deal-closing#createSpv"]
+                  label.form-check-label[for="fifs"]
+                    |  FIFS
+              .col-2
+                .form-check
+                  input#adjustProRata.form-check-input[type="radio" value="adjust_pro_rata" name="deal[closing_model]" data-action="change->deal-closing#createSpv"]
+                  label.form-check-label[for="adjustProRata"]
+                    |  Adjust Pro Rata
+              .col-2
+                .form-check
+                  input#extendDate.form-check-input[type="radio" value="extend_date" name="deal[closing_model]" data-action="change->deal-closing#extendDate"]
+                  label.form-check-label[for="extendDate"]
+                    |  Extend Date
+              .col-2
+                .form-check
+                  input#returnAndClose.form-check-input[type="radio" value="refunded_and_closed"  name="deal[closing_model]" data-action="change->deal-closing#refundAndClose"]
+                  label.form-check-label[for="returnAndClose"]
+                    | Refund and Close
+              .col-4
+                  = form.submit "Create SPV", class: 'btn btn-primary d-none', data: { deal_closing_target: 'spvButton', turbo_method: :submit, turbo_confirm: "This action will close the deal! Are you sure you want to continue?" }
         .d-none[data-deal-closing-target = "dateSelector"]
           = form_for resource, url: deal_extend_path(resource), method: :put do |form|
             li.list-group-item
@@ -40,7 +40,7 @@
             li.list-group-item
               span.col-3.title Reason
               span.col.value
-                = form.hidden_field :closing_model, value: 'refund_and_close'
+                = form.hidden_field :closing_model, value: 'refunded_and_closed'
                 = form.hidden_field :status, value: 'closed'
                 = form.text_area :audit_comment, rows: 3, class: "form-control", placeholder: 'Reason', required: true
             li.list-group-item
@@ -49,3 +49,8 @@
                 = form.submit "Save", class: 'btn btn-primary', data: { turbo_method: :submit, turbo_confirm: "This action will close the deal as unsuccessful! Are you sure you want to continue?" }
     - else
       div.not_found = info_message(resource.status)
+      - if resource.spv.blank? && resource.fifs? || resource.adjust_pro_rata?
+        div.pending-text SPV creation is Pending
+        div.text-center.py-3
+          = turbo_frame_tag 'spv-modal' do
+            = link_to('Create SPV', new_deal_spv_path(resource), html_options = {class: 'btn btn-primary', "data-turbo-method": "get"})

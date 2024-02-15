@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class ProfileController < ApplicationController
-  before_action :set_admin_user, only: %i[index edit update]
+class ProfilesController < ApplicationController
+  before_action :set_admin_user, only: %i[show edit update]
 
-  def index; end
+  def show; end
 
   def edit; end
 
@@ -12,10 +12,10 @@ class ProfileController < ApplicationController
     update_password if @admin_user.errors.blank?
     respond_to do |format|
       if @admin_user.errors.blank?
-        format.html { redirect_to profile_index_path, notice: @notice || 'Successfully updated.' }
+        format.html { redirect_to profile_path, notice: @notice || 'Successfully updated.' }
       else
         flash[:alert] = @admin_user.errors.full_messages.join('<br>')
-        format.html { redirect_to edit_profile_index_path }
+        format.html { redirect_to edit_profile_path }
       end
     end
   end

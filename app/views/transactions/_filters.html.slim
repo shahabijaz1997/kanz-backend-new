@@ -1,0 +1,22 @@
+div.filters.bg-light.border.rounded
+  span.title Filters
+  = search_form_for @filtered_transactions, class: 'form' do |form|
+    div.search_field
+      = form.label :wallet_user_name_cont, 'User'
+      = form.search_field :wallet_user_name_cont, class: 'form-control'
+
+    div.search_field
+      = form.label :amount_eq, 'Amount'
+      = form.search_field :amount_eq, class: 'form-control'
+      
+    div.search_field
+      = form.label :transaction_type_eq, 'Transaction Type'
+      = form.select :transaction_type_eq, Transaction.transaction_types, { include_blank: true }, { class: 'form-control' }
+
+    div.search_field
+      = form.label :status_eq, 'Status'
+      = form.select :status_eq, Transaction.statuses, { include_blank: true }, { class: 'form-control' }
+
+    div.submit
+      = form.submit 'Search', class: 'btn btn-primary'
+      = link_to "Reset", request.path, class:"btn btn-secondary"

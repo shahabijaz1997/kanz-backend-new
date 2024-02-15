@@ -26,4 +26,8 @@ class DealPolicy < ApplicationPolicy
   def close?
     index?
   end
+
+  def valuation_update?
+    index?
+  end
 end

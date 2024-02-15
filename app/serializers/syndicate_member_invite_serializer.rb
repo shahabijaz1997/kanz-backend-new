@@ -10,7 +10,7 @@ class SyndicateMemberInviteSerializer
   end
 
   attribute :profile_pic do |invite|
-    invite.invitee.profile_pic
+    invite.invitee.profile_picture_url
   end
 
   attribute :status do |invite|

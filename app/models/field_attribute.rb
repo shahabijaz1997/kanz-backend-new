@@ -16,15 +16,37 @@ class FieldAttribute < ApplicationRecord
     self.class.find_by(id: dependent_id)
   end
 
-  def self.minimum_check_size
-    where(field_mapping: 'terms_attributes.custom_input', statement: 'Minimum Check Size').pluck(:id)
+  def localized_statement
+    I18n.locale == :en ? statement : statement_ar
   end
 
-  def self.ransackable_attributes(_auth_object = nil)
-    %w[statement lable field_type input_type]
-  end
+  class << self
+    def minimum_check_size
+      where(field_mapping: 'terms_attributes.custom_input', statement: 'Minimum Check Size').pluck(:id)
+    end
 
-  def self.ransackable_associations(_auth_object = nil)
-    %w[options section]
+    def investment_round
+      find_by(field_mapping: 'funding_round_attributes.round_id')
+    end
+
+    def self.ransackable_attributes(_auth_object = nil)
+      %w[statement lable field_type input_type]
+    end
+
+    def self.ransackable_associations(_auth_object = nil)
+      %w[options section]
+    end
+
+    def valuation_types
+      find_by(field_mapping: 'funding_round_attributes.valuation_phase_id').options
+    end
+
+    def post_money_valuation
+      find_by(field_mapping: 'funding_round_attributes.valuation_phase_id').options.find_by(statement: 'Post-Money Valuation')
+    end
+
+    def rental_cycles
+      find_by(field_mapping: 'property_detail_attributes.rental_period_id').options
+    end
   end
 end

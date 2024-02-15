@@ -43,24 +43,16 @@ class AdminUsersController < ApplicationController
   end
 
   def destroy
+    @admin_user.destroy
     respond_to do |format|
-      if @admin_user.destroy
-        format.html { redirect_to admin_users_path, notice: 'Successfully updated.' }
-      else
-        flash[:alert] = @admin_user.errors.full_messages.join('<br>')
-        format.html { redirect_to edit_admin_user_path(@admin_user) }
-      end
+      format.html { redirect_to @admin_user, notice: 'Admin Deactivated.' }
     end
   end
 
   def reactivate
+    @admin_user.reactivate
     respond_to do |format|
-      if @admin_user.reactivate
-        format.html { redirect_to admin_users_path, notice: 'Successfully updated.' }
-      else
-        flash[:alert] = @admin_user.errors.full_messages.join('<br>')
-        format.html { redirect_to admin_user_path(@admin_user) }
-      end
+      format.html { redirect_to @admin_user, notice: 'Admin Reactivated.' }
     end
   end
 
@@ -77,10 +69,12 @@ class AdminUsersController < ApplicationController
   def load_admin_roles
     @admin_roles = {
       'Customer Support Rep': 3,
-      'Compliance Officer': 4
+      'Compliance Officer': 4,
+      'Content Creator': 5,
+      'Content Manager': 6,
     }
     return unless current_admin_user.super_admin?
 
-    @admin_roles = @admin_roles.merge({ 'Super Admin': 1, Admin: 2 })
+    @admin_roles = @admin_roles.merge({ 'Super Admin': 1, 'Admin': 2 })
   end
 end

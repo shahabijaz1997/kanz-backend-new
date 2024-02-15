@@ -14,6 +14,10 @@ class CommentSerializer
     comment.author.name
   end
 
+  attribute :author_profile_pic do |comment|
+    comment.author.profile_picture_url
+  end
+
   attribute :created_at do |comment|
     DateTime.parse(comment.created_at.to_s).strftime('%d/%m/%Y %I:%M:%S %p')
   end

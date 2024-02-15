@@ -1,0 +1,14 @@
+= link_to '< Back', blogs_path, class: 'mb-2'
+= render 'shared/page_title', title: "Blog Details"
+
+div.w-75
+  = render 'shared/section_card', section_title: 'Blog', editable: !(current_admin_user.content_creator? && @blog.published?), editable_path: edit_blog_path do
+    = render 'shared/section_list_item', title: 'Title', value: @blog.title
+    = render 'shared/section_list_item', title: 'Slug', value: @blog.slug
+    = render 'shared/section_list_item', title: 'Introduction', value: @blog.introduction
+    = render 'shared/section_list_item', title: 'Author', value: @blog.author.fullname
+    = render 'shared/section_list_item', title: 'Approved By', value: @blog.approved_by&.fullname
+    li.list-group-item
+      span.col-3.title Status
+      span.col = render 'shared/user_status', status: @blog.status
+    = render 'shared/section_list_item', title: 'Content', value: @blog.content.html_safe

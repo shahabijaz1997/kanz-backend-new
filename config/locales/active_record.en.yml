@@ -26,7 +26,7 @@ en:
     pending_amount_limit: "exceedes the target amount, you can invest %{pending_amount} at max"
     check_size_limit: "can't be less than minimum check size"
     once: "You can invest once!"
-    try_again: "invest again in same deal"
+    try_again: "can't invest again in same deal"
   syndicate:
     not_found: "Syndicate not found"
   syndicate_member:
@@ -35,4 +35,11 @@ en:
     added: "successfully added to group"
   investor:
     not_found: "Investor not found"
+  deal_update:
+    success: success
+    not_found: record not found
+    deal_not_closed: is not closed
+    not_allowed: not allowed to update
+  blog:
+    not_found: "Blog not found"
 

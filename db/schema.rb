@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_31_134605) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_15_103124) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -40,6 +40,21 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_31_134605) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "activities", force: :cascade do |t|
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.string "user_type", null: false
+    t.bigint "user_id", null: false
+    t.string "field_name", null: false
+    t.string "old_value", null: false
+    t.string "new_value", null: false
+    t.integer "action", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["record_type", "record_id"], name: "index_activities_on_record"
+    t.index ["user_type", "user_id"], name: "index_activities_on_user"
   end
 
   create_table "admin_roles", force: :cascade do |t|
@@ -116,6 +131,20 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_31_134605) do
     t.index ["user_id", "user_type"], name: "user_index"
   end
 
+  create_table "blogs", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.bigint "author_id"
+    t.integer "status", default: 0
+    t.bigint "approved_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "slug"
+    t.string "introduction"
+    t.index ["approved_by_id"], name: "index_blogs_on_approved_by_id"
+    t.index ["author_id"], name: "index_blogs_on_author_id"
+  end
+
   create_table "comments", force: :cascade do |t|
     t.text "message"
     t.bigint "author_id", null: false
@@ -139,6 +168,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_31_134605) do
     t.string "name_ar"
   end
 
+  create_table "deal_updates", force: :cascade do |t|
+    t.text "description"
+    t.bigint "deal_id", null: false
+    t.bigint "added_by_id", null: false
+    t.bigint "published_by_id"
+    t.integer "status", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["added_by_id"], name: "index_deal_updates_on_added_by_id"
+    t.index ["deal_id"], name: "index_deal_updates_on_deal_id"
+    t.index ["published_by_id"], name: "index_deal_updates_on_published_by_id"
+  end
+
   create_table "deals", force: :cascade do |t|
     t.bigint "target"
     t.integer "deal_type", default: 0
@@ -160,6 +202,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_31_134605) do
     t.bigint "syndicate_id"
     t.datetime "closing_date"
     t.integer "closing_model", default: 0
+    t.float "valuation_multiple", default: 1.0
+    t.string "markets", default: [], array: true
     t.index ["syndicate_id"], name: "index_deals_on_syndicate_id"
     t.index ["user_id"], name: "index_deals_on_user_id"
   end
@@ -176,6 +220,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_31_134605) do
     t.datetime "updated_at", null: false
     t.index ["dependable_type", "dependable_id"], name: "index_dependency_trees_on_dependable"
     t.index ["dependent_type", "dependent_id"], name: "index_dependency_trees_on_dependent"
+  end
+
+  create_table "exchange_rates", force: :cascade do |t|
+    t.decimal "rate", precision: 10, scale: 4, null: false
+    t.boolean "current", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "external_links", force: :cascade do |t|
@@ -305,6 +356,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_31_134605) do
     t.index ["eventable_type", "eventable_id"], name: "index_invites_on_eventable"
     t.index ["invitee_id"], name: "index_invites_on_invitee_id"
     t.index ["user_id"], name: "index_invites_on_user_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.string "message", null: false
+    t.string "message_ar", null: false
+    t.bigint "recipient_id"
+    t.integer "status", default: 0
+    t.integer "kind", default: 0
+    t.bigint "activity_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_id"], name: "index_notifications_on_activity_id"
+    t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
   end
 
   create_table "options", force: :cascade do |t|
@@ -512,6 +576,22 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_31_134605) do
     t.index ["field_attribute_id"], name: "index_terms_on_field_attribute_id"
   end
 
+  create_table "transactions", force: :cascade do |t|
+    t.decimal "amount", precision: 10, scale: 2
+    t.integer "transaction_type"
+    t.integer "status", default: 0
+    t.integer "method", default: 0
+    t.string "description"
+    t.datetime "timestamp"
+    t.bigint "wallet_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "transactable_type"
+    t.bigint "transactable_id"
+    t.index ["transactable_type", "transactable_id"], name: "index_transactions_on_transactable"
+    t.index ["wallet_id"], name: "index_transactions_on_wallet_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name", default: "", null: false
     t.string "email", default: "", null: false
@@ -560,9 +640,22 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_31_134605) do
     t.index ["question_id", "user_id"], name: "index_users_responses_on_question_id_and_user_id"
   end
 
+  create_table "wallets", force: :cascade do |t|
+    t.decimal "balance", precision: 10, scale: 2, default: "0.0"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_wallets_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_users", "admin_roles"
+  add_foreign_key "deal_updates", "admin_users", column: "published_by_id"
+  add_foreign_key "deal_updates", "deals"
+  add_foreign_key "deal_updates", "users", column: "added_by_id"
   add_foreign_key "deals", "users"
   add_foreign_key "invites", "users", column: "invitee_id"
+  add_foreign_key "transactions", "wallets"
+  add_foreign_key "wallets", "users"
 end

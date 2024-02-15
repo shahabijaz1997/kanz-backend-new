@@ -31,9 +31,13 @@ en:
     investment:
       committed_amount: 'committed'
       completed: 'completed'
+      refunded: 'refunded'
     comment:
       pending: 'pending'
       read: 'read'
     syndicate_member:
       added: 'added'
       follower: 'follower'
+    deal_update:
+      pending: pending
+      published: published

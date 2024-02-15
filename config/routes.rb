@@ -88,7 +88,9 @@ Rails.application.routes.draw do
       end
       resources :comments
       resources :syndicates, only: %i[show index]
-      resources :investments, only: %i[index create]
+      resources :investments, only: %i[index create] do
+        get :revert, on: :collection
+      end
     end
     resources :deals, param: :token, only: %i[show]
     post 'deals/:id/submit' => 'deals#submit'
@@ -99,7 +101,7 @@ Rails.application.routes.draw do
 
     resources :users do
       resources :invites, only: %i[index]
-      resources :investments, only: %i[index show revert]
+      resources :investments, only: %i[index show]
     end
     get :check_session, to: 'users#check_session'
     resources :invitees, model_name: 'User' do
@@ -111,17 +113,49 @@ Rails.application.routes.draw do
         put 'syndicate_members/accept_invite' => 'syndicate_members#accept_invite'
       end
     end
+
+    resources :deal_updates, only: [:create, :update]
+    namespace :analytics do
+      resources :investors, only: %i[index] do
+        collection do
+          get :investments
+          get :funding_round_investments
+          get :property_investments
+          get :investments_chart
+        end
+      end
+      resources :deals, param: :token, only: %i[show] do
+        member do
+          get :stats
+        end
+      end
+      resource :insights, only: %i[index] do
+        collection do
+          get :top_syndicates
+          get :compare_to_other_investor
+          get :markets_by_multiple
+          get :markets_by_investment_share
+        end
+      end
+    end
+    resource :profile, only: %i[show update]
+    resource :wallet
+    resources :transactions, only: %i[index create]
+    resource :exchange_rate, only: %i[show]
+    resources :blogs, only: %i[index show]
+    resources :notifications, only: %i[index update]
   end
 
   # Admin routes
   resources :admin_users do
     get :reactivate, on: :member
   end
-  resources :investors, only: %i[update] do
+  resources :investors, only: %i[update destroy] do
     collection do
       resources :individuals, only: %i[index show], controller: 'investors', type: 'individuals'
       resources :firms, only: %i[index show], controller: 'investors', type: 'firms'
     end
+    get :reactivate, on: :member
   end
   resources :fund_raisers, only: %i[index show update]
   resources :syndicates, only: %i[index show update]
@@ -132,24 +166,22 @@ Rails.application.routes.draw do
     end
     put :close
     put :extend
+    put :valuation_update
     resources :spvs, only: %i[new]
   end
-  resources :profile, only: %i[index] do
-    collection do
-      get :edit
-      put :update
-    end
-  end
+  resource :profile, only: %i[show edit update]
   resources :dashboard, only: %i[index]
   resources :field_attributes
   resources :steppers
   resources :spvs, only: %i[show index create update edit] do
     get :back
   end
-
   resources :trix_attachments, only: %i[create]
   resources :transactions, only: %i[index show update]
   resource :exchange_rate, only: %i[create]
+
+  # CMS
+  resources :blogs
 
   root to: "dashboard#index"
 end

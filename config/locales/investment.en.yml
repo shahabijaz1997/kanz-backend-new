@@ -3,11 +3,28 @@ en:
     attributes:
       investment:
         user_id: "You can't"
-        amount: "Amount"
+        amount: "amount"
         investment_amount: "Investment Amount"
+      deal_update:
+        user: "User"
+        deal: "Deal"
+      deal:
+        target: Deal Target
+      funding_round:
+        valuation: Valuation
     errors:
       models:
         investment:
           attributes:
             user_id:
               uniqueness: "invest again in same deal"
+        deal:
+          attributes:
+            target:
+              greater_than_or_equal_to: should be a positive number
+              less_then: should be less than max number limit
+        funding_round:
+          attributes:
+            valuation:
+              greater_than: should be a positive number
+              less_then: should be less than max number limit

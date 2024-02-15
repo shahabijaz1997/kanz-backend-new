@@ -3,7 +3,7 @@
 class DealsController < ApplicationController
   include Informer
 
-  before_action :set_deal, only: %i[show update spv close extend]
+  before_action :set_deal, except: %i[index]
   before_action :authorize_role!
 
   def index
@@ -26,12 +26,16 @@ class DealsController < ApplicationController
   end
 
   def close
-    respond_to do |format|
-      if @deal.update(deal_close_params)
-        inform_deal_creator
-        format.html { redirect_to deals_path, notice: 'Successfully updated.' }
+    Deal.transaction do
+      @deal.update!(deal_close_params)
+      DealClosingModel::Base.call(@deal)
+
+      if @deal.adjust_pro_rata? || @deal.fifs?
+        @step = SPV_FIRST_STEP
+        @spv = @deal.spv || Spv.new(deal_id: @deal.id, closing_model:  @deal.closing_model, step: SPV_FIRST_STEP)
+        render turbo_stream: turbo_stream.append('spv-modal', partial: 'spvs/new')
       else
-        format.html { redirect_to deal_path(@deal), alert: @deal.errors.full_messages.to_sentence }
+        redirect_to deals_path, notice: 'Successfully updated.'
       end
     end
   end
@@ -46,8 +50,15 @@ class DealsController < ApplicationController
     end
   end
 
-  def spv
-    render :spv_modal 
+  def valuation_update
+    Deal.transaction do
+      ActivityRecorder::Deal.call(deal_update_params, @deal, current_user)
+      @deal.update!(deal_update_params)
+      redirect_to deal_path, notice: 'Successfully updated.'
+    end
+  rescue Exception => e
+    raise e
+    redirect_to deal_path, alert: e.message
   end
 
   private
@@ -79,7 +90,17 @@ class DealsController < ApplicationController
     params.require(:deal).permit(:audit_comment, :end_at)
   end
 
+  def deal_update_params
+    params.require(:deal).permit(:target,
+                                 funding_round_attributes: %i[id valuation valuation_phase_id],
+                                 property_detail_attributes: %i[id rental_amount rental_period_id])
+  end
+
   def deals_path
     @deal.startup? ? start_up_index_path : property_index_path
+  end
+
+  def deal_path
+    @deal.startup? ? start_up_path(@deal) : property_path(@deal)
   end
 end

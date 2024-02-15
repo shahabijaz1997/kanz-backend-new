@@ -6,6 +6,7 @@ class AdminUser < ApplicationRecord
   devise :database_authenticatable, :recoverable, :rememberable, :validatable
 
   belongs_to :admin_role, class_name: 'AdminRole'
+  has_many :deal_updates, foreign_key: 'published_by_id'
   has_many :spvs, foreign_key: :created_by
   has_many :attachments, as: :parent, dependent: :destroy
 
@@ -39,8 +40,22 @@ class AdminUser < ApplicationRecord
     admin_role&.Compliance_Officer?
   end
 
+  def content_manager?
+    admin_role&.Content_Manager?
+  end
+
+  def content_creator?
+    admin_role&.Content_Creator?
+  end
+
   def role
-    admin? || super_admin? ? :admin : :customer_user
+    if admin? || super_admin?
+      :admin
+    elsif content_manager? || content_creator?
+      :content_manager
+    else
+      :customer_user
+    end
   end
 
   def self.ransackable_attributes(_auth_object = nil)

@@ -31,9 +31,14 @@ ar:
     investment:
       committed_amount: 'ملتزم'
       completed: 'مكتمل'
+      refunded: 'ردها'
     comment:
       pending: 'قيد الانتظار'
       read: 'يقرأ'
     syndicate_member:
       added: 'وأضاف'
       follower: 'تابع'
+    deal_update:
+      pending: 'قيد الانتظار'
+      published: 'نشرت'
+

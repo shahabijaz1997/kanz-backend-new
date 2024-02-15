@@ -7,6 +7,10 @@ class InvestorSerializer
 
   attributes :id, :name, :email, :type, :status, :language, :profile_states
 
+  attribute :profile_picture_url do |investor|
+    investor.profile_picture_url
+  end
+
   attribute :profile do |investor|
     if investor.syndicate?
       profile = investor.profile || SyndicateProfile.new(syndicate: investor)

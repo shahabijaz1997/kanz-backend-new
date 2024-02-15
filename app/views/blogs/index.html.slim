@@ -1,0 +1,38 @@
+= render 'shared/page_title', title: "Blogs"
+
+- unless current_admin_user.content_manager?
+  div.clearfix
+    = link_to "Add Blog", new_blog_path, class: 'btn btn-outline-primary float-end'
+
+= render 'filters'
+
+div.table
+  div.header
+    div.col = sort_link(@filtered_blogs, :title)
+    div.col = sort_link(@filtered_blogs, :author_id)
+    div.col = sort_link(@filtered_blogs, :updated_at)
+    div.col = sort_link(@filtered_blogs, :status)
+    div.col
+      span Actions
+  div.content
+    - if @blogs.present?
+      - @blogs.each do |blog|
+        div.card.position-relative.shadow-sm
+          div.card-body.d-flex.align-items-center
+            span.col = blog.title
+            span.col = blog.author.fullname
+            span.col = DatesHelper.standard_format(blog.updated_at)
+            span.col = render 'shared/user_status', status: blog.status
+            span.col.d-flex
+              div.ms-2
+                a.btn.btn-outline-primary.btn-sm.stretched-link href=blog_path(blog)
+                  i class="fa fa-info"
+              - unless current_admin_user.content_creator? && blog.published?
+                div.ms-2.position-relative
+                  a.btn.btn-outline-primary.btn-sm.stretched-link href=edit_blog_path(blog)
+                    i class="fa fa-pen"
+      - if @pagy.pages > 1
+        == pagy_nav(@pagy)
+
+    - else
+      div.not_found No Blog Found

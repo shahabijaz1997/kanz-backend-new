@@ -1,0 +1,22 @@
+div.filters.bg-light.border.rounded.shadow-sm
+  span.title Filters
+  = search_form_for @filtered_blogs, class: 'form' do |form|
+    div.search_field
+      = form.label :title_cont, 'Title'
+      = form.search_field :title_cont, class: 'form-control'
+
+    div.search_field
+      = form.label :author_first_name_cont, 'Author'
+      = form.search_field :author_first_name_cont, class: 'form-control'
+
+    div.search_field
+      = form.label :approved_by_first_name_cont, 'Approved By'
+      = form.search_field :approved_by_first_name_cont, class: 'form-control'
+
+    div.search_field
+      = form.label :status_eq, 'Status'
+      = form.select :status_eq, translate_enum(Blog.statuses), { include_blank: true }, { class: 'form-control' }
+
+    div.submit
+      = form.submit 'Search', class: 'btn btn-primary'
+      = link_to "Clear", request.path, class:"btn btn-secondary"

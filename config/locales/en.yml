@@ -73,3 +73,6 @@ en:
     applied: Applied
     not_invited: Not Invited
     member: Member
+  wallet:
+    low_balance: Insufficient Balance
+    irrevertable: Can not be reverted

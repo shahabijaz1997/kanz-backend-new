@@ -1,5 +1,5 @@
 - if resource.audits.length > 0
-  = render 'shared/section_card', section_title: 'Application History', editable: false do
+  = render 'shared/section_card', section_title: 'History', editable: false do
     div.table.p-2.m-0
       div.header
         div.col-2
@@ -14,7 +14,7 @@
         - resource.audits.reverse.each do |history|
             div.card.shadow-sm
               div.no-hover.history
-                span.col-2.px-0 = render 'shared/user_status', status: AUDIT_STATUSES.key(history.audited_changes['status'].try(:last))
+                span.col-2.px-0 = render 'shared/user_status', status: resource.class.statuses.key(history.audited_changes['status'].try(:last))
                 span.col-3 data-toggle='tooltip' title="#{history.user.present? ? user_info(history.user) : 'NA'}"
                   = history.user.present? ? user_info(history.user) : 'NA'
                 span.col-4 data-toggle='tooltip' title=history.comment

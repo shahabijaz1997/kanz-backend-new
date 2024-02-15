@@ -9,6 +9,15 @@ module Users
     before_action :update_language
     respond_to :json
 
+    def create
+      resource = resource_class.find_by(permitted_params)
+      if resource&.deactivated? && resource.valid_password?(params[:user].dig(:password))
+        failure(I18n.t('devise.failure.is_deactivated'), 401)
+      else
+        super
+      end
+    end
+
     private
 
     def respond_with(resource, _opts = {})
@@ -34,6 +43,10 @@ module Users
       return if params[:user].blank? || params[:user][:language].blank?
 
       I18n.locale = params[:user][:language] == 'ar' ? :ar : :en
+    end
+
+    def permitted_params
+      params.require(:user).permit(:email)
     end
   end
 end

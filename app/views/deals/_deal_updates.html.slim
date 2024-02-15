@@ -1,0 +1,19 @@
+- if deal_updates.length > 0
+  = render 'shared/section_card', section_title: 'Deal Updates', editable: false do
+  - if deal_updates.present?
+    - deal_updates.each do |deal_update|
+      li.list-group-item
+        span.col-3.title = deal_update.description
+        div.card.attachment
+          - if ['pdf', 'application/pdf'].include?(attachment.attachment_kind)
+            object data=attachment.file.url width=250
+          - else
+            = image_tag(attachment.file.url)
+          div.card-img-overlay
+            a.btn.btn-outline-light href=attachment.file.url target="_blank"
+              i.bi.bi-arrows-angle-expand
+            = link_to rails_blob_path(attachment.file, disposition: 'attachment'), class: 'ms-3 btn btn-outline-light' do
+              i.bi.bi-cloud-arrow-down
+
+  - else
+    div.not_found No attachments Found

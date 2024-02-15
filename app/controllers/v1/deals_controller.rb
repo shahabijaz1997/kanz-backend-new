@@ -121,7 +121,7 @@ module V1
     end
 
     def investors
-      investors = User.approved.where(type: 'Investor')
+      investors = User.approved.where(type: 'Investor').active
       investors = investors.or(User.approved.where(type: 'Syndicate')) if @deal&.classic?
       investors = investors.ransack(params[:search]).result
 
