@@ -129,6 +129,14 @@ Rails.application.routes.draw do
           get :stats
         end
       end
+      resource :insights, only: %i[index] do
+        collection do
+          get :top_syndicates
+          get :compare_to_other_investor
+          get :markets_by_multiple
+          get :markets_by_investment_share
+        end
+      end
     end
     resource :profile, only: %i[show update]
     resource :wallet

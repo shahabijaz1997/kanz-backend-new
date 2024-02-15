@@ -3,47 +3,69 @@
 module V1
   module Analytics
     class InsightsController < ApiController
-      before_action :find_deal
-
       def top_syndicates
-        success(
-          'success',
-          DealDetailSerializer.new(@deal).serializable_hash[:data][:attributes]
-        )
+        success('success', extract_top_syndicates)
       end
 
       # average of syndicate
       # monthly_deal_invites
       # participation_rate
       def compare_to_other_investor
-        success(
-          'success',
-          { 
-            stats: investment_stats,
-            charts: DashboardAnalytics::MonthlyDealReturns.call(current_user, @deal)
-          }
-        )
+        results = { 
+          syndicates_joined: 4,
+          sj_others: 2,
+          monthly_deal_invites: 9,
+          mdi_others: 3,
+          participation_rate: 0.4,
+          pr_others: 0.3
+        }
+        success('success',results)
       end
 
       # Your top markets by multiple
-      def top_markets_by_multiple
+      def markets_by_multiple
+        results = [
+          { title: 'Tech', multiple: 1.2 },
+          { title: 'Chemical', multiple: 0.9 },
+          { title: 'Manufactoring', multiple: 1.4 },
+          { title: 'Cosmetics', multiple: 0.8 }
+        ]
+
+        success('success',results)
       end
 
       # Your top markets on kanz by investment in last 3 months
-      def top_markets_on_kanz
+      def markets_by_investment_share
+        results = [
+          {title: 'Health Care', value: 20, unit: '%'},
+          {title: 'Software', value: 9, unit: '%'},
+          {title: 'Education', value: 15, unit: '%'},
+          {title: 'AI / ML', value: 13, unit: '%'}
+        ]
 
+        success('success', results)
       end
 
       private
       
-      def top_syndicates
-        user.investments
-        deals.where.valuation_updates
-        deal.valuation_multiple # default set to zero
+      def extract_top_syndicates
+        deal_ids = current_user.investments.pluck(:deal_id)
+        deals = Deal.closed.where(id: deal_ids).order(valuation_multiple: :desc).first(5).map do |deal|
+          {
+            logo: (deal.classic? ? deal.user.profile.logo : deal.syndicate.profile.logo),
+            title: (deal.classic? ? deal.user.company_name : deal.syndicate.company_name),
+            investment_multiple: deal.valuation_multiple
+          }
+        end
       end
 
       def top_markets
-        deal.industries # set industries of fundraiser to deal
+        # results = Investment.group(:deal_id).where("created_at > ?", 3.months.ago).sum(:amount)
+        # top_investments = results.sort_by { |key, value| value }.last(5).reverse
+        # top_investments.each do |deal_id, amount|
+
+        # end
+        # set industries of fundraiser to deal
       end
     end
   end

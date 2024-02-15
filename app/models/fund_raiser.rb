@@ -10,4 +10,8 @@ class FundRaiser < User
   def self.ransackable_associations(_auth_object = nil)
     %w[profile]
   end
+
+  def company_name
+    profile&.company_name
+  end
 end
