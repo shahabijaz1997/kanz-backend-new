@@ -6,7 +6,7 @@ module V1
     before_action :search_params, only: %i[index]
 
     def index
-      @pagy, @blogs = pagy(Blog.published.ransack(params[:search]).result)
+      @pagy, @blogs = pagy(Blog.published.ransack(params[:search]).result, items: 9)
       render json: {
         blogs: BlogSerializer.new(@blogs, { params: { detailed: false }}).serializable_hash[:data].map{ |object| object[:attributes]},
         pagination: pagy_attributes(@pagy)
