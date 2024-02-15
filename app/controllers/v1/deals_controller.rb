@@ -121,8 +121,8 @@ module V1
     end
 
     def investors
-      investors = User.approved.where(type: 'Investor')
-      investors = investors.active.or(User.approved.where(type: 'Syndicate')) if @deal&.classic?
+      investors = User.approved.where(type: 'Investor').active
+      investors = investors.or(User.approved.where(type: 'Syndicate')) if @deal&.classic?
       investors = investors.ransack(params[:search]).result
 
       invitees_ids = @deal.present? ? @deal.invites.pluck(:invitee_id) : []
