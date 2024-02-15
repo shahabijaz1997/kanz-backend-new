@@ -25,6 +25,7 @@ module V1
 
     def find_notification
       @notification = Notification.find_by(id: params[:id])
+      failure(I18n.t('deal_update.not_found')) if @notification.blank?
     end
 
     def update_params
