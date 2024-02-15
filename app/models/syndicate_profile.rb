@@ -29,6 +29,10 @@ class SyndicateProfile < ApplicationRecord
     %w[industries regions]
   end
 
+  def logo
+    attachment.url
+  end
+
   private
 
   def raised_before?

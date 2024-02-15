@@ -36,6 +36,10 @@ class FundRaiserProfile < ApplicationRecord
     ['industries']
   end
 
+  def logo
+    attachment.url
+  end
+
   private
 
   def second_step?
