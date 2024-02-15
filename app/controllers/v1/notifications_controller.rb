@@ -1,11 +1,34 @@
 module V1
   class NotificationsController < ApiController
+    before_action :find_notification
+
     def index
-      notifications = current_user.notifications.pending_read
+      pagy notifications = pagy current_user.notifications.pending_read
       success(
         'success',
-        NotificationSerializer.new(notifications).serializable_hash[:data].map{|d| d[:attributes]}
+        {
+          record: NotificationSerializer.new(notifications).serializable_hash[:data].map{|d| d[:attributes]},
+          pagy: pagy
+        }
       )
+    end
+
+    def update
+      if @notification.update(update_params.merge(status: Notification.statuses[:read]))
+        success('success')
+      else
+        failure(@notification.errors.full_messages.to_sentence)
+      end
+    end
+
+    private
+
+    def find_notification
+      @notification = Notification.find_by(id: params[:id])
+    end
+
+    def update_params
+      params.require(:notification).permit(:id)
     end
   end
 end

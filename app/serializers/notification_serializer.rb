@@ -8,12 +8,12 @@ class NotificationSerializer
 
   attribute :profile_pic do |notification|
     activity = notification.activity
-    activity.user_type == 'AdminUser' ? activity.user.fullname : activity.user.profile_picture_url
+    activity.user_type == 'AdminUser' ? 'Back Office' : activity.user.profile_picture_url
   end
 
   attribute :user_name do |notification|
     activity = notification.activity
-    activity.user_type == 'AdminUser' ? activity.user.fullname : activity.user.name
+    activity.user_type == 'AdminUser' ? 'Back Office' : activity.user.name
   end
 
   attribute :message do |notification|
@@ -24,7 +24,7 @@ class NotificationSerializer
     DateTime.parse(notification.created_at.to_s).strftime('%d/%m/%Y %I:%M:%S %p')
   end
 
-  attribute :created_at do |notification|
+  attribute :type do |notification|
     notification.kind # Need to be humanize
   end
 end
