@@ -1,6 +1,6 @@
 module V1
   class NotificationsController < ApiController
-    before_action :find_notification, only: %i[index]
+    before_action :find_notification, only: %i[update]
 
     def index
       pagy, notifications = pagy current_user.notifications.pending_read
