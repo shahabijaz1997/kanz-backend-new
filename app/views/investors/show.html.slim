@@ -15,12 +15,17 @@ div.w-75
     = render 'shared/section_list_item', title: 'Nationality', value: @investor.profile&.country&.name
     = render 'shared/section_list_item', title: 'Accreditation', value: @investor.profile&.accreditation_option&.statement
     li.list-group-item
-      - if @investor.deactivated
-        span.offset-3.value.text-danger This investor is deactivated
-        = link_to '(reactivate)', reactivate_investor_path(@investor), class: 'ms-2'
-      - else
-        = link_to 'Deactivate Investor', investor_path(@investor),
-          data: { turbo_method: :delete}, class: 'offset-3 value text-danger'
+      .form-check.form-switch.d-flex[data-controller="investors"]
+        - if @investor.deactivated
+            input.form-check-input.switch_size[type="checkbox" role="switch" data-action="change->investors#reactivate" checked]
+            label.form-check-label.text-danger.px-3[for="deactivationSwitch"]
+              | This investor is deactivated (Reactivate)
+            = link_to '(reactivate)', reactivate_investor_path(@investor), data: { investors_target: "activationLink" }, class: 'd-none'
+        - else
+          input.form-check-input.switch_size[type="checkbox" role="switch" data-action="change->investors#deactivate"]
+          label.form-check-label.text-danger.px-3[for="deactivationSwitch"]
+              | Deactivate Investor
+          = link_to 'Deactivate Investor', investor_path(@investor), data: { turbo_method: :delete, investors_target: "deactivationLink" }, class: 'd-none'
 
   = render 'investment_philosophies', resource: @investor
   = render 'shared/attachments_section', attachments: @investor.attachments
