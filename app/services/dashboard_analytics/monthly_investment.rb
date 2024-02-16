@@ -44,9 +44,14 @@ module DashboardAnalytics
       {
         property_investment: investments.by_property.sum(:amount).to_f,
         startup_investment: investments.by_startup.sum(:amount).to_f,
-        property_net_value: investments.by_property.sum(:amount).to_f,
-        startup_net_value: investments.by_startup.sum(:amount).to_f
+        property_net_value: investment_value(investments.by_property),
+        startup_net_value: investment_value(investments.by_startup)
       }
+    end
+
+    def investment_value(investments)
+      investments.map{ |investment| investment.amount.to_f * investment.deal.valuation_multiple }.reduce(&:+).to_f
+
     end
 
     def parse_date(month_and_year_string)
