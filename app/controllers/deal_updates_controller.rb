@@ -2,7 +2,6 @@ class DealUpdatesController < ApplicationController
   before_action :find_deal_update, only: %i[publish]
 
   def publish
-    debugger
     if @deal_update.update(status: :published)
       redirect_to deal_path(@deal_update.deal), notice: 'Deal update published'
     else
