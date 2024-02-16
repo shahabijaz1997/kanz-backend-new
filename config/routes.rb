@@ -183,5 +183,11 @@ Rails.application.routes.draw do
   # CMS
   resources :blogs
 
+  resources :deal_updates, only: %i[index] do
+    member do
+      put :publish
+    end
+  end
+
   root to: "dashboard#index"
 end
