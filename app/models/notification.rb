@@ -7,6 +7,8 @@ class Notification < ApplicationRecord
 
   validates :message, :message_ar, presence: true
 
+  scope :latest_first, -> { order(created_at: :desc) }
+
   def localized_message
     I18n.locale == :en ? message : message_ar
   end
