@@ -54,20 +54,21 @@ module V1
 
       # /1.0/investors/analytics/funding_round_investments
       def funding_round_investments
-        equity_deals = Deal.live_or_closed.startup.equity.includes(investments: :user).where(user: {id: current_user.id})
+        equity_deals = Deal.closed.startup.equity
         rounds = FieldAttribute.investment_round.options.map(&:localized_statement)
         round_wise_investments = Hash[rounds.product([0])]
 
         equity_deals.each do |deal|
-          round_wise_investments[deal.investment_round] += deal.investments.sum(:amount).to_f
+          round_wise_investments[deal.investment_round] += Investment.where(deal_id: deal.id).joins(:user).where(user: {id: current_user.id}).distinct.sum(:amount).to_f
         end
+
         success('success', round_wise_investments)
       end
 
       # /1.0/investors/analytics/property_investments
       def property_investments
-        rental_investments = Deal.live_or_closed.property.rental.includes(investments: :user).where(user: {id: current_user.id}).sum("investments.amount")
-        non_rental_investments = Deal.live_or_closed.property.non_rental.includes(investments: :user).where(user: {id: current_user.id}).sum("investments.amount")
+        rental_investments = Deal.closed.property.rental.includes(investments: :user).where(user: {id: current_user.id}).sum("investments.amount")
+        non_rental_investments = Deal.closed.property.non_rental.includes(investments: :user).where(user: {id: current_user.id}).sum("investments.amount")
 
         success(
           'success',
@@ -77,7 +78,6 @@ module V1
           }
         )
       end
-
 
       def recent_activities
         notifications = current_user.notifications.pending_read.first(RECENT_ACTIVITY_COUNT)
@@ -135,10 +135,20 @@ module V1
       end
 
       def investment_count_and_amount(investments)
+        investment_value = investment_current_value(investments)
+        invested_amount = investments.sum(:amount).to_f
+        multiple = (investment_value / invested_amount).round(2)
         {
           no_investments: investments.count,
-          invested_amount: investments.sum(:amount).to_f
+          invested_amount: invested_amount,
+          invested_value: investment_value,
+          multiple: multiple,
+          irr: ((multiple - 1) * 100)
         }
+      end
+
+      def investment_current_value(investments)
+        investments.map{ |investment| investment.amount.to_f * investment.deal.valuation_multiple }.reduce(&:+).to_f
       end
     end
   end
