@@ -90,7 +90,7 @@ module V1
       private
 
       def investments_by_deal_type
-        investments = current_user.investments
+        investments = current_user.investments.joins(:deal).where(deal: {status: :closed})
         {
           all: investment_count_and_amount(investments),
           startup: investment_count_and_amount(investments.by_startup),
