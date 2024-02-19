@@ -30,7 +30,7 @@ class SyndicateProfile < ApplicationRecord
   end
 
   def logo
-    attachment.url
+    attachment&.url
   end
 
   private
