@@ -38,14 +38,14 @@ module V1
 
       # /1.0/investors/analytics/investments
       def investments
-        @investments = current_user.investments.ransack(params[:search]).result
-        filtered_investments = @investments.filter_by_deal_type(params[:deal_type])
-        pagy, filtered_investments = pagy filtered_investments
+        @deals = Deal.closed.joins(:investments).where(investments: { id: current_user.investments.pluck(:id) }).ransack(params[:search]).result
+        filtered_deals = @deals.by_type(params[:deal_type])
+        pagy, investments = pagy current_user.investments.includes(:deal).where(deal: { id: filtered_deals.pluck(:id) }).order(created_at: :desc)
 
         success(
           'success',
           {
-            records: InvestorInvestmentSerializer.new(filtered_investments).serializable_hash[:data].map {|d| d[:attributes] },
+            records: InvestorInvestmentSerializer.new(investments).serializable_hash[:data].map {|d| d[:attributes] },
             stats: no_deals_by_type,
             pagy: pagy
           }
@@ -87,30 +87,6 @@ module V1
         )
       end
 
-      def all_activites
-        # all as paginated and searchable and filterable
-      end
-
-      def top_syndicates
-        # With Respect to Return
-      end
-
-      def comparison
-        # 12 Months Comparison to other investors [joined syndicates] [Deal Invites] [Participation Rate by Deal Invites Accepted]
-      end
-
-      def s
-        # Top Markets by investment 3 months
-      end
-      
-      def saf
-        # Top Markets by Investment Return
-      end
-
-      def saf
-        # investment History [TBD]
-      end
-
       private
 
       def investments_by_deal_type
@@ -124,9 +100,9 @@ module V1
 
       def no_deals_by_type
         {
-          all: @investments.count,
-          startup: @investments.by_startup.count,
-          property: @investments.by_property.count
+          all: @deals.count,
+          startup: @deals.startup.count,
+          property: @deals.property.count
         }
       end
 
