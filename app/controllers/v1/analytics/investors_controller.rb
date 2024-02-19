@@ -113,7 +113,7 @@ module V1
       def investment_count_and_amount(investments)
         investment_value = investment_current_value(investments)
         invested_amount = investments.sum(:amount).to_f
-        multiple = (investment_value / invested_amount).round(2)
+        multiple = invested_amount > 0 ? (investment_value / invested_amount).round(2) : 1.0
         {
           no_investments: investments.count,
           invested_amount: invested_amount,
