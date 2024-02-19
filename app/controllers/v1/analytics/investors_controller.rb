@@ -80,7 +80,7 @@ module V1
       end
 
       def recent_activities
-        notifications = current_user.notifications.pending_read.first(RECENT_ACTIVITY_COUNT)
+        notifications = current_user.notifications.pending_read.latest_first.first(RECENT_ACTIVITY_COUNT)
         success(
           'sucess',
           NotificationSerializer.new(notifications).serializable_hash[:data].map{|d| d[:attributes]}
