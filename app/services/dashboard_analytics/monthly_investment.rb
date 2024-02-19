@@ -29,7 +29,7 @@ module DashboardAnalytics
     end
 
     def oldest_investment_date
-      user.investments.find_by(created_at: user.investments.minimum(:created_at)).created_at
+      user.investments.find_by(created_at: user.investments.minimum(:created_at))&.created_at
     end
 
     def investments_till_month(month_and_year_string)

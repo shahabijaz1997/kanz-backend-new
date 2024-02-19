@@ -39,7 +39,7 @@ module DashboardAnalytics
       field_name = deal.property? ? 'target' : 'valuation'
       activities = current_month_activities(beginning_of_month(month_and_year), end_of_month(month_and_year), field_name)
 
-      activities.present? ? (activities.last.new_value.to_f / activities.last.old_value.to_f) : 1.0
+      activities.present? ? (activities.first.new_value.to_f / activities.first.old_value.to_f) : 1.0
     end
 
     def current_month_activities(month_start, month_end, field_name)
