@@ -38,14 +38,14 @@ module V1
 
       # /1.0/investors/analytics/investments
       def investments
-        @investments = current_user.investments.ransack(params[:search]).result
-        filtered_investments = @investments.filter_by_deal_type(params[:deal_type])
-        pagy, filtered_investments = pagy filtered_investments
+        @deals = Deal.closed.joins(:investments).where(investments: { id: current_user.investments.pluck(:id) }).ransack(params[:search]).result
+        filtered_deals = @deals.by_type(params[:deal_type])
+        pagy, investments = pagy current_user.investments.includes(:deal).where(deal: { id: filtered_deals.pluck(:id) }).order(created_at: :desc)
 
         success(
           'success',
           {
-            records: InvestorInvestmentSerializer.new(filtered_investments).serializable_hash[:data].map {|d| d[:attributes] },
+            records: InvestorInvestmentSerializer.new(investments).serializable_hash[:data].map {|d| d[:attributes] },
             stats: no_deals_by_type,
             pagy: pagy
           }
@@ -54,20 +54,21 @@ module V1
 
       # /1.0/investors/analytics/funding_round_investments
       def funding_round_investments
-        equity_deals = Deal.live_or_closed.startup.equity.includes(investments: :user).where(user: {id: current_user.id})
+        equity_deals = Deal.closed.startup.equity
         rounds = FieldAttribute.investment_round.options.map(&:localized_statement)
         round_wise_investments = Hash[rounds.product([0])]
 
         equity_deals.each do |deal|
-          round_wise_investments[deal.investment_round] += deal.investments.sum(:amount).to_f
+          round_wise_investments[deal.investment_round] += Investment.where(deal_id: deal.id).joins(:user).where(user: {id: current_user.id}).distinct.sum(:amount).to_f
         end
+
         success('success', round_wise_investments)
       end
 
       # /1.0/investors/analytics/property_investments
       def property_investments
-        rental_investments = Deal.live_or_closed.property.rental.includes(investments: :user).where(user: {id: current_user.id}).sum("investments.amount")
-        non_rental_investments = Deal.live_or_closed.property.non_rental.includes(investments: :user).where(user: {id: current_user.id}).sum("investments.amount")
+        rental_investments = Deal.closed.property.rental.includes(investments: :user).where(user: {id: current_user.id}).sum("investments.amount")
+        non_rental_investments = Deal.closed.property.non_rental.includes(investments: :user).where(user: {id: current_user.id}).sum("investments.amount")
 
         success(
           'success',
@@ -78,33 +79,12 @@ module V1
         )
       end
 
-
-      def activities
-        # recent 5
-      end
-
-      def all_activites
-        # all as paginated and searchable and filterable
-      end
-
-      def top_syndicates
-        # With Respect to Return
-      end
-
-      def comparison
-        # 12 Months Comparison to other investors [joined syndicates] [Deal Invites] [Participation Rate by Deal Invites Accepted]
-      end
-
-      def s
-        # Top Markets by investment 3 months
-      end
-      
-      def saf
-        # Top Markets by Investment Return
-      end
-
-      def saf
-        # investment History [TBD]
+      def recent_activities
+        notifications = current_user.notifications.pending_read.first(RECENT_ACTIVITY_COUNT)
+        success(
+          'sucess',
+          NotificationSerializer.new(notifications).serializable_hash[:data].map{|d| d[:attributes]}
+        )
       end
 
       private
@@ -120,9 +100,9 @@ module V1
 
       def no_deals_by_type
         {
-          all: @investments.count,
-          startup: @investments.by_startup.count,
-          property: @investments.by_property.count
+          all: @deals.count,
+          startup: @deals.startup.count,
+          property: @deals.property.count
         }
       end
 
@@ -131,10 +111,20 @@ module V1
       end
 
       def investment_count_and_amount(investments)
+        investment_value = investment_current_value(investments)
+        invested_amount = investments.sum(:amount).to_f
+        multiple = invested_amount > 0 ? (investment_value / invested_amount).round(2) : 1.0
         {
           no_investments: investments.count,
-          invested_amount: investments.sum(:amount).to_f
+          invested_amount: invested_amount,
+          invested_value: investment_value,
+          multiple: multiple,
+          irr: ((multiple - 1) * 100)
         }
+      end
+
+      def investment_current_value(investments)
+        investments.map{ |investment| investment.amount.to_f * investment.deal.valuation_multiple }.reduce(&:+).to_f
       end
     end
   end

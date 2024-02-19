@@ -122,6 +122,7 @@ Rails.application.routes.draw do
           get :funding_round_investments
           get :property_investments
           get :investments_chart
+          get :recent_activities
         end
       end
       resources :deals, param: :token, only: %i[show] do
@@ -182,6 +183,12 @@ Rails.application.routes.draw do
 
   # CMS
   resources :blogs
+
+  resources :deal_updates, only: %i[index] do
+    member do
+      put :publish
+    end
+  end
 
   root to: "dashboard#index"
 end

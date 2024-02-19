@@ -1,0 +1,25 @@
+- deal_updates = resource.deal_updates
+- if resource.closed?
+  = render 'shared/section_card', section_title: 'Deal Updates', editable: false do
+    - if deal_updates.length > 0
+      - deal_updates.each do |deal_update|
+        li.list-group-item.d-flex.my-2
+          div.card.attachment.col-3
+            - if ['pdf', 'application/pdf'].include?(deal_update.report.content_type)
+              object data=deal_update.report_url width=250
+            - else
+              = image_tag(deal_update.report_url)
+            div.card-img-overlay.d-flex.justify-content-center.align-items-center
+              a.btn.btn-outline-light href=deal_update.report_url target="_blank"
+                i.bi.bi-arrows-angle-expand
+              = link_to rails_blob_path(deal_update.report, disposition: 'attachment'), class: 'ms-3 btn btn-outline-light' do
+                i.bi.bi-cloud-arrow-down
+          span.col-7.title.p-2 = deal_update.description
+          .col-3
+            - if deal_update.published?
+              span = "Published at #{DatesHelper.date_only(deal_update.updated_at)}"
+            - else
+              = link_to 'Publish', publish_deal_update_path(deal_update), data: { turbo_method: :put}, class: 'btn btn-primary'
+
+    - else
+      div.not_found No attachments Found

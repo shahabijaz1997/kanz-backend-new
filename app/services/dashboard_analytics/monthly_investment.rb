@@ -29,7 +29,7 @@ module DashboardAnalytics
     end
 
     def oldest_investment_date
-      user.investments.find_by(created_at: user.investments.minimum(:created_at)).created_at
+      user.investments.find_by(created_at: user.investments.minimum(:created_at))&.created_at
     end
 
     def investments_till_month(month_and_year_string)
@@ -44,9 +44,14 @@ module DashboardAnalytics
       {
         property_investment: investments.by_property.sum(:amount).to_f,
         startup_investment: investments.by_startup.sum(:amount).to_f,
-        property_net_value: investments.by_property.sum(:amount).to_f,
-        startup_net_value: investments.by_startup.sum(:amount).to_f
+        property_net_value: investment_value(investments.by_property),
+        startup_net_value: investment_value(investments.by_startup)
       }
+    end
+
+    def investment_value(investments)
+      investments.map{ |investment| investment.amount.to_f * investment.deal.valuation_multiple }.reduce(&:+).to_f
+
     end
 
     def parse_date(month_and_year_string)

@@ -13,6 +13,7 @@ import SpvController from "./spv_controller"
 import ModalController from "./modal_controller"
 import DealsController from "./deals_controller"
 import DealUpdateController from "./deal_updates_controller"
+import InvestorsController from "./investors_controller"
 
 application.register("dashboard", DashboardController)
 application.register("tabs", TabsController)
@@ -23,3 +24,4 @@ application.register("spv", SpvController)
 application.register("modal", ModalController)
 application.register("deal-closing", DealsController)
 application.register("deal-updates", DealUpdateController)
+application.register("investors", InvestorsController)

@@ -36,19 +36,22 @@ module DashboardAnalytics
     end
 
     def current_month_multiple(month_and_year)
-      1.0
-      # month_start = beginning_of_month(month_and_year)
-      # month_end = last_date_of_month(month_and_year)
+      field_name = deal.property? ? 'target' : 'valuation'
+      activities = current_month_activities(beginning_of_month(month_and_year), end_of_month(month_and_year), field_name)
 
-      # # Deal Updates & where type is Target/price changes
-      # .where("DATE_TRUNC('month', investments.created_at) > ?
-      #                         OR
-      #                         DATE_TRUNC('month', investments.created_at) = ?
-      #                         OR
-      #                         DATE_TRUNC('month', investments.created_at) < ?
-      #                         OR
-      #                         DATE_TRUNC('month', investments.created_at) = ?",
-      #                         month_start, month_start, month_end, month_end).order(created_at: :asc)
+      activities.present? ? (activities.first.new_value.to_f / activities.first.old_value.to_f) : 1.0
+    end
+
+    def current_month_activities(month_start, month_end, field_name)
+      deal.activities.where(field_name: field_name).
+      where("DATE_TRUNC('month', activities.created_at) > ?
+            OR
+            DATE_TRUNC('month', activities.created_at) = ?
+            OR
+            DATE_TRUNC('month', activities.created_at) < ?
+            OR
+            DATE_TRUNC('month', activities.created_at) = ?",
+            month_start, month_start, month_end, month_end).order(created_at: :desc)
     end
 
     def net_value(amount, multiple)

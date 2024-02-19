@@ -84,7 +84,7 @@ module V1
       deal = Deal.find_by(id: params[:id])
       return failure(I18n.t('deal.not_found'), 404) if deal.blank?
 
-      activities = deal.activities
+      activities = deal.deal_activities
       success(
         'success',
         records: DealActivitySerializer.new(activities).serializable_hash[:data].map { |d| simplify_attributes(d[:attributes]) },
