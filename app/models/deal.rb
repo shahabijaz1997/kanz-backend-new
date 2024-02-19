@@ -112,10 +112,6 @@ class Deal < ApplicationRecord
     live? && end_at <= Date.today
   end
 
-  def investment_multiple
-    current_valuation / previous_valuation
-  end
-
   def rental_duration
     property_detail&.rental_duration
   end
