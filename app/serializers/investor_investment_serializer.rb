@@ -42,6 +42,6 @@ class InvestorInvestmentSerializer
   end
 
   attribute :multiple do |investment|
-    (investment.net_value.to_f / investment.amount.to_f).round(2)
+    investment.deal.investment_multiple.to_f.round(2)
   end
 end
