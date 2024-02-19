@@ -29,7 +29,7 @@ class Investment < ApplicationRecord
   end
 
   def net_value
-    deal.investment_multiple * amount.to_f
+    deal.valuation_multiple * amount.to_f
   end
 
   def refund
