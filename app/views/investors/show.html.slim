@@ -19,12 +19,12 @@ div.w-75
         - unless @investor.deactivated
             input.form-check-input.switch_size[type="checkbox" role="switch" id="deactivationSwitch" data-action="change->investors#deactivate" checked]
             label.form-check-label.text-success.px-3[for="deactivationSwitch"]
-              | Active (Deactivate)
+              | Active
             = link_to 'Deactivate Investor', investor_path(@investor), data: { turbo_method: :delete, investors_target: "deactivationLink" }, class: 'd-none'
         - else
           input.form-check-input.switch_size[type="checkbox" role="switch" id="activationSwitch" data-action="change->investors#reactivate"]
           label.form-check-label.text-danger.px-3[for="activationSwitch"]
-              | Inactive (Reactivate)
+              | Inactive
           = link_to '(reactivate)', reactivate_investor_path(@investor), data: { investors_target: "activationLink" }, class: 'd-none'
 
   = render 'investment_philosophies', resource: @investor
