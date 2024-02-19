@@ -36,7 +36,8 @@ module DashboardAnalytics
 
     def investments_till_month(month_and_year_string)
       date = parse_date(month_and_year_string)
-      user.investments.where("DATE_TRUNC('month', investments.created_at) < ?
+      user.investments.joins(:deal).where(deal: {status: :closed}).
+                        where("DATE_TRUNC('month', investments.created_at) < ?
                               OR
                               DATE_TRUNC('month', investments.created_at) = ?",
                               date, date)
