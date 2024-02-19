@@ -8,7 +8,7 @@ class NotificationSerializer
 
   attribute :profile_pic do |notification|
     activity = notification.activity
-    activity.user_type == 'AdminUser' ? 'Back Office' : activity.user.profile_picture_url
+    activity.user_type == 'AdminUser' ? nil : activity.user.profile_picture_url
   end
 
   attribute :user_name do |notification|
