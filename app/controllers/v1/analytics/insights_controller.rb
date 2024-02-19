@@ -12,10 +12,10 @@ module V1
       # participation_rate
       def compare_to_other_investor
         results = { 
-          syndicates_joined: 4,
-          sj_others: 2,
-          monthly_deal_invites: 9,
-          mdi_others: 3,
+          syndicates_joined: average_syndicates_joined(current_user.id, true), # average_syndicates_joined over last 12 months,
+          sj_others: average_syndicates_joined(current_user.id, false),
+          monthly_deal_invites: average_monthly_deal_invites(current_user.id, true),
+          mdi_others: average_monthly_deal_invites(current_user.id, false),
           participation_rate: 0.4,
           pr_others: 0.3
         }
@@ -66,6 +66,22 @@ module V1
 
         # end
         # set industries of fundraiser to deal
+      end
+
+      def average_syndicates_joined(user_id, flag)
+        if flag
+          SyndicateMember.where('member_id = ? and created_at > ?', user_id, Date.today.prev_month(12)).count / 12
+        else
+          SyndicateMember.where('member_id != ? and created_at > ?', user_id, Date.today.prev_month(12)).count / 12
+        end
+      end
+
+      def average_monthly_deal_invites(user_id, flag)
+        if flag
+          Invite.investment.where('invitee_id = ? and created_at > ?', user_id, Date.today.prev_month(12)).count / 12
+        else
+          Invite.investment.where('invitee_id != ? and created_at > ?', user_id, Date.today.prev_month(12)).count / 12
+        end
       end
     end
   end
