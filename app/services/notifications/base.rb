@@ -7,9 +7,10 @@ module Notifications
 
     def call
       # need to set kind and message_ar
+      notification_message = message
       recipients.each do |recipient|
-        notification = Notification.new(message: message,
-                                        message_ar: message,
+        notification = Notification.new(message: notification_message,
+                                        message_ar: notification_message,
                                         recipient_id: recipient.id,
                                         activity_id: activity.id)
         notification.save
@@ -20,9 +21,14 @@ module Notifications
 
     def recipients
       return activity.record.investors if deal_modified?
+      return activity.record.deal.investors if deal_updated_published?
       return (activity.record.classic? ? Investor.approved.active : Syndicate.approved) if deal_added?
       return [activity.record.recipient] if invited?
       return [activity.record] if removed?
+    end
+
+    def deal_updated_published?
+      activity.record_type == 'DealUpdate' && activity.action == Activity::actions[:deal_updated_published]
     end
 
     def deal_modified?
@@ -45,6 +51,8 @@ module Notifications
       case activity.action
       when Activity::actions[:added]
         added
+      when Activity::actions[:deal_updated_published]
+        added_update
       when Activity::actions[:removed]
         removed
       when Activity::actions[:invited]
@@ -56,6 +64,10 @@ module Notifications
 
     def added
       "#{activity.action} you in his #{activity.record_type.titlecase.downcase}"
+    end
+
+    def added_update
+      "published a new update on “#{activity.record.deal.title}” deal"
     end
 
     def removed

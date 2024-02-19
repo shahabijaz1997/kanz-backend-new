@@ -1,6 +1,6 @@
 class Notification < ApplicationRecord
   enum status: %i[pending_read read]
-  enum kind: %i[deal_invite syndicat_group_update investment_update deal_invitation deal_update]
+  enum kind: %i[deal_invite syndicat_group_update investment_update deal_invitation deal_updated_published]
 
   belongs_to :activity
   belongs_to :recipient, class_name: 'User'
