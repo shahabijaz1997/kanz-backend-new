@@ -15,7 +15,7 @@ module ActivityRecorder
 
     def record_activity
       activity = Activity.new(new_value: deal_update.description.truncate(STRING_LENGTH),
-                              action: Activity::actions[:deal_updated_published])
+                              action: Activity::actions[:deal_update_published])
       activity.user = user
       activity.record = deal_update
       activity.save!

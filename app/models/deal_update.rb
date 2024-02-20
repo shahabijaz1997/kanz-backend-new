@@ -12,7 +12,11 @@ class DealUpdate < ApplicationRecord
   before_validation :set_directory_path
 
   def report_url
-    report.url if report.attached?
+    Rails.env.development? ? local_storage_path : report.url(expires_in: 30.minutes)
+  end
+
+  def report_path
+    report.url
   end
 
   private
@@ -26,5 +30,13 @@ class DealUpdate < ApplicationRecord
   def set_directory_path
     gust = SecureRandom.base36(28)
     report.key = "deal_update/#{deal_id}/#{gust}" if report.new_record?
+  end
+
+  def local_storage_path
+    return '' if report.blank?
+
+    ActiveStorage::Blob.service.path_for(report.key)
+  rescue StandardError => error
+    ''
   end
 end

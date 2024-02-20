@@ -1,6 +1,6 @@
 module V1
   class DealUpdatesController < ApiController
-    before_action :set_deal_update, only: %i[update]
+    before_action :set_deal_update, only: %i[update show]
 
     # POST /v1/deal_updates
     def create
@@ -28,16 +28,25 @@ module V1
       end
     end
 
-    private
-      # Use callbacks to share common setup or constraints between actions.
-      def set_deal_update
-        @deal_update = DealUpdate.find(params[:id])
-        failure(I18n.t('deal_update.not_found')) if @deal_update.blank?
-      end
+    # GET /v1/deal_updates/1
+    def show
+      success(
+        I18n.t('deal_update.success'),
+        DealUpdateSerializer.new(@deal_update).serializable_hash[:data][:attributes]
+      )
+    end
 
-      # Only allow a list of trusted parameters through.
-      def deal_update_params
-        params.require(:deal_update).permit(:description, :deal_id, :report)
-      end
+    private
+
+    # Use callbacks to share common setup or constraints between actions.
+    def set_deal_update
+      @deal_update = DealUpdate.find(params[:id])
+      failure(I18n.t('deal_update.not_found')) if @deal_update.blank?
+    end
+
+    # Only allow a list of trusted parameters through.
+    def deal_update_params
+      params.require(:deal_update).permit(:description, :deal_id, :report)
+    end
   end
 end

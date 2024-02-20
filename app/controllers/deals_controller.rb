@@ -52,7 +52,7 @@ class DealsController < ApplicationController
 
   def valuation_update
     Deal.transaction do
-      ActivityRecorder::Deal.call(deal_update_params, @deal, current_user)
+      ActivityRecorder::Deal.call(@deal, current_user, deal_update_params)
       @deal.update!(deal_update_params)
       redirect_to deal_path, notice: 'Successfully updated.'
     end

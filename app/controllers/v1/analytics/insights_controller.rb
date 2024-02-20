@@ -83,6 +83,14 @@ module V1
           Invite.investment.where('invitee_id != ? and created_at > ?', user_id, Date.today.prev_month(12)).count / 12
         end
       end
+
+      def average_participation(user_id, flag)
+        if flag
+          Invite.investment.where('invitee_id = ? and created_at > ?', user_id, Date.today.prev_month(12)).count
+        else
+          Invite.investment.where('invitee_id != ? and created_at > ?', user_id, Date.today.prev_month(12)).count
+        end
+      end
     end
   end
 end

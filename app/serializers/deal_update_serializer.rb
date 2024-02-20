@@ -6,7 +6,7 @@ class DealUpdateSerializer
 
   attributes :id, :description
 
-  attribute :report do |deal_update|
+  attribute :attachment do |deal_update|
     deal_update.report_url
   end
 
