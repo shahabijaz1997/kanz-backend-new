@@ -24,8 +24,8 @@ module DealClosingModel
     def refund(percentage_to_invest, percentage_to_refund)
       Investment.transaction do
         deal.investments.each do |investment|
-          invested_amount = amount_to_invest(amount, percentage_to_invest)
-          refunded_amount = amount_to_refund(amount, percentage_to_refund)
+          invested_amount = amount_to_invest(investment.amount, percentage_to_invest)
+          refunded_amount = amount_to_refund(investment.amount, percentage_to_refund)
           investment.update(amount: invested_amount)
           investment.refunded_investment_portion(refunded_amount)
         end
