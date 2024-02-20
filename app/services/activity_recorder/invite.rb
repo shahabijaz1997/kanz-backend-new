@@ -14,8 +14,7 @@ module ActivityRecorder
     private
 
     def record_activity
-      activity = Activity.new(new_value: record.invitee_id),
-                              action: :deal_update_published)
+      activity = Activity.new(new_value: record.invitee_id, action: Activity::actions[:deal_update_published])
       activity.user = user
       activity.record = record
       activity.save!
