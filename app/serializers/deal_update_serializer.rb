@@ -6,6 +6,14 @@ class DealUpdateSerializer
 
   attributes :id, :description
 
+  attribute :title do |deal_update|
+    "#{deal_update.deal.title} - #{deal_update.added_by.company_name}"
+  end
+
+  attribute :logo do |deal_update|
+    deal_update.added_by.profile.logo
+  end
+
   attribute :attachment do |deal_update|
     deal_update.report_url
   end
