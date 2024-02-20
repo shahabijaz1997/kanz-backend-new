@@ -27,4 +27,12 @@ class NotificationSerializer
   attribute :type do |notification|
     notification.kind # Need to be humanize
   end
+
+  attribute :has_details do |notification|
+    notification.deal_update_published?
+  end
+
+  attribute :detail_id do |notification|
+    notification.deal_update_published? ? notification.activity.record_id : nil
+  end
 end

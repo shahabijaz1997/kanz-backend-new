@@ -3,7 +3,7 @@ class DealUpdatesController < ApplicationController
 
   def publish
     if @deal_update.update(status: :published)
-      ActivityRecorder::DealUpdate.call(@deal_update, current_user)
+      ActivityRecorder::DealUpdate.call(@deal_update, @deal_update.added_by)
       redirect_to deal_path(@deal_update.deal), notice: 'Deal update published'
     else
       redirect_to deal_path(@deal_update.deal), alert: @deal_update.errors.full_messages.to_sentence

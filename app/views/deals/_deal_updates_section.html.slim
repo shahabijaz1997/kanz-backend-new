@@ -6,11 +6,11 @@
         li.list-group-item.d-flex.my-2
           div.card.attachment.col-3
             - if ['pdf', 'application/pdf'].include?(deal_update.report.content_type)
-              object data=deal_update.report_url width=250
+              object data=deal_update.report_path width=250
             - else
-              = image_tag(deal_update.report_url)
+              = image_tag(deal_update.report_path)
             div.card-img-overlay.d-flex.justify-content-center.align-items-center
-              a.btn.btn-outline-light href=deal_update.report_url target="_blank"
+              a.btn.btn-outline-light href=deal_update.report_path target="_blank"
                 i.bi.bi-arrows-angle-expand
               = link_to rails_blob_path(deal_update.report, disposition: 'attachment'), class: 'ms-3 btn btn-outline-light' do
                 i.bi.bi-cloud-arrow-down
