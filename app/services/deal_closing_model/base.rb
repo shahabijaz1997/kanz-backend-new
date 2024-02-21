@@ -5,6 +5,7 @@ module DealClosingModel
     attr_reader :deal
 
     def initialize(deal)
+      super()
       @deal = deal
     end
 

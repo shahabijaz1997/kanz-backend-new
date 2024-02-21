@@ -10,15 +10,15 @@ class Investment < ApplicationRecord
   has_many :transactions, as: :transactable
 
   validate :invested_amount_limit
-  after_update :create_refunded_transaction
 
   after_create :update_invite, :create_invested_transaction
+  after_update :create_refunded_transaction
 
-  default_scope { self.not_refunded }
+  default_scope { not_refunded }
   scope :latest_first, -> { order(created_at: :desc) }
-  scope :by_property, -> { joins(:deal).where(deal: { deal_type: Deal::deal_types[:property] }) }
-  scope :by_startup, -> { joins(:deal).where(deal: { deal_type: Deal::deal_types[:startup] }) }
-  scope :filter_by_deal_type, ->(deal_type) { joins(:deal).where(deal: { deal_type: deal_type }) }
+  scope :by_property, -> { joins(:deal).where(deal: { deal_type: Deal.deal_types[:property] }) }
+  scope :by_startup, -> { joins(:deal).where(deal: { deal_type: Deal.deal_types[:startup] }) }
+  scope :filter_by_deal_type, ->(deal_type) { joins(:deal).where(deal: { deal_type: }) }
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[amount]
@@ -30,10 +30,6 @@ class Investment < ApplicationRecord
 
   def net_value
     deal.valuation_multiple * amount.to_f
-  end
-
-  def refund
-    self.refunded!
   end
 
   def refundable?
@@ -54,9 +50,9 @@ class Investment < ApplicationRecord
   end
 
   def dublicate_investment
-    if Investment.exists?(user_id: user_id, deal_id: deal_id)
-      errors.add(:base, I18n.t('investment.once'))
-    end
+    retrun unless Investment.exists?(user_id:, deal_id:)
+
+    errors.add(:base, I18n.t('investment.once'))
   end
 
   def update_invite

@@ -1,14 +1,10 @@
+# frozen_string_literal: true
+
 module DealClosingModel
   class RefundInvestments < Base
-    def initialize(deal)
-      super
-    end
-
     def call
       Investment.transaction do
-        deal.investments.each do |investment|
-          investment.refund
-        end
+        deal.investments.each(&:refunded!)
       end
     end
   end

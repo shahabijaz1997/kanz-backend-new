@@ -41,7 +41,7 @@ module V1
       return failure(I18n.t('investment.not_found'), 404) if @investment.blank?
       return failure(I18n.t('wallet.irrevertable'),404) unless @investment.refundable?
 
-      @investment.refund
+      @investment.refunded!
     end
 
     private
