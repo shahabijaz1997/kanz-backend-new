@@ -14,9 +14,11 @@ class DealUpdateSerializer
     deal_update.added_by.profile.logo
   end
 
-  attribute :attachment do |deal_update|
-    deal_update.report_url
+  attribute :attachment_name do |deal_update|
+    deal_update.report.blob[:filename]
   end
+
+  attribute :attachment, &:report_url
 
   attribute :status do |deal_update|
     deal_update.humanized_enum(deal_update.status)
