@@ -70,4 +70,6 @@ Rails.application.configure do
 
   # To allow callback from different host
   config.hosts.clear
+
+  config.active_job.queue_adapter = :sidekiq
 end
