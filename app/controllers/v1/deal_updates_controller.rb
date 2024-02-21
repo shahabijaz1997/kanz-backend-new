@@ -2,6 +2,14 @@ module V1
   class DealUpdatesController < ApiController
     before_action :set_deal_update, only: %i[update show]
 
+    # GET /v1/deal_updates/1
+    def show
+      success(
+        I18n.t('deal_update.success'),
+        DealUpdateSerializer.new(@deal_update).serializable_hash[:data][:attributes]
+      )
+    end
+
     # POST /v1/deal_updates
     def create
       @deal_update = current_user.deal_updates.new(deal_update_params)
@@ -26,14 +34,6 @@ module V1
       else
         failure(@deal_update.errors.full_messages.to_sentence)
       end
-    end
-
-    # GET /v1/deal_updates/1
-    def show
-      success(
-        I18n.t('deal_update.success'),
-        DealUpdateSerializer.new(@deal_update).serializable_hash[:data][:attributes]
-      )
     end
 
     private
