@@ -51,15 +51,11 @@ class DealSerializer
   end
 
   attribute :syndicate do |deal|
-    syndicate = deal.syndicate
-    if syndicate.present?
-      {
-        id: syndicate&.id,
-        name: syndicate.name,
-        logo: syndicate.profile&.attachment&.url
-      }
-    else
-      {}
-    end
+    user = deal.syndicate || deal.user
+    {
+      id: user.id,
+      name: user.company_name,
+      logo: user.profile.logo
+    }
   end
 end

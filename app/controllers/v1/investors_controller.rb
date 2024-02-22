@@ -10,7 +10,7 @@ module V1
     def index
       pagy, investors = pagy Investor.approved.ransack(params[:search]).result
       investors = InvestorSerializer.new(investors).serializable_hash[:data].map
-      success('success', 
+      success('success',
         {
           records: investors,
           pagy: pagy

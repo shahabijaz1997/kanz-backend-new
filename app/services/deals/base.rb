@@ -26,6 +26,7 @@ module Deals
         token: deal.token,
         is_invested: user.investments.exists?(deal_id: deal.id),
         is_refundable: investment.present? && investment.refundable? && deal.live?,
+        refund_last_date: refundable_date(investment),
         my_invested_amount: investment&.amount,
         current_deal_syndicate: deal.syndicate_id == user.id && deal.syndicate?,
         syndicate_id: deal.syndicate_id,
@@ -57,6 +58,13 @@ module Deals
 
     def total_investors
       deal.investors_count
+    end
+
+    def refundable_date(investment)
+      return if investment.blank?
+
+      date = investment.created_at + REFUND_ALLOWED_FOR_DAYS.days
+      Date.parse(date.to_s).strftime('%d/%m/%Y')
     end
   end
 end
