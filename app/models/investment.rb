@@ -36,6 +36,10 @@ class Investment < ApplicationRecord
     created_at > REFUND_ALLOWED_FOR_DAYS.days.ago
   end
 
+  def currency
+    deal.startup? ? '$' : 'AED'
+  end
+
   private
 
   def invested_amount_limit

@@ -179,3 +179,10 @@ BIGINT_LIMIT = 9_000_000_000_000_000_000.freeze
 
 RECENT_ACTIVITY_COUNT = 5.freeze
 STRING_LENGTH = 220.freeze
+
+ACTIVITY_CATEGORIES = {
+  invite: 0,
+  deal_update: 1,
+  deal: 2,
+  deal_valuation: 3,
+}.freeze

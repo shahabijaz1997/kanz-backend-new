@@ -10,6 +10,7 @@ class DealUpdate < ApplicationRecord
   validate :deal_updatable
 
   before_validation :set_directory_path
+  delegate :investors, to: :deal
 
   def report_url
     Rails.env.development? ? local_storage_path : report.url(expires_in: 30.minutes)
@@ -36,7 +37,7 @@ class DealUpdate < ApplicationRecord
     return '' if report.blank?
 
     ActiveStorage::Blob.service.path_for(report.key)
-  rescue StandardError => error
+  rescue StandardError
     ''
   end
 end

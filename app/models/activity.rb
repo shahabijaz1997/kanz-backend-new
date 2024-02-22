@@ -2,24 +2,24 @@
 
 class Activity < ApplicationRecord
   # new deal means live on platform
-  enum actions: %i[new_deal
-                   syndication_invite
-                   syndication_request
-                   syndicate_assigned
-                   syndicate_membership_invite
-                   syndicate_membership_request
-                   syndicate_membership
-                   investment_invite
-                   new_investment
-                   investment_refunded
-                   deal_closed
-                   deal_valuation_changed
-                   rental_amount_changed
-                   rental_cycle_changed
-                   valuation_phase_changed
-                   deal_update_published]
+  enum action: { new_deal: 0,
+                 syndication_invite: 1,
+                 syndication_request: 2,
+                 syndicate_assigned: 3,
+                 syndicate_membership_invite: 4,
+                 syndicate_membership_request: 5,
+                 syndicate_membership: 6,
+                 investment_invite: 7,
+                 new_investment: 8,
+                 investment_refunded: 9,
+                 deal_closed: 10,
+                 deal_valuation_changed: 11,
+                 rental_amount_changed: 12,
+                 rental_cycle_changed: 13,
+                 valuation_phase_changed: 14,
+                 deal_update_published: 15 }
 
-  validates :record_id, :record_type, :user_id, :user_type, :new_value, presence: true
+  validates :record_type, :user_type, :new_value, presence: true
 
   belongs_to :record, polymorphic: true
   belongs_to :user, polymorphic: true

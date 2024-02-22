@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Invite < ApplicationRecord
   after_initialize :set_defaults
 
@@ -5,21 +7,21 @@ class Invite < ApplicationRecord
   belongs_to :user
   belongs_to :invitee, class_name: 'User'
 
-  validates_uniqueness_of :invitee_id, scope: %i[eventable_type eventable_id user_id]
+  validates :invitee_id, uniqueness: { scope: %i[eventable_type eventable_id user_id] }
 
   enum status: { pending: 0, interested: 1, accepted: 2, approved: 3, expired: 4, invested: 5 }
   enum purpose: { syndication: 0, investment: 1, syndicate_membership: 2 }
   enum discovery_method: { news: 0, social_media: 1, website: 2, other: 3 }
 
   before_update :validate_status_change
-  after_commit :send_invite_email, on: :create
   after_update :send_status_update_email
+  after_commit :send_invite_email, :record_activity, on: :create
 
   scope :latest_first, -> { order(created_at: :desc) }
-  scope :active, -> { where.not(status: Invite::statuses[:expired]) }
-  scope :pending, -> { where(status: Invite::statuses[:pending]) }
+  scope :active, -> { where.not(status: Invite.statuses[:expired]) }
+  scope :pending, -> { where(status: Invite.statuses[:pending]) }
   scope :interested_invites, -> { where(status: %i[interested accepted approved]) }
-  scope :by_status, -> (status) { where(status: status) }
+  scope :by_status, ->(status) { where(status:) }
 
   def expired?
     expire_at < Time.zone.now
@@ -43,20 +45,28 @@ class Invite < ApplicationRecord
     %w[eventable user invitee]
   end
 
+  def recipients
+    invitee
+  end
+
   private
 
   def set_defaults
-    self.expire_at = Time.zone.now + 7.days
+    self.expire_at = 7.days.from_now
   end
 
   def validate_status_change
     return if status_was == 'pending'
 
-    errors[:base] << I18n.t('invite.invite_update_condition')
+    errors.add(:base, I18n.t('invite.invite_update_condition'))
+  end
+
+  def record_activity
+    ActivityRecorder::Base.call(self, user, ACTIVITY_CATEGORIES[:invite])
   end
 
   def send_invite_email
-    InvitesMailer::new_invite(self).deliver_now
+    # InvitesMailer.new_invite(self).deliver_now
   end
 
   def send_status_update_email
