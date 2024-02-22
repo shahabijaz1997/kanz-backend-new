@@ -37,7 +37,7 @@ class DealSerializer
   attribute :features do |deal|
     FeatureSerializer.new(deal.features).serializable_hash[:data].map { |d| d&.fetch(:attributes) }
   end
-  
+
   attribute :terms do |deal|
     deal.startup? ? TermSerializer.new(deal.terms).serializable_hash[:data].map { |d| d&.fetch(:attributes) } : []
   end
@@ -46,9 +46,7 @@ class DealSerializer
     ExternalLinkSerializer.new(deal.external_links).serializable_hash[:data].map { |d| d&.fetch(:attributes) }
   end
 
-  attribute :raised do |deal|
-    deal.raised
-  end
+  attribute :raised, &:raised
 
   attribute :syndicate do |deal|
     syndicate = deal.syndicate
