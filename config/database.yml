@@ -5,16 +5,16 @@
 #   gem "sqlite3"
 #
 default: &default
-  adapter: postgresql
-  username: postgres
-  password: postgres
-  host: localhost
+  adapter: <%= ENV.fetch("DB_ADAPTER") %>
+  username: <%= ENV.fetch("DB_USERNAME") %>
+  password: <%= ENV.fetch("DB_PASSWORD") %>
+  host: <%= ENV.fetch("DB_HOST") %> 
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
 development:
   <<: *default
-  database: kanz-development
+  database: <%= ENV.fetch("DB_NAME") %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -25,4 +25,4 @@ test:
 
 production:
   <<: *default
-  database: kanz
+  database: <%= ENV.fetch("DB_NAME") %>
