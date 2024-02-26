@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 module V1
   class TransactionsController < ApiController
+    require 'stripe'
     include PagyHelper
     before_action :set_wallet
 
@@ -23,6 +24,16 @@ module V1
           transactions: TransactionSerializer.new(@wallet.transactions).serializable_hash[:data].map{ |object| object[:attributes]}
         }
       end
+    end
+
+    def create_payment_intent
+      Stripe.api_key = ENV.fetch('STRIPE_SECRET')
+      intent = Stripe::PaymentIntent.create({
+                                              automatic_payment_methods: { enabled: true },
+                                              amount: 1099,
+                                              currency: 'usd'
+                                            })
+      success('success', { client_secret: intent.client_secret })
     end
 
     private

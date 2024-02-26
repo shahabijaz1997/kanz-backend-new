@@ -141,7 +141,11 @@ Rails.application.routes.draw do
     end
     resource :profile, only: %i[show update]
     resource :wallet
-    resources :transactions, only: %i[index create]
+    resources :transactions, only: %i[index create] do
+      collection do
+        post :create_payment_intent
+      end
+    end
     resource :exchange_rate, only: %i[show]
     resources :blogs, only: %i[index show]
     resources :notifications, only: %i[index update]
