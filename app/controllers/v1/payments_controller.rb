@@ -3,7 +3,7 @@
 require 'stripe'
 
 module V1
-  class StripeController < ApiController
+  class PaymentsController < ApiController
     def payment_intent
       Stripe.api_key = ENV.fetch('STRIPE_SECRET')
       intent = Stripe::PaymentIntent.create(payment_intent_params)
