@@ -114,7 +114,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :deal_updates, only: %i[create update show]
+    resources :deal_updates, only: [:create, :update]
     namespace :analytics do
       resources :investors, only: %i[index] do
         collection do
@@ -145,6 +145,15 @@ Rails.application.routes.draw do
     resource :exchange_rate, only: %i[show]
     resources :blogs, only: %i[index show]
     resources :notifications, only: %i[index update]
+    resource :payments, only: %i[create] do
+      collection do
+        post :payment_intent
+      end
+    end
+  end
+
+  namespace :webhooks, path: 'webhooks' do
+    resources :stripes, only: %i[create]
   end
 
   # Admin routes

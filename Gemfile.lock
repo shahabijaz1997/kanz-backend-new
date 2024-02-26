@@ -386,6 +386,7 @@ GEM
       sprockets (>= 3.0.0)
     stimulus-rails (1.2.1)
       railties (>= 6.0.0)
+    stripe (10.10.0)
     syntax_tree (6.1.1)
       prettier_print (>= 1.2.0)
     temple (0.10.2)
@@ -461,6 +462,7 @@ DEPENDENCIES
   slim_lint
   sprockets-rails
   stimulus-rails
+  stripe
   turbo-rails
   tzinfo-data
 
