@@ -13,7 +13,7 @@ module V1
     private
 
     def payment_intent_params
-      params.require(:payment).permit(%i[amount currency])
+      params.require(:payment).permit(:amount, :currency)
     end
   end
 end
