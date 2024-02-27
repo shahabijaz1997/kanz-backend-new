@@ -23,6 +23,10 @@ test:
   <<: *default
   database: kanz-test
 
+staging:
+  <<: *default
+  database: <%= ENV.fetch("DB_NAME") %>
+
 production:
   <<: *default
   database: <%= ENV.fetch("DB_NAME") %>
